@@ -1,4 +1,27 @@
-# Vue
+# Views
+
+- [Création de vue](#creation-de-vue)
+
+## Création de vue
+
+Les vues contiennent le code HTML fourni par votre application et séparent votre logique de contrôleur / application de votre logique de présentation. Les vues sont stockées dans le répertoire resources / views. Une simple vue peut ressembler à ceci:
+
+```twig
+<!-- View stored in components/views/greeting.twig -->
+<html>
+    <body>
+        <h1>Hello, {{ name }}</h1>
+    </body>
+</html>
+```
+
+Apres avoir modifier et sauvegarde votre vue dans `components/views/greeting.twig`. Vous pouvez maintenant l'envoyer au utilisateur avec le helper view comme ceci:
+
+```php
+$app->get('/', function() {
+	return view('greeting', ['name' => 'Bowphp']);
+});
+```
 
 Bow framework implement 3 moteur de template <a href="https://twig.symfony.com">Twig</a>, <a href="">Pug-PHP</a>, <a href="">Mustache-PHP</a>.
 La configuration des vues ce trouve dans le fichier `view.php` du dossier `config`.

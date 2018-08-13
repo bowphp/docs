@@ -22,7 +22,7 @@
 Pour installer une copie de Bow il vous faut d'abord installer [composer](https://getcomposer.org) ensuite vous lancez la commande suivante:
 
 ```sh
-  $ php composer.phar create-project --prefer-dist papac/bow
+  $ php composer.phar create-project --prefer-dist bowphp/app
   $ cd bow
   $ php bow serve
 ```
