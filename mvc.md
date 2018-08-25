@@ -1,4 +1,4 @@
-# **MVC**
+# MVC
 
 Interactions entre le modèle, la vue et le contrôleur
 Modèle-vue-contrôleur ou **MVC** est un motif d'architecture logicielle destiné aux interfaces graphiques lancé en 1978 et très populaire pour les applications web. Le motif est composé de trois types de modules ayant trois responsabilités différentes : les modèles, les vues et les contrôleurs.
@@ -7,7 +7,7 @@ Modèle-vue-contrôleur ou **MVC** est un motif d'architecture logicielle destin
 - Une vue(View) contient la présentation de l'interface graphique.
 - Un contrôleur(Controller) contient la logique concernant les actions effectuées par l'utilisateur.
 
-Ce motif est utilisé par de nombreux frameworks pour applications web tels que Ruby on Rails, Django, ASP.NET **MVC**, Spring, Struts, Symfony, Apache Tapestry ou Angular Js.
+Ce motif est utilisé par de nombreux frameworks pour applications web tels que Ruby on Rails, Django, ASP.NET **MVC**, Spring, Struts, Symfony, Apache Tapestry ou Angular Js et surtout dans [bow framework](https://github.com/bowphp/framework "Bow Framework").
 
 ## Histoire
 
@@ -16,7 +16,7 @@ Le nom original est thing model view editor pattern, puis il a été rapidement 
 Le patron **MVC** a été utilisé la première fois pour créer des interfaces graphiques avec le langage de programmation Smalltalk en 19801.
 Description
 
-Une application conforme au motif **MVC** comporte trois types de modules : les modèles, les vues et les contrôleurs2.
+Une application conforme au motif **MVC** comporte trois types de modules : les modèles, les vues et les contrôleurs.
 
 ## Modèle
 

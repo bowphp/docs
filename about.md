@@ -17,6 +17,18 @@
     <strong>N'hésitez pas à commencez maintenant.</strong>
 </p>
 
+# Préréquis
+
+Vous devez vous assurer les différents elements suivants sont installés sur votre machine.
+
+* php >= 7.0
+* mcrypt
+* mb_string
+* PDO
+* php-sqlite3 (optionnel) seulement si vous utiliser une db sqlite.
+* php-openssl
+* php-curl
+
 # Installation
 
 Pour installer une copie de Bow il vous faut d'abord installer [composer](https://getcomposer.org) ensuite vous lancez la commande suivante:
@@ -36,19 +48,19 @@ Dans le dossier `routes`, ouvrez le fichier `get.php` et ajoutez:
 
 ```php
 $app->get('/hello/:name', function($name) {
-    return 'hello world '.$name;
+    return 'Hello, world '.$name;
 });
 ```
 
 Dans votre navigateur et tapez `http://localhost:5000/hello/bow`. `5000` est le port par défaut quand vous faites `php bow serve`.
 ```
-=>// hello world bow
+=>// hello, world bow
 ```
 
 Ou avec `curl`
 ```
 $ curl http://localhost:5000/hello/bow
-=>// hello world bow
+=>// Hello world bow
 ```
 
 # Contribution
@@ -62,8 +74,8 @@ Pour participer au projet il faut:
 + Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
 
 # Auteurs
-> Franck Dakia <dakiafranck@gmail.com> &bull; [@franck_dakia](https://twitter.com/franck_dakia)
-> Ayiyikoh <fablab@ayiyikoh.org> &bull; [@ayiyikoh](https://twitter.com/ayiyikoh) hashtag: __#GoAyiyikoh__
+- Franck Dakia <dakiafranck@gmail.com> &bull; [@franck_dakia](https://twitter.com/franck_dakia)
+- Ayiyikoh <fablab@ayiyikoh.org> &bull; [@ayiyikoh](https://twitter.com/ayiyikoh) hashtag: __#GoAyiyikoh__
 
 ---
 > SVP s'il y a un bogue sur le projet veuillez me contacter.

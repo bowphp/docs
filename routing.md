@@ -1,4 +1,4 @@
-## Routing
+# Routing
 
 Le routing vous permet de maper une url sur un controlleur ou une action particulière.
 Le systeme de routing de bow est grèfé directement sur l'instance de l'application.
@@ -22,7 +22,7 @@ $app->[verbe](url, action);
 
 - Avec un callback (aussi appelé `closure` ou `callable` en `php`)
 
-``` php
+```php
 $app->verbe('/', function() {
 	return 'hello world';
 });
@@ -30,7 +30,7 @@ $app->verbe('/', function() {
 
 - Avec une collection de fonction dans un tableau:
 
-``` php
+```php
 $app->verbe('/', [function() {
 	echo 'hello world';
 }, function() {
@@ -40,13 +40,13 @@ $app->verbe('/', [function() {
 
 - Avec le nom d'un controller
 
-``` php
+```php
 $app->verbe('/', 'ClassController@actionAExecuter');
 ```
 
 - Avec le nom d'un controller et un middelware
 
-``` php
+```php
 $app->verbe('/', ['middleware' => 'ip', 'uses' => 'ClassController@actionAExecuter']);
 ```
 
@@ -58,7 +58,7 @@ La mise en place du routage se faire donc via les methodes suivants:
 
 Cette methode permet de maper une url a une requête de type `GET`.
 
-``` php
+```php
 $app->get('/', function() {
 	return 'hello world';
 });
@@ -68,7 +68,7 @@ $app->get('/', function() {
 
 Cette methode permet de maper une url a une requête de type `POST`
 
-``` php
+```php
 $app->post('/', function() {
 	return 'data posted';
 });
@@ -89,7 +89,7 @@ il faudra créer un champs comme ceci:
 ce qui aura pour but de permettre à bow de comprendre votre requête.
 
 
-``` php
+```php
 $app->put('/', function() {
 	// code ici
 });
@@ -109,8 +109,7 @@ il faudra créer un champs comme ceci:
 
 ce qui aura pour but de permettre à bow de comprendre votre requête.
 
-
-``` php
+```php
 $app->delete('/', function() {
 	// code ici
 });
@@ -130,8 +129,7 @@ il faudra créer un champs comme ceci:
 
 ce qui aura pour but de permettre à bow de comprendre votre requête.
 
-
-``` php
+```php
 $app->patch('/', function() {
 	// code ici
 });
@@ -151,8 +149,7 @@ il faudra créer un champs comme ceci:
 
 ce qui aura pour but de permettre à bow de comprendre votre requête.
 
-
-``` php
+```php
 $app->options('/', function() {
 	// code ici
 });
@@ -164,7 +161,7 @@ Permet d'associer des methodes `http` sur l'url spécifier.
 
 prototype de la methode `match`.
 
-```
+```php
 $app->match(verbes, url, action);
 ```
 
@@ -174,7 +171,7 @@ $app->match(verbes, url, action);
 | url      | String, L'url de la route |
 | action      | String, array, callable ou Closure |
 
-``` php
+```php
 $app->match(['GET', 'POST'], function() {
 	// code ici
 });
@@ -186,7 +183,7 @@ Permet d'associer tout les methodes `http` sur l'url spécifier.
 
 prototype de la methode `any`.
 
-```
+```php
 $app->any(String url, action);
 ```
 
@@ -196,33 +193,16 @@ $app->any(String url, action);
 | action      | String, array, callable ou Closure |
 
 
-``` php
+```php
 $app->any('/', function() {
 	// code ici
 });
 ```
 
-### code
-
-Le routing vous permet aussi de capturer le code http telque le fameux `404` et autre, et ensuite
-lancer une fonction pour répondre à l'utilisateur.
-
-prototype de la methode `code`.
-
-```
-$app->code(statusCode, action);
-```
-
-| paramete | Type |
-|----------|------|
-| statusCode      | Number, Le code http |
-| action      | Callable ou Closure, le fonction à éxécuter |
-
-
 > Notons que les methodes ci-dessus retourne l'instance de l'application.
 > Alors vous pouvez chainer les methodes comme ceci.
 > 
-> ``` php
+> ```php
 > $app->get(..., ...)->post(..., ...)->put(..., ...)->delete(..., ...)->patch(..., ...)
 > ```
 
@@ -247,7 +227,7 @@ Pour le faire il faut imperativement utiliser la notation `:name_de_la_variable`
 Ensuite la variable capturé sera passer en paramètre à l'action (fonction à executer dans le cas où l'url est valide)
 quelque soit le nombre de variable.
 
-``` php
+```php
 $app->get('/:name', function($name) {
 	return 'bonjour ' . $name;
 });
@@ -272,19 +252,17 @@ $app->where(array rules);
 | value      | String, Le critaire de validation |
 | rules      | Array, Tableau associatif dont la clé est la varibale et la valeur est le critaire de validation |
 
-``` php
+```php
 $app->get('/:name', function($name) {
 	return 'bonjour ' . $name;
 })->where('name', '[a-z]+');
 
 // S'il y a plusieurs variables
-$app->get('/:name/:lastname/:number', function($name, $lastname, $number) {
+$callable = function($name, $lastname, $number) {
 	return 'bonjour '.$name.' '.$lastname.' et votre numero est '.$number;
-})->where([
-	'name' => '[a-z]+', 
-	'lastname' => '[a-z]+', 
-	'number' => '\d+'
-]);
+};
+
+$app->get('/:name/:lastname/:number', $callable)->where(['name' => '[a-z]+', 'lastname' => '[a-z]+', 'number' => '\d+']);
 ```
 
 #### Donner un nom au route
@@ -304,15 +282,10 @@ $app->name(String name);
 |----------|------|
 | name    | String, Le nom de la route |
 
-``` php
+```php
 $app->get('/:name', function($name) {
 	return 'bonjour ' . $name;
 })->name('hello');
-
-// ou
-$app->get('/:name', 'hello', function($name) {
-	return 'bonjour ' . $name;
-});
 ```
 
 #### Association de middleware
@@ -322,8 +295,7 @@ a executer.
 
 Plus d'information sur le sujet allez ce lien [middleware](#documentation-middlewares)
 
-
-``` php
+```php
 $app->get('/:name', ['middleware' => 'ip', function($name) {
 	return 'bonjour ' . $name;
 }])->name('hello');
@@ -331,7 +303,7 @@ $app->get('/:name', ['middleware' => 'ip', function($name) {
 
 #### La composition d'action
 
-``` php
+```php
 $app->get('/:name', ['middleware' => 'ip', 'uses' => 'Controller@action']);
 ```
 

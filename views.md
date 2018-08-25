@@ -1,6 +1,9 @@
 # Views
 
 - [Création de vue](#creation-de-vue)
+- [Vue avec Twig](#view-avec-twig)
+- [Vue avec Pug PHP](#view-avec-pug-php)
+- [Vue avec Mustache PHP](#view-avec-mustache-php)
 
 ## Création de vue
 
@@ -26,21 +29,21 @@ $app->get('/', function() {
 Bow framework implement 3 moteur de template <a href="https://twig.symfony.com">Twig</a>, <a href="">Pug-PHP</a>, <a href="">Mustache-PHP</a>.
 La configuration des vues ce trouve dans le fichier `view.php` du dossier `config`.
 
-## Twig
+## Vue avec Twig
 
 Twig est un moteur de templates pour le langage de programmation PHP, utilisé par défaut par le framework Symfony. 
 Il aurait été inspiré par Jinja, moteur de template Python.
 
 [Lien de la documentation](https://twig.symfony.com/ 'Lien de la documentation')
 
-## Pug-PHP
+## Vue avec Pug PHP
 
 Pug est un moteur de templates de haute performance fortement influencé par Haml et implémenté principalement avec JavaScript pour Node.js et navigateurs.
 Pug-PHP est une réécriture de pour PHP avec les mêmes fonctionnalités.
 
 [Lien de la documentation](https://pugjs.org/language 'Lien de la documentation')
 
-## Mustache-PHP
+## Vue avec Mustache PHP
 
 Mustache est un moteur de templates de haute performance fortement influencé par Handlebar et implémenté principalement avec JavaScript pour Node.js et navigateurs.
 Mustache-PHP est une réécriture de pour PHP avec les mêmes fonctionnalités.
@@ -81,6 +84,38 @@ echo View::make('nom-de-la-vue-sans-extension', ['name' => 'bow'], 200);
 ```
 
 Vous pouvez utiliser le helper `view` qui s'utilise de la même façon.
+
+Avec la vue suivante:
+
+```twig
+<!-- View stored in components/views/greeting.twig -->
+<html>
+    <body>
+        <h1>Hello, {{ name }}</h1>
+    </body>
+</html>
+```
+
+Exemple dans un controlleur:
+
+```php
+namespace App\Controllers;
+
+use App\Controllers\Controller;
+
+class HomeController extends Controller
+{
+	/**
+	 * Show hello page
+	 * 
+	 * @return mixed
+	 */
+	public function show()
+	{
+		return view('greeting', ['name' => 'Bowphp']);
+	}
+}
+```
 
 ### Plugin
 

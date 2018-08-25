@@ -1,4 +1,4 @@
-## Configuration
+# Configuration
 
 Parlant de configuration. L'ensemble des configuration de votre application est accessible dont le dossier `config`. Et est divisé en plusieur fichier pour permet un meillieur organisation.
 

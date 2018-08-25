@@ -1,7 +1,10 @@
-Configuration
--------------
+# Configuration
 
-## Structure
+- [Structure globale](#structure-globale)
+- [Le dossier app](#le-dossier-app)
+- [Le dossier storage](#le-dossier-storage)
+
+## Structure globale
 
 L'orgination de `bow` respect le parten *MVC*, entendez par *M*odel *V*ue *C*ontrolleur.
 
@@ -31,20 +34,7 @@ L'orgination de `bow` respect le parten *MVC*, entendez par *M*odel *V*ue *C*ont
 | __phpunit.xml__ | Le fichier de configuration de [`phpunit`](https://github.com/phpunit/phpunit) |
 | __server.php__ | Le fichier de configuration du serveur local de bow. C'est ce fichier qu'utilise le lancer de tache pour activer le serveur local. |
 
-
-## Installation
-
-| dossier | description|
-|---------|------------|
-| __app__ | contient les dossier de l'application. C'est le dossier dans lequel vous allez programmer votre application.|
-| __config__ | contient tout la configuration de l'application. |
-| __lang__ | contient les dossier des langs.|
-| __migration__ | régroupe tout les fichiers de migration de la base de donnée. |
-| __public__ | régroupe les feuilles de styles et fichier javascript ou tout autre fichier statique. |
-| __storage__ | contient le dossier dans lequel est sauvegardé les caches et les logs de l'application.|
-|__vendor__ | contient les dépendances de l'application. Ce dossier est généré pas `composer`. |
-
-## App
+## Le dossier `App`
 
 C'est votre repertoire de travail sur bow. C'est la que vous allez inserer tout les fichiers de
 votre application. 
@@ -54,7 +44,7 @@ Ici vous rétrouverez les dossiers suivant.
 - __Controllers__ dossier dans lequel sera souvegardé les controlleurs de l'application.
 - __Middleware__ dossier dans lequel sera souvegardé les middlewares de l'application.
 
-## storage
+## Le dossier `storage`
 
 Ici vous rétrouverez les dossiers suivant.
 

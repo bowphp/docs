@@ -1,5 +1,4 @@
-Assets
-------
+# Assets
 
 Dans cette section j'aimerais vous apprendre a organiser vous fichier static. Donc a bien apprehendé l'utlisation
 du dossier `assets`.
