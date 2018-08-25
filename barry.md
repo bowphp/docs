@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="https://github.com/bowphp/arts/blob/master/barry.png" width="150px">
+    <img src="https://github.com/bowphp/arts/blob/master/barry.jpg" width="150px">
     <br/>Barry Orm
 </h1>
 
