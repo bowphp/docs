@@ -9,5 +9,9 @@
 
 Un ORM c'est une facon de rélier le table en elle en utilisant des classes. Ici chaque enregistrement d'une table réprésentatera un objet qui sera donc en rélation avec d'autre enrégistrement. C'est ce qu'on appel en anglais `The object rélation mapping` et en français ben `Mappage de rélation en objet`.
 
-Dans tout bon framework qui se respect, il y a un système de ORM et qui poccéde un nom super mignon. Celui de bow framework se nomme Barry, n'est pas mignon :-).
+Dans tout bon framework qui se respect, il y a un système de ORM et qui poccéde un nom super mignon. Celui de `bow` framework se nomme `Barry`, n'est pas mignon ça :-).
+
+## Exemple
+
+
 
