@@ -4,7 +4,7 @@ Les controlleurs sont les moins simples de simplifier l'organisation de vos proj
 
 ## Instroduction
 
-Au lieu de définir toute la logique de gestion des demandes en tant que fermetures dans les fichiers de routage, vous pouvez organiser ce comportement à l'aide de classes de contrôleur. Les contrôleurs peuvent regrouper la logique de traitement des demandes associée en une seule classe. Les contrôleurs sont stockés dans le répertoire `app/Http/Controllers`.
+Au lieu de définir toute la logique de gestion des demandes en tant que fermetures dans les fichiers de routage, vous pouvez organiser ce comportement à l'aide de classes de contrôleur. Les contrôleurs peuvent regrouper la logique de traitement des demandes associée en une seule classe. Les contrôleurs sont stockés dans le répertoire `app/Controllers`.
 
 ## Controlleur basic
 
@@ -15,10 +15,10 @@ Voici un exemple de classe de contrôleur de base. Notez que le contrôleur éte
 ```php
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Controllers;
 
 use App\User;
-use App\Http\Controllers\Controller;
+use App\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -51,9 +51,9 @@ php bow add:controller UserController
 
 ### Contrôleurs et espaces de noms
 
-Il est très important de noter que nous n’avons pas eu besoin de spécifier l’espace de noms du contrôleur complet lors de la définition de la route du contrôleur. Étant donné que RouteServiceProvider charge vos fichiers de route dans un groupe de routage contenant l'espace de noms, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Http\Controllers` de l'espace de noms.
+Il est très important de noter que nous n’avons pas eu besoin de spécifier l’espace de noms du contrôleur complet lors de la définition de la route du contrôleur. Étant donné que RouteServiceProvider charge vos fichiers de route dans un groupe de routage contenant l'espace de noms, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Controllers` de l'espace de noms.
 
-Si vous choisissez d'imbriquer vos contrôleurs plus profondément dans le répertoire `App\Http\Controllers`, utilisez le nom de classe spécifique relatif à l'espace de noms racine `App\Http\Controllers`. Donc, si votre classe de contrôleur complète est `App\Http\Controllers\Photos\AdminController`, vous devez enregistrer les routes sur le contrôleur comme suit:
+Si vous choisissez d'imbriquer vos contrôleurs plus profondément dans le répertoire `App\Controllers`, utilisez le nom de classe spécifique relatif à l'espace de noms racine `App\Controllers`. Donc, si votre classe de contrôleur complète est `App\Controllers\Photos\AdminController`, vous devez enregistrer les routes sur le contrôleur comme suit:
 
 ```php
 $app->get('/foo', 'Photos\AdminController@method');
