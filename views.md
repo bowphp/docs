@@ -78,6 +78,7 @@ echo View::make('nom-de-la-vue-sans-extension');
 ```
 
 Pour passer des variables a la vue
+
 ```php
 use Bow\View\View;
 echo View::make('nom-de-la-vue-sans-extension', ['name' => 'bow'], 200);
@@ -90,9 +91,9 @@ Avec la vue suivante:
 ```twig
 <!-- View stored in components/views/greeting.twig -->
 <html>
-    <body>
-        <h1>Hello, {{ name }}</h1>
-    </body>
+  <body>
+  	<h1>Hello, {{ name }}</h1>
+  </body>
 </html>
 ```
 
@@ -113,11 +114,15 @@ class HomeController extends Controller
 	public function show()
 	{
 		return view('greeting', ['name' => 'Bowphp']);
+		// Ou
+		return $this->render('greeting', ['name' => "Bowphp"]);
 	}
 }
 ```
 
 ### Plugin
 
-Bow implément aussi au travers d'un plugin, le moteur de template `Blade` utilisé par [Laravel](https://laravel.com).
-Voir le plugin [papac/bow-blade](https://github.com/papac/bow-blade).
+Bow implément aussi au travers d'un plugin, le moteur de template `Blade` utilisé par [Laravel](https://laravel.com) et aussi un template extermement simpliste nommé `Tintin`.
+
+- Le plugin Blade [papac/bow-blade](https://github.com/papac/bow-blade)
+- Le plugin Tintin [bowphp/tintin](https://github.com/bowphp/tintin)
