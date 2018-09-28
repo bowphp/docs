@@ -20,14 +20,14 @@ use App\Controllers\Controller;
 class UserController extends Controller
 {
 	/**
-	 * Show the profile for the given user.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	* Show the profile for the given user.
+	*
+	* @param  int  $id
+	* @return Response
+	*/
 	public function show($id)
 	{
-	    return view('user/profile', ['user' => User::findOrFail($id)]);
+		return view('user/profile', ['user' => User::findOrFail($id)]);
 	}
 }
 ```
@@ -64,13 +64,13 @@ Cependant, il est plus pratique de spécifier le middleware dans le constructeur
 
 	class UserController extends Controller
 	{
-	  /**
-	   * Instantiate a new controller instance.
-	   *
-	   * @return void
-	   */
-	  public function __construct()
-	  {
-	    $this->middleware('auth');
-	  }
+		/**
+		* Instantiate a new controller instance.
+		*
+		* @return void
+		*/
+		public function __construct()
+		{
+			$this->middleware('auth');
+		}
 	}
