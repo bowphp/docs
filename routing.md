@@ -17,7 +17,6 @@ $app->[verbe](url, action);
 | paramete | Type |
 |----------|------|
 | url      | String |
-| name      | String, le nom de la route. (optionnel) |
 | action   | String, array, function. Le fonction doit retourner un element |
 
 - Avec un callback (aussi appelé `closure` ou `callable` en `php`)
