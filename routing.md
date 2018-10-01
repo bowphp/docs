@@ -23,8 +23,9 @@ $app->[verbe](url, action);
 - Avec un callback (aussi appelé `closure` ou `callable` en `php`)
 
 ```php
-$app->verbe('/', function () {
-	return 'hello world';
+$app->verbe('/', function () 
+{
+  return 'hello world';
 });
 ```
 
@@ -59,8 +60,9 @@ La mise en place du routage se faire donc via les methodes suivants:
 Cette methode permet de maper une url a une requête de type `GET`.
 
 ```php
-$app->get('/', function () {
-	return 'hello world';
+$app->get('/', function ()
+{
+  return 'hello world';
 });
 ```
 
@@ -69,8 +71,9 @@ $app->get('/', function () {
 Cette methode permet de maper une url a une requête de type `POST`
 
 ```php
-$app->post('/', function () {
-	return 'data posted';
+$app->post('/', function ()
+{
+  return 'data posted';
 });
 ```
 
@@ -88,10 +91,10 @@ il faudra créer un champs comme ceci:
 
 ce qui aura pour but de permettre à bow de comprendre votre requête.
 
-
 ```php
-$app->put('/', function () {
-	// code ici
+$app->put('/', function ()
+{
+  // code ici
 });
 ```
 
@@ -110,8 +113,9 @@ il faudra créer un champs comme ceci:
 ce qui aura pour but de permettre à bow de comprendre votre requête.
 
 ```php
-$app->delete('/', function () {
-	// code ici
+$app->delete('/', function ()
+{
+  // code ici
 });
 ```
 
@@ -130,8 +134,9 @@ il faudra créer un champs comme ceci:
 ce qui aura pour but de permettre à bow de comprendre votre requête.
 
 ```php
-$app->patch('/', function () {
-	// code ici
+$app->patch('/', function ()
+{
+  // code ici
 });
 ```
 
@@ -150,8 +155,9 @@ il faudra créer un champs comme ceci:
 ce qui aura pour but de permettre à bow de comprendre votre requête.
 
 ```php
-$app->options('/', function () {
-	// code ici
+$app->options('/', function ()
+{
+  // code ici
 });
 ```
 
@@ -172,8 +178,9 @@ $app->match(verbes, url, action);
 | action      | String, array, callable ou Closure |
 
 ```php
-$app->match(['GET', 'POST'], function () {
-	// code ici
+$app->match(['GET', 'POST'], function ()
+{
+  // code ici
 });
 ```
 
@@ -193,8 +200,9 @@ $app->any(String url, action);
 | action      | String, array, callable ou Closure |
 
 ```php
-$app->any('/', function () {
-	// code ici
+$app->any('/', function ()
+{
+  // code ici
 });
 ```
 
@@ -221,7 +229,7 @@ quelque soit le nombre de variable.
 ```php
 $app->get('/:name', function ($name) 
 {
-	return 'bonjour ' . $name;
+  return 'bonjour ' . $name;
 });
 ```
 
@@ -247,13 +255,13 @@ $app->where(array rules);
 ```php
 $app->get('/:name', function ($name) 
 {
-	return 'bonjour ' . $name;
+  return 'bonjour ' . $name;
 })->where('name', '[a-z]+');
 
 // S'il y a plusieurs variables
 $callable = function ($name, $lastname, $number)
 {
-	return 'bonjour '.$name.' '.$lastname.' et votre numero est '.$number;
+  return 'bonjour '.$name.' '.$lastname.' et votre numero est '.$number;
 };
 
 $app->get('/:name/:lastname/:number', $callable)
@@ -280,7 +288,7 @@ $app->name(String name);
 ```php
 $app->get('/:name', function ($name)
 {
-	return 'bonjour ' . $name;
+  return 'bonjour ' . $name;
 })->name('hello');
 ```
 
@@ -294,7 +302,7 @@ Plus d'information sur le sujet allez ce lien [middleware](#documentation-middle
 ```php
 $app->get('/:name', ['middleware' => 'ip', function ($name) 
 {
-	return 'bonjour ' . $name;
+  return 'bonjour ' . $name;
 }])->name('hello');
 ```
 
@@ -315,17 +323,17 @@ Les urls peuvents souvants se répéter comme ceci:
 ```php
 $app->get('users', function () 
 {
-	// code ici
+  // code ici
 });
 
 $app->get('users/:id', function ($id) 
 {
-	// code ici
+  // code ici
 });
 
 $app->get('users/:id/delete', function ($id) 
 {
-	// code ici
+  // code ici
 });
 ```
 
@@ -337,7 +345,7 @@ de grouper plusieur urls.
 
 prototype de le methode `group`.
 
-```
+```php
 $app->group(url, action);
 ```
 
@@ -351,20 +359,18 @@ Donc pour réorganiser le code precedent il faut faire:
 ```php
 $app->group('/users', function () use ($app) 
 {
-	$app->get('/', function () 
-	{
-		// code ici
-	});
-	
-	$app->get('/:id', function ($id) 
-	{
-		// code ici
-	});
-
-	$app->get('/:id/delete', function ($id) 
-	{
-		// code ici
-	});
+  $app->get('/', function () 
+  {
+  	// code ici
+  });
+  $app->get('/:id', function ($id) 
+  {
+  	// code ici
+  });
+  $app->get('/:id/delete', function ($id) 
+  {
+  	// code ici
+  });
 });
 ```
 
