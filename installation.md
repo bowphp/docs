@@ -1,11 +1,11 @@
 # Installation
 
-[Installation](#installation)
+- [Installation](#installation)
 	- [Préréquis du serveur](#préréquis-du-serveur)
 	- [Installation de Bow](#installation-de-bow)
 	- [Test rapide](#test-rapide)
 	- [Configuration](#configuration)
-[Configuration Serveur Web](#configuration-serveur-web)
+- [Configuration Serveur Web](#configuration-serveur-web)
 	- [Apache](#apache)
 	- [Nginx](#nginx)
 
