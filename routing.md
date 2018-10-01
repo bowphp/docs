@@ -310,8 +310,8 @@ $app->get('/:name', ['middleware' => 'ip', function ($name)
 
 ```php
 $app->get('/:name', [
-	'middleware' => 'ip', 
-	'uses' => 'Controller@action'
+  'middleware' => 'ip', 
+  'uses' => 'Controller@action'
 ]);
 ```
 
