@@ -23,7 +23,7 @@ $app->[verbe](url, action);
 - Avec un callback (aussi appelé `closure` ou `callable` en `php`)
 
 ```php
-$app->verbe('/', function() {
+$app->verbe('/', function () {
 	return 'hello world';
 });
 ```
@@ -31,9 +31,9 @@ $app->verbe('/', function() {
 - Avec une collection de fonction dans un tableau:
 
 ```php
-$app->verbe('/', [function() {
+$app->verbe('/', [function () {
 	echo 'hello world';
-}, function() {
+}, function () {
 	echo 'Bien merci';
 }]);
 ```
@@ -59,7 +59,7 @@ La mise en place du routage se faire donc via les methodes suivants:
 Cette methode permet de maper une url a une requête de type `GET`.
 
 ```php
-$app->get('/', function() {
+$app->get('/', function () {
 	return 'hello world';
 });
 ```
@@ -69,7 +69,7 @@ $app->get('/', function() {
 Cette methode permet de maper une url a une requête de type `POST`
 
 ```php
-$app->post('/', function() {
+$app->post('/', function () {
 	return 'data posted';
 });
 ```
@@ -90,7 +90,7 @@ ce qui aura pour but de permettre à bow de comprendre votre requête.
 
 
 ```php
-$app->put('/', function() {
+$app->put('/', function () {
 	// code ici
 });
 ```
@@ -110,7 +110,7 @@ il faudra créer un champs comme ceci:
 ce qui aura pour but de permettre à bow de comprendre votre requête.
 
 ```php
-$app->delete('/', function() {
+$app->delete('/', function () {
 	// code ici
 });
 ```
@@ -130,7 +130,7 @@ il faudra créer un champs comme ceci:
 ce qui aura pour but de permettre à bow de comprendre votre requête.
 
 ```php
-$app->patch('/', function() {
+$app->patch('/', function () {
 	// code ici
 });
 ```
@@ -150,7 +150,7 @@ il faudra créer un champs comme ceci:
 ce qui aura pour but de permettre à bow de comprendre votre requête.
 
 ```php
-$app->options('/', function() {
+$app->options('/', function () {
 	// code ici
 });
 ```
@@ -172,7 +172,7 @@ $app->match(verbes, url, action);
 | action      | String, array, callable ou Closure |
 
 ```php
-$app->match(['GET', 'POST'], function() {
+$app->match(['GET', 'POST'], function () {
 	// code ici
 });
 ```
@@ -192,20 +192,11 @@ $app->any(String url, action);
 | url      | String, L'url de la route |
 | action      | String, array, callable ou Closure |
 
-
 ```php
-$app->any('/', function() {
+$app->any('/', function () {
 	// code ici
 });
 ```
-
-> Notons que les methodes ci-dessus retourne l'instance de l'application.
-> Alors vous pouvez chainer les methodes comme ceci.
-> 
-> ```php
-> $app->get(..., ...)->post(..., ...)->put(..., ...)->delete(..., ...)->patch(..., ...)
-> ```
-
 
 ### Personnalisation
 
@@ -228,7 +219,8 @@ Ensuite la variable capturé sera passer en paramètre à l'action (fonction à 
 quelque soit le nombre de variable.
 
 ```php
-$app->get('/:name', function($name) {
+$app->get('/:name', function ($name) 
+{
 	return 'bonjour ' . $name;
 });
 ```
@@ -253,16 +245,19 @@ $app->where(array rules);
 | rules      | Array, Tableau associatif dont la clé est la varibale et la valeur est le critaire de validation |
 
 ```php
-$app->get('/:name', function($name) {
+$app->get('/:name', function ($name) 
+{
 	return 'bonjour ' . $name;
 })->where('name', '[a-z]+');
 
 // S'il y a plusieurs variables
-$callable = function($name, $lastname, $number) {
+$callable = function ($name, $lastname, $number)
+{
 	return 'bonjour '.$name.' '.$lastname.' et votre numero est '.$number;
 };
 
-$app->get('/:name/:lastname/:number', $callable)->where(['name' => '[a-z]+', 'lastname' => '[a-z]+', 'number' => '\d+']);
+$app->get('/:name/:lastname/:number', $callable)
+	->where(['name' => '[a-z]+', 'lastname' => '[a-z]+', 'number' => '\d+']);
 ```
 
 #### Donner un nom au route
@@ -283,7 +278,8 @@ $app->name(String name);
 | name    | String, Le nom de la route |
 
 ```php
-$app->get('/:name', function($name) {
+$app->get('/:name', function ($name)
+{
 	return 'bonjour ' . $name;
 })->name('hello');
 ```
@@ -296,7 +292,8 @@ a executer.
 Plus d'information sur le sujet allez ce lien [middleware](#documentation-middlewares)
 
 ```php
-$app->get('/:name', ['middleware' => 'ip', function($name) {
+$app->get('/:name', ['middleware' => 'ip', function ($name) 
+{
 	return 'bonjour ' . $name;
 }])->name('hello');
 ```
@@ -304,7 +301,10 @@ $app->get('/:name', ['middleware' => 'ip', function($name) {
 #### La composition d'action
 
 ```php
-$app->get('/:name', ['middleware' => 'ip', 'uses' => 'Controller@action']);
+$app->get('/:name', [
+	'middleware' => 'ip', 
+	'uses' => 'Controller@action'
+]);
 ```
 
 ### group
@@ -313,15 +313,18 @@ Souvant vous serez amener à vouloir grouper vos routes et effectuer un branchem
 Les urls peuvents souvants se répéter comme ceci:
 
 ```php
-$app->get('users', function() {
+$app->get('users', function () 
+{
 	// code ici
 });
 
-$app->get('users/:id', function($id) {
+$app->get('users/:id', function ($id) 
+{
 	// code ici
 });
 
-$app->get('users/:id/delete', function($id) {
+$app->get('users/:id/delete', function ($id) 
+{
 	// code ici
 });
 ```
@@ -346,14 +349,20 @@ $app->group(url, action);
 Donc pour réorganiser le code precedent il faut faire:
 
 ```php
-$app->group('/users', function($app) {
-	$app->get('/', function() {
+$app->group('/users', function () use ($app) 
+{
+	$app->get('/', function () 
+	{
 		// code ici
 	});
-	$app->get('/:id', function() {
+	
+	$app->get('/:id', function ($id) 
+	{
 		// code ici
 	});
-	$app->get('/:id/delete', function() {
+
+	$app->get('/:id/delete', function ($id) 
+	{
 		// code ici
 	});
 });

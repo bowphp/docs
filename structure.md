@@ -11,9 +11,8 @@ L'orgination de `bow` respect le parten *MVC*, entendez par *M*odel *V*ue *C*ont
 | Dossier ou fichier | Description |
 |---------|-------------|
 | __app__ | Contient les dossiers de l'application. C'est le dossier dans lequel vous allez programmer votre application à `95%`. Il contient entre autre le dossier `Controller`, le dossier `Middelware`, le dossier `routes` et `views`, (si vous générez un validateur le dossier Validation apparaitra). Enfin tout les fichiers du model y seront stocker |
-| __assets__ | Contient les assets de l'application. Il contient entre autre le dossier `js`, le dossier `sass` et le dossier `image`. Qui sont le assets de votre application. C'est la que vous allez mettre vos fichiers static et ensuite le compiler |
+| __components__ | Contient les assets de l'application. Il contient entre autre le dossier `assets`, `lang` et le dossier `views`. Qui sont le assets de votre application. C'est la que vous allez mettre vos fichiers static et ensuite les compiler |
 | __config__ | Contient tout la configuration de l'application. |
-| __lang__ | Contient les dossier des langs.|
 | __view__ | dossier dans lequel sera souvegardé les vues de l'application.|
 | __routes__ | dossier dans lequel sera souvegardé les routes de votre application|
 | __migration__ | Régroupe tout les fichiers de migration de la base de donnée. Il existe un fichier nommé `.registers` qui ne doit en aucun cas être supprimer, c'est la mémoire en effet du système de migration de bow|
@@ -29,12 +28,12 @@ L'orgination de `bow` respect le parten *MVC*, entendez par *M*odel *V*ue *C*ont
 | __bow__ | Le lancer de tache de bow. `php bow help` pour voir l'aide |
 | __composer.json__ | Le fichier de dependance de bow qui permet à `composer` d'install les bonnes dependance |
 | __composer.lock__ | Le fichier de verrou de `composer` |
-| __gulpfile.js__ | Le fichier de configuration de [`gulp`](https://npm.org/packages/gulp) |
+| __webpack.config.js__ | Le fichier de configuration de webpack |
 | __package.json__ | Le fichier de configuration de [`npm`](https://npm.org) |
 | __phpunit.xml__ | Le fichier de configuration de [`phpunit`](https://github.com/phpunit/phpunit) |
 | __server.php__ | Le fichier de configuration du serveur local de bow. C'est ce fichier qu'utilise le lancer de tache pour activer le serveur local. |
 
-## Le dossier `App`
+## Le dossier `app`
 
 C'est votre repertoire de travail sur bow. C'est la que vous allez inserer tout les fichiers de
 votre application. 
@@ -43,13 +42,17 @@ Ici vous rétrouverez les dossiers suivant.
 
 - __Controllers__ dossier dans lequel sera souvegardé les controlleurs de l'application.
 - __Middleware__ dossier dans lequel sera souvegardé les middlewares de l'application.
+- __Services__ dossier dans lequel sera souvegardé les services personnalisés de l'application.
+- __Kernel__ dossier dans lequel sera souvegardé la configuration du lanceur de l'application.
+- __Validations__ dossier dans lequel sera souvegardé les validations de l'application.
 
 ## Le dossier `storage`
 
 Ici vous rétrouverez les dossiers suivant.
 
-- __logs__ dossier dans lequel est sauvegardé les logs de l'application.
-- __cache__ dossier dans lequel l'application sauvegarde les caches de l'applications
 - __app__ dossier dans lequel l'application sauvegarde les fichiers uploader de l'applications
+- __workspace__ dossier dans lequel est sauvegardé les logs de l'application.
+	- __cache__ dossier dans lequel l'application sauvegarde les caches de l'applications
+	- __view__ dossier dans lequel l'application sauvegarde le cache de compilation des vues
 
 Installation [〈 Previous](http://papac.github.io/docs/routing.html "installation") &middot; [Next 〉](http://papac.github.io/docs/routing.html "Le routing") Le routing
