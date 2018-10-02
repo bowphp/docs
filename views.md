@@ -51,6 +51,70 @@ $app->get('/', function() {
 });
 ```
 
+
+### Utilisation
+
+Exemple d'utilisation: (Avec le classe `View`)
+Cette utilise la methode `parse`.
+
+```php
+View::parse(view, data, status)
+```
+
+| paramètre | type | description|
+|-----------|------|------------|
+| view      | String| Le chemin de la vue sachant dans le moteur se base sur le dossier des vues|
+| data      | Array, Object| Les données a passé à la vue|
+| status    | Integer | Le code http|
+
+```php
+use Bow\View\View;
+echo View::parse('nom-de-la-vue-sans-extension');
+```
+
+Pour passer des variables a la vue
+
+```php
+use Bow\View\View;
+echo View::parse('nom-de-la-vue-sans-extension', ['name' => 'bow'], 200);
+```
+
+Vous pouvez utiliser le helper `view` qui s'utilise de la même façon.
+
+Avec la vue suivante:
+
+```twig
+<!-- View stored in components/views/greeting.twig -->
+<html>
+ <body>
+  <h1>Hello, {{ name }}</h1>
+ </body>
+</html>
+```
+
+Exemple dans un controlleur:
+
+```php
+namespace App\Controllers;
+
+use App\Controllers\Controller;
+
+class HomeController extends Controller
+{
+  /**
+   * Show hello page
+   *
+   * @return mixed
+   */
+  public function show()
+  {
+    return view('greeting', ['name' => 'Bowphp']);
+    // Ou
+    return $this->render('greeting', ['name' => "Bowphp"]);
+  }
+}
+```
+
 ## Vue avec Twig
 
 Twig est un moteur de templates pour le langage de programmation PHP, utilisé par défaut par le framework Symfony. 
@@ -131,69 +195,6 @@ $names = [
 ```
 
 [Lien de la documentation](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags 'Lien de la documentation')
-
-### Utilisation
-
-Exemple d'utilisation: (Avec le classe `View`)
-Cette utilise la methode `parse`.
-
-```php
-View::parse(view, data, status)
-```
-
-| paramètre | type | description|
-|-----------|------|------------|
-| view      | String| Le chemin de la vue sachant dans le moteur se base sur le dossier des vues|
-| data      | Array, Object| Les données a passé à la vue|
-| status    | Integer | Le code http|
-
-```php
-use Bow\View\View;
-echo View::parse('nom-de-la-vue-sans-extension');
-```
-
-Pour passer des variables a la vue
-
-```php
-use Bow\View\View;
-echo View::parse('nom-de-la-vue-sans-extension', ['name' => 'bow'], 200);
-```
-
-Vous pouvez utiliser le helper `view` qui s'utilise de la même façon.
-
-Avec la vue suivante:
-
-```twig
-<!-- View stored in components/views/greeting.twig -->
-<html>
- <body>
-  <h1>Hello, {{ name }}</h1>
- </body>
-</html>
-```
-
-Exemple dans un controlleur:
-
-```php
-namespace App\Controllers;
-
-use App\Controllers\Controller;
-
-class HomeController extends Controller
-{
-  /**
-   * Show hello page
-   *
-   * @return mixed
-   */
-  public function show()
-  {
-    return view('greeting', ['name' => 'Bowphp']);
-    // Ou
-    return $this->render('greeting', ['name' => "Bowphp"]);
-  }
-}
-```
 
 ### Plugin
 
