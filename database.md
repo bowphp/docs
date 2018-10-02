@@ -3,11 +3,11 @@
 - [Introduction](#introduction)
   - [Configuration](#configuration)
   - [Connexion à plusieur Base de donnée](#connexion-multiple)
-- [Réquête SQL Brute](#introduction)
-  - [Execution de réquête Select](#execution-select)
-  - [Execution de réquête Insert](#execution-insert)
-  - [Execution de réquête Update](#execution-update)
-  - [Execution de réquête Delete](#execution-delete)
+- [requête SQL Brute](#introduction)
+  - [Execution de requête Select](#execution-select)
+  - [Execution de requête Insert](#execution-insert)
+  - [Execution de requête Update](#execution-update)
+  - [Execution de requête Delete](#execution-delete)
 
 ## Introduction
 
@@ -45,4 +45,149 @@ Ou via le helper `db`:
 
 ```php
 $users = db('seconds')->select(...);
+```
+
+Une fois la configuration changé elle est directement appliquer sur la connexion des Models. Cliquer ici pour plus d'information sur les models.
+
+## requête SQL Brute
+
+Les requête brute ici sont les requêtes SQL ecrite litteralement sans passer par un query builder.
+Dans cette section nous allons utiliser une table nommer `pets` pour effectuer nos requête avec.
+
+Voici la description de la table `pets`:
+
+```sql
+CREATE TABLE `pets` (id int primary key, name varchar(200), color varchar(50));
+```
+
+Alors notre table à comme colonne:
+
+| Nom de la colonne | Description |
+| ----------------- | ----------- |
+| `id` | Ici la clé primaire |
+| `name` | Le nom du pet |
+| `color` | La couleur du pet |
+
+> Pour info `pet` c'est un peu le synonime de animal domestique
+
+### Execution de requête Select
+
+Pour executer une requête brute de type `SELECT` nous devrez utiliser la methode `Database::select` ou le helper `select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
+
+Execution d'un requête pour optenir tous les informations de la table `pets`:
+
+```php
+use Bow\Database\Database;
+$pets = Database::select('select * from pets');
+```
+
+Notez que la valeur retournée par la methode `select` est un `array` ou `null` s'il y a aucune informations.
+Dans le cas ou c4est un `array` le content est de type `stClass` (plus d'information sur [stClass](http://php.net/manual/fr/language.types.object.php)).
+
+### Execution de requête Insert
+
+Pour executer une requête brute de type `INSERT` nous devrez utiliser la methode `Database::insert` ou le helper `insert`. On considère tout notre table `pets` et que nous sommes bien connectés à la base de donnée.
+
+Execution d'un requête pour inserer une information dans table `pets`:
+
+```php
+use Bow\Database\Database;
+
+$pet = [
+  'id' => 1,
+  'name' => 'Medor',
+  'color' => 'Green'
+];
+
+$insertion_number = Database::insert('insert into pets (id, name, color) values (:id, :name, :color);', $pet);
+```
+
+Via helper `insert`:
+
+```php
+$pet = [
+  'id' => 2,
+  'name' => 'Mashmalo',
+  'color' => 'White'
+];
+
+$insertion_number = insert('insert into pets (id, name, color) values (:id, :name, :color);', $pet);
+```
+
+Notez que la valeur retournée par la methode `insert` est un `int` ou `number` qui est le nombre d'insertion.
+
+#### Insertion multiple
+
+Vous avez aussi la possibilité d'inserer plusieurs enregistrements en même temps.
+
+```php
+use Bow\Database\Database;
+// Liste de pets
+$pets = [
+  [
+    'id' => 1,
+    'name' => 'Medor',
+    'color' => 'Black'
+  ],
+  [
+    'id' => 2,
+    'name' => 'Molou',
+    'color' => 'Gay'
+  ]
+];
+
+$insertion_number = Database::insert('insert into pets (id, name, color) values (:id, :name, :color);', $pets);
+```
+
+Via helper `insert`:
+
+```php
+$uppdated_number = insert('insert into pets (id, name, color) values (:id, :name, :color);', $pets);
+```
+
+### Execution de requête Update
+
+Pour executer une requête brute de type `UPDATE` nous devrez utiliser la methode `Database::update` ou le helper `update`. On considère tout notre table `pets` et que nous sommes bien connectés à la base de donnée.
+
+Execution d'un requête de mettre à jour d'information dans table `pets`:
+
+```php
+use Bow\Database\Database;
+
+$pet = [
+  'id' => 1,
+  'name' => 'Medora',
+  'color' => 'Purple'
+];
+
+$uppdated_number = Database::update('update pets set id=:id, name=:name, color=:color where id = :id', $pet);
+```
+
+Via helper `update`:
+
+```php
+$pet = [
+  'id' => 2,
+  'name' => 'Spark',
+  'color' => 'Yello'
+];
+
+$uppdated_number = update('update pets set id=:id, name=:name, color=:color where id = :id', $pet);
+```
+
+### Execution de requête Delete
+
+Pour executer une requête brute de type `DELETE` nous devrez utiliser la methode `Database::delete` ou le helper `delete`. On considère tout notre table `pets` et que nous sommes bien connectés à la base de donnée.
+
+Execution d'un requête pour inserer une information dans table `pets`:
+
+```php
+use Bow\Database\Database;
+$deleted_number = Database::delete('delete from pets where id = :id', ['id' => 1]);
+```
+
+Via le helper `delete`:
+
+```php
+$deleted_number = delete('delete from pets where id = :id', ['id' => 2]);
 ```

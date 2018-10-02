@@ -22,11 +22,11 @@ Apres avoir modifier et sauvegarde votre vue dans `components/views/greeting.twi
 
 ```php
 $app->get('/', function() {
-	return view('greeting', ['name' => 'Bowphp']);
+  return view('greeting', ['name' => 'Bowphp']);
 });
 ```
 
-Bow framework implement 3 moteur de template <a href="https://twig.symfony.com">Twig</a>, <a href="">Pug-PHP</a>, <a href="">Mustache-PHP</a>.
+Bow framework implement 3 moteur de template [Twig](https://twig.symfony.com), [Pug-PHP](https://www.phug-lang.com/), [Mustache-PHP](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags).
 La configuration des vues ce trouve dans le fichier `view.php` du dossier `config`.
 
 ## Vue avec Twig
@@ -41,7 +41,7 @@ Il aurait été inspiré par Jinja, moteur de template Python.
 Pug est un moteur de templates de haute performance fortement influencé par Haml et implémenté principalement avec JavaScript pour Node.js et navigateurs.
 Pug-PHP est une réécriture de pour PHP avec les mêmes fonctionnalités.
 
-[Lien de la documentation](https://pugjs.org/language 'Lien de la documentation')
+[Lien de la documentation](https://www.phug-lang.com 'Lien de la documentation')
 
 ## Vue avec Mustache PHP
 
@@ -54,7 +54,8 @@ Mustache-PHP est une réécriture de pour PHP avec les mêmes fonctionnalités.
 
 Dans le fichier view.php du dossier de configuration. Par défaut Bow utilise `twig`.
 
-Vous pouvez changer le moteur de template en modifiant la valeur de l'entré `extension` qui peut seulement prendre les values entre
+Vous pouvez changer le moteur de template en modifiant la valeur de l'entré `extension` qui peut seulement prendre les values entre:
+
 - twig
 - mustache
 - pug
@@ -74,14 +75,14 @@ Cette utilise la methode `make`.
 
 ```php
 use Bow\View\View;
-echo View::make('nom-de-la-vue-sans-extension');
+echo View::parse('nom-de-la-vue-sans-extension');
 ```
 
 Pour passer des variables a la vue
 
 ```php
 use Bow\View\View;
-echo View::make('nom-de-la-vue-sans-extension', ['name' => 'bow'], 200);
+echo View::parse('nom-de-la-vue-sans-extension', ['name' => 'bow'], 200);
 ```
 
 Vous pouvez utiliser le helper `view` qui s'utilise de la même façon.
@@ -92,7 +93,7 @@ Avec la vue suivante:
 <!-- View stored in components/views/greeting.twig -->
 <html>
   <body>
-  	<h1>Hello, {{ name }}</h1>
+    <h1>Hello, {{ name }}</h1>
   </body>
 </html>
 ```
@@ -106,17 +107,17 @@ use App\Controllers\Controller;
 
 class HomeController extends Controller
 {
-	/**
-	 * Show hello page
-	 * 
-	 * @return mixed
-	 */
-	public function show()
-	{
-		return view('greeting', ['name' => 'Bowphp']);
-		// Ou
-		return $this->render('greeting', ['name' => "Bowphp"]);
-	}
+  /**
+    * Show hello page
+    *
+    * @return mixed
+    */
+  public function show()
+  {
+    return view('greeting', ['name' => 'Bowphp']);
+    // Ou
+    return $this->render('greeting', ['name' => "Bowphp"]);
+  }
 }
 ```
 

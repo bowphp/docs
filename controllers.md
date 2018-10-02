@@ -1,5 +1,4 @@
 # Controlleur
-Les controlleurs sont les moins simples de simplifier l'organisation de vos projet.
 
 - [Instroduction](#introduction)
   - [Configuration](#configuration)
@@ -10,11 +9,39 @@ Les controlleurs sont les moins simples de simplifier l'organisation de vos proj
 
 ## Instroduction
 
+Les controlleurs sont les moins simples de simplifier l'organisation de vos projet.
+
 Au lieu de définir toute la logique de gestion des demandes en tant que fermetures dans les fichiers de routage, vous pouvez organiser ce comportement à l'aide de classes de contrôleur. Les contrôleurs peuvent regrouper la logique de traitement des demandes associée en une seule classe. Les contrôleurs sont stockés dans le répertoire `app/Controllers`.
 
 ### Configuration
 
-Vous avez la possibilité de modifier le `namespace` des controlleurs et des middlewares a partie de la version `v2^`. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La methode `namespaces` permet à Bow de savoir quel est le bon namespace à ajouter sur le controlleur lors de l'execution de la réquête ou lors de la génération de controlleur ou de middleware par le lanceur de tache `php bow`.
+Vous avez la possibilité de modifier le `namespace` des controlleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La methode `namespaces` permet à Bow de savoir quel est le bon namespace à ajouter sur le controlleur lors de l'execution de la réquête ou lors de la génération de controlleur ou de middleware par le lanceur de tache `php bow`.
+
+imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos controlleurs le namespace `App\Bus\Controllers`. Alors comment faire ça:
+
+Voici le code que cela pourrai donnée:
+
+```php
+# Dans le fichier `app\Kernel\Loader.php`
+public function namespaces()
+{
+  return [
+    "controller" => "App\\Bus\\Controllers",
+    ...
+  ]
+}
+```
+
+Ensuite il faudra aussi changer un peu la configuration du lancer de tache:
+
+```php
+# dans le fichier `bow`
+$command = new \Bow\Console\Command(__DIR__);
+...
+$command->setControllerDirectory(__DIR__.'/app/Bus/Controllers');
+```
+
+Visitez ce [lien](./custom-structure.md) pour plus d'information sur la personnalisation de la structure de l'applucation
 
 ## Controlleur basic
 
