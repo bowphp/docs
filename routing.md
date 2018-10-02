@@ -8,7 +8,7 @@ de votre application.
 
 prototype des methodes du routing
 
-```
+```php
 $app->[verbe](url, action);
 ```
 
