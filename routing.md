@@ -3,7 +3,7 @@
 Le routing vous permet de maper une url sur un controlleur ou une action particulière.
 Le systeme de routing de bow est grèfé directement sur l'instance de l'application.
 donc sur la variable `$app`.
-Les routes de l'application sont dans le fichier `main.php` du dossier `app/routes`
+Les routes de l'application sont dans le fichier `app.php` du dossier `routes`
 de votre application.
 
 prototype des methodes du routing

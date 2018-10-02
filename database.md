@@ -1,13 +1,13 @@
 # Database
 
 - [Introduction](#introduction)
-	- [Configuration](#configuration)
-	- [Connexion à plusieur Base de donnée](#connexion-multiple)
+  - [Configuration](#configuration)
+  - [Connexion à plusieur Base de donnée](#connexion-multiple)
 - [Réquête SQL Brute](#introduction)
-	- [Execution de réquête Select](#execution-select)
-	- [Execution de réquête Insert](#execution-insert)
-	- [Execution de réquête Update](#execution-update)
-	- [Execution de réquête Delete](#execution-delete)
+  - [Execution de réquête Select](#execution-select)
+  - [Execution de réquête Insert](#execution-insert)
+  - [Execution de réquête Update](#execution-update)
+  - [Execution de réquête Delete](#execution-delete)
 
 ## Introduction
 
@@ -24,9 +24,9 @@ La configuration de la base donnée de votre application se localise dans le fih
 
 ### SQLite Configuration
 
-Après avoir créé une nouvelle base de données SQLite à l'aide d'une commande telle que `touch database/database.sqlite`, vous pouvez facilement configurer vos variables d'environnement (dans le fichier `.env.json`) pour qu'elles pointent vers cette base de données nouvellement créée à l'aide du chemin absolu de la base de données:
+Après avoir créé une nouvelle base de données SQLite à l'aide d'une commande telle que `touch storage/database.sqlite`, vous pouvez facilement configurer vos variables d'environnement (dans le fichier `.env.json`) pour qu'elles pointent vers cette base de données nouvellement créée à l'aide du chemin absolu de la base de données:
 
-```
+```text
 "DB_DEFAULT": "seconds",
 ...
 "SQLITE_DATABASE": "/absolute/path/to/database.sqlite",
@@ -36,15 +36,13 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 
 Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode de `connexion` sur la classe de la `Database`. Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/db.php`:
 
-```
-use \Bow\Database\Database;
+```php
+use Bow\Database\Database;
 $users = Database::connection('seconds')->select(...);
 ```
 
 Ou via le helper `db`:
 
-```
+```php
 $users = db('seconds')->select(...);
 ```
-
-Dans ce cas là le 

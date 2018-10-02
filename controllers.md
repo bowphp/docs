@@ -1,10 +1,20 @@
 # Controlleur
-
 Les controlleurs sont les moins simples de simplifier l'organisation de vos projet.
+
+- [Instroduction](#introduction)
+  - [Configuration](#configuration)
+- [Controlleur Basic](#controlleur-basic)
+  - [Definir un controlleur](#definir-un-controlleur)
+  - [Contrôleurs et espaces de noms](#contrôleurs-et-espaces-de-noms)
+  - [Contrôleur et Middleware](#contrôleur-et-middleware)
 
 ## Instroduction
 
 Au lieu de définir toute la logique de gestion des demandes en tant que fermetures dans les fichiers de routage, vous pouvez organiser ce comportement à l'aide de classes de contrôleur. Les contrôleurs peuvent regrouper la logique de traitement des demandes associée en une seule classe. Les contrôleurs sont stockés dans le répertoire `app/Controllers`.
+
+### Configuration
+
+Vous avez la possibilité de modifier le `namespace` des controlleurs et des middlewares a partie de la version `v2^`. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La methode `namespaces` permet à Bow de savoir quel est le bon namespace à ajouter sur le controlleur lors de l'execution de la réquête ou lors de la génération de controlleur ou de middleware par le lanceur de tache `php bow`.
 
 ## Controlleur basic
 
@@ -12,35 +22,40 @@ Au lieu de définir toute la logique de gestion des demandes en tant que fermetu
 
 Voici un exemple de classe de contrôleur de base. Notez que le contrôleur étend la classe de contrôleur de base incluse avec Bow. La classe de base fournit quelques méthodes pratiques telles que la méthode du middleware, qui peut être utilisée pour attacher un middleware aux actions du contrôleur.
 
-```
+```php
 namespace App\Controllers;
 
 use App\User;
 use App\Controllers\Controller;
+
 class UserController extends Controller
 {
-	/**
-	* Show the profile for the given user.
-	*
-	* @param  int  $id
-	* @return Response
-	*/
-	public function show($id)
-	{
-		return view('user/profile', ['user' => User::findOrFail($id)]);
-	}
+  /**
+  * Show the profile for the given user.
+  *
+  * @param  int  $id
+  * @return Response
+  */
+  public function show($id)
+  {
+    return $this->render('user/profile', ['user' => User::findOrFail($id)]);
+  }
 }
 ```
 
 Vous pouvez définir une route vers cette action de contrôleur comme suit:
 
-	$app->get('user/:id', 'UserController@show');
+```php
+$app->get('user/:id', 'UserController::show');
+```
 
 Désormais, lorsqu'une demande correspond à l'URI de la route spécifiée, la méthode `show` de la classe `UserController` sera exécutée. Bien entendu, les paramètres de l'itinéraire seront également transmis à la méthode.
 
 Vous pouvez générer un contrôleur en utilisant la commande `add:controller` de `php bow`:
 
-	php bow add:controller UserController
+```bash
+php bow add:controller UserController
+```
 
 ### Contrôleurs et espaces de noms
 
@@ -48,29 +63,20 @@ Il est très important de noter que nous n’avons pas eu besoin de spécifier l
 
 Si vous choisissez d'imbriquer vos contrôleurs plus profondément dans le répertoire `App\Controllers`, utilisez le nom de classe spécifique relatif à l'espace de noms racine `App\Controllers`. Donc, si votre classe de contrôleur complète est `App\Controllers\Photos\AdminController`, vous devez enregistrer les routes sur le contrôleur comme suit:
 
-	$app->get('/foo', 'Photos\AdminController@method');
+```php
+$app->get('/foo', 'Photos\AdminController::method');
+```
 
 Vous pouvez générer un contrôleur en utilisant la commande `add:controller` de `php bow`:
 
-	php bow add:controller Photos/AdminController
+```bash
+php bow add:controller Photos/AdminController
+```
 
 ### Contrôleur et Middleware
 
 Le middleware peut être assigné aux routes du contrôleur dans vos fichiers de route:
 
-	$app->get('profile', 'UserController@show')->middleware('auth');
-
-Cependant, il est plus pratique de spécifier le middleware dans le constructeur de votre contrôleur. En utilisant la méthode middleware du constructeur de votre contrôleur, vous pouvez facilement attribuer un middleware à l'action du contrôleur. Vous pouvez même limiter le middleware à certaines méthodes de la classe du contrôleur:
-
-	class UserController extends Controller
-	{
-		/**
-		* Instantiate a new controller instance.
-		*
-		* @return void
-		*/
-		public function __construct()
-		{
-			$this->middleware('auth');
-		}
-	}
+```php
+$app->get('profile', 'UserController::show')->checker('auth');
+```

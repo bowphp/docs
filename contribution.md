@@ -8,11 +8,13 @@ Pour participer au projet il faut:
 + Faire une publication sur votre dépot `git push origin branche-de-vos-traveaux`
 + Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
 
-# Auteurs
+## Auteurs
 
-- Franck Dakia <dakiafranck@gmail.com> - [@franck_dakia](https://twitter.com/franck_dakia)
-- Ayiyikoh <fablab@ayiyikoh.org> - [@ayiyikoh](https://twitter.com/ayiyikoh) hashtag: __#GoAyiyikoh__
+Liste des contributeurs:
 
-# Contact
++ Franck Dakia <dakiafranck@gmail.com> [@franck_dakia](https://twitter.com/franck_dakia)
++ Ayiyikoh <fablab@ayiyikoh.org> [@ayiyikoh](https://twitter.com/ayiyikoh) hashtag: __#GoAyiyikoh__
+
+## Contact
 
 SVP s'il y a un bogue sur le projet veuillez me contacter par email ou laissez moi un message sur le [slack](https://bowphp.slack.com).
