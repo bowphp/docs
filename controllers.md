@@ -15,9 +15,9 @@ Au lieu de définir toute la logique de gestion des demandes en tant que fermetu
 
 ### Configuration
 
-Vous avez la possibilité de modifier le `namespace` des controlleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La methode `namespaces` permet à Bow de savoir quel est le bon namespace à ajouter sur le controlleur lors de l'execution de la réquête ou lors de la génération de controlleur ou de middleware par le lanceur de tache `php bow`.
+Vous avez la possibilité de modifier l'`espace de noms` des controlleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La methode `middleware` permet à Bow de savoir quel est le bon espace de noms à ajouter sur le controlleur lors de l'execution de la réquête ou lors de la génération de controlleur ou de middleware par le lanceur de tache `php bow`.
 
-imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos controlleurs le namespace `App\Bus\Controllers`. Alors comment faire ça:
+imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos controlleurs le espace de noms `App\Bus\Controllers`. Alors comment faire ça:
 
 Voici le code que cela pourrai donnée:
 
@@ -86,7 +86,7 @@ php bow add:controller UserController
 
 ### Contrôleurs et espaces de noms
 
-Il est très important de noter que nous n’avons pas eu besoin de spécifier l’espace de noms du contrôleur complet lors de la définition de la route du contrôleur. Étant donné que RouteServiceProvider charge vos fichiers de route dans un groupe de routage contenant l'espace de noms, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Controllers` de l'espace de noms.
+Il est très important de noter que nous n’avons pas eu besoin de spécifier l’espace de noms du contrôleur complet lors de la définition de la route du contrôleur. Étant donné que `public/index.php` charge vos fichiers de route dans un groupe de routage contenant l'espace de noms, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Controllers` de l'espace de noms.
 
 Si vous choisissez d'imbriquer vos contrôleurs plus profondément dans le répertoire `App\Controllers`, utilisez le nom de classe spécifique relatif à l'espace de noms racine `App\Controllers`. Donc, si votre classe de contrôleur complète est `App\Controllers\Photos\AdminController`, vous devez enregistrer les routes sur le contrôleur comme suit:
 
@@ -102,8 +102,10 @@ php bow add:controller Photos/AdminController
 
 ### Contrôleur et Middleware
 
-Le middleware peut être assigné aux routes du contrôleur dans vos fichiers de route:
+Les middlewares peuvent être assigner à la route du contrôleur dans vos fichiers de route. Les middleware sont stockés dans le dossier `app\Middlewares`. Pour plus d'information sur les middlewares, visitez ce [lien](./middleware.md).
+
+Exemple:
 
 ```php
-$app->get('profile', 'UserController::show')->checker('auth');
+$app->get('profile', 'UserController::show')->middleware('auth');
 ```
