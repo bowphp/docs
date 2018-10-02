@@ -1,20 +1,45 @@
 # Views
 
-- [Création de vue](#creation-de-vue)
-- [Vue avec Twig](#view-avec-twig)
-- [Vue avec Pug PHP](#view-avec-pug-php)
-- [Vue avec Mustache PHP](#view-avec-mustache-php)
+- [Introduction](#introduction)
+  - [Configuration](#configuration)
+  - [Package supplementaire](#package-supplementaire)
+- [Création de vue](#création-de-vue)
+- [Vue avec Twig](#vue-avec-twig)
+- [Vue avec Pug PHP](#vue-avec-pug-php)
+- [Vue avec Mustache PHP](#vue-avec-mustache-php)
+
+## Introduction
+
+Les vues contiennent le code HTML fourni par votre application et séparent votre logique de contrôleur / application de votre logique de présentation:
+
+### Configuration
+
+Bow framework implement 3 moteur de template par defaut, [Twig](https://twig.symfony.com), [Pug-PHP](https://www.phug-lang.com/), [Mustache-PHP](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags).
+La configuration des vues ce trouve dans le fichier `view.php` du dossier `config`/..
+
+Spécifiez le nom du template à utiliser avec option `engine` de la configuration, cette option peut prendre le valeur suivant `twig`, `pug` et `mustache`. Par défaut Bow utilise `twig`.
+
+Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entré `extension`. Vous verez également que les vues sont stockées dans le répertoire `components/views` par defaut.
+
+### Package supplementaire
+
+Dans le cas où vous avez opter pour un autre moteur template, voici la liste des packages nécessaires:
+
+| Template | Package |
+| ----------------- | ----------- |
+| `mustache` | `mustache/mustache` |
+| `pug` | `pug-php/pug` |
 
 ## Création de vue
 
-Les vues contiennent le code HTML fourni par votre application et séparent votre logique de contrôleur / application de votre logique de présentation. Les vues sont stockées dans le répertoire resources / views. Une simple vue peut ressembler à ceci:
+Une simple vue peut ressembler à ceci
 
 ```twig
 <!-- View stored in components/views/greeting.twig -->
 <html>
-    <body>
-        <h1>Hello, {{ name }}</h1>
-    </body>
+  <body>
+    <h1>Hello, {{ name }}</h1>
+  </body>
 </html>
 ```
 
@@ -26,13 +51,30 @@ $app->get('/', function() {
 });
 ```
 
-Bow framework implement 3 moteur de template [Twig](https://twig.symfony.com), [Pug-PHP](https://www.phug-lang.com/), [Mustache-PHP](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags).
-La configuration des vues ce trouve dans le fichier `view.php` du dossier `config`.
-
 ## Vue avec Twig
 
 Twig est un moteur de templates pour le langage de programmation PHP, utilisé par défaut par le framework Symfony. 
 Il aurait été inspiré par Jinja, moteur de template Python.
+
+Exemple de code:
+
+```php
+$names = [
+  "resque", "hub", "rip"
+];
+```
+
+```twig
+<!-- View stored in components/views/greeting.twig -->
+<html>
+  <body>
+    <h1>Hello, User</h1>
+    {% for name in names %}
+      <p>Hello, {{name}}</p>
+    {% endfor %}
+  </body>
+</html>
+```
 
 [Lien de la documentation](https://twig.symfony.com/ 'Lien de la documentation')
 
@@ -41,6 +83,24 @@ Il aurait été inspiré par Jinja, moteur de template Python.
 Pug est un moteur de templates de haute performance fortement influencé par Haml et implémenté principalement avec JavaScript pour Node.js et navigateurs.
 Pug-PHP est une réécriture de pour PHP avec les mêmes fonctionnalités.
 
+Exemple de code:
+
+```php
+$names = [
+  "resque", "hub", "rip"
+];
+```
+
+```pug
+<!-- View stored in components/views/greeting.pl -->
+doctype html
+html
+  body
+    h1 Hello User
+    each name in names
+      p Hello, #{name}
+```
+
 [Lien de la documentation](https://www.phug-lang.com 'Lien de la documentation')
 
 ## Vue avec Mustache PHP
@@ -48,19 +108,31 @@ Pug-PHP est une réécriture de pour PHP avec les mêmes fonctionnalités.
 Mustache est un moteur de templates de haute performance fortement influencé par Handlebar et implémenté principalement avec JavaScript pour Node.js et navigateurs.
 Mustache-PHP est une réécriture de pour PHP avec les mêmes fonctionnalités.
 
+Exemple de code:
+
+```php
+$names = [
+  ['name' => "resque"],
+  ['name' => "hub"],
+  ['name' => "rip"],
+];
+```
+
+```mustache
+<!-- View stored in components/views/greeting.pl -->
+<html>
+  <body>
+    <h1>Hello, Users</h1>
+    {{# names}}
+      <p>Hello, {{name}}</p>
+    {{/ names}}
+  </body>
+</html>
+```
+
 [Lien de la documentation](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags 'Lien de la documentation')
 
 ### Utilisation
-
-Dans le fichier view.php du dossier de configuration. Par défaut Bow utilise `twig`.
-
-Vous pouvez changer le moteur de template en modifiant la valeur de l'entré `extension` qui peut seulement prendre les values entre:
-
-- twig
-- mustache
-- pug
-
-Vous pouvez changer l'extension de template en modifiant la valeur de l'entré `extension`.
 
 Exemple d'utilisation: (Avec le classe `View`)
 Cette utilise la methode `parse`.
@@ -94,9 +166,9 @@ Avec la vue suivante:
 ```twig
 <!-- View stored in components/views/greeting.twig -->
 <html>
-  <body>
-    <h1>Hello, {{ name }}</h1>
-  </body>
+ <body>
+  <h1>Hello, {{ name }}</h1>
+ </body>
 </html>
 ```
 
@@ -110,10 +182,10 @@ use App\Controllers\Controller;
 class HomeController extends Controller
 {
   /**
-    * Show hello page
-    *
-    * @return mixed
-    */
+   * Show hello page
+   *
+   * @return mixed
+   */
   public function show()
   {
     return view('greeting', ['name' => 'Bowphp']);
