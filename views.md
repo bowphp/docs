@@ -63,9 +63,11 @@ Vous pouvez changer le moteur de template en modifiant la valeur de l'entré `ex
 Vous pouvez changer l'extension de template en modifiant la valeur de l'entré `extension`.
 
 Exemple d'utilisation: (Avec le classe `View`)
-Cette utilise la methode `make`.
+Cette utilise la methode `parse`.
 
-> View::make(view, data, status)
+```php
+View::parse(view, data, status)
+```
 
 | paramètre | type | description|
 |-----------|------|------------|
