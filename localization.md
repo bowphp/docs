@@ -90,8 +90,42 @@ if ($trans->isLocale('en')) {
 }
 ```
 
-### Traduction simple
+Si la chaîne de traduction spécifiée n'existe pas, la fonction `__` renverra la clé de la chaîne de traduction. Ainsi, à l'aide de l'exemple ci-dessus, la fonction `__` renverrait `messages.welcome` si la chaîne de traduction n'existe pas.
 
-### Traduction pluriel
+### Remplacement de paramètres dans les chaînes de traduction
 
-## Modifier dynamiquement la langue
+Si vous le souhaitez, vous pouvez définir des espaces réservés dans vos chaînes de traduction. Tous les espaces réservés sont encadrés par `{}`. Par exemple, vous pouvez définir un message de bienvenue avec un nom d’espace réservé:
+
+```php
+'welcome' => 'Welcome, {name}',
+```
+
+Pour remplacer les espaces réservés lors de l'extraction d'une chaîne de traduction, transmettez un tableau de remplacements en tant que deuxième argument de la fonction `__`:
+
+```php
+echo __('messages.welcome', ['name' => 'Galy']);
+```
+
+## La pluralisation
+
+La pluralisation est un problème complexe, car différentes langues ont une variété de règles complexes pour la pluralisation. En utilisant un caractère "pipe" (`|`), vous pouvez distinguer les formes singulière et plurielle d'une chaîne:
+
+```php
+'names' => 'C\'est un utilisateur|Ce sont des utilisateurs',
+```
+
+Après avoir défini une chaîne de traduction comportant des options de pluralisation, vous pouvez utiliser la fonction `__`. Dans cet exemple, puisque le nombre est supérieur à un, la forme au pluriel de la chaîne de traduction est renvoyée:
+
+```php
+echo __('messages.names', count($names) > 1);
+```
+
+Avec les données remplacer
+
+```php
+'names' => 'C\'est un utilisateur {name}|Ce sont des utilisateurs',
+```
+
+```php
+echo __('messages.names', ['name' => 'Newt'], count($names) == 1);
+```
