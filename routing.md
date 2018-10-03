@@ -32,12 +32,12 @@ de votre application.
 prototype des methodes du routing
 
 ```php
-$app->[verbe](url, action);
+$app->[verbe](string url, string|array|closure action);
 ```
 
 `verbe` correspond au verbe `http` à associer à la route, soit GET, POST, PUT, DELETE, OPTIONS, PATCH écrite en minuscule.
 
-| paramete | Type |
+| paramêtre | Type |
 |----------|------|
 | url      | String |
 | action   | String, Array, Closure ou Callable |
@@ -195,11 +195,11 @@ prototype de la methode `match`.
 $app->match(verbes, url, action);
 ```
 
-| paramete | Type |
+| paramêtre | Type |
 |----------|------|
-| verbes      | Array, La liste de methode `http` |
-| url      | String, L'url de la route |
-| action      | String, array, callable ou Closure |
+| verbes | Array, La liste de methode `http` |
+| url    | String, L'url de la route |
+| action | String, array, callable ou Closure |
 
 ```php
 $app->match(['GET', 'POST'], function ()
@@ -215,13 +215,13 @@ Permet d'associer tout les methodes `http` sur l'url spécifier.
 prototype de la methode `any`.
 
 ```php
-$app->any(string url, action);
+$app->any(url, action);
 ```
 
-| paramete | Type |
+| paramêtre | Type |
 |----------|------|
 | url      | String, L'url de la route |
-| action      | String, array, callable ou Closure |
+| action   | String, array, callable ou Closure |
 
 ```php
 $app->any('/', function ()
@@ -237,13 +237,13 @@ Permet d'associer un code `http` sur l'url spécifier.
 prototype de la methode `code`.
 
 ```php
-$app->code(int code, action);
+$app->code(int code, closure action);
 ```
 
-| paramete | Type |
+| paramêtre | Type |
 |----------|------|
-| code      |Int, code d'erreur http |
-| action      | String, array, callable ou Closure |
+| code   | Int, code d'erreur http |
+| action | String, array, callable ou Closure |
 
 ```php
 $app->code(404, function ()
@@ -280,10 +280,10 @@ La réponse est le préfixage de route. Alors la methodes `prefix` nous permet d
 prototype de le methode `prefix`.
 
 ```php
-$app->prefix(url, action);
+$app->prefix(string url, string|array|closure action);
 ```
 
-| paramete | Type |
+| paramêtre | Type |
 |----------|------|
 | url      | String |
 | action   | closuer, callable. Cette fonction prendra en parametre l'instance de l'application |
@@ -326,7 +326,7 @@ Dans le exemple qui suit nous allons utiliser la methode `get`.
 ### Capturer des variables dans l'url
 
 Le routing vous permet de pouvoir capturer des variables dans urls.
-Pour le faire il faut imperativement utiliser la notation `:name_de_la_variable`.
+Pour le faire il faut imperativement utiliser la notation `:nom_de_la_variable`.
 Ensuite la variable capturé sera passer en paramètre à l'action (fonction à executer dans le cas où l'url est valide)
 quelque soit le nombre de variable.
 
@@ -350,14 +350,14 @@ where(String name, String value);
 where(array rules);
 ```
 
-| paramete | Type |
+| paramêtre | Type |
 |----------|------|
 | name      | String, Le nom de la variable |
 | value      | String, Le critaire de validation |
 | rules      | Array, Tableau associatif dont la clé est la varibale et la valeur est le critaire de validation |
 
 ```php
-$app->get('/:name', function ($name) 
+$app->get('/:name', function ($name)
 {
   return 'bonjour ' . $name;
 })->where('name', '[a-z]+');
@@ -369,7 +369,11 @@ $callable = function ($name, $lastname, $number)
 };
 
 $app->get('/:name/:lastname/:number', $callable)
-  ->where(['name' => '[a-z]+', 'lastname' => '[a-z]+', 'number' => '\d+']);
+  ->where([
+    'name' => '[a-z]+',
+    'lastname' => '[a-z]+',
+    'number' => '\d+'
+  ]);
 ```
 
 ### Donner un nom au route
@@ -385,7 +389,7 @@ prototype de la methode `name`.
 name(String name);
 ```
 
-| paramete | Type |
+| paramêtre | Type |
 |----------|------|
 | name    | String, Le nom de la route |
 

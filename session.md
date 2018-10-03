@@ -62,7 +62,8 @@ $value = $request->session()->get('key', function () {
 Vous pouvez également utiliser la fonction PHP de `session` globale pour récupérer et stocker des données dans la session. Lorsque le helper `session` est appelé avec un seul argument de chaîne, il renvoie la valeur de cette clé de session. Lorsque l'assistant est appelé avec un tableau de paires clé/valeur, ces valeurs sont stockées dans la session:
 
 ```php
-$app->get('home', function () {
+$app->get('home', function ()
+{
   // Récupérer une donnée de la session
   $value = session('key');
 
