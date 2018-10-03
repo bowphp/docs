@@ -47,7 +47,7 @@ $app->verbe('/', 'ClassController@actionAExecuter');
 - Avec le nom d'un controller et un middelware
 
 ```php
-$app->verbe('/', ['middleware' => 'ip', 'uses' => 'ClassController@actionAExecuter']);
+$app->verbe('/', ['middleware' => 'ip', 'controller' => 'ClassController::actionAExecuter']);
 ```
 
 > `verbe` correspond au verbe `http` à associer à la route, soit GET, POST, PUT, DELETE, OPTIONS, PATCH écrite en minuscule.
