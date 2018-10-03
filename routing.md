@@ -12,17 +12,17 @@ prototype des methodes du routing
 $app->[verbe](url, action);
 ```
 
-> `verbe` correspond au verbe `http` à associer à la route, soit GET, POST, PUT, DELETE, OPTIONS, PATCH écrite en minuscule.
+`verbe` correspond au verbe `http` à associer à la route, soit GET, POST, PUT, DELETE, OPTIONS, PATCH écrite en minuscule.
 
 | paramete | Type |
 |----------|------|
 | url      | String |
-| action   | String, array, function. Le fonction doit retourner un element |
+| action   | String, Array, Closure ou Callable |
 
-- Avec un callback (aussi appelé `closure` ou `callable` en `php`)
+- Une Closure une fonction dit anonyme ([Plus d'information](http://php.net/manual/fr/class.closure.php) sur le sujet).
 
 ```php
-$app->verbe('/', function () 
+$app->verbe('/', function ()
 {
   return 'hello world';
 });
@@ -32,9 +32,9 @@ $app->verbe('/', function ()
 
 ```php
 $app->verbe('/', [function () {
-	echo 'hello world';
+  echo 'hello world';
 }, function () {
-	echo 'Bien merci';
+  echo 'Bien merci';
 }]);
 ```
 
