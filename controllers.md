@@ -3,11 +3,17 @@
 - [Instroduction](#introduction)
   - [Configuration](#configuration)
 - [Controlleur Basic](#controlleur-basic)
-  - [Definir un controlleur](#definir-un-controlleur)
+  - [Définir un controlleur](#définir-un-controlleur)
   - [Contrôleurs et espaces de noms](#contrôleurs-et-espaces-de-noms)
   - [Contrôleur et Middleware](#contrôleur-et-middleware)
 - [Controller REST](#controller-rest)
-  - [Definir un controlleur rest](#definir-un-controlleur-rest)
+  - [Définir un controlleur rest](#définir-un-controlleur-rest)
+  - [Utilisons notre Controlleur REST](#utilisons-notre-controlleur-rest)
+    - [Prototype de la methode REST](#prototype-de-la-methode-rest)
+    - [Utilisation simple](#utilisation-simple)
+    - [Utilisation avec les contraintes](#utilisation-avec-les-contraintes)
+    - [Utilisation via un tableau comme action](#utilisation-via-un-tableau-comme-action)
+    - [Ignore des methodes](#ignore-des-methodes)
 
 ## Instroduction
 
@@ -47,7 +53,7 @@ Visitez ce [lien](./custom-structure.md) pour plus d'information sur la personna
 
 ## Controlleur basic
 
-### Definir un controlleur
+### Définir un controlleur
 
 Voici un exemple de classe de contrôleur de base. Notez que le contrôleur étend la classe de contrôleur de base incluse avec Bow. La classe de base fournit quelques méthodes pratiques telles que la méthode du middleware, qui peut être utilisée pour attacher un middleware aux actions du contrôleur.
 
@@ -60,11 +66,11 @@ use App\Controllers\Controller;
 class UserController extends Controller
 {
   /**
-  * Show the profile for the given user.
-  *
-  * @param  int  $id
-  * @return Response
-  */
+   * Show the profile for the given user.
+   *
+   * @param  int  $id
+   * @return Response
+   */
   public function show($id)
   {
     return $this->render('user/profile', ['user' => User::findOrFail($id)]);
@@ -112,14 +118,173 @@ Exemple:
 $app->get('profile', 'UserController::show')->middleware('auth');
 ```
 
-## Controller REST
+## Controlleur REST
 
-Les controlleur Rest sont un moyen simple de mettre en place un API Rest facilement.
+Les controlleur Rest sont un moyen simple pour mettre en place un API Rest facilement. Cette approche, vous permet de vous concentrez sur votre logique et laisser le framework géré le routage pour vous.
 
-### Definir un controlleur rest
+### Définir un controlleur rest
 
-Pour definir un nouveau controller rest, nous devez utiliser le lancer de tache `php bow` dans votre console ou invite de commande :sunglasses:.
+Pour définir un nouveau controlleur Rest, nous devez utiliser le lancer de tache `php bow` avec la commande `generate:resource` dans votre console ou invite de commande :sunglasses:.
 
 ```bash
-php bow generate:resource PetController [--model=Pet]
+php bow generate:resource PetController
 ```
+
+Un controlleur nommé `PetController` sera donc créé. Ce qui fait ça particularité c'est qu'il y a déjà des methodes prédéfinir en lui et ces methodes doivent rester telles quelles sont.
+
+```php
+<?php
+
+namespace App\Controllers;
+
+use App\Controllers\Controller;
+
+class PetController extends Controller
+{
+  /**
+   * Point d'entré
+   *
+   * GET /
+   *
+   * @return void
+   */
+  public function index()
+  {
+      // Codez Ici
+  }
+
+  /**
+   * Permet d'afficher la vue permettant de créer une résource.
+   *
+   * GET /create
+   *
+   * @return void
+   */
+  public function create()
+  {
+    // Codez Ici
+  }
+
+  /**
+   * Permet d'ajouter une nouvelle résource dans la base d'information
+   *
+   * POST /
+   *
+   * @return void
+   */
+  public function store()
+  {
+    // Codez Ici
+  }
+
+  /**
+   * Permet de récupérer un information précise avec un identifiant.
+   *
+   * GET /:id
+   *
+   * @param mixed $id
+   * @return void
+   */
+  public function show($id)
+  {
+    // Codez Ici
+  }
+
+  /**
+   * Mise à jour d'un ressource en utilisant paramètre du GET
+   *
+   * GET /:id/edit
+   *
+   * @param mixed $id
+   * @return void
+   */
+  public function edit($id)
+  {
+    // Codez Ici
+  }
+
+  /**
+   * Mise à jour d'une résource
+   *
+   * PUT /:id
+   *
+   * @param mixed $id
+   * @return void
+   */
+  public function update($id)
+  {
+    // Codez Ici
+  }
+
+  /**
+   * Permet de supprimer une resource
+   *
+   * DELETE /:id
+   *
+   * @param mixed $id
+   * @return void
+   */
+  public function destroy($id)
+  {
+    // Codez Ici
+  }
+}
+```
+
+### Utilisons notre Controlleur REST
+
+Pour utiliser le controlleur Rest vous avez juste à utiliser le methode `rest` sur la variable globale `$app` dans vos fichiers de routing.
+
+#### Prototype de la methode `rest`
+
+```php
+$app->rest(string url, string|array action, array where = []);
+```
+
+| paramete | Type |
+|----------|------|
+| `url`    | string ou array, Le nom de la route |
+| `action` | String, Le nom de la route |
+| `where`  | array, contrainte sur la varible `id` |
+
+#### Utilisation simple
+
+Et ça donne ceci:
+
+```php
+$app->rest('pets', 'PetController');
+```
+
+#### Utilisation avec les contraintes
+
+Avec une contrainte ça donne ceci:
+
+```php
+$app->rest('pets', 'PetController', ['id' => '\d+']);
+```
+
+Ici la contrainte s'applique sur tous les methodes. Mais, vous avez aussi la possibilité de restreindre les contraintes sur des methodes comme ceci:
+
+```php
+$app->rest('pets', 'PetController', [
+  'show' => ['id' => '\d+'],
+  'edit' => ['id' => '[a-z]+'],
+]);
+```
+
+#### Utilisation via un tableau comme action
+
+Dans le cas ou `action` est un `array` voici les clés / valeurs possible.
+
+```php
+$action = [
+  'controller' => 'PetController',
+  'ignores' => ['index', 'create'],
+];
+
+$app->rest('pets', $action, ['id' => '\d+']);
+```
+
+#### Ignore des methodes
+
+La valeur de `ignores` sear une liste de methode / url qui seront ignorées par le `router`. Alors, dans l'exemple précédent les methodes `index` et `create` seront indisponibles.
