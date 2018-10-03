@@ -254,8 +254,8 @@ $app->code(404, function ()
 
 ### prefix
 
-Souvant vous serez amener à vouloir grouper vos routes et effectuer un branchement, de bien orienté votre logique.
-Les urls peuvents souvants se répéter comme ceci:
+Souvent vous serez amener à grouper vos routes et effectuer un branchement simple pour bien orienté votre logique.
+Les urls peuvent souvents se répéter comme ceci:
 
 ```php
 $app->get('users', function ()
@@ -263,22 +263,19 @@ $app->get('users', function ()
   // code ici
 });
 
-$app->get('users/:id', function ($id) 
+$app->get('users/:id', function ($id)
 {
   // code ici
 });
 
-$app->get('users/:id/delete', function ($id) 
+$app->get('users/:id/delete', function ($id)
 {
   // code ici
 });
 ```
 
-Dans ce case nous avons `users` qui se répéte plusieur fois.
-Comment bien organiser tout ça?
-
-La réponse est le groupage de route. Alors la methodes groupe nous permet
-de grouper plusieur urls.
+Dans ce cas nous avons `users` qui se répéte plusieur fois. Comment bien organiser tout ça?
+La réponse est le préfixage de route. Alors la methodes `prefix` nous permet de grouper plusieur urls.
 
 prototype de le methode `prefix`.
 
@@ -291,10 +288,10 @@ $app->prefix(url, action);
 | url      | String |
 | action   | closuer, callable. Cette fonction prendra en parametre l'instance de l'application |
 
-Donc pour réorganiser le code precedent il faut faire:
+Donc pour réorganiser le code précédent, il faut faire:
 
 ```php
-$app->group('/users', function () use ($app) 
+$app->prefix('/users', function () use ($app)
 {
   $app->get('/', function ()
   {
@@ -310,6 +307,8 @@ $app->group('/users', function () use ($app)
   });
 });
 ```
+
+> Notez qu'actuellement le préfixage ne peut pas d'imbriquer.
 
 ## Personnalisation
 
