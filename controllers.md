@@ -6,6 +6,8 @@
   - [Definir un controlleur](#definir-un-controlleur)
   - [Contrôleurs et espaces de noms](#contrôleurs-et-espaces-de-noms)
   - [Contrôleur et Middleware](#contrôleur-et-middleware)
+- [Controller REST](#controller-rest)
+  - [Definir un controlleur rest](#definir-un-controlleur-rest)
 
 ## Instroduction
 
@@ -108,4 +110,16 @@ Exemple:
 
 ```php
 $app->get('profile', 'UserController::show')->middleware('auth');
+```
+
+## Controller REST
+
+Les controlleur Rest sont un moyen simple de mettre en place un API Rest facilement.
+
+### Definir un controlleur rest
+
+Pour definir un nouveau controller rest, nous devez utiliser le lancer de tache `php bow` dans votre console ou invite de commande :sunglasses:.
+
+```bash
+php bow generate:resource PetController [--model=Pet]
 ```

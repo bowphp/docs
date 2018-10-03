@@ -345,9 +345,9 @@ aussi d'ajout des validateurs sur le variable. C'est la methode `where` qui s'en
 prototype de la methode `where`.
 
 ```php
-$app->where(String name, String value);
+where(String name, String value);
 // ou
-$app->where(array rules);
+where(array rules);
 ```
 
 | paramete | Type |
@@ -365,7 +365,7 @@ $app->get('/:name', function ($name)
 // S'il y a plusieurs variables
 $callable = function ($name, $lastname, $number)
 {
-  return 'bonjour '.$name.' '.$lastname.' et votre numero est '.$number;
+  return sprintf('bonjour <b>%s %s</b> et votre numéro est %s.', $name, $lastname, $number);
 };
 
 $app->get('/:name/:lastname/:number', $callable)
@@ -404,7 +404,7 @@ a executer.
 Plus d'information sur le sujet allez ce lien [middleware](#documentation-middlewares)
 
 ```php
-$app->get('/:name', ['middleware' => 'ip', function ($name) 
+$app->get('/:name', ['middleware' => 'ip', function ($name)
 {
   return 'bonjour ' . $name;
 }])->name('hello');
@@ -415,7 +415,7 @@ $app->get('/:name', ['middleware' => 'ip', function ($name)
 ```php
 $app->get('/:name', [
   'middleware' => 'ip',
-  'uses' => 'Controller@action'
+  'controller' => 'NameController::action'
 ]);
 ```
 
