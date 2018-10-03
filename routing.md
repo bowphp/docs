@@ -1,10 +1,33 @@
 # Routing
 
+- [Introduction](#introduction)
+  - [Prototype du routing](#prototype-du-routing)
+- [Les methods de maping](#les-methods-de-maping)
+  - [get](#get)
+  - [post](#post)
+  - [put](#put)
+  - [delete](#delete)
+  - [patch](#patch)
+  - [options](#options)
+  - [match](#match)
+  - [any](#any)
+  - [code](#code)
+  - [prefix](#prefix)
+- [Personnalisation](#personnalisation)
+  - [Capturer des variables dans l'url](#capturer-des-variables-dans-l-url)
+  - [Ajouter des critères, des restrictions sur les urls](#ajouter-des-critères-des-restrictions-sur-les-urls)
+  - [Donner un nom au route](#donner-un-nom-au-route)
+  - [Association de middleware](#association-de-middleware)
+
+## Introduction
+
 Le routing vous permet de maper une url sur un controlleur ou une action particulière.
 Le systeme de routing de bow est grèfé directement sur l'instance de l'application.
 donc sur la variable `$app`.
 Les routes de l'application sont dans le fichier `app.php` du dossier `routes`
 de votre application.
+
+### Prototype du routing
 
 prototype des methodes du routing
 
@@ -51,6 +74,8 @@ $app->verbe('/', ['middleware' => 'ip', 'controller' => 'ClassController::action
 ```
 
 > `verbe` correspond au verbe `http` à associer à la route, soit GET, POST, PUT, DELETE, OPTIONS, PATCH écrite en minuscule.
+
+## Les methods de maping
 
 La mise en place du routage se faire donc via les methodes suivants:
 
@@ -190,7 +215,7 @@ Permet d'associer tout les methodes `http` sur l'url spécifier.
 prototype de la methode `any`.
 
 ```php
-$app->any(String url, action);
+$app->any(string url, action);
 ```
 
 | paramete | Type |
@@ -205,7 +230,88 @@ $app->any('/', function ()
 });
 ```
 
-### Personnalisation
+### code
+
+Permet d'associer un code `http` sur l'url spécifier.
+
+prototype de la methode `code`.
+
+```php
+$app->code(int code, action);
+```
+
+| paramete | Type |
+|----------|------|
+| code      |Int, code d'erreur http |
+| action      | String, array, callable ou Closure |
+
+```php
+$app->code(404, function ()
+{
+  // code ici
+});
+```
+
+### prefix
+
+Souvant vous serez amener à vouloir grouper vos routes et effectuer un branchement, de bien orienté votre logique.
+Les urls peuvents souvants se répéter comme ceci:
+
+```php
+$app->get('users', function ()
+{
+  // code ici
+});
+
+$app->get('users/:id', function ($id) 
+{
+  // code ici
+});
+
+$app->get('users/:id/delete', function ($id) 
+{
+  // code ici
+});
+```
+
+Dans ce case nous avons `users` qui se répéte plusieur fois.
+Comment bien organiser tout ça?
+
+La réponse est le groupage de route. Alors la methodes groupe nous permet
+de grouper plusieur urls.
+
+prototype de le methode `prefix`.
+
+```php
+$app->prefix(url, action);
+```
+
+| paramete | Type |
+|----------|------|
+| url      | String |
+| action   | closuer, callable. Cette fonction prendra en parametre l'instance de l'application |
+
+Donc pour réorganiser le code precedent il faut faire:
+
+```php
+$app->group('/users', function () use ($app) 
+{
+  $app->get('/', function ()
+  {
+   // code ici
+  });
+  $app->get('/:id', function ($id)
+  {
+   // code ici
+  });
+  $app->get('/:id/delete', function ($id)
+  {
+   // code ici
+  });
+});
+```
+
+## Personnalisation
 
 Le routing vous permet aussi de personnaliser vos urls. Voici la list des possibilités de personnalisation.
 
@@ -218,7 +324,7 @@ Le routing vous permet aussi de personnaliser vos urls. Voici la list des possib
 Pour faire la personnalisation il faut utiliser l'enchainement de methode.
 Dans le exemple qui suit nous allons utiliser la methode `get`.
 
-#### Capturer des variables dans l'url
+### Capturer des variables dans l'url
 
 Le routing vous permet de pouvoir capturer des variables dans urls.
 Pour le faire il faut imperativement utiliser la notation `:name_de_la_variable`.
@@ -232,14 +338,14 @@ $app->get('/:name', function ($name)
 });
 ```
 
-#### Ajouter des critères, des restrictions sur les urls
+### Ajouter des critères, des restrictions sur les urls
 
 Parlant de capture de variable. Sécurisé ces variables est primordial. Alors le routing vous permet
 aussi d'ajout des validateurs sur le variable. C'est la methode `where` qui s'en occupe.
 
 prototype de la methode `where`.
 
-```
+```php
 $app->where(String name, String value);
 // ou
 $app->where(array rules);
@@ -264,10 +370,10 @@ $callable = function ($name, $lastname, $number)
 };
 
 $app->get('/:name/:lastname/:number', $callable)
-	->where(['name' => '[a-z]+', 'lastname' => '[a-z]+', 'number' => '\d+']);
+  ->where(['name' => '[a-z]+', 'lastname' => '[a-z]+', 'number' => '\d+']);
 ```
 
-#### Donner un nom au route
+### Donner un nom au route
 
 Quand vous être dans le développement d'un gros projet, les routes deviendront nombreuses
 et la gestion visuel pour le développeur deviendra difficile.
@@ -276,8 +382,8 @@ Alors `bow` vous permet de donner des noms à vos routes comme ceci:
 
 prototype de la methode `name`.
 
-```
-$app->name(String name);
+```php
+name(String name);
 ```
 
 | paramete | Type |
@@ -291,7 +397,7 @@ $app->get('/:name', function ($name)
 })->name('hello');
 ```
 
-#### Association de middleware
+### Association de middleware
 
 Un middleware c'est un ou plusieurs actions qui ce placent entre la requete et l'action
 a executer.
@@ -309,68 +415,9 @@ $app->get('/:name', ['middleware' => 'ip', function ($name)
 
 ```php
 $app->get('/:name', [
-  'middleware' => 'ip', 
+  'middleware' => 'ip',
   'uses' => 'Controller@action'
 ]);
-```
-
-### group
-
-Souvant vous serez amener à vouloir grouper vos routes et effectuer un branchement, de bien orienté votre logique.
-Les urls peuvents souvants se répéter comme ceci:
-
-```php
-$app->get('users', function () 
-{
-  // code ici
-});
-
-$app->get('users/:id', function ($id) 
-{
-  // code ici
-});
-
-$app->get('users/:id/delete', function ($id) 
-{
-  // code ici
-});
-```
-
-Dans ce case nous avons `users` qui se répéte plusieur fois.
-Comment bien organiser tout ça?
-
-La réponse est le groupage de route. Alors la methodes groupe nous permet
-de grouper plusieur urls.
-
-prototype de le methode `group`.
-
-```php
-$app->group(url, action);
-```
-
-| paramete | Type |
-|----------|------|
-| url      | String |
-| action   | closuer, callable. Cette fonction prendra en parametre l'instance de l'application |
-
-Donc pour réorganiser le code precedent il faut faire:
-
-```php
-$app->group('/users', function () use ($app) 
-{
-  $app->get('/', function () 
-  {
-  	// code ici
-  });
-  $app->get('/:id', function ($id) 
-  {
-  	// code ici
-  });
-  $app->get('/:id/delete', function ($id) 
-  {
-  	// code ici
-  });
-});
 ```
 
 [Voir la vidéo](https://www.youtube.com/watch?v=:id 'video')
