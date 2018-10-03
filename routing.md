@@ -331,7 +331,7 @@ Ensuite la variable capturé sera passer en paramètre à l'action (fonction à 
 quelque soit le nombre de variable.
 
 ```php
-$app->get('/:name', function ($name) 
+$app->get('/:name', function ($name)
 {
   return 'bonjour ' . $name;
 });
@@ -418,5 +418,3 @@ $app->get('/:name', [
   'controller' => 'NameController::action'
 ]);
 ```
-
-[Voir la vidéo](https://www.youtube.com/watch?v=:id 'video')
