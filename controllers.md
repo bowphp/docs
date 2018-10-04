@@ -1,4 +1,4 @@
-# Controlleur
+# HTTP Controlleur
 
 - [Instroduction](#introduction)
   - [Configuration](#configuration)
@@ -23,9 +23,9 @@ Au lieu de définir toute la logique de gestion des demandes en tant que fermetu
 
 ### Configuration
 
-Vous avez la possibilité de modifier l'`espace de noms` des controlleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La methode `middleware` permet à Bow de savoir quel est le bon espace de noms à ajouter sur le controlleur lors de l'execution de la réquête ou lors de la génération de controlleur ou de middleware par le lanceur de tache `php bow`.
+Vous avez la possibilité de modifier l'`namespace` des controlleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La methode `middleware` permet à Bow de savoir quel est le bon `namespace` à ajouter sur le controlleur lors de l'execution de la réquête ou lors de la génération de controlleur ou de middleware par le lanceur de tache `php bow`.
 
-imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos controlleurs le espace de noms `App\Bus\Controllers`. Alors comment faire ça:
+Imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos controlleurs dans le `namespace` `App\Bus\Controllers`. Alors comment faire ça ?
 
 Voici le code que cela pourrai donnée:
 
@@ -43,13 +43,13 @@ public function namespaces()
 Ensuite il faudra aussi changer un peu la configuration du lancer de tache:
 
 ```php
-# dans le fichier `bow`
+# Dans le fichier `bow`
 $command = new \Bow\Console\Command(__DIR__);
 ...
 $command->setControllerDirectory(__DIR__.'/app/Bus/Controllers');
 ```
 
-Visitez ce [lien](./custom-structure.md) pour plus d'information sur la personnalisation de la structure de l'applucation
+> Visitez ce [lien](./structure.md) pour plus d'information sur la personnalisation de la structure de l'applucation.
 
 ## Controlleur basic
 
@@ -60,8 +60,8 @@ Voici un exemple de classe de contrôleur de base. Notez que le contrôleur éte
 ```php
 namespace App\Controllers;
 
-use App\User;
 use App\Controllers\Controller;
+use App\User;
 
 class UserController extends Controller
 {
@@ -94,12 +94,12 @@ php bow add:controller UserController
 
 ### Contrôleurs et espaces de noms
 
-Il est très important de noter que nous n’avons pas eu besoin de spécifier l’espace de noms du contrôleur complet lors de la définition de la route du contrôleur. Étant donné que `public/index.php` charge vos fichiers de route dans un groupe de routage contenant l'espace de noms, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Controllers` de l'espace de noms.
+Il est très important de noter que nous n’avons pas eu besoin de spécifier l’`namespace` du contrôleur complet lors de la définition de la route du contrôleur. Étant donné que `public/index.php` charge vos fichiers de route dans un groupe de routage contenant l'`namespace`, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Controllers` de l'`namespace`.
 
-Si vous choisissez d'imbriquer vos contrôleurs plus profondément dans le répertoire `App\Controllers`, utilisez le nom de classe spécifique relatif à l'espace de noms racine `App\Controllers`. Donc, si votre classe de contrôleur complète est `App\Controllers\Photos\AdminController`, vous devez enregistrer les routes sur le contrôleur comme suit:
+Si vous choisissez d'imbriquer vos contrôleurs plus profondément dans le répertoire `App\Controllers`, utilisez le nom de classe spécifique relatif à l'`namespace` racine `App\Controllers`. Donc, si votre classe de contrôleur complète est `App\Controllers\Photos\AdminController`, vous devez enregistrer les routes sur le contrôleur comme suit:
 
 ```php
-$app->get('/foo', 'Photos\AdminController::method');
+$app->get('/foo', 'Photos\AdminController::action');
 ```
 
 Vous pouvez générer un contrôleur en utilisant la commande `add:controller` de `php bow`:
@@ -120,7 +120,7 @@ $app->get('profile', 'UserController::show')->middleware('auth');
 
 ## Controlleur REST
 
-Les controlleur Rest sont un moyen simple pour mettre en place un API Rest facilement. Cette approche, vous permet de vous concentrez sur votre logique et laisser le framework géré le routage pour vous.
+Les controlleur REST sont un moyen simple pour mettre en place un API Rest facilement. Cette approche, vous permet de vous concentrez sur votre logique et laisser le framework géré le routage pour vous.
 
 ### Définir un controlleur rest
 
@@ -238,14 +238,14 @@ Pour utiliser le controlleur Rest vous avez juste à utiliser le methode `rest` 
 #### Prototype de la methode `rest`
 
 ```php
-$app->rest(string url, string|array action, array where = []);
+$app->rest(url, action, where = []);
 ```
 
 | paramete | Type |
 |----------|------|
-| `url`    | string ou array, Le nom de la route |
-| `action` | String, Le nom de la route |
-| `where`  | array, contrainte sur la varible `id` |
+| `url` | `String` \| `Array` - Le nom de la route |
+| `action` | `String` -  Le nom de la route |
+| `where` | `Array` - Contrainte sur la varible `id` |
 
 #### Utilisation simple
 
@@ -287,4 +287,4 @@ $app->rest('pets', $action, ['id' => '\d+']);
 
 #### Ignore des methodes
 
-La valeur de `ignores` sear une liste de methode / url qui seront ignorées par le `router`. Alors, dans l'exemple précédent les methodes `index` et `create` seront indisponibles.
+La valeur de `ignores` sear une liste de methode / url qui seront ignorées par le `routeur`. Alors, dans l'exemple précédent les methodes `index` et `create` seront indisponibles.

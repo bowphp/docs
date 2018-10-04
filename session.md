@@ -1,4 +1,4 @@
-# Session
+# HTTP Session
 
 - [Introduction](#introduction)
 - [Utilisation](#introduction)
@@ -18,23 +18,23 @@ Les applications HTTP étant sans état, les sessions offrent un moyen de stocke
 
 ### Récupération des données
 
-il existe deux manières principales de travailler avec les données de session dans Bow: le helper global de `session` et via une instance `Request`.
+il existe deux manières principales de travailler avec les données de `session` dans Bow: le helper global de `session` et via une instance `Bow\Http\Request`.
 
-Premièrement, examinons l’accès à la session via une instance `Request`, qui peut être indexée sur une méthode de contrôleur. N'oubliez pas que les dépendances des méthodes du contrôleur sont automatiquement injectées via le conteneur de services Bow:
+Premièrement, examinons l’accès à la session via une instance `Bow\Http\Request`, qui peut être indexée sur une méthode de contrôleur. N'oubliez pas que les dépendances des méthodes du contrôleur sont automatiquement injectées via le conteneur Bow:
 
 ```php
 App\Controllers;
 
-use Bow\Http\Request;
-use App\User;
 use App\Controllers\Controller;
+use App\User;
+use Bow\Http\Request;
 
 class UserController extends Controller
 {
   /**
-   * Show the profile for the given user.
+   * Afficher d'un utilisateur
    *
-   * @param \Bow\Http\Request $request
+   * @param Bow\Http\Request $request
    * @param  int  $id
    * @return Response
    */
@@ -47,7 +47,7 @@ class UserController extends Controller
 }
 ```
 
-Lorsque vous récupérez un élément de la session, vous pouvez également transmettre une valeur par défaut comme second argument de la méthode `get`. Cette valeur par défaut sera renvoyée si la clé spécifiée n'existe pas dans la session. Si vous transmettez une `closure` en tant que valeur par défaut à la méthode `get` et que la clé demandée n'existe pas, la `closure` sera exécutée et son résultat sera renvoyé:
+Lorsque vous récupérez un élément de la session, vous pouvez également transmettre une valeur par défaut comme deuxième argument de la méthode `get`. Cette valeur par défaut sera renvoyée si la clé spécifiée n'existe pas dans la session. Si vous transmettez une `closure` en tant que valeur par défaut à la méthode `get` et que la clé demandée n'existe pas, la `closure` sera exécutée et son résultat sera renvoyé:
 
 ```php
 $value = $request->session()->get('key', 'default');

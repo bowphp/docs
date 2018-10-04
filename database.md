@@ -11,7 +11,7 @@
 
 ## Introduction
 
-Bow rend l'interaction avec les bases de données extrêmement simple sur une grande variété de backends de bases de données en utilisant le `SQL brut`, `le générateur de requêtes courant` et l'ORM Barry. 
+Bow rend l'interaction avec les bases de données extrêmement simple sur une grande variété de backends de bases de données en utilisant le `SQL brut`, `le générateur de requêtes courant` et l'ORM Barry.
 
 Actuellement, Bow prend en charge deux bases de données:
 
@@ -34,7 +34,7 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 
 ### Connexion à plusieur Base de donnée
 
-Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode de `connexion` sur la classe de la `Database`. Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/db.php`:
+Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode static de `connexion` sur la classe de la `Bow\Database\Database`. Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/db.php`:
 
 ```php
 use Bow\Database\Database;
@@ -68,7 +68,7 @@ Alors notre table à comme colonne:
 | `name` | Le nom du pet |
 | `color` | La couleur du pet |
 
-> Pour info `pet` c'est un peu le synonime de animal domestique
+> Pour information, un `pet` c'est un animal domestique
 
 ### Execution de requête Select
 
@@ -81,8 +81,29 @@ use Bow\Database\Database;
 $pets = Database::select('select * from pets');
 ```
 
+Via helper `select`:
+
+```php
+$pets = select('select * from pets');
+```
+
+#### Sélection conditionnel
+
+Execution d'un requête pour optenir tous les informations de la table `pets` quand `id` égale à 1:
+
+```php
+use Bow\Database\Database;
+$pet = Database::select('select * from pets where id = :id', ['id' => 1]);
+```
+
+Via helper `select`:
+
+```php
+$pet = select('select * from pets where id = :id', ['id' => 1]);
+```
+
 Notez que la valeur retournée par la methode `select` est un `array` ou `null` s'il y a aucune informations.
-Dans le cas ou c4est un `array` le content est de type `stClass` (plus d'information sur [stClass](http://php.net/manual/fr/language.types.object.php)).
+Dans le cas ou c'est un `array` le contenu est de type `stClass` (plus d'information sur [stClass](http://php.net/manual/fr/language.types.object.php)).
 
 ### Execution de requête Insert
 
@@ -131,7 +152,7 @@ $pets = [
   ],
   [
     'id' => 2,
-    'name' => 'Molou',
+    'name' => 'Milou',
     'color' => 'Gay'
   ]
 ];
@@ -169,7 +190,7 @@ Via helper `update`:
 $pet = [
   'id' => 2,
   'name' => 'Spark',
-  'color' => 'Yello'
+  'color' => 'Yellow'
 ];
 
 $uppdated_number = update('update pets set id=:id, name=:name, color=:color where id = :id', $pet);
