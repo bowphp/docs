@@ -112,7 +112,7 @@ Plus d'information sur le [routing](./routing.md).
 
 ### Contrôleur et Middleware
 
-Les middlewares peuvent être assigner à la route du contrôleur dans vos fichiers de route. Les middleware sont stockés dans le dossier `app\Middlewares`. Pour plus d'information sur les middlewares, visitez ce [lien](./middleware.md).
+Les middlewares peuvent être assigner à la route du contrôleur dans vos fichiers de route. Les middleware sont stockés dans le dossier `app\Middleware`. Pour plus d'information sur les middlewares, visitez ce [lien](./middleware.md).
 
 Exemple:
 
