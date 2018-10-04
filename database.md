@@ -34,7 +34,7 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 
 ### Connexion à plusieur Base de donnée
 
-Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode static de `connexion` sur la classe de la `Bow\Database\Database`. Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/db.php`:
+Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode static de `connexion` sur la classe de la [`Bow\Database\Database`](https://bowphp.github.com/api/master/Bow/Database/Database.html). Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/db.php`:
 
 ```php
 use Bow\Database\Database;

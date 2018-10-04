@@ -117,7 +117,7 @@ class HomeController extends Controller
 
 ## Vue avec Twig
 
-Twig est un moteur de templates pour le langage de programmation PHP, utilisé par défaut par le framework Symfony. 
+Twig est un moteur de templates pour le langage de programmation PHP, utilisé par défaut par le framework Symfony.
 Il aurait été inspiré par Jinja, moteur de template Python.
 
 Exemple de code:
@@ -129,7 +129,7 @@ $names = [
 ```
 
 ```twig
-<!-- View stored in components/views/greeting.twig -->
+{# components/views/greeting.twig #}
 <html>
   <body>
     <h1>Hello, User</h1>
@@ -156,7 +156,7 @@ $names = [
 ```
 
 ```pug
-<!-- View stored in components/views/greeting.pl -->
+<!-- components/views/greeting.pug -->
 doctype html
 html
   body
@@ -182,8 +182,8 @@ $names = [
 ];
 ```
 
-```mustache
-<!-- View stored in components/views/greeting.pl -->
+```jinja
+<!-- components/views/greeting.tpl -->
 <html>
   <body>
     <h1>Hello, Users</h1>

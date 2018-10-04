@@ -36,13 +36,13 @@ return [
 
 ### Configuration de la locale
 
-La langue par défaut de votre application est stockée dans le fichier de configuration `config/trans.php`. Bien entendu, vous pouvez modifier cette valeur pour répondre aux besoins de votre application. Vous pouvez également modifier la langue active au moment de l'exécution à l'aide de la méthode `setLocale` sur la classe `Translator`:
+La langue par défaut de votre application est stockée dans le fichier de configuration `config/trans.php`. Bien entendu, vous pouvez modifier cette valeur pour répondre aux besoins de votre application. Vous pouvez également modifier la langue active au moment de l'exécution à l'aide de la méthode `setLocale` sur la classe [`Bow\Translate\Translator`](https://bowphp.github.com/api/master/Bow/Translate/Translator.html):
 
 ```php
 
 use Bow\Translate\Translator;
 
-$app->get('docs/{locale}', function ($locale) {
+$app->get('docs/:locale', function ($locale) {
   Translator::setLocale($locale);
   //
 });
@@ -100,7 +100,7 @@ Si vous le souhaitez, vous pouvez définir des espaces réservés dans vos chaî
 'welcome' => 'Welcome, {name}',
 ```
 
-Pour remplacer les espaces réservés lors de l'extraction d'une chaîne de traduction, transmettez un tableau de remplacements en tant que deuxième argument de la fonction `__`:
+Pour remplacer les espaces réservés lors de l'extraction d'une chaîne de traduction, transmettez un tableau de remplacements en tant que deuxième argument de la fonction `__` ou `trans`:
 
 ```php
 echo __('messages.welcome', ['name' => 'Galy']);
@@ -114,7 +114,7 @@ La pluralisation est un problème complexe, car différentes langues ont une var
 'names' => 'C\'est un utilisateur|Ce sont des utilisateurs',
 ```
 
-Après avoir défini une chaîne de traduction comportant des options de pluralisation, vous pouvez utiliser la fonction `__`. Dans cet exemple, puisque le nombre est supérieur à un, la forme au pluriel de la chaîne de traduction est renvoyée:
+Après avoir défini une chaîne de traduction comportant des options de pluralisation, vous pouvez utiliser la fonction `__` ou `trans`. Dans cet exemple, puisque le nombre est supérieur à un, la forme au pluriel de la chaîne de traduction est renvoyée:
 
 ```php
 echo __('messages.names', count($names) > 1);
