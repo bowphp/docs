@@ -27,11 +27,11 @@ C'est votre repertoire de travail sur bow. C'est la que vous allez inserer tout 
 
 Ici vous rétrouverez les dossiers suivant.
 
-- __Controllers__: dossier dans lequel sera souvegardé les controlleurs de l'application.
-- __Middleware__: dossier dans lequel sera souvegardé les middlewares de l'application.
-- __Configirations__: dossier dans lequel sera souvegardé les Configuration personnalisés de l'application.
-- __Kernel__: dossier dans lequel sera souvegardé la configuration du lanceur de l'application.
-- __Validations__: dossier dans lequel sera souvegardé les validations de l'application.
+- __Controllers__: Dossier dans lequel sera souvegardé les controlleurs de l'application.
+- __Middleware__: Dossier dans lequel sera souvegardé les middlewares de l'application.
+- __Configirations__: Dossier dans lequel sera souvegardé les Configuration personnalisés de l'application.
+- __Kernel__: Dossier dans lequel sera souvegardé la configuration du lanceur de l'application.
+- __Validations__: Dossier dans lequel sera souvegardé les validations de l'application.
 
 ## Le dossier `components`
 
