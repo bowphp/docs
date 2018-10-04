@@ -118,10 +118,10 @@ session(['key' => 'value']);
 Parfois, vous souhaiterez peut-être stocker des éléments dans la session uniquement pour la prochaine demande. Vous pouvez le faire en utilisant la méthode `flash` ou le helper `flash`. Les données stockées dans la session à l'aide de cette méthode ne seront disponibles que lors de la requête HTTP suivante, puis seront supprimées. Les données Flash sont principalement utiles pour les messages d'état de courte durée:
 
 ```php
-$request->session()->flash('status', 'Task was successful!');
+$request->session()->flash('status', 'Welcome !');
 ```
 
-Si vous devez conserver vos données Flash pour plusieurs demandes, vous pouvez utiliser la méthode de reflash, qui conservera toutes les données Flash pour une demande supplémentaire:
+Si vous devez supprimer vos données Flash, vous pouvez utiliser la méthode de `clearFlash`:
 
 ```php
 $request->session()->clearFlash();

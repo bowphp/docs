@@ -10,7 +10,7 @@ L'orgination de `bow` respect le parten *MVC*, entendez par *M*odel *V*ue *C*ont
 
 | Dossier ou fichier | Description |
 |---------|-------------|
-| __app__ | Contient les dossiers de l'application. C'est le dossier dans lequel vous allez programmer votre application à `80%`. Il contient entre autre le dossier `Controller`, le dossier `Middelware`, le dossier `routes` et `views`, (si vous générez un validateur le dossier Validation apparaitra). Enfin tout les fichiers du model y seront stocker |
+| __app__ | Contient les dossiers de l'application. C'est le dossier dans lequel vous allez programmer votre application à `80%`. Il contient entre autre le dossier `Controllers`, le dossier `Middelware`, (si vous générez un validateur le dossier Validation apparaitra). Enfin tout les fichiers du model y seront stocker |
 | __components__ | Contient les assets de l'application. Il contient entre autre le dossier `assets`, `lang` et le dossier `views`. Qui sont le assets de votre application. C'est la que vous allez mettre vos fichiers static et ensuite les compiler |
 | __config__ | Contient tout la configuration de l'application. |
 | __db__ | Dossier dans lequel sera souvegardé les migrations et seeding de votre application |
@@ -25,18 +25,18 @@ C'est votre repertoire de travail sur bow. C'est la que vous allez inserer tout 
 
 Ici vous rétrouverez les dossiers suivant.
 
-- __Controllers__ dossier dans lequel sera souvegardé les controlleurs de l'application.
-- __Middleware__ dossier dans lequel sera souvegardé les middlewares de l'application.
-- __Configiration__ dossier dans lequel sera souvegardé les Configuration personnalisés de l'application.
-- __Kernel__ dossier dans lequel sera souvegardé la configuration du lanceur de l'application.
-- __Validations__ dossier dans lequel sera souvegardé les validations de l'application.
+- __Controllers__: dossier dans lequel sera souvegardé les controlleurs de l'application.
+- __Middleware__: dossier dans lequel sera souvegardé les middlewares de l'application.
+- __Configirations__: dossier dans lequel sera souvegardé les Configuration personnalisés de l'application.
+- __Kernel__: dossier dans lequel sera souvegardé la configuration du lanceur de l'application.
+- __Validations__: dossier dans lequel sera souvegardé les validations de l'application.
 
 ## Le dossier `components`
 
-C'est la que vous allez inserer tout les fichiers de votre application. Vous rétrouverez les dossiers suivant.
+C'est là que vous allez insérer tout les fichiers de votre application. Vous rétrouverez les dossiers suivant.
 
 - __assets__:
-  - __js__: Votre fichier `Jqvascript` seront sauvegardés ici.
+  - __js__: Votre fichier `Javascript` seront sauvegardés ici.
   - __scss__: Votre ficher scss seront sauvégardés ici.
   - __components__: Si vous utiliser des components Web dans votre application créés au traver `Reactjs` ou `Vuejs`. Il est récommendé de les organisés dans ce dossier.
 - __lang__: Dossier dans lequel les locales de votre application seront sauvegardés.
