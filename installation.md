@@ -1,43 +1,41 @@
 # Installation
 
 - [Installation](#installation)
-	- [Préréquis du serveur](#préréquis-du-serveur)
-	- [Installation de Bow](#installation-de-bow)
-	- [Test rapide](#test-rapide)
-	- [Configuration](#configuration)
+  - [Préréquis du serveur](#préréquis-du-serveur)
+  - [Installation de Bow](#installation-de-bow)
+  - [Test rapide](#test-rapide)
+  - [Configuration](#configuration)
 - [Configuration Serveur Web](#configuration-serveur-web)
-	- [Apache](#apache)
-	- [Nginx](#nginx)
-
-## Installation
+  - [Apache](#apache)
+  - [Nginx](#nginx)
 
 Dans cette section nous allons apprendre à installer une application bow framework et faire un test rapide.
 
-### Préréquis du serveur
+## Préréquis du serveur
 
 Vous devez vous assurer les différents elements suivants sont installés sur votre machine.
 
-* PHP >= 7
-* OpenSSL PHP Extension
-* PDO PHP Extension
-* Mbstring PHP Extension
-* XML PHP Extension
-* JSON PHP Extension
+- PHP >= 7
+- OpenSSL PHP Extension
+- PDO PHP Extension
+- Mbstring PHP Extension
+- XML PHP Extension
+- JSON PHP Extension
 
-### Installation de Bow
+## Installation de Bow
 
 Pour installer une copie de Bow il vous faut d'abord installer [composer](https://getcomposer.org) ensuite vous lancez la commande suivante:
 
-```sh
-  $ composer create-project --prefer-dist bowphp/app
-  $ cd app
-  $ php bow serve --port=8000 --host=0.0.0.0
+```bash
+$ composer create-project --prefer-dist bowphp/app
+$ cd app
+$ php bow ru:server --port=8000 --host=0.0.0.0
 ```
 
 > __NB__: Il est conseillé d'installer `composer` de façon globale sur votre machine. Pour ce faire référez-vous à la [documentation](https://getcomposer.org/download) d'installation de composer.
 > Si vous n'êtes pas familier à `composer`, nous vous invitons à parcourir la documentation.
 
-### Test rapide
+## Test rapide
 
 Dans le dossier `routes`, ouvrez le fichier `get.php` et ajoutez:
 
@@ -47,7 +45,7 @@ $app->get('/hello/:name', function($name) {
 });
 ```
 
-Dans votre navigateur et tapez `http://localhost:5000/hello/bow`. `8000` est le port par défaut quand vous faites `php bow serve`.
+Dans votre navigateur et tapez `http://localhost:8000/hello/bow`. `8000` est le port par défaut quand vous faites `php bow ru:server`.
 
 ```html
 hello, world bow
@@ -56,33 +54,35 @@ hello, world bow
 Ou avec `curl`
 
 ```sh
-$ curl http://localhost:5000/hello/bow
+$ curl http://localhost:8000/hello/bow
 # Hello world bow
 ```
 
-### Configuration
+## Configuration
 
-#### Dossier Public
+### Dossier Public
 
 Après l'installation de Bow, vous devrez configurer le `document root` de votre serveur pour qu'il soit pointer vers le dossier `public`. Le fichier `index.php` qui se trouve dans le dossier public sert de point d'entrer pour toutes les requêtes HTTP (le front controlleur).
 
-#### Fichier de configuration
+### Fichier de configuration
 
 Tout les fichiers de configurations de Bow framework sont stockés dans le dossier `config`. Et tous les options sont documentés pour vous permettre d'aller vite dans votre dévéloppement. Vous êtes libre de regarder ces files pour vous famillariser avec les options disponibles.
 
-#### Permissions sur les dossiers
+### Permissions sur les dossiers
 
 Après l'installation de Bow, vous aurez bésoin de configurer quelques permissions. Les dossiers contenu dans le dossier `storage` doivents avoir les permissions d'écriture sur le serveur web.
 
 Vous pouvez également configurer quelques composants supplémentaires de Bow, tels que:
 
-- [Session](https://github.com/bowphp/docs/blob/master/session.md)
-- [Base de donnée](https://github.com/bowphp/docs/blob/master/database.md)
-- [Réssource](https://github.com/bowphp/docs/blob/master/filesystem.md)
+- [Routing](https://github.com/bowphp/docs/blob/3.0/routing.md)
+- [Controlleur](https://github.com/bowphp/docs/blob/3.0/controllers.md)
+- [Session](https://github.com/bowphp/docs/blob/3.0/session.md)
+- [Base de donnée](https://github.com/bowphp/docs/blob/3.0/database.md)
+- [Ressource](https://github.com/bowphp/docs/blob/3.0/storage.md)
 
 > Je vous invite à régarder ces configurations.
 
-## Configuration Serveur Web 
+## Configuration Serveur Web
 
 ### Apache
 
