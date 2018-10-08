@@ -306,9 +306,9 @@ $app->rest('pets', $action, ['id' => '\d+']);
 
 | URL | Method | Nom | Description |
 |----------|------|------|------|
-| `/pets` | `GET` | `pet.index` | Retourne la liste de pets |
-| `/pets` | `POST` | `pet.store` | Permet d'ajouter un autre pet |
-| `/pets/:id` | `GET` | `pet.show` | Afficher un seul pet |
-| `/pets/:id` | `PUT` | `pet.update` | Permet de mettre à jour les informations d'un pet |
-| `/pets/:id` | `DELETE` | `pet.delete` | Ceci va supprimer un pet |
-| `/pets/create` | `GET` | `pet.create` | Permet d'afficher le formulaire d'ajout |
+| `/pets` | `GET` | `pets.index` | Retourne la liste de pets |
+| `/pets` | `POST` | `pets.store` | Permet d'ajouter un autre pet |
+| `/pets/:id` | `GET` | `pets.show` | Afficher un seul pet |
+| `/pets/:id` | `PUT` | `pets.update` | Permet de mettre à jour les informations d'un pet |
+| `/pets/:id` | `DELETE` | `pets.delete` | Ceci va supprimer un pet |
+| `/pets/create` | `GET` | `pets.create` | Permet d'afficher le formulaire d'ajout |
