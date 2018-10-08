@@ -11,7 +11,6 @@
   - [options](#options)
   - [match](#match)
   - [any](#any)
-  - [code](#code)
   - [prefix](#prefix)
 - [Personnalisation](#personnalisation)
   - [Capturer des variables dans l'url](#capturer-des-variables-dans-l-url)
@@ -251,28 +250,6 @@ $app->any(url, action);
 
 ```php
 $app->any('/', function ()
-{
-  // code ici
-});
-```
-
-### code
-
-Permet d'associer un code `http` sur l'url spécifier.
-
-prototype de la methode `code`.
-
-```php
-$app->code(code, action);
-```
-
-| paramêtre | Type |
-|----------|------|
-| code   | `Integer` -  code d'erreur http |
-| action | `String` \| `Array` \| `Closure` - L'action a executé |
-
-```php
-$app->code(404, function ()
 {
   // code ici
 });
