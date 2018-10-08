@@ -34,7 +34,7 @@ class UserController extends Controller
   /**
    * Afficher d'un utilisateur
    *
-   * @param Bow\Http\Request $request
+   * @param Request $request
    * @param  int  $id
    * @return Response
    */
@@ -52,7 +52,8 @@ Lorsque vous récupérez un élément de la session, vous pouvez également tran
 ```php
 $value = $request->session()->get('key', 'default');
 
-$value = $request->session()->get('key', function () {
+$value = $request->session()->get('key', function ()
+{
   return 'default';
 });
 ```
@@ -107,7 +108,7 @@ Pour stocker des données dans la session, vous utiliserez généralement la mé
 
 ```php
 // Via une instance de requête
-$request->session()->put('key', 'value');
+$request->session()->set('key', 'value');
 
 // Via te helper session...
 session(['key' => 'value']);
