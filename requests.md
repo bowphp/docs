@@ -1,5 +1,19 @@
 # HTTP Request
 
+- [Introduction](#introduction)
+- [Accéder à la Request](#accéder-à-la-request)
+- [Récupération des données](#récupération-des-données)
+  - [Via des Closures de route](#via-des-closures-de-route)
+  - [Via un controlleur](#via-un-controlleur)
+- [Chemin de requête et méthode](#Chemin-de-requête-et-méthode)
+  - [Récupérer le chemin de requête](#récupérer-le-chemin-de-requête)
+  - [Récupérer la methode de requête](#récupérer-la-methode-de-requête)
+  - [Vérifier si la requete est en AJAX](#vérifier-si-la-requete-est-en-ajax)
+- [Récupérer une entrée](#récupérer-une-entrée)
+- [Fichier uploader](#fichier-uploader)
+  - [Validation des téléchargements réussis](#validation-des-téléchargements-réussis)
+  - [Savegarder le fichier](#savegarder-le-fichier)
+
 ## Introduction
 
 Une requete HTTP c'est le message que l'utilisateur envoie à l'application Bow via son navigateur et outil telque `curl` et autre.
@@ -14,7 +28,7 @@ Pour capturer un message HTTP, vous pouvez premièrement utiliser le helper `req
 
 En utilisant quelques méthodes simples, vous pouvez accéder à toutes les entrées utilisateur de votre
 
-### Accéder à la demande via des Closures de route
+### Via des Closures de route
 
 - Avec le helper `request`:
 
