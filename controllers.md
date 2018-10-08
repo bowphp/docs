@@ -44,7 +44,7 @@ Ensuite il faudra aussi changer un peu la configuration du lancer de tache:
 
 ```php
 # Dans le fichier `bow`
-$command = new \Bow\Console\Command(__DIR__);
+$command = new Bow\Console\Command(__DIR__);
 ...
 $command->setControllerDirectory(__DIR__.'/app/Bus/Controllers');
 ```
@@ -66,10 +66,10 @@ use App\User;
 class UserController extends Controller
 {
   /**
-   * Show the profile for the given user.
+   * Afficher le profil pour l'utilisateur donné.
    *
-   * @param  int  $id
-   * @return Response
+   * @param int $id
+   * @return mixed
    */
   public function show($id)
   {
@@ -152,7 +152,7 @@ class PetController extends Controller
    */
   public function index()
   {
-      // Codez Ici
+    // Codez Ici
   }
 
   /**
@@ -290,3 +290,25 @@ $app->rest('pets', $action, ['id' => '\d+']);
 #### Ignore des methodes
 
 La valeur de `ignores` sear une liste de methode / url qui seront ignorées par le `routeur`. Alors, dans l'exemple précédent les methodes `index` et `create` seront indisponibles.
+
+#### Url et Action
+
+En considerant la définition Rest suivant:
+
+```php
+$action = [
+  'controller' => 'PetController',
+  'ignores' => ['index', 'create'],
+];
+
+$app->rest('pets', $action, ['id' => '\d+']);
+```
+
+| URL | Method | Nom | Description |
+|----------|------|------|------|
+| `/pets` | `GET` | `pet.index` | Retourne la liste de pets |
+| `/pets` | `POST` | `pet.store` | Permet d'ajouter un autre pet |
+| `/pets/:id` | `GET` | `pet.show` | Afficher un seul pet |
+| `/pets/:id` | `PUT` | `pet.update` | Permet de mettre à jour les informations d'un pet |
+| `/pets/:id` | `DELETE` | `pet.delete` | Ceci va supprimer un pet |
+| `/pets/create` | `GET` | `pet.create` | Permet d'afficher le formulaire d'ajout |
