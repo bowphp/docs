@@ -71,7 +71,7 @@ $app->verbe('/', [function () {
 - Avec le nom d'un controller
 
 ```php
-$app->[verbe]('/', 'ClassController@action');
+$app->[verbe]('/', 'ClassController::action');
 ```
 
 - Avec le nom d'un controller et un middelware
