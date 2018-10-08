@@ -1,6 +1,6 @@
 # HTTP Controlleur
 
-- [Instroduction](#introduction)
+- [Introduction](#introduction)
   - [Configuration](#configuration)
 - [Controlleur Basic](#controlleur-basic)
   - [Définir un controlleur](#définir-un-controlleur)
@@ -15,7 +15,7 @@
     - [Utilisation via un tableau comme action](#utilisation-via-un-tableau-comme-action)
     - [Ignore des methodes](#ignore-des-methodes)
 
-## Instroduction
+## Introduction
 
 Les controlleurs sont les moins simples de simplifier l'organisation de vos projet.
 
