@@ -123,7 +123,7 @@ echo __('messages.names', count($names) > 1);
 Avec les données remplacer
 
 ```php
-'names' => 'C\'est un utilisateur {name}|Ce sont des utilisateurs',
+'names' => 'Bonjour {name}|Bonjour à tous',
 ```
 
 ```php
