@@ -241,3 +241,112 @@ if ($request->hasHeader('x-proxy-key')) {
   // code ici
 }
 ```
+
+### Récupérer le IP du server
+
+Vous avez la possibilité de récupérer l'adresse IP de serveur sur lequel votre application Bow.
+
+```php
+$hostname = $request->hostname();
+
+echo $hostname;
+// exemple.com
+```
+
+### Récupérer le domaine Origin
+
+Le domaine origin est l'adresse récupérer avcec la methode `hostname` avec le protocol de la requête.
+
+```php
+$hostname = $request->origin();
+
+echo $hostname;
+// https://exemple.com
+```
+
+### Récupérer le temps de la requête
+
+Il est souvent interssent de voir combien de temps à faire une requête. La methode `time` nous permet de faire ça et elle retourne un timestamp.
+
+```php
+$time = $request->time();
+
+echo $time;
+```
+
+## Fichier uploader
+
+Souvent les requêtes sont associés à des fichiers envoyés par l'utilisateur. Dans [`Bow\Http\Request`](https://bowphp.github.com/api/master/Bow/Http/Reqeust.html) les methodes `file` et `files` vous permettent d'avoir accès à ces fichiers.
+
+considérons le formulaire suivant:
+
+```html
+<form action="/upload" method="post" enctype="multipart/form-data">
+  <input type="file" name="photo" accept="image/png"><br/>
+  <button type="submit">Uploader</button>
+</form>
+```
+
+Comment avoir accès au fichier envoyé ? Ici nous pouvons utiliser la methode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadFile`](https://bowphp.github.com/api/master/Bow/Http/UploadFile.html).
+
+```php
+use Bow\Http\Request;
+
+$app->post('/upload', function(Request $request) {
+  $file = $request->file('photo');
+
+  debug($file);
+});
+```
+
+```php
+// Debug output
+UploadFile {#92 ▼
+  -file: array:5 [▼
+    "name" => "23270116.png"
+    "type" => "image/png"
+    "tmp_name" => "/tmp/phpellwCx"
+    "error" => 0
+    "size" => 7388
+  ]
+}
+```
+
+Vous pouvez déterminer si un fichier est présent sur la demande en utilisant la méthode `hasFile`:
+
+```php
+if ($request->hasFile('photo')) {
+  // code ici
+}
+```
+
+### Validation des téléchargements réussis
+
+Vous pouvez vérifier qu'il n'y a pas eu de problèmes pour le télécharger via la méthode `isUploaded`:
+
+```php
+$file = $request->file('photo');
+
+if ($file->isUploaded()) {
+  // Code ici
+}
+```
+
+### Savegarder le fichier
+
+```php
+$file = $request->file('photo');
+
+$file->moveTo($dirname, $filename = null);
+```
+
+Si `$filename` est `null`, ça valeur sera le nom du fichier hasher avec la ,ethode `getHashFilename`.
+
+Mais souvent dans le cas où vous attendez une [`Bow\Support\Collection`](https://bowphp.github.com/api/master/Bow/Support/Collection.html) de fichier envoyé via un formulaire dont le champs est sous la forme `photo[]`:
+
+```html
+<form action="/upload" method="post" enctype="multipart/form-data">
+  <input type="file" name="photo[]" accept="image/png"><br/>
+  <button type="submit">Uploader</button>
+</form>
+```
