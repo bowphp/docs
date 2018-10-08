@@ -72,6 +72,15 @@ $app->get('/', function () {
 $response->addHeader('Content-Type', 'application/json');
 ```
 
+Nous pouvez ajouter plusieur entête en même temps:
+
+```php
+$response->withHeaders([
+  'Content-Type' => 'application/json',
+  'X-Proto-Value' => 1
+]);
+```
+
 ### Envoyer un json
 
 ```php
@@ -87,3 +96,5 @@ $response->render('users', ['users' => []], 200, [
   'X-Proto-Value' => 1 // Juste un test
 ])
 ```
+
+## Redirection
