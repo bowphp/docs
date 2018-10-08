@@ -82,6 +82,19 @@ $app->[verbe]('/', ['middleware' => 'ip', 'controller' => 'ClassController::acti
 
 > `verbe` correspond au verbe `http` à associer à la route, soit GET, POST, PUT, DELETE, OPTIONS, PATCH écrite en minuscule.
 
+## Liste des possibilités
+
+```php
+$app->get($url, $action);
+$app->post($url, $action);
+$app->put($url, $action);
+$app->delete($url, $action);
+$app->option($url, $action);
+$app->patch($url, $action);
+$app->any($url, $action);
+$app->match(array $url, $action);
+```
+
 ## Les methods de maping
 
 La mise en place du routage se faire donc via les methodes suivants:
