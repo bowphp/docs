@@ -136,12 +136,13 @@ Souvent vous pouvez utiliser un instance de response pour faire le rendu de view
 ### Protototype de la methode `render`
 
 ```php
-$response->render($view_name, $code, $headers);
+$response->render($view_name, $data, $code, $headers);
 ```
 
 | paramêtre | Type |
 |----------|------|
 | $view_name  | `String` - Le nom d'une vue à rendre |
+| $data  | `Array` - Les données à envoyer à la vue |
 | $code  | `Int` - Le code du status HTTP |
 | $headers  | `Array` - Les entêtes à ajouter sur le réponse |
 
