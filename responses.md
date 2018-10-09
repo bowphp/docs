@@ -82,7 +82,7 @@ $app->get('/', function () {
 
 Pour plus d'information sur les code HTTP. Consultez ce [lien](https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP).
 
-Si dans votre API, vous ne trouver pas une information demandée, il est préférable de lui retourne un `204` qu'un `200` :tada:.
+Si dans votre API, vous n'avez pas d’information à renvoyer. Il est préférable de lui retourne un `204` qu'un `200` :tada:.
 
 ### Ajouter une entête http
 
