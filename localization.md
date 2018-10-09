@@ -129,3 +129,5 @@ Avec les données remplacer
 ```php
 echo __('messages.names', ['name' => 'Newt'], count($names) == 1);
 ```
+
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

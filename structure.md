@@ -57,3 +57,5 @@ Ici, bow va stocker les fichers de log et le cache de votre application. Vous r�
 - __workspace__: Dossier dans lequel est sauvegardé les logs de l'application.
   - __cache__: Dossier dans lequel l'application sauvegarde les caches de l'applications
   - __view__: Dossier dans lequel l'application sauvegarde le cache de compilation des vues
+
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

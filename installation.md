@@ -106,3 +106,5 @@ location / {
     try_files $uri $uri/ /index.php?$query_string;
 }
 ```
+
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

@@ -98,3 +98,5 @@ $response->render('users', ['users' => []], 200, [
 ```
 
 ## Redirection
+
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

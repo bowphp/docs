@@ -212,3 +212,5 @@ Via le helper `delete`:
 ```php
 $deleted_number = delete('delete from pets where id = :id', ['id' => 2]);
 ```
+
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

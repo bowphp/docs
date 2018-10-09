@@ -16,17 +16,17 @@
 
 ## Introduction
 
-Une requete HTTP c'est le message que l'utilisateur envoie à l'application Bow via son navigateur et outil telque `curl` et autre.
+Une requête HTTP c'est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autre outil telque `curl`, `httpie` et autre.
 
-Ce message est traite par Bow via la classe [`Bow\Http\Request`](https://bowphp.github.com/api/master/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur le message envoie par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
+Ce message est traite par Bow à travers la classe [`Bow\Http\Request`]000(https://bowphp.github.com/api/master/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoie par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
 
 ## Accéder à la Request
 
-Pour capturer un message HTTP, vous pouvez premièrement utiliser le helper `request()` qui vous donne une instance de [`Bow\Http\Request`](https://bowphp.github.com/api/master/Bow/Http/Request.html), deuxièmement passer par l'injecteur de dépendance via un action de controleur.
+Pour capturer un message ou requête HTTP, vous pouvez premièrement utiliser le helper `request()` qui vous donne une instance de [`Bow\Http\Request`](https://bowphp.github.com/api/master/Bow/Http/Request.html), deuxièmement vous pouvez passer par l'injecteur de dépendance via une action de contrôleur.
 
 ## Récupération des données
 
-En utilisant quelques méthodes simples, vous pouvez accéder à toutes les entrées utilisateur de votre
+En utilisant quelques méthodes simples, vous pouvez accéder à toutes les entrées utilisateur de votre application.
 
 ### Via des Closures de route
 
@@ -55,7 +55,7 @@ $app->get('/', function (Request $request)
 
 ### Via un controlleur
 
-Si votre méthode de contrôleur attend également une entrée d'un paramètre de route, vous devez répertorier les paramètres de votre route après vos autres dépendances. Par exemple, si votre itinéraire est défini comme suit
+Si votre méthode de contrôleur attend également une entrée d'un paramètre de route, vous devez répertorier les paramètres de votre route après vos autres dépendances. Par exemple, si votre route est défini comme suit:
 
 ```php
 $app->get('/users/:id', 'UserController::show');
@@ -96,7 +96,7 @@ class UserController extends Controller
 
 ### Récupérer le chemin de requête
 
-La méthode path renvoie les informations de chemin de la demande. Ainsi, si la demande entrante est ciblée sur `http://example.com/bar/zar`, la méthode path retournera `bar/zar`:
+La méthode `path` renvoie les informations de chemin de la requête. Ainsi, si la requête entrante est ciblée sur `http://example.com/bar/zar`, la méthode path retournera `bar/zar`:
 
 ```php
 $uri = $request->path();
@@ -152,7 +152,7 @@ if ($request->isAjax()) {
 }
 ```
 
-## Récupérer une entrée
+### Récupérer une entrée
 
 Souvent la requête envoyé par le client HTTP contient des données souvent demander pour actioner un mecanisme par exemple celui d'une inscription.
 
@@ -269,7 +269,7 @@ echo $hostname;
 
 ### Récupérer le domaine Origin
 
-Le domaine origin est l'adresse récupérer avcec la methode `hostname` avec le protocol de la requête.
+Le domaine dit `origin` est l'adresse récupérer avec la methode `hostname` ensuite associé avec le protocol de la requête.
 
 ```php
 $hostname = $request->origin();
@@ -280,7 +280,7 @@ echo $hostname;
 
 ### Récupérer le temps de la requête
 
-Il est souvent interssent de voir combien de temps à faire une requête. La methode `time` nous permet de faire ça et elle retourne un timestamp.
+Il est souvent interssent de voir combien de temps à faire une requête. La methode `time` nous permet de le faire et elle retourne un timestamp.
 
 ```php
 $time = $request->time();
@@ -290,7 +290,7 @@ echo $time;
 
 ## Fichier uploader
 
-Souvent les requêtes sont associés à des fichiers envoyés par l'utilisateur. Dans [`Bow\Http\Request`](https://bowphp.github.com/api/master/Bow/Http/Reqeust.html) les methodes `file` et `files` vous permettent d'avoir accès à ces fichiers.
+Souvent les requêtes sont associés à des fichiers envoyés par l'utilisateur, vous pouvez traiter ces fichiers sur [`Bow\Http\Request`](https://bowphp.github.com/api/master/Bow/Http/Reqeust.html) les methodes `file` et le helper du même nom.
 
 considérons le formulaire suivant:
 
@@ -301,13 +301,15 @@ considérons le formulaire suivant:
 </form>
 ```
 
-Comment avoir accès au fichier envoyé ? Ici nous pouvons utiliser la methode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadFile`](https://bowphp.github.com/api/master/Bow/Http/UploadFile.html).
+Comment avoir accès au fichier envoyé ? Ici nous pouvons utiliser la methode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadFile`](https://bowphp.github.com/api/master/Bow/Http/UploadFile.html[`Bow\Http\UploadFile`](https://bowphp.github.com/api/master/Bow/Http/UploadFile.html)).
 
 ```php
 use Bow\Http\Request;
 
 $app->post('/upload', function(Request $request) {
   $file = $request->file('photo');
+  // ou
+  $file = file('photo');
 
   debug($file);
 });
@@ -326,7 +328,7 @@ UploadFile {#92 ▼
 }
 ```
 
-Vous pouvez déterminer si un fichier est présent sur la demande en utilisant la méthode `hasFile`:
+Vous pouvez déterminer si un fichier est présent sur la requête en utilisant la méthode `hasFile`:
 
 ```php
 if ($request->hasFile('photo')) {
@@ -336,7 +338,7 @@ if ($request->hasFile('photo')) {
 
 ### Validation des téléchargements réussis
 
-Vous pouvez vérifier qu'il n'y a pas eu de problèmes pour le télécharger via la méthode `isUploaded`:
+Vous pouvez vérifier qu'il n'y a pas eu de problèmes lors du téléchargement avec la méthode `isUploaded`:
 
 ```php
 $file = $request->file('photo');
@@ -348,19 +350,42 @@ if ($file->isUploaded()) {
 
 ### Savegarder le fichier
 
+Cela consiste juste à déplacer le fichier uploader dans une autre dossier et ceci grace à la methode `moveTo`.
+
 ```php
 $file = $request->file('photo');
 
-$file->moveTo($dirname, $filename = null);
+$file->moveTo("/path/to/your/store/directory", $filename = null);
 ```
 
-Si `$filename` est `null`, ça valeur sera le nom du fichier hasher avec la ,ethode `getHashFilename`.
+Si `$filename` est `null`, sa valeur sera le nom du fichier hasher avec la methode [`getHashName`](https://bowphp.github.io/api/master/Bow/Http/UploadFile.html#method_getHashName).
 
-Mais souvent dans le cas où vous attendez une [`Bow\Support\Collection`](https://bowphp.github.com/api/master/Bow/Support/Collection.html) de fichier envoyé via un formulaire dont le champs est sous la forme `photo[]`:
+Souvent dans le cas où vous attendez des fichiers envoyé via un formulaire dont le champs est sous la forme `photo[]`. la methode `file` retourne une [`Bow\Support\Collection`](https://bowphp.github.com/api/master/Bow/Support/Collection.html):
 
 ```html
 <form action="/upload" method="post" enctype="multipart/form-data">
-  <input type="file" name="photo[]" accept="image/png"><br/>
+  <label>Fichier 1: <input type="file" name="photo[]" accept="image/png"></label><br/>
+  <label>Fichier 2: <input type="file" name="photo[]" accept="image/png"></label><br/>
   <button type="submit">Uploader</button>
 </form>
 ```
+
+Dans cette exemple, la methode `file` retournera une [`Bow\Support\Collection`](https://bowphp.github.com/api/master/Bow/Support/Collection.html) qui contiendra pour chaque oruccencre une instance de [`Bow\Http\UploadFile`](https://bowphp.github.com/api/master/Bow/Http/UploadFile.html).
+
+```php
+use Bow\Http\Request;
+use Bow\Http\UploadFile;
+
+$app->get('/upload', function (Request $request)
+{
+  $files = $request->file('photo');
+
+  if (!$files->isEmpty()) {
+    $files->each(function(UploadFile $file) {
+      $file->moveTo("/path/to/your/store/directory");
+    });
+  }
+});
+```
+
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

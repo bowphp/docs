@@ -202,3 +202,5 @@ Bow implément aussi au travers d'un plugin, le moteur de template `Blade` utili
 
 - Le plugin Blade [papac/bow-blade](https://github.com/papac/bow-blade)
 - Le plugin Tintin [bowphp/tintin](https://github.com/bowphp/tintin)
+
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

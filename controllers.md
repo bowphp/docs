@@ -312,3 +312,5 @@ $app->rest('pets', $action, ['id' => '\d+']);
 | `/pets/:id` | `PUT` | `pets.update` | Permet de mettre à jour les informations d'un pet |
 | `/pets/:id` | `DELETE` | `pets.delete` | Ceci va supprimer un pet |
 | `/pets/create` | `GET` | `pets.create` | Permet d'afficher le formulaire d'ajout |
+
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
