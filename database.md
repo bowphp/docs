@@ -120,7 +120,7 @@ $pet = [
   'color' => 'Green'
 ];
 
-$insertion_number = Database::insert('insert into pets (id, name, color) values (:id, :name, :color);', $pet);
+$inserted = Database::insert('insert into pets (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
 Via helper `insert`:
@@ -132,7 +132,7 @@ $pet = [
   'color' => 'White'
 ];
 
-$insertion_number = insert('insert into pets (id, name, color) values (:id, :name, :color);', $pet);
+$inserted = insert('insert into pets (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
 Notez que la valeur retournée par la methode `insert` est un `int` ou `number` qui est le nombre d'insertion.
@@ -157,13 +157,13 @@ $pets = [
   ]
 ];
 
-$insertion_number = Database::insert('insert into pets (id, name, color) values (:id, :name, :color);', $pets);
+$inserted = Database::insert('insert into pets (id, name, color) values (:id, :name, :color);', $pets);
 ```
 
 Via helper `insert`:
 
 ```php
-$uppdated_number = insert('insert into pets (id, name, color) values (:id, :name, :color);', $pets);
+$updated = insert('insert into pets (id, name, color) values (:id, :name, :color);', $pets);
 ```
 
 ### Execution de requête Update
@@ -181,7 +181,7 @@ $pet = [
   'color' => 'Purple'
 ];
 
-$uppdated_number = Database::update('update pets set id=:id, name=:name, color=:color where id = :id', $pet);
+$updated = Database::update('update pets set id = :id, name=:name, color=:color where id = :id', $pet);
 ```
 
 Via helper `update`:
@@ -193,7 +193,7 @@ $pet = [
   'color' => 'Yellow'
 ];
 
-$uppdated_number = update('update pets set id=:id, name=:name, color=:color where id = :id', $pet);
+$updated = update('update pets set id=:id, name=:name, color=:color where id = :id', $pet);
 ```
 
 ### Execution de requête Delete
@@ -204,13 +204,28 @@ Execution d'un requête pour inserer une information dans table `pets`:
 
 ```php
 use Bow\Database\Database;
-$deleted_number = Database::delete('delete from pets where id = :id', ['id' => 1]);
+$deleted = Database::delete('delete from pets where id = :id', ['id' => 1]);
 ```
 
 Via le helper `delete`:
 
 ```php
-$deleted_number = delete('delete from pets where id = :id', ['id' => 2]);
+$deleted = delete('delete from pets where id = :id', ['id' => 2]);
+```
+
+### Execution de requête
+
+Pour executer une requête brute d'autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`.
+
+```php
+use Bow\Database\Database;
+Database::statement('alter table `pets` add `owner` varchr(80) default null;');
+```
+
+Via le helper `statement`:
+
+```php
+statement('alter table `pets` add `owner` varchr(80) default null;');
 ```
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
