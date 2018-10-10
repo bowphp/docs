@@ -219,13 +219,15 @@ Pour executer une requête brute d'autre que `SELECT`, `UPDATE`, `INSERT`, `DELE
 
 ```php
 use Bow\Database\Database;
-Database::statement('alter table `pets` add `owner` varchr(80) default null;');
+Database::statement('alter table `pets` add `owner` varchar(80) default null;');
 ```
 
 Via le helper `statement`:
 
 ```php
-statement('alter table `pets` add `owner` varchr(80) default null;');
+statement('alter table `pets` add `owner` varchar(80) default null;');
 ```
+
+## Migration
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
