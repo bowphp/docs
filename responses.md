@@ -127,7 +127,7 @@ return $response->json(['message' => 'hello world'], $code = 200, [
 ]);
 ```
 
-Ici Bow ajout directement l'entête HTTP `Content-Type` à `application/json`. Donc plus besoin de l'ajouter manuellement dans le `$headers`.
+Ici Bow ajout directement l'entête HTTP `Content-Type` à `application/json`, donc plus besoin de l'ajouter manuellement dans le `$headers`.
 
 ## Envoyer une reponse depuis les vues
 
@@ -144,7 +144,7 @@ $response->render($view_name, $data, $code, $headers);
 | $view_name  | `String` - Le nom d'une vue à rendre |
 | $data  | `Array` - Les données à envoyer à la vue |
 | $code  | `Int` - Le code du status HTTP |
-| $headers  | `Array` - Les entêtes à ajouter sur le réponse |
+| $headers  | `Array` - Les entêtes à ajouter à la réponse |
 
 ### Exemple d'envoye de vue
 
@@ -158,6 +158,83 @@ return $response->render('users', ['users' => $users], 200, [
 ]);
 ```
 
+### Télécharger un fichier
+
+### Protototype de la methode `download`
+
+```php
+$response->download($file, $filename = null, $headers, $disposition = 'attachment');
+```
+
+| paramêtre | Type |
+|----------|------|
+| $file  | `String` - Le chemin absolu du fichier |
+| $filename  | `String` - Le nouveau du ficher par defaut est `null` |
+| $headers  | `Array` - Les entêtes à ajouter à la réponse |
+| $disposition  | `String` - Indiquant si le contenu devrait être affiché en ligne dans le navigateur, c'est-à-dire en tant que page Web ou dans une page Web, ou en pièce jointe est téléchargé et enregistré localement. |
+
+Plus d'information sur l'entête [`Content-Disposition`](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers/Content-Disposition).
+
+### Exemple de télécharge
+
+Exemple:
+
+```php
+$file = '/path/to/file.png';
+
+return $response->download($file, 'image.png');
+```
+
 ## Redirection
+
+Vous serez certainement amener à faire des redirections vers d'autres ressources et cela en réalité constitue une réponse HTTP. Les methodes `to` et `back` (qui comme son nom l'indique permet de faire une revenir sur en arrière) de la classe [`Bow\Http\Redirect`](https://bowphp.github.com/api/master/Bow/Http/Redirect.html).
+
+### Redirection avec to
+
+La redirection avec `to` permet de faire renvoyer l'utilisateur sur une autre la page.
+
+```php
+return redirect()->to($path);
+```
+
+#### Prototype de To
+
+| paramêtre | Type |
+|----------|------|
+| $path  | `String` - L'URL de rédirection |
+
+```php
+return redirect()->to('/users');
+```
+
+### Redirection avec back
+
+La redirection avec `back` permet de faire renvoyer l'utilisateur sur la page précédente.
+
+```php
+return redirect()->back($status_code);
+```
+
+#### Prototype de Back
+
+| paramêtre | Type |
+|----------|------|
+| $status_code  | `Int` - Le code HTTP de la réponse par defaut est égale à `302` |
+
+```php
+return redirect()->back();
+```
+
+### Redirection avec des informations
+
+Vous pouvez aussi faire la redirection avec les informations envoyés par l'utilisateur et ceci avec la methode `withInput` comme ceci:
+
+```php
+ return redirect()->back()->withInput();
+ // Ou
+ return redirect()->to()->withInput();
+```
+
+Notez que vous pouvez donner une tableau de valeur à `withInput` qui sera une collection d'information à envoyer à utilisateur.
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
