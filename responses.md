@@ -12,7 +12,7 @@
   - [Protototype de la methode json](#protototype-de-la-methode-json)
   - [Exemple d'envoye de JSON](#exemple-d-envoye-de-json)
 - [Envoyer une reponse depuis les vues](#envoyer-une-reponse-depuis-les-vues)
-  - [Protototype de la methode `render`](#protototype-de-la-methode-render)
+  - [Protototype de la methode render](#protototype-de-la-methode-render)
   - [Exemple d'envoye de vue](#exemple-d-envoye-de-vue)
 - [Redirection](#redirection)
 
@@ -50,9 +50,9 @@ $app->get('/object', function () {
 });
 ```
 
-### Un Model de Barry ORM
+### Un model Barry
 
-La réponse HTTP peut êtres un Model ou un Collection de model, Bow la convertis directement en JSON.
+La réponse HTTP peut êtres un `Model` ou une `Collection` de model, Bow la convertis directement en `JSON`.
 
 ```php
 use App\User;
@@ -84,7 +84,7 @@ Pour plus d'information sur les code HTTP. Consultez ce [lien](https://fr.wikipe
 
 Si dans votre API, la requête a été traitée avec succès et vous n'avez pas d’information à renvoyer. Il est préférable de lui retourne un `204` qu'un `200` :tada:.
 
-### Ajouter une entête http
+### Ajouter une entête HTTP
 
 Souvent vous serez amener à ajouter d'autre entête HTTP à votre réponse HTTP. La methode `addHeader` et `withHeaders` vous permet de le faire.
 
@@ -101,7 +101,7 @@ $response->withHeaders([
 ]);
 ```
 
-## Envoyer un json
+## Envoyer un JSON
 
 Dans les applications REST (Api Rest) les informations sont généralement retournés en JSON. Pour envoyer un information JSON au client, vous pouvez utiliser le help `json` ou la methode `json` sur l'instance de `Bow\Http\Response`.
 
@@ -159,6 +159,8 @@ return $response->render('users', ['users' => $users], 200, [
 ```
 
 ### Télécharger un fichier
+
+Souvent vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore vous allez faire des applications où il faut s'authentifier avant de télécharge des fichiers du type dropbox. Bow offre un API simple via la classe [Bow\Http\Response](https://bowphp.github.com/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la methode `dowload`. 
 
 ### Protototype de la methode `download`
 
@@ -232,7 +234,7 @@ Vous pouvez aussi faire la redirection avec les informations envoyés par l'util
 ```php
  return redirect()->back()->withInput();
  // Ou
- return redirect()->to()->withInput();
+ return redirect()->to("/home")->withInput();
 ```
 
 Notez que vous pouvez donner une tableau de valeur à `withInput` qui sera une collection d'information à envoyer à utilisateur.
