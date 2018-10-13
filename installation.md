@@ -24,12 +24,12 @@ Vous devez vous assurer les différents elements suivants sont installés sur vo
 
 ## Installation de Bow
 
-Pour installer une copie de Bow il vous faut d'abord installer [composer](https://getcomposer.org) ensuite vous lancez la commande suivante:
+Pour installer une copie de Bow, il vous faut d'abord installer [composer](https://getcomposer.org) et ensuite vous lancez la commande suivante:
 
 ```bash
 $ composer create-project --prefer-dist bowphp/app
 $ cd app
-$ php bow ru:server --port=8000 --host=0.0.0.0
+$ php bow run:server --port=8000 --host=0.0.0.0
 ```
 
 > __NB__: Il est conseillé d'installer `composer` de façon globale sur votre machine. Pour ce faire référez-vous à la [documentation](https://getcomposer.org/download) d'installation de composer.
@@ -45,13 +45,13 @@ $app->get('/hello/:name', function($name) {
 });
 ```
 
-Dans votre navigateur et tapez `http://localhost:8000/hello/bow`. `8000` est le port par défaut quand vous faites `php bow ru:server`.
+Dans votre navigateur et tapez `http://localhost:8000/hello/bow`. `8000` est le port par défaut quand vous faites `php bow run:server`.
 
 ```html
 hello, world bow
 ```
 
-Ou avec `curl`
+On peut faire un test avec `curl`:
 
 ```sh
 $ curl http://localhost:8000/hello/bow
