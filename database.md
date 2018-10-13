@@ -8,6 +8,8 @@
   - [Execution de requête Insert](#execution-insert)
   - [Execution de requête Update](#execution-update)
   - [Execution de requête Delete](#execution-delete)
+- [Migration](#migration)
+  - [Ajouter une migration](#ajouter-une-migration)
 
 ## Introduction
 
@@ -240,7 +242,6 @@ Pour ajouter une migration il faut passer par `php bow` avec la commande `add:mi
 
 Si vous voulez ajouter directement le nom de table dans la migration, ajouter le flag `--create=nom_de_table` ou `--table=nom_de_table`.
 
-
 ```bash
 php bow add:migration create_todos_table --create=todos
 ```
@@ -276,6 +277,5 @@ class CreatTodosTable extends Migration
   }
 }
 ```
-
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
