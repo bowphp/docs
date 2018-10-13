@@ -13,7 +13,7 @@ Bow génère automatiquement un "jeton" CSRF pour chaque session utilisateur act
 Chaque fois que vous définissez un formulaire HTML dans votre application, vous devez inclure un champ de jeton CSRF masqué dans le formulaire afin que le middleware de protection CSRF puisse valider la demande. Vous pouvez utiliser la directive @csrf Blade pour générer le champ de jeton:
 
 ```html
-<form method="POST" action="/profile">
+<form method="POST" action="/upload">
     {{ csrf_field() }}
     ...
 </form>
@@ -25,7 +25,7 @@ Le middleware `CsrfMiddleware`, qui est inclus dans le groupe de middleware Web,
 
 Lors de la création d'applications pilotées par JavaScript, il est pratique que votre bibliothèque HTTP JavaScript associe automatiquement le jeton CSRF à chaque requête sortante.
 
-{tip} Le middleware CSRF est automatiquement désactivé lors de l'exécution des tests.
+  {tip} Le middleware CSRF est automatiquement désactivé lors de l'exécution des tests.
 
 ## X-CSRF-TOKEN
 
@@ -47,7 +47,7 @@ $.ajaxSetup({
 
 ## X-XSRF-TOKEN
 
-Bow stocke le jeton CSRF actuel dans un cookie `XSRF-TOKEN` inclus dans chaque réponse générée par le framework. Vous pouvez utiliser la valeur de cookie pour définir l'en-tête de demande `X-XSRF-TOKEN`.
+Bow stock le jéton CSRF actuel dans un cookie `XSRF-TOKEN` inclus dans chaque réponse générée par le framework. Vous pouvez utiliser la valeur de cookie pour définir l'en-tête de demande `X-XSRF-TOKEN`.
 
 Ce cookie est principalement envoyé par commodité, car certains frameworks et bibliothèques JavaScript, comme Angular et Axios, placent automatiquement sa valeur dans l'en-tête X-XSRF-TOKEN.
 

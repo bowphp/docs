@@ -11,7 +11,7 @@
 
 ## Introduction
 
-Bow rend l'interaction avec les bases de données extrêmement simple sur une grande variété de backends de bases de données en utilisant le `SQL brut`, `le générateur de requêtes courant` et l'ORM Barry.
+Bow rend l'interaction avec les bases de données extrêmement simple sur deux backends de bases de données en utilisant le `SQL brut`, `le générateur de requêtes courant` et l'ORM Barry.
 
 Actuellement, Bow prend en charge deux bases de données:
 
@@ -107,7 +107,7 @@ Dans le cas ou c'est un `array` le contenu est de type `stClass` (plus d'informa
 
 ### Execution de requête Insert
 
-Pour executer une requête brute de type `INSERT` nous devrez utiliser la methode `Database::insert` ou le helper `insert`. On considère tout notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour executer une requête brute de type `INSERT` nous devrez utiliser la methode `Database::insert` ou le helper `insert`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'un requête pour inserer une information dans table `pets`:
 
@@ -168,7 +168,7 @@ $updated = insert('insert into pets (id, name, color) values (:id, :name, :color
 
 ### Execution de requête Update
 
-Pour executer une requête brute de type `UPDATE` nous devrez utiliser la methode `Database::update` ou le helper `update`. On considère tout notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour executer une requête brute de type `UPDATE` nous devrez utiliser la methode `Database::update` ou le helper `update`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'un requête de mettre à jour d'information dans table `pets`:
 
@@ -184,7 +184,7 @@ $pet = [
 $updated = Database::update('update pets set id = :id, name=:name, color=:color where id = :id', $pet);
 ```
 
-Via helper `update`:
+Via le helper `update`:
 
 ```php
 $pet = [
@@ -198,7 +198,7 @@ $updated = update('update pets set id=:id, name=:name, color=:color where id = :
 
 ### Execution de requête Delete
 
-Pour executer une requête brute de type `DELETE` nous devrez utiliser la methode `Database::delete` ou le helper `delete`. On considère tout notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour executer une requête brute de type `DELETE` nous devrez utiliser la methode `Database::delete` ou le helper `delete`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'un requête pour inserer une information dans table `pets`:
 
@@ -215,7 +215,7 @@ $deleted = delete('delete from pets where id = :id', ['id' => 2]);
 
 ### Execution de requête
 
-Pour executer une requête brute d'autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`.
+Pour executer une requête brute autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`. Il y a une methode faite pour `Database::statement` ou le helper `statement`.
 
 ```php
 use Bow\Database\Database;
