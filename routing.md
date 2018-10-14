@@ -1,12 +1,12 @@
 # HTTP Routing
 
-- [Integerroduction](#Integerroduction)
+- [Introduction](#introduction)
   - [Prototype du routing](#prototype-du-routing)
 - [Les methods de maping](#les-methods-de-maping)
   - [get](#get)
   - [post](#post)
   - [put](#put)
-  - [delete](#delete)
+  - [delete](#delete)m
   - [patch](#patch)
   - [options](#options)
   - [match](#match)
@@ -18,10 +18,10 @@
   - [Donner un nom au route](#donner-un-nom-au-route)
   - [Association de middleware](#association-de-middleware)
 
-## Integerroduction
+## Introduction
 
-Le routing vous permet de maper une url sur un controlleur ou une action particulière.
-Le système de routing de bow est grèfé directement sur l'instance de l'application, 
+Le routing vous permet de maper une URL sur un controlleur ou une action particulière.
+Le système de routing de Bow est grèfé directement sur l'instance de l'application, 
 donc sur la variable `$app`.
 
 Les routes de l'application sont dans le fichier `app.php` du dossier `routes`
@@ -65,7 +65,7 @@ $app->verbe('/', [function () {
 }]);
 ```
 
-> Notez que dans la premiere fonction il y a à la fin une instruction `return true`, cette instruction est indispensable si vous voulez lancer la prochaine fonction. Alors ce qui veut dire que si c'est aussi un `return false` la fonctione suivante ne sera pas executéé.
+> Notez que dans la première fonction il y a à la fin une instruction `return true`, cette instruction est indispensable si vous voulez lancer la prochaine fonction. Alors ce qui veut dire que si c'est aussi un `return false` la fonctione suivante ne sera pas exécutée.
 
 - Avec le nom d'un controller
 
@@ -100,7 +100,7 @@ La mise en place du routage se faire donc via les methodes suivants:
 
 ### get
 
-Cette methode permet de maper une url à une requête de type `GET`.
+Cette méthode permet de maper une URL à une requête de type `GET`.
 
 ```php
 $app->get('/', function ()
@@ -111,7 +111,7 @@ $app->get('/', function ()
 
 ### post
 
-Cette methode permet de maper une url à une requête de type `POST`
+Cette méthode permet de maper une URL à une requête de type `POST`
 
 ```php
 $app->post('/', function ()
@@ -122,18 +122,18 @@ $app->post('/', function ()
 
 ### put
 
-Cette methode permet de maper une url à une requête de type `PUT`.
+Cette méthode permet de maper une URL à une requête de type `PUT`.
 
-Quand vous utilisez des outils qui peut envoyer des requêtes de ce type comme `curl`, `httpie`.
+Quand vous utilisez des outils qui peuvent envoyer des requêtes de ce type comme `curl`, `httpie`.
 
-Parcontre les navigateurs ne supportent pas cette methode. Alors dans votre formulaire d'envoie,
+Parcontre les navigateurs ne supportent pas cette méthode. Alors dans votre formulaire d'envoie,
 il faudra créer un champs comme ceci:
 
 ```html
 <input type="hidden" name="_method" valude="PUT">
 ```
 
-ce qui aura pour but de permettre à bow de comprendre votre requête.
+ce qui aura pour but de permettre à Bow de comprendre votre requête.
 
 ```php
 $app->put('/', function ()
@@ -144,9 +144,9 @@ $app->put('/', function ()
 
 ### delete
 
-Cette methode permet de maper une url à une requête de type `DELETE`.
+Cette méthode permet de maper une URL à une requête de type `DELETE`.
 
-Quand vous utilisez des outils qui peut envoyer des requêtes de ce type comme `curl`, `httpie`.
+Quand vous utilisez des outils qui peuvent envoyer des requêtes de ce type comme `curl`, `httpie`.
 
 Parcontre les navigateurs ne supportent pas cette methode. Alors dans votre formulaire d'envoie,
 il faudra créer un champs comme ceci:
@@ -155,7 +155,7 @@ il faudra créer un champs comme ceci:
 <input type="hidden" name="_method" valude="DELETE">
 ```
 
-ce qui aura pour but de permettre à bow de comprendre votre requête.
+ce qui aura pour but de permettre à Bow de comprendre votre requête.
 
 ```php
 $app->delete('/', function ()
@@ -166,9 +166,9 @@ $app->delete('/', function ()
 
 ### patch
 
-Cette methode permet de maper une url à une requête de type `PATCH`.
+Cette méthode permet de maper une URL à une requête de type `PATCH`.
 
-Quand vous utilisez des outils qui peut envoyer des requêtes de ce type comme `curl`, `httpie`.
+Quand vous utilisez des outils qui peuvent envoyerenvoyer des requêtes de ce type comme `curl`, `httpie`.
 
 Parcontre les navigateurs ne supportent pas cette methode. Alors dans votre formulaire d'envoie,
 il faudra créer un champs comme ceci:
@@ -177,7 +177,7 @@ il faudra créer un champs comme ceci:
  <input type="hidden" name="_method" valude="PATCH">
 ```
 
-ce qui aura pour but de permettre à bow de comprendre votre requête.
+ce qui aura pour but de permettre à Bow de comprendre votre requête.
 
 ```php
 $app->patch('/', function ()
@@ -188,18 +188,18 @@ $app->patch('/', function ()
 
 ### options
 
-Cette methode permet de maper une url à une requête de type `OPTIONS`.
+Cette méthode permet de maper une URL à une requête de type `OPTIONS`.
 
-Quand vous utilisez des outils qui peut envoyer des requêtes de ce type comme `curl`, `httpie`.
+Quand vous utilisez des outils qui peuvent envoyerenvoyer des requêtes de ce type comme `curl`, `httpie`.
 
-Parcontre les navigateurs ne supportent pas cette methode. Alors dans votre formulaire d'envoie,
+Parcontre les navigateurs ne supportent pas cette méthode. Alors dans votre formulaire d'envoie,
 il faudra créer un champs comme ceci:
 
 ```html
  <input type="hidden" name="_method" valude="OPTIONS">
 ```
 
-ce qui aura pour but de permettre à bow de comprendre votre requête.
+ce qui aura pour but de permettre à Bow de comprendre votre requête.
 
 ```php
 $app->options('/', function ()
@@ -207,6 +207,8 @@ $app->options('/', function ()
   // code ici
 });
 ```
+
+> Les méthodes DELELTE, PUT, PATCH, OPTIONS ne sont pas supporter par le navigateur.
 
 Tout les methodes definir ci-dessus retourne l'instance de `Bow\Router\Route::class`. (Plus d'information sur le [`Bow\Router\Route::class`](https://bowphp.github.com/api/master/Bow/Router/Route.html))
 
@@ -223,7 +225,7 @@ $app->match(verbes, url, action);
 | paramêtre | Type |
 |----------|------|
 | verbes | `Array` - La liste de methode `http` |
-| url    | `String` - L'url de la route |
+| url    | `String` - l'URL de la route |
 | action | `String` \| `Array` \| `Closure` - L'action à lancer |
 
 ```php
@@ -235,7 +237,7 @@ $app->match(['GET', 'POST'], function ()
 
 ### any
 
-Permet d'associer tout les methodes `http` sur l'url spécifier.
+Permet d'associer tout les méthodes `http` sur l'URL spécifier.
 
 prototype de la methode `any`.
 
@@ -258,7 +260,7 @@ $app->any('/', function ()
 ### prefix
 
 Souvent vous serez amener à grouper vos routes et effectuer un branchement simple pour bien orienté votre logique.
-Les urls peuvent souvents se répéter comme ceci:
+Les URLs peuvent souvents se répéter comme ceci:
 
 ```php
 $app->get('users', function ()
@@ -288,7 +290,7 @@ $app->prefix(url, action);
 
 | paramêtre | Type |
 |----------|------|
-| url      | `String` - L'url à prefixer |
+| url      | `String` - l'URL à prefixer |
 | action   | `Closure` - Cette fonction prendra en paramêtre l'instance de l'application |
 
 Donc pour réorganiser le code précédent, il faut faire:
@@ -315,9 +317,9 @@ $app->prefix('/users', function () use ($app)
 
 ## Personnalisation
 
-Le routing vous permet aussi de personnaliser vos urls. Voici la list des possibilités de personnalisation.
+Le routing vous permet aussi de personnaliser vos URLs. Voici la list des possibilités de personnalisation.
 
-- Capturer des variables dans l'url
+- Capturer des variables dans l'URL
 - Ajouter des critères, des restrictions sur les urls
 - Donner un nom au route
 - Association de middleware
@@ -326,7 +328,7 @@ Le routing vous permet aussi de personnaliser vos urls. Voici la list des possib
 Pour faire la personnalisation il faut utiliser l'enchainement de methode.
 Dans le exemple qui suit nous allons utiliser la methode `get`.
 
-### Capturer des variables dans l'url
+### Capturer des variables dans l'URL
 
 Le routing vous permet de pouvoir capturer des variables dans urls.
 Pour le faire il faut imperativement utiliser la notation `:nom_variable`.
