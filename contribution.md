@@ -30,7 +30,7 @@ Pour le faire regardez un peu la nomenclature d'un message de commit:
 
 ```sh
 git commit
-````
+```
 
 Dans votre éditeur
 
