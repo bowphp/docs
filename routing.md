@@ -130,7 +130,7 @@ Parcontre les navigateurs ne supportent pas cette méthode. Alors dans votre for
 il faudra créer un champs comme ceci:
 
 ```html
-<input type="hidden" name="_method" valude="PUT">
+<input type="hidden" name="_method" value="PUT">
 ```
 
 ce qui aura pour but de permettre à Bow de comprendre votre requête.
@@ -152,7 +152,7 @@ Parcontre les navigateurs ne supportent pas cette methode. Alors dans votre form
 il faudra créer un champs comme ceci:
 
 ```html
-<input type="hidden" name="_method" valude="DELETE">
+<input type="hidden" name="_method" value="DELETE">
 ```
 
 ce qui aura pour but de permettre à Bow de comprendre votre requête.
@@ -174,7 +174,7 @@ Parcontre les navigateurs ne supportent pas cette methode. Alors dans votre form
 il faudra créer un champs comme ceci:
 
 ```html
- <input type="hidden" name="_method" valude="PATCH">
+ <input type="hidden" name="_method" value="PATCH">
 ```
 
 ce qui aura pour but de permettre à Bow de comprendre votre requête.
@@ -196,7 +196,7 @@ Parcontre les navigateurs ne supportent pas cette méthode. Alors dans votre for
 il faudra créer un champs comme ceci:
 
 ```html
- <input type="hidden" name="_method" valude="OPTIONS">
+ <input type="hidden" name="_method" value="OPTIONS">
 ```
 
 ce qui aura pour but de permettre à Bow de comprendre votre requête.
@@ -408,7 +408,7 @@ $app->get('/:name', function ($name)
 ### Association de middleware
 
 Un middleware c'est un ou plusieurs actions qui ce placent entre la requete et l'action
-a executer.
+a executer. Tout les framework moderne en sont dotés.
 
 Plus d'information sur le sujet allez ce lien [middleware](#documentation-middlewares)
 

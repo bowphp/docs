@@ -146,8 +146,6 @@ class PetController extends Controller
   /**
    * Point d'entré
    *
-   * GET /
-   *
    * @return void
    */
   public function index()
@@ -157,8 +155,6 @@ class PetController extends Controller
 
   /**
    * Permet d'afficher la vue permettant de créer une résource.
-   *
-   * GET /create
    *
    * @return void
    */
@@ -170,8 +166,6 @@ class PetController extends Controller
   /**
    * Permet d'ajouter une nouvelle résource dans la base d'information
    *
-   * POST /
-   *
    * @return void
    */
   public function store()
@@ -181,8 +175,6 @@ class PetController extends Controller
 
   /**
    * Permet de récupérer un information précise avec un identifiant.
-   *
-   * GET /:id
    *
    * @param mixed $id
    * @return void
@@ -195,8 +187,6 @@ class PetController extends Controller
   /**
    * Mise à jour d'un ressource en utilisant paramètre du GET
    *
-   * GET /:id/edit
-   *
    * @param mixed $id
    * @return void
    */
@@ -208,8 +198,6 @@ class PetController extends Controller
   /**
    * Mise à jour d'une résource
    *
-   * PUT /:id
-   *
    * @param mixed $id
    * @return void
    */
@@ -220,8 +208,6 @@ class PetController extends Controller
 
   /**
    * Permet de supprimer une resource
-   *
-   * DELETE /:id
    *
    * @param mixed $id
    * @return void
