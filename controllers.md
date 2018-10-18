@@ -1,4 +1,7 @@
-# HTTP Controlleur
+---
+id: http-controlleur
+title: HTTP Controlleur
+---
 
 - [Introduction](#introduction)
   - [Configuration](#configuration)

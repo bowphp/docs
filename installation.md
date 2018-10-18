@@ -1,4 +1,7 @@
-# Installation
+---
+id: Installation
+title: Installation
+---
 
 - [Installation](#installation)
   - [Préréquis du serveur](#préréquis-du-serveur)

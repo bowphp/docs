@@ -1,4 +1,7 @@
-# Database
+---
+id: Database
+title: Database
+---
 
 - [Introduction](#introduction)
   - [Configuration](#configuration)

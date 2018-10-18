@@ -1,4 +1,7 @@
-# CSRF Protection
+---
+id: csrf-protection
+title: CSRF Protection
+---
 
 [Introduction](#introduction)
 [X-CSRF-Token](#x-csrf-token)

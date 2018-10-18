@@ -1,4 +1,7 @@
-# HTTP Session
+---
+id: HTTP Session
+title: HTTP Session
+---
 
 - [Introduction](#introduction)
 - [Utilisation](#introduction)

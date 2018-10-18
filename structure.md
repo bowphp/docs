@@ -1,4 +1,7 @@
-# Configuration
+---
+id: Structure
+title: Structure
+---
 
 - [Structure globale](#structure-globale)
 - [Le dossier app](#le-dossier-app)

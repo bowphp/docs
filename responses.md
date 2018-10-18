@@ -1,4 +1,7 @@
-# HTTP Response
+---
+id: HTTP Response
+title: HTTP Response
+---
 
 - [Introduction](#introduction)
 - [Envoyé un résponse](#envoyé-un-résponse)

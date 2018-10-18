@@ -1,4 +1,7 @@
-# HTTP Request
+---
+id: HTTP Request
+title: HTTP Request
+---
 
 - [Introduction](#introduction)
 - [Accéder à la Request](#accéder-à-la-request)

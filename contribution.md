@@ -1,6 +1,9 @@
-# Contribution
+---
+id: Contribution
+title: Contribution
+---
 
-- [introduction](#introduction)
+- [Introduction](#introduction)
 - [Découpage du projet](#decoupage-du-projet)
 - [Comment faire les commits](#comment-faire-les-commits)
 

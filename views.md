@@ -1,4 +1,7 @@
-# Views
+---
+id: Views
+title: Views
+---
 
 - [Introduction](#introduction)
   - [Configuration](#configuration)
