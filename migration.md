@@ -1,6 +1,7 @@
 ---
 id: migration
 title: Migration
+custom_edit_url: https://github.com/bowphp/docs/edit/3.0/migration.md
 ---
 
 - [Ajouter une migration](#ajouter-une-migration)

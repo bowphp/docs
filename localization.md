@@ -1,6 +1,7 @@
 ---
 id: localization
 title: i18n (localisation)
+custom_edit_url: https://github.com/bowphp/docs/edit/3.0/localization.md
 ---
 
 - [Introduction](#introduction)

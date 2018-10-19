@@ -1,6 +1,7 @@
 ---
 id: orm
 title: Barry ORM
+custom_edit_url: https://github.com/bowphp/docs/edit/3.0/orm.md
 ---
 
 <h1 align="center">

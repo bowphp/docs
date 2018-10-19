@@ -1,6 +1,7 @@
 ---
 id: views
 title: Templating
+custom_edit_url: https://github.com/bowphp/docs/edit/3.0/views.md
 ---
 
 - [Introduction](#introduction)
