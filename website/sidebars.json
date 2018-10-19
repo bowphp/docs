@@ -1,0 +1,33 @@
+{
+  "docs": {
+    "Démarrage": [
+      "installation",
+      "structure",
+      "contribution"
+    ],
+    "Guide": [
+      "routing",
+      "controlleur",
+      "middleware",
+      "i18n",
+      "views",
+      "storage"
+    ],
+    "Base de donnée": [
+      "database",
+      "migration",
+      "seeding"
+    ],
+    "Http": [
+      "http-request",
+      "csrf-protection",
+      "http-response",
+      "http-session"
+    ],
+    "API": [
+      "cli",
+      "plugin",
+      "mixfile"
+    ]
+  }
+}
