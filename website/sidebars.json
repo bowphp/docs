@@ -16,7 +16,8 @@
     "Base de donnée": [
       "database",
       "migration",
-      "seeding"
+      "seeding",
+      "orm"
     ],
     "Http": [
       "http-request",

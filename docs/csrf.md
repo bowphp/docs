@@ -15,10 +15,10 @@ Bow génère automatiquement un "jeton" CSRF pour chaque session utilisateur act
 
 Chaque fois que vous définissez un formulaire HTML dans votre application, vous devez inclure un champ de jeton CSRF masqué dans le formulaire afin que le middleware de protection CSRF puisse valider la demande. Vous pouvez utiliser la directive @csrf Blade pour générer le champ de jeton:
 
-```html
+```twig
 <form method="POST" action="/upload">
-    {{ csrf_field() }}
-    ...
+  {{ csrf_field() }}
+  ...
 </form>
 ```
 
@@ -28,13 +28,13 @@ Le middleware `CsrfMiddleware`, qui est inclus dans le groupe de middleware Web,
 
 Lors de la création d'applications pilotées par JavaScript, il est pratique que votre bibliothèque HTTP JavaScript associe automatiquement le jeton CSRF à chaque requête sortante.
 
-  {tip} Le middleware CSRF est automatiquement désactivé lors de l'exécution des tests.
+Le middleware CSRF est automatiquement ajouté lors de l'exécution de chaque requête.
 
 ## X-CSRF-TOKEN
 
 Outre la vérification du jeton CSRF en tant que paramètre POST, le middleware `CsrfMiddleware` vérifie également l’en-tête de demande X-CSRF-TOKEN. Vous pouvez, par exemple, stocker le jeton dans une balise META HTML:
 
-```html
+```twig
 <meta name="csrf-token" content="{{ csrf_token() }}">
 ```
 
@@ -42,9 +42,9 @@ Ensuite, une fois que vous avez créé la balise `META`, vous pouvez demander à
 
 ```js
 $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
 });
 ```
 

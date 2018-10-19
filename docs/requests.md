@@ -10,7 +10,7 @@ title: HTTP Request
   - [Via un controlleur](#via-un-controlleur)
 - [Chemin de requête et méthode](#Chemin-de-requête-et-méthode)
   - [Récupérer le chemin de requête](#récupérer-le-chemin-de-requête)
-  - [Récupérer la methode de requête](#récupérer-la-methode-de-requête)
+  - [Récupérer la méthode de requête](#récupérer-la-méthode-de-requête)
   - [Vérifier si la requete est en AJAX](#vérifier-si-la-requete-est-en-ajax)
 - [Récupérer une entrée](#récupérer-une-entrée)
 - [Fichier uploader](#fichier-uploader)
@@ -21,11 +21,11 @@ title: HTTP Request
 
 Une requête HTTP c'est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autre outil telque `curl`, `httpie` et autre.
 
-Ce message est traite par Bow à travers la classe [`Bow\Http\Request`]000(https://bowphp.github.com/api/master/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoie par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
+Ce message est traite par Bow à travers la classe [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoie par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
 
 ## Accéder à la Request
 
-Pour capturer un message ou requête HTTP, vous pouvez premièrement utiliser le helper `request()` qui vous donne une instance de [`Bow\Http\Request`](https://bowphp.github.com/api/master/Bow/Http/Request.html), deuxièmement vous pouvez passer par l'injecteur de dépendance via une action de contrôleur.
+Pour capturer un message ou requête HTTP, vous pouvez premièrement utiliser le helper `request()` qui vous donne une instance de [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Request.html), deuxièmement vous pouvez passer par l'injecteur de dépendance via une action de contrôleur.
 
 ## Récupération des données
 
@@ -64,7 +64,7 @@ Si votre méthode de contrôleur attend également une entrée d'un paramètre d
 $app->get('/users/:id', 'UserController::show');
 ```
 
-Vous pouvez toujours taper la requête [Bow\Http\Request](https://bowphp.github.com/api/master/Bow/Http/Request.html) et accéder à l'id de votre paramètre de route en définissant votre méthode de contrôleur comme suit:
+Vous pouvez toujours taper la requête [Bow\Http\Request](https://bowphp.github.io/api/master/Bow/Http/Request.html) et accéder à l'id de votre paramètre de route en définissant votre méthode de contrôleur comme suit:
 
 ```php
 <?php
@@ -113,41 +113,41 @@ if ($request->is('users/*')) {
 }
 ```
 
-### Récupérer la methode de requête
+### Récupérer la méthode de requête
 
-La méthode `method` retournera le verbe HTTP pour la requête. Vous pouvez utiliser les méthodes `isPost`, `isGet`, `isPut`, `isDelete`, `isOptions`, `isPutch` pour vérifier que le verbe HTTP correspond à une methode HTTP de la requête donnée:
+La méthode `method` retournera le verbe HTTP pour la requête. Vous pouvez utiliser les méthodes `isPost`, `isGet`, `isPut`, `isDelete`, `isOptions`, `isPutch` pour vérifier que le verbe HTTP correspond à une méthode HTTP de la requête donnée:
 
 ```php
 $method = $request->method();
 
 if ($request->isPost()) {
-  // code ici
+  //
 }
 
 if ($request->isGet()) {
-  // code ici
+  //
 }
 
 if ($request->isPut()) {
-  // code ici
+  //
 }
 
 if ($request->isDelete()) {
-  // code ici
+  //
 }
 
 if ($request->isOptions()) {
-  // code ici
+  //
 }
 
 if ($request->isPatch()) {
-  // code ici
+  //
 }
 ```
 
-### Vérifier si la requete est en AJAX
+### Vérifier si la requête est en AJAX
 
-Pour determiner si une requete a été envoyé via AJAX la methode `isAjax` vous permet de vérifier ça.
+Pour déterminer si une requête a été envoyé via AJAX, la méthode `isAjax` vous permet de vérifier ça.
 
 ```php
 if ($request->isAjax()) {
@@ -199,7 +199,7 @@ if ($request->has('name')) {
 
 ### Déterminer l'adresse IP de client
 
-Souvent vous allez vouloir l'adresse IP du client qui à envoyer la requête, la methode `ip` permet comme son nom l'indique de récupérer l'adresse ip de client:
+Souvent vous allez vouloir l'adresse IP du client qui à envoyer la requête, la méthode `ip` permet comme son nom l'indique de récupérer l'adresse ip de client:
 
 ```php
 $ip = $request->ip();
@@ -211,7 +211,7 @@ if ($ip == 'xxx.xxx.xxx.xxx') {
 
 ### Déterminer le Port de client
 
-La methode `port` permet comme son nom l'indique de récupérer le port de client:
+La méthode `port` permet comme son nom l'indique de récupérer le port de client:
 
 ```php
 $port = $request->port();
@@ -221,18 +221,18 @@ $port = $request->port();
 
 ### Déterminer le protocol de client
 
-La methode `protocol` permet comme son nom l'indique de récupérer le protocol de client:
+La méthode `protocol` permet comme son nom l'indique de récupérer le protocol de client:
 
 ```php
 $protocol = $request->protocol();
 // Code ici
 ```
 
-Il y a aussi la methode `isProtocol` qui permet de faire de vérification sur le protocol:
+Il y a aussi la méthode `isProtocol` qui permet de faire de vérification sur le protocol:
 
 ```php
 if ($request->isProtocol('http')) {
-  // code ici
+  //
 }
 ```
 
@@ -240,13 +240,13 @@ Et `isSecure` vous permet de vérifier si la requête est sécurisé.
 
 ```php
 if ($request->isSecure()) {
-  // code ici
+  //
 }
 ```
 
 ### Récupérer les entête-https
 
-Vous avez la possibilité de récupérer les entête-https du client avec la methode `getHeader` et `hasHeader` pour vérifier l'existance d'une entête-http.
+Vous avez la possibilité de récupérer les [entête-https](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers) du client avec la méthode `getHeader` et `hasHeader` pour vérifier l'existance d'une entête-http.
 
 ```php
 $header = $request->getHeader('content-type');
@@ -261,7 +261,7 @@ if ($request->hasHeader('x-proxy-key')) {
 
 ### Récupérer le IP du server
 
-Vous avez la possibilité de récupérer l'adresse IP de serveur sur lequel votre application Bow.
+Vous avez la possibilité de récupérer l'adresse IP de serveur sur lequel votre application Bow est hébergé.
 
 ```php
 $hostname = $request->hostname();
@@ -272,7 +272,7 @@ echo $hostname;
 
 ### Récupérer le domaine Origin
 
-Le domaine dit `origin` est l'adresse récupérer avec la methode `hostname` ensuite associé avec le protocol de la requête.
+Le domaine dit `origin` est l'adresse récupérer avec la méthode `hostname` ensuite associé avec le protocol de la requête.
 
 ```php
 $hostname = $request->origin();
@@ -283,7 +283,7 @@ echo $hostname;
 
 ### Récupérer le temps de la requête
 
-Il est souvent interssent de voir combien de temps à faire une requête. La methode `time` nous permet de le faire et elle retourne un timestamp.
+Il est souvent intéressent de voir combien de temps à faire une requête. La méthode `time` nous permet de le faire et elle retourne un timestamp.
 
 ```php
 $time = $request->time();
@@ -293,7 +293,7 @@ echo $time;
 
 ## Fichier uploader
 
-Souvent les requêtes sont associés à des fichiers envoyés par l'utilisateur, vous pouvez traiter ces fichiers sur [`Bow\Http\Request`](https://bowphp.github.com/api/master/Bow/Http/Reqeust.html) les methodes `file` et le helper du même nom.
+Souvent les requêtes sont associés à des fichiers envoyés par l'utilisateur, vous pouvez traiter ces fichiers sur [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Reqeust.html) les méthodes `file` et le helper du même nom.
 
 considérons le formulaire suivant:
 
@@ -304,7 +304,9 @@ considérons le formulaire suivant:
 </form>
 ```
 
-Comment avoir accès au fichier envoyé ? Ici nous pouvons utiliser la methode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadFile`](https://bowphp.github.com/api/master/Bow/Http/UploadFile.html[`Bow\Http\UploadFile`](https://bowphp.github.com/api/master/Bow/Http/UploadFile.html)).
+> Comment avoir accès au fichier envoyé ? 
+
+Ici nous pouvons utiliser la méthode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadFile`](https://bowphp.github.io/api/master/Bow/Http/UploadFile.html).
 
 ```php
 use Bow\Http\Request;
@@ -335,7 +337,7 @@ Vous pouvez déterminer si un fichier est présent sur la requête en utilisant 
 
 ```php
 if ($request->hasFile('photo')) {
-  // code ici
+  //
 }
 ```
 
@@ -353,7 +355,7 @@ if ($file->isUploaded()) {
 
 ### Savegarder le fichier
 
-Cela consiste juste à déplacer le fichier uploader dans une autre dossier et ceci grace à la methode `moveTo`.
+Cela consiste juste à déplacer le fichier uploader dans une autre dossier et ceci grace à la méthode `moveTo`.
 
 ```php
 $file = $request->file('photo');
@@ -361,9 +363,9 @@ $file = $request->file('photo');
 $file->moveTo("/path/to/your/store/directory", $filename = null);
 ```
 
-Si `$filename` est `null`, sa valeur sera le nom du fichier hasher avec la methode [`getHashName`](https://bowphp.github.io/api/master/Bow/Http/UploadFile.html#method_getHashName).
+Si `$filename` est `null`, sa valeur sera le nom du fichier hasher avec la méthode [`getHashName`](https://bowphp.github.io/api/master/Bow/Http/UploadFile.html#method_getHashName).
 
-Souvent dans le cas où vous attendez des fichiers envoyé via un formulaire dont le champs est sous la forme `photo[]`. la methode `file` retourne une [`Bow\Support\Collection`](https://bowphp.github.com/api/master/Bow/Support/Collection.html):
+Souvent dans le cas où vous attendez des fichiers envoyé via un formulaire dont le champs est sous la forme `photo[]`. la méthode `file` retourne une [`Bow\Support\Collection`](https://bowphp.github.io/api/master/Bow/Support/Collection.html):
 
 ```html
 <form action="/upload" method="post" enctype="multipart/form-data">
@@ -373,7 +375,7 @@ Souvent dans le cas où vous attendez des fichiers envoyé via un formulaire don
 </form>
 ```
 
-Dans cette exemple, la methode `file` retournera une [`Bow\Support\Collection`](https://bowphp.github.com/api/master/Bow/Support/Collection.html) qui contiendra pour chaque oruccencre une instance de [`Bow\Http\UploadFile`](https://bowphp.github.com/api/master/Bow/Http/UploadFile.html).
+Dans cette exemple, la méthode `file` retournera une [`Bow\Support\Collection`](https://bowphp.github.io/api/master/Bow/Support/Collection.html) qui contiendra pour chaque oruccencre une instance de [`Bow\Http\UploadFile`](https://bowphp.github.io/api/master/Bow/Http/UploadFile.html).
 
 ```php
 use Bow\Http\Request;

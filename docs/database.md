@@ -40,7 +40,7 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 
 ### Connexion à plusieur Base de donnée
 
-Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode static de `connexion` sur la classe de la [`Bow\Database\Database`](https://bowphp.github.com/api/master/Bow/Database/Database.html). Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/db.php`:
+Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode static de `connexion` sur la classe de la [`Bow\Database\Database`](https://bowphp.github.io/api/master/Bow/Database/Database.html). Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/db.php`:
 
 ```php
 use Bow\Database\Database;
@@ -84,13 +84,13 @@ Execution d'un requête pour optenir tous les informations de la table `pets`:
 
 ```php
 use Bow\Database\Database;
-$pets = Database::select('select * from pets');
+$pets = Database::select('select * from `pets`');
 ```
 
 Via helper `select`:
 
 ```php
-$pets = select('select * from pets');
+$pets = select('select * from `pets`');
 ```
 
 #### Sélection conditionnel
@@ -99,13 +99,13 @@ Execution d'un requête pour optenir tous les informations de la table `pets` qu
 
 ```php
 use Bow\Database\Database;
-$pet = Database::select('select * from pets where id = :id', ['id' => 1]);
+$pet = Database::select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
 Via helper `select`:
 
 ```php
-$pet = select('select * from pets where id = :id', ['id' => 1]);
+$pet = select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
 Notez que la valeur retournée par la methode `select` est un `array` ou `null` s'il y a aucune informations.
@@ -126,7 +126,7 @@ $pet = [
   'color' => 'Green'
 ];
 
-$inserted = Database::insert('insert into pets (id, name, color) values (:id, :name, :color);', $pet);
+$inserted = Database::insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
 Via helper `insert`:
@@ -138,7 +138,7 @@ $pet = [
   'color' => 'White'
 ];
 
-$inserted = insert('insert into pets (id, name, color) values (:id, :name, :color);', $pet);
+$inserted = insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
 Notez que la valeur retournée par la methode `insert` est un `int` ou `number` qui est le nombre d'insertion.
@@ -163,13 +163,13 @@ $pets = [
   ]
 ];
 
-$inserted = Database::insert('insert into pets (id, name, color) values (:id, :name, :color);', $pets);
+$inserted = Database::insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pets);
 ```
 
 Via helper `insert`:
 
 ```php
-$updated = insert('insert into pets (id, name, color) values (:id, :name, :color);', $pets);
+$updated = insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pets);
 ```
 
 ### Execution de requête Update
@@ -187,7 +187,7 @@ $pet = [
   'color' => 'Purple'
 ];
 
-$updated = Database::update('update pets set id = :id, name=:name, color=:color where id = :id', $pet);
+$updated = Database::update('update `pets` set id = :id, name=:name, color=:color where id = :id', $pet);
 ```
 
 Via le helper `update`:
@@ -199,7 +199,7 @@ $pet = [
   'color' => 'Yellow'
 ];
 
-$updated = update('update pets set id=:id, name=:name, color=:color where id = :id', $pet);
+$updated = update('update `pets` set id=:id, name=:name, color=:color where id = :id', $pet);
 ```
 
 ### Execution de requête Delete
@@ -210,7 +210,7 @@ Execution d'un requête pour inserer une information dans table `pets`:
 
 ```php
 use Bow\Database\Database;
-$deleted = Database::delete('delete from pets where id = :id', ['id' => 1]);
+$deleted = Database::delete('delete from `pets` where id = :id', ['id' => 1]);
 ```
 
 Via le helper `delete`:

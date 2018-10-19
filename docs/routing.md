@@ -213,7 +213,7 @@ $app->options('/', function ()
 
 > Les méthodes DELELTE, PUT, PATCH, OPTIONS ne sont pas supporter par le navigateur.
 
-Tout les methodes definir ci-dessus retourne l'instance de `Bow\Router\Route::class`. (Plus d'information sur le [`Bow\Router\Route::class`](https://bowphp.github.com/api/master/Bow/Router/Route.html))
+Tout les methodes definir ci-dessus retourne l'instance de `Bow\Router\Route::class`. (Plus d'information sur le [`Bow\Router\Route::class`](https://bowphp.github.io/api/master/Bow/Router/Route.html))
 
 ### match
 

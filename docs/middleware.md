@@ -1,5 +1,5 @@
 ---
-id: http-middleware
+id: middleware
 title: HTTP Middleware
 ---
 
