@@ -4,7 +4,7 @@ title: Barry ORM
 ---
 
 <h1 align="center">
-    <img src="https://github.com/bowphp/arts/blob/master/barry.jpg" width="150px">
+    <img src="https://raw.githubusercontent.com/bowphp/arts/master/barry.jpg" width="150px">
     <br>Barry ORM
 </h1>
 
