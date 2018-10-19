@@ -1,6 +1,6 @@
 ---
-id: localization
-title: i18n (localisation)
+id: i18n
+title: i18n
 custom_edit_url: https://github.com/bowphp/docs/edit/3.0/localization.md
 ---
 
