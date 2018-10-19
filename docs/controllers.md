@@ -1,7 +1,11 @@
-# HTTP Controlleur
+---
+id: controlleur
+title: Controlleur
+custom_edit_url: https://github.com/bowphp/docs/edit/3.0/controller.md
+---
 
 - [Introduction](#introduction)
-  - [Configuration](#configuration)
+- [Configuration](#configuration)
 - [Controlleur Basic](#controlleur-basic)
   - [Définir un controlleur](#définir-un-controlleur)
   - [Contrôleurs et espaces de noms](#contrôleurs-et-espaces-de-noms)

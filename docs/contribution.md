@@ -1,6 +1,10 @@
-# Contribution
+---
+id: contribution
+title: Contribution
+custom_edit_url: https://github.com/bowphp/docs/edit/3.0/contribution.md
+---
 
-- [introduction](#introduction)
+- [Introduction](#introduction)
 - [Découpage du projet](#decoupage-du-projet)
 - [Comment faire les commits](#comment-faire-les-commits)
 
@@ -14,19 +18,17 @@ Pour participer au projet il faut:
 - Faire une publication sur votre dépot `git push origin branche-de-vos-traveaux`
 - Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
 
-
 ## Découpage du projet
 
 Le projet Bow framework est découper en sous projet. Alors chaque participant poura participer sur la section dans laquelle il se sens le mieux.
 
-Imaginons que vous etes plus confortable avec la construction des Routing. Il suffit de vous concentrer sur `src/Routing`. Notez que les sections ont faire pour être indépendant et donc possède le propre configuration.
-
+Imaginons que vous êtes plus confortable avec la construction des Routing. Il suffit de vous concentrer sur `src/Routing`. Notez que les sections ont faire pour être indépendant et donc possède leur propre configuration du style `SectionConfiguration` et qui implément l'interface `Bow\Configuration\Configuration`.
 
 ## Comment faire les commits
 
-Les commits permettent de valider votre modification. Mais dans le projet Bow, il y a une façon d'écrire le message de commit. Prenons un exemple, vous avez travailler sur la section `Session` et vous voulez valider vos modification.
+Les commits permettent de valider vos modifications. Mais dans le projet Bow, il y a une façon d'écrire le message de commit. Prenons un exemple, vous avez travailler sur la section `Session` et vous voulez valider vos modification.
 
-Pour le faire regardez un peu la nomenclature d'un message de commit:
+Pour le faire, regardons un peu la nomenclature d'un message de commit:
 
 ```sh
 git commit
@@ -34,7 +36,7 @@ git commit
 
 Dans votre éditeur
 
-```
+```sh
 [nom-de-la-section] message de commit
 
 Description
@@ -42,17 +44,19 @@ Description
 
 Dans notre exemple précédant nous allons donc faire:
 
-```
+```sh
 git commit -m "[session] message de modification"
 ```
 
-La modification peut aussi affecture un element dans un section:
+La modification peut aussi affecté un élément dans un section:
 
-```
+```sh
 git commit -m "[http:request] bug fix #40"
 ```
 
-Dans le cas ou votre modification affect plusieur section ? Vous donnez un message et un description des modifications sous forme de liste à puce.
+Dans le cas ou votre modification affecte plusieur section ? Vous donnez un message et un description des modifications sous forme de liste à puce.
+
+> Notez que les messages de commit son anglais.
 
 ## Auteurs
 
@@ -63,4 +67,4 @@ Liste des contributeurs:
 
 ## Contact
 
-SVP s'il y a un bogue sur le projet veuillez me contacter par email ou laissez moi un message sur le [slack](https://bowphp.slack.com).
+SVP s'il y a un bogue sur le projet veuillez me contacter par [email](mailto:dakiafranck@gmail "Contact par email") ou laissez moi un message sur le [slack](https://bowphp.slack.com).

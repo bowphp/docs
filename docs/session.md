@@ -1,4 +1,8 @@
-# HTTP Session
+---
+id: http-session
+title: HTTP Session
+custom_edit_url: https://github.com/bowphp/docs/edit/3.0/session.md
+---
 
 - [Introduction](#introduction)
 - [Utilisation](#introduction)

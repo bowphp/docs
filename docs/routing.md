@@ -1,12 +1,16 @@
-# HTTP Routing
+---
+id: routing
+title: Routing
+custom_edit_url: https://github.com/bowphp/docs/edit/3.0/routing.md
+---
 
 - [Introduction](#introduction)
-  - [Prototype du routing](#prototype-du-routing)
+- [Prototype du routing](#prototype-du-routing)
 - [Les methods de maping](#les-methods-de-maping)
   - [get](#get)
   - [post](#post)
   - [put](#put)
-  - [delete](#delete)m
+  - [delete](#delete)
   - [patch](#patch)
   - [options](#options)
   - [match](#match)
@@ -27,7 +31,7 @@ donc sur la variable `$app`.
 Les routes de l'application sont dans le fichier `app.php` du dossier `routes`
 de votre application.
 
-### Prototype du routing
+## Prototype du routing
 
 prototype des methodes du routing
 

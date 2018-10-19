@@ -1,4 +1,8 @@
-# HTTP Request
+---
+id: http-request
+title: HTTP Request
+custom_edit_url: https://github.com/bowphp/docs/edit/3.0/requests.md
+---
 
 - [Introduction](#introduction)
 - [Accéder à la Request](#accéder-à-la-request)
