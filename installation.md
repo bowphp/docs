@@ -4,11 +4,10 @@ title: Installation
 custom_edit_url: https://github.com/bowphp/docs/edit/3.0/installation.md
 ---
 
-- [Installation](#installation)
-  - [Préréquis du serveur](#préréquis-du-serveur)
-  - [Installation de Bow](#installation-de-bow)
-  - [Test rapide](#test-rapide)
-  - [Configuration](#configuration)
+- [Préréquis du serveur](#préréquis-du-serveur)
+- [Installation de Bow](#installation-de-bow)
+- [Test rapide](#test-rapide)
+- [Configuration](#configuration)
 - [Configuration Serveur Web](#configuration-serveur-web)
   - [Apache](#apache)
   - [Nginx](#nginx)

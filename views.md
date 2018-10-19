@@ -5,8 +5,8 @@ custom_edit_url: https://github.com/bowphp/docs/edit/3.0/views.md
 ---
 
 - [Introduction](#introduction)
-  - [Configuration](#configuration)
-  - [Package supplementaire](#package-supplementaire)
+- [Configuration](#configuration)
+- [Package supplementaire](#package-supplementaire)
 - [Création de vue](#création-de-vue)
 - [Vue avec Twig](#vue-avec-twig)
 - [Vue avec Pug PHP](#vue-avec-pug-php)
@@ -16,7 +16,7 @@ custom_edit_url: https://github.com/bowphp/docs/edit/3.0/views.md
 
 Les vues contiennent le code HTML fourni par votre application et séparent votre logique de contrôleur / application de votre logique de présentation:
 
-### Configuration
+## Configuration
 
 Bow framework implement 3 moteur de template par defaut, [Twig](https://twig.symfony.com), [Pug-PHP](https://www.phug-lang.com/), [Mustache-PHP](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags).
 La configuration des vues ce trouve dans le fichier `view.php` du dossier `config`/..
@@ -25,7 +25,7 @@ Spécifiez le nom du template à utiliser avec option `engine` de la configurati
 
 Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entré `extension`. Vous verez également que les vues sont stockées dans le répertoire `components/views` par defaut.
 
-### Package supplementaire
+## Package supplementaire
 
 Dans le cas où vous avez opter pour un autre moteur template, voici la liste des packages nécessaires:
 

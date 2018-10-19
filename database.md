@@ -6,6 +6,7 @@ custom_edit_url: https://github.com/bowphp/docs/edit/3.0/database.md
 
 - [Introduction](#introduction)
   - [Configuration](#configuration)
+  - [SQLite Configuration](#sqlite-configuration)
   - [Connexion à plusieur Base de donnée](#connexion-multiple)
 - [requête SQL Brute](#introduction)
   - [Execution de requête Select](#execution-select)

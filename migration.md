@@ -4,8 +4,11 @@ title: Migration
 custom_edit_url: https://github.com/bowphp/docs/edit/3.0/migration.md
 ---
 
+- [Introduction](#introduction)
 - [Ajouter une migration](#ajouter-une-migration)
 - [Liste de méthode](liste-de-methode)
+
+## Introduction
 
 Les migrations sont un moyen pour versionner votre base de donnée qui évolue souvent avec les modifications de l'application.
 
