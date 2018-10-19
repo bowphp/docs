@@ -3,7 +3,7 @@ id: installation
 title: Installation
 ---
 
-- [Préréquis du serveur](#prerequis-du-serveur)
+- [Prérequis du serveur](#prerequis-du-serveur)
 - [Installation de Bow](#installation-de-bow)
 - [Test rapide](#test-rapide)
 - [Configuration](#configuration)
@@ -13,7 +13,7 @@ title: Installation
 
 Dans cette section nous allons apprendre à installer une application Bow framework et faire un test rapide.
 
-## Préréquis du serveur
+## Prérequis du serveur
 
 Vous devez vous assurer que les différents éléments suivants sont installés sur votre machine.
 
