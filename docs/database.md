@@ -1,7 +1,6 @@
 ---
 id: database
 title: Démarrage
-custom_edit_url: https://github.com/bowphp/docs/edit/3.0/database.md
 ---
 
 - [Introduction](#introduction)

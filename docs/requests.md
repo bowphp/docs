@@ -1,7 +1,6 @@
 ---
 id: http-request
 title: HTTP Request
-custom_edit_url: https://github.com/bowphp/docs/edit/3.0/requests.md
 ---
 
 - [Introduction](#introduction)

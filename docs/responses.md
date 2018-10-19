@@ -1,7 +1,6 @@
 ---
 id: http-response
 title: HTTP Response
-custom_edit_url: https://github.com/bowphp/docs/edit/3.0/responses.md
 ---
 
 - [Introduction](#introduction)

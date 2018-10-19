@@ -42,10 +42,7 @@
         "title": "Barry ORM"
       },
       "plugin": {
-        "title": "Plugin (Configuration)"
-      },
-      "readme": {
-        "title": "readme"
+        "title": "Plugin"
       },
       "http-request": {
         "title": "HTTP Request"

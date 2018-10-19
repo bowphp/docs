@@ -1,7 +1,6 @@
 ---
 id: installation
 title: Installation
-custom_edit_url: https://github.com/bowphp/docs/edit/3.0/installation.md
 ---
 
 - [Préréquis du serveur](#prerequis-du-serveur)
