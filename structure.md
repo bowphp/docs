@@ -1,5 +1,5 @@
 ---
-id: Structure
+id: structure
 title: Structure
 ---
 

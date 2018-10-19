@@ -1,6 +1,6 @@
 ---
-id: http-controlleur
-title: HTTP Controlleur
+id: controlleur
+title: Controlleur
 ---
 
 - [Introduction](#introduction)

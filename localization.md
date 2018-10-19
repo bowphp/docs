@@ -1,6 +1,6 @@
 ---
-id: Localisation
-title: Localisation
+id: localization
+title: i18n (localisation)
 ---
 
 - [Introduction](#introduction)

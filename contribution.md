@@ -1,5 +1,5 @@
 ---
-id: Contribution
+id: contribution
 title: Contribution
 ---
 

@@ -1,6 +1,6 @@
 ---
-id: Views
-title: Views
+id: views
+title: Templating
 ---
 
 - [Introduction](#introduction)

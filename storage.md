@@ -1,4 +1,4 @@
 ---
-id: Storage
+id: storage
 title: Storage
 ---

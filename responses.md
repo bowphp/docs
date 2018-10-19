@@ -1,5 +1,5 @@
 ---
-id: HTTP Response
+id: http-response
 title: HTTP Response
 ---
 

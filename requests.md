@@ -1,5 +1,5 @@
 ---
-id: HTTP Request
+id: http-request
 title: HTTP Request
 ---
 

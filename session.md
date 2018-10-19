@@ -1,5 +1,5 @@
 ---
-id: HTTP Session
+id: http-session
 title: HTTP Session
 ---
 

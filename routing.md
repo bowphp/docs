@@ -1,6 +1,6 @@
 ---
-id: HTTP Routing
-title: HTTP Routing
+id: routing
+title: Routing
 ---
 
 - [Introduction](#introduction)
@@ -9,7 +9,7 @@ title: HTTP Routing
   - [get](#get)
   - [post](#post)
   - [put](#put)
-  - [delete](#delete)m
+  - [delete](#delete)
   - [patch](#patch)
   - [options](#options)
   - [match](#match)
