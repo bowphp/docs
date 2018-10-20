@@ -30,7 +30,7 @@
         "title": "i18n"
       },
       "middleware": {
-        "title": "HTTP Middleware"
+        "title": "Middleware"
       },
       "migration": {
         "title": "Migration"
