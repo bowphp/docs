@@ -21,7 +21,7 @@ title: HTTP Request
 
 Une requête HTTP c'est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autre outil telque `curl`, `httpie` et autre.
 
-Ce message est traite par Bow à travers la classe [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoie par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
+Ce message est traité par Bow à travers la classe [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoie par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
 
 ## Accéder à la Request
 

@@ -54,7 +54,6 @@ $app->get('/', function() {
 });
 ```
 
-
 ### Utilisation
 
 Exemple d'utilisation: (Avec le classe `View`)
@@ -66,23 +65,29 @@ View::parse(view, data, status)
 
 | paramètre | type | description|
 |-----------|------|------------|
-| view      | String| Le chemin de la vue sachant dans le moteur se base sur le dossier des vues|
-| data      | Array, Object| Les données a passé à la vue|
-| status    | Integer | Le code http|
+| `view`      | `String` | Le chemin de la vue sachant dans le moteur se base sur le dossier des vues|
+| `data`      | `Array`, `Object` | Les données a passé à la vue|
+| `status`    | `Integer` | Le code http |
 
 ```php
 use Bow\View\View;
+
 echo View::parse('nom-de-la-vue-sans-extension');
 ```
 
-Pour passer des variables a la vue
+Pour passer des variables à la vue
 
 ```php
 use Bow\View\View;
-echo View::parse('nom-de-la-vue-sans-extension', ['name' => 'bow'], 200);
+
+echo View::parse(
+  'nom-de-la-vue-sans-extension',
+  ['name' => 'bow'],
+  200
+);
 ```
 
-Vous pouvez utiliser le helper `view` qui s'utilise de la même façon.
+> Vous pouvez utiliser le helper `view` qui s'utilise de la même façon.
 
 Avec la vue suivante:
 

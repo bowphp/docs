@@ -106,7 +106,7 @@ $response->withHeaders([
 
 ## Envoyer un JSON
 
-Dans les applications REST (Api Rest) les informations sont généralement retournés en JSON. Pour envoyer un information JSON au client, vous pouvez utiliser le help `json` ou la methode `json` sur l'instance de `Bow\Http\Response`.
+Dans les applications REST (Api Rest/RestFul) les informations sont généralement retournés en JSON. Pour envoyer un information JSON au client, vous pouvez utiliser le help `json` ou la methode `json` sur l'instance de `Bow\Http\Response`.
 
 ### Protototype de la methode `json`
 
@@ -116,7 +116,7 @@ $response->json($data, $code, $headers);
 
 | paramêtre | Type |
 |----------|------|
-| $data  | `Array` \| `stdClass` \| `Iterable` \| `JsonSerializable` - Les données à sérialiser |
+| $data  | `Array`, `stdClass`, `Iterable`, `JsonSerializable` - Les données à sérialiser |
 | $code  | `Int` - Le code du status HTTP |
 | $headers  | `Array` - Les entêtes à ajouter sur le réponse |
 
@@ -125,7 +125,9 @@ $response->json($data, $code, $headers);
 Exemple:
 
 ```php
-return $response->json(['message' => 'hello world'], $code = 200, [
+$data = ['message' => 'hello, world'];
+
+return $response->json($data, $code = 200, [
   'X-Proto-Value' => 1 // Juste un test
 ]);
 ```
@@ -163,7 +165,7 @@ return $response->render('users', ['users' => $users], 200, [
 
 ### Télécharger un fichier
 
-Souvent vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore vous allez faire des applications où il faut s'authentifier avant de télécharge des fichiers du type dropbox. Bow offre un API simple via la classe [Bow\Http\Response](https://bowphp.github.io/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la methode `dowload`. 
+Souvent vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore vous allez faire des applications où il faut s'authentifier avant de télécharge des fichiers du type dropbox. Bow offre un API simple via la classe [Bow\Http\Response](https://bowphp.github.io/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la methode `download`.
 
 ### Protototype de la methode `download`
 

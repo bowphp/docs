@@ -36,7 +36,7 @@ git commit
 Dans votre éditeur
 
 ```sh
-[nom-de-la-section] message de commit
+[nom-de-la-section] message of commit
 
 Description
 ```
@@ -44,7 +44,7 @@ Description
 Dans notre exemple précédant nous allons donc faire:
 
 ```sh
-git commit -m "[session] message de modification"
+git commit -m "[session] modification message"
 ```
 
 La modification peut aussi affecté un élément dans un section:

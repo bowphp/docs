@@ -5,13 +5,13 @@ title: HTTP Session
 
 - [Introduction](#introduction)
 - [Utilisation](#introduction)
-  - [Récupération des données](#récupération-des-données)
+  - [Récupération des données](#recuperation-des-donnees)
   - [Le helper global de session](#le-helper-global-de-session)
-  - [Récupération de toutes les données de session](#récupération-de-toutes-les-données-de-session)
-  - [Déterminer si un élément existe dans la session](#déterminer-si-un-élément-existe-dans-la-session)
-  - [Stocker des données](#stocker-des-données)
-- [Données flash](#données-flash)
-- [Suppression de données](#suppression-de-données)
+  - [Récupération de toutes les données de session](#recuperation-de-toutes-les-donnees-de-session)
+  - [Déterminer si un élément existe dans la session](#determiner-si-un-element-existe-dans-la-session)
+  - [Stocker des données](#stocker-des-donnees)
+- [Données flash](#donnees-flash)
+- [Suppression de données](#suppression-de-donnees)
 
 ## Introduction
 
@@ -21,7 +21,7 @@ Les applications HTTP étant sans état, les sessions offrent un moyen de stocke
 
 ### Récupération des données
 
-il existe deux manières principales de travailler avec les données de `session` dans Bow: le helper global de `session` et via une instance `Bow\Http\Request`.
+il existe deux manières principales de travailler avec les données de `session` dans Bow, le helper global de `session` et via une instance `Bow\Http\Request`.
 
 Premièrement, examinons l’accès à la session via une instance `Bow\Http\Request`, qui peut être indexée sur une méthode de contrôleur. N'oubliez pas que les dépendances des méthodes du contrôleur sont automatiquement injectées via le conteneur Bow:
 
@@ -38,7 +38,7 @@ class UserController extends Controller
    * Afficher d'un utilisateur
    *
    * @param Request $request
-   * @param  int  $id
+   * @param int $id
    * @return Response
    */
   public function show(Request $request, $id)

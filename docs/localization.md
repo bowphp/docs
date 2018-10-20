@@ -18,12 +18,14 @@ Pour utiliser le système de traduction. Il faut d'abort considérer la confirgu
 
 Dans le dossier `components/lang` sont ranger les traductions de votre application. Ce sont des fichier php qui retourne un `array` et si vous remarquez il y a un dossier `fr` et `en`. Ce sont les dossiers pour chaque langue ici `fr` pour français et `en` pour anglais.
 
-  /components
-    /lang
-      /en
-        messages.php
-      /fr
-        messages.php
+```
+/components
+  /lang
+    /en
+      messages.php
+    /fr
+      messages.php
+```
 
 Tous les fichiers de langue renvoient un tableau de chaînes à clé. Par exemple
 
@@ -84,9 +86,7 @@ if (Translator::isLocale('en')) {
 Via le helper `trans`
 
 ```php
-$trans = trans();
-
-$locale = $trans->getLocale();
+$locale = trans()->getLocale();
 
 if ($trans->isLocale('en')) {
  //

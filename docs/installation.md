@@ -3,9 +3,9 @@ id: installation
 title: Installation
 ---
 
-- [Prérequis du serveur](#prerequis-du-serveur)
-- [Installation de Bow](#installation-de-bow)
-- [Test rapide](#test-rapide)
+- [Prérequis](#prerequis)
+- [Créer un projet](#creer-un-projet)
+- [Testons](#testons)
 - [Configuration](#configuration)
 - [Configuration Serveur Web](#configuration-serveur-web)
   - [Apache](#apache)
@@ -13,7 +13,7 @@ title: Installation
 
 Dans cette section nous allons apprendre à installer une application Bow framework et faire un test rapide.
 
-## Prérequis du serveur
+## Prérequis
 
 Vous devez vous assurer que les différents éléments suivants sont installés sur votre machine.
 
@@ -24,11 +24,12 @@ Vous devez vous assurer que les différents éléments suivants sont installés 
 - XML PHP Extension
 - JSON PHP Extension
 
-## Installation de Bow
+## Créer un projet
 
 Pour installer une copie de Bow, il vous faut d'abord installer [composer](https://getcomposer.org) et ensuite vous lancez la commande suivante:
 
-```bash
+```sh
+# Création d'un projet
 $ composer create-project --prefer-dist bowphp/app
 $ cd app
 $ php bow run:server --port=8000 --host=0.0.0.0
@@ -37,27 +38,29 @@ $ php bow run:server --port=8000 --host=0.0.0.0
 > __NB__: Il est conseillé d'installer `composer` de façon globale sur votre machine. Pour ce faire référez-vous à la [documentation](https://getcomposer.org/download) d'installation de composer.
 > Si vous n'êtes pas familier à `composer`, nous vous invitons à parcourir la documentation.
 
-## Test rapide
+## Testons
 
 Dans le dossier `routes`, ouvrez le fichier `get.php` et ajoutez:
 
 ```php
 $app->get('/hello/:name', function($name) {
-    return 'Hello, world '.$name;
+    return 'Hello, '.$name;
 });
 ```
 
-Ouvrez votre navigateur et tapez `http://localhost:8000/hello/bow`. `8000` est le port par défaut quand vous faites `php bow run:server`.
+Ouvrez votre navigateur et tapez `http://localhost:8000/hello/Bow`.
+
+> `5000` est le port par défaut quand vous faites `php bow run:server`.
 
 ```html
-hello, world bow
+Hello, Bow
 ```
 
 On peut faire un test avec `curl`:
 
 ```sh
-$ curl http://localhost:8000/hello/bow
-# Hello world bow
+$ curl http://localhost:8000/hello/Bow
+# Hello, Bow
 ```
 
 ## Configuration

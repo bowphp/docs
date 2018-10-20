@@ -216,7 +216,7 @@ $deleted = Database::delete('delete from `pets` where id = :id', ['id' => 1]);
 Via le helper `delete`:
 
 ```php
-$deleted = delete('delete from pets where id = :id', ['id' => 2]);
+$deleted = delete('delete from `pets` where id = :id', ['id' => 2]);
 ```
 
 ### Execution de requête
