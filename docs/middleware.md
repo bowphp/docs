@@ -1,6 +1,6 @@
 ---
 id: middleware
-title: HTTP Middleware
+title: Middleware
 ---
 
 > Section en rédaction
