@@ -5,13 +5,13 @@ title: Controlleur
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-- [Controlleur Basic](#controlleur-basic)
-  - [Définir un controlleur](#définir-un-controlleur)
-  - [Contrôleurs et espaces de noms](#contrôleurs-et-espaces-de-noms)
-  - [Contrôleur et Middleware](#contrôleur-et-middleware)
+- [contrôleur Basic](#controleur-basic)
+  - [Définir un contrôleur](#définir-un-controleur)
+  - [Contrôleurs et espaces de noms](#controleurs-et-espaces-de-noms)
+  - [Contrôleur et Middleware](#controleur-et-middleware)
 - [Controller REST](#controller-rest)
-  - [Définir un controlleur rest](#définir-un-controlleur-rest)
-  - [Utilisons notre Controlleur REST](#utilisons-notre-controlleur-rest)
+  - [Définir un contrôleur rest](#définir-un-controleur-rest)
+  - [Utilisons notre contrôleur REST](#utilisons-notre-controleur-rest)
     - [Prototype de la methode REST](#prototype-de-la-methode-rest)
     - [Utilisation simple](#utilisation-simple)
     - [Utilisation avec les contraintes](#utilisation-avec-les-contraintes)
@@ -20,17 +20,19 @@ title: Controlleur
 
 ## Introduction
 
-Les controlleurs sont des moins pour simplifier l'organisation de vos projet.
+Les contrôleurs sont des moins pour simplifier l'organisation de vos projet.
 
-Au lieu de définir toute la logique de gestion des demandes en tant que fermetures dans les fichiers de routage, vous pouvez organiser ce comportement à l'aide de classes de contrôleur. Les contrôleurs peuvent regrouper la logique de traitement des demandes associée en une seule classe. Les contrôleurs sont stockés dans le répertoire `app/Controllers`.
+Au lieu de définir toute la logique de gestion des requête en tant que `closure` dans les fichiers de routage, vous pouvez organiser ce comportement à l'aide de classe de contrôleur. Les contrôleurs peuvent regrouper la logique de traitement des requêtes associée en une seule classe.
+
+Les contrôleurs sont stockés dans le répertoire `app/Controllers`.
 
 <script id="asciicast-1r0hZPnP5wY5fCPcxNXtLTQ4r" src="https://asciinema.org/a/1r0hZPnP5wY5fCPcxNXtLTQ4r.js" data-speed="2" data-rows="20" async></script>
 
 ## Configuration
 
-Vous avez la possibilité de modifier le `namespace` des controlleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La methode `middleware` permet à Bow de savoir quel est le bon `namespace` à ajouter sur le controlleur lors de l'execution de la réquête ou lors de la génération de controlleur ou de middleware par le lanceur de tache `php bow`.
+Vous avez la possibilité de modifier le `namespace` des contrôleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La methode `middleware` permet à Bow de savoir quel est le bon `namespace` à ajouter sur le contrôleur lors de l'execution de la réquête ou lors de la génération de contrôleur ou de middleware par le lanceur de tache `php bow`.
 
-Imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos controlleurs dans le `namespace` `App\Bus\Controllers`. Alors comment faire ça ?
+Imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos contrôleurs dans le `namespace` `App\Bus\Controllers`. Alors comment faire ça ?
 
 Voici le code que cela pourrai donnée:
 
@@ -56,11 +58,11 @@ $command->setControllerDirectory(__DIR__.'/app/Bus/Controllers');
 
 > Visitez ce [lien](./structure.md) pour plus d'information sur la personnalisation de la structure de l'applucation.
 
-## Controlleur basic
+## contrôleur basic
 
-### Définir un controlleur
+### Définir un contrôleur
 
-Voici un exemple de classe de contrôleur de base. Notez que le contrôleur étend la classe de contrôleur de base incluse avec Bow. La classe de base fournit quelques méthodes pratiques telles que la méthode du middleware, qui peut être utilisée pour attacher un middleware aux actions du contrôleur.
+Voici un exemple de classe de contrôleur de base. Notez que le contrôleur hérite de la classe de `App\Controllers\Controller` de base incluse avec Bow. La classe de base fournit quelques méthodes pratiques telles que la méthode du `render`, qui peut être utilisée pour compiler une vue.
 
 ```php
 namespace App\Controllers;
@@ -89,7 +91,7 @@ Vous pouvez définir une route vers cette action de contrôleur comme suit:
 $app->get('user/:id', 'UserController::show');
 ```
 
-Désormais, lorsqu'une demande correspond à l'URI de la route spécifiée, la méthode `show` de la classe `UserController` sera exécutée. Bien entendu, les paramètres de l'itinéraire seront également transmis à la méthode.
+Désormais, lorsqu'une demande correspond à l'URI de la route spécifiée, la méthode `show` de la classe `UserController` sera exécutée. Bien entendu, les paramètres de la route seront également transmis à la méthode.
 
 Vous pouvez générer un contrôleur en utilisant la commande `add:controller` de `php bow`:
 
@@ -125,19 +127,19 @@ Exemple:
 $app->get('profile', 'UserController::show')->middleware('auth');
 ```
 
-## Controlleur REST
+## contrôleur REST
 
-Les controlleur REST sont un moyen simple pour mettre en place un API Rest facilement. Cette approche, vous permet de vous concentrez sur votre logique et laisser le framework géré le routage pour vous.
+Les contrôleur REST sont un moyen simple pour mettre en place un API Rest facilement. Cette approche, vous permet de vous concentrez sur votre logique et laisser le framework géré le routage pour vous.
 
-### Définir un controlleur rest
+### Définir un contrôleur rest
 
-Pour définir un nouveau controlleur Rest, nous devez utiliser le lancer de tache `php bow` avec la commande `generate:resource` dans votre console ou invite de commande :sunglasses:.
+Pour définir un nouveau contrôleur Rest, nous devez utiliser le lancer de tache `php bow` avec la commande `generate:resource` dans votre console ou invite de commande :sunglasses:.
 
 ```bash
 php bow generate:resource PetController
 ```
 
-Un controlleur nommé `PetController` sera donc créé. Ce qui fait ça particularité c'est qu'il y a déjà des methodes prédéfinir en lui et ces methodes doivent rester telles quelles sont.
+Un contrôleur nommé `PetController` sera donc créé. Ce qui fait ça particularité c'est qu'il y a déjà des methodes prédéfinir en lui et ces methodes doivent rester telles quelles sont.
 
 ```php
 <?php
@@ -224,9 +226,9 @@ class PetController extends Controller
 }
 ```
 
-### Utilisons notre Controlleur REST
+### Utilisons notre contrôleur REST
 
-Pour utiliser le controlleur Rest vous avez juste à utiliser le methode `rest` sur la variable globale `$app` dans vos fichiers de routing.
+Pour utiliser le contrôleur Rest vous avez juste à utiliser le methode `rest` sur la variable globale `$app` dans vos fichiers de routing.
 
 #### Prototype de la methode `rest`
 
@@ -236,7 +238,7 @@ $app->rest(url, action, where = []);
 
 | paramete | Type |
 |----------|------|
-| `url` | `String` \| `Array` - Le nom de la route |
+| `url` | `String`, `Array` - Le nom de la route |
 | `action` | `String` -  Le nom de la route |
 | `where` | `Array` - Contrainte sur la varible `id` |
 

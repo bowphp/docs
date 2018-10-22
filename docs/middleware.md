@@ -3,7 +3,23 @@ id: middleware
 title: Middleware
 ---
 
-Les middleware constituent un mécanisme pratique pour filtrer les requêtes HTTP entrant dans votre application. Par exemple vous pouvez faire un middleware pour vérifier si un utilisateur est connecté et ensuite faire une action en fonction. Vous pouvez exécuter du code avant et après votre application Bow pour manipuler les objets `Request` et `Response` comme bon vous semble.
+- [Introduction](#introduction)
+- [Comment ça marche](#comment-ca-marche)
+- [Ajouter un middleware](#ajouter-un-middleware)
+- [Enregistrement de middleware](#enregistrement-de-middleware)
+- [Utiliser le middleware](#utiliser-le-middleware)
+
+## Introduction
+
+Les middlewares constituent un mécanisme pratique pour filtrer les requêtes HTTP entrant dans votre application. Par exemple vous pouvez faire un middleware pour vérifier si un utilisateur est connecté et ensuite faire une action en fonction. Vous pouvez exécuter du code avant et après votre application Bow pour manipuler les objets `Request` et `Response` comme bon vous semble.
+
+<script id="asciicast-bfTIiqg1ew9x1QRxeMTufxJJU" src="https://asciinema.org/a/bfTIiqg1ew9x1QRxeMTufxJJU.js" data-speed="2"  async></script>
+
+## Comment ça marche
+
+Différents frameworks utilisent le middleware différemment. Bow ajoute un middleware sous forme de couches concentriques entourant votre application principale. Chaque nouvelle couche de middleware entoure les couches de middleware existantes. La structure concentrique se dilate vers l'extérieur à mesure que des couches intermédiaires supplémentaires sont ajoutées.
+
+Lorsque vous exécutez l'application Bow, les objets Request traversent la structure du middleware de l'extérieur vers l'intérieur. Ils entrent d'abord dans le middleware le plus externe, puis dans le prochain middleware le plus externe (et ainsi de suite), jusqu'à ce qu'ils atteignent l'application elle-même. Une fois que l'application Bow a distribué la route approprié, l'objet Response résultant quitte l'application Bow et est sérialisé dans une réponse HTTP brute et est renvoyé au client HTTP. Voici un diagramme qui illustre le flux de processus du middleware
 
 <img src="/img/arrow.png" alt="Middleware image" width="450"/>
 
@@ -21,7 +37,7 @@ php bow add:middlware IpMiddleware
 
 Notez que tout les middlewares sont sauvegardés par défaut dans le fichier `app/Middleware`.
 
-Alors le middleware que nous venons d'ajouter, vérifira l'adresse IP du client et si son adresse est égale à <small>127.0.0.1</small> on dira que l'application est MODE DEV.
+Alors, le middleware que nous venons d'ajouter, vérifira l'adresse IP du client et si son adresse est égale à `127.0.0.1` on dira que l'application est MODE DEV.
 
 Mais d'abort, regardons le contenu du fichier `IpMiddleware`. C'est la méthode `process` qui permet de lancer le middleware et la callable permet de lancer le prochaine middleware.
 
@@ -44,6 +60,7 @@ class IpMiddleware
   public function process(Request $request, callable $next)
   {
     //
+    return $next($request);
   }
 }
 ```
@@ -63,7 +80,7 @@ public function process(Request $request, callable $next)
 
 ## Enregistrement de middleware
 
-Généralement l'enregistrement ce faire dans le fichier `app/Kernel/Loader.php`.
+Généralement l'enregistrement ce faire dans le fichier `app/Kernel/Loader.php` avec une clé qui l'identifie.
 
 ```php
 public function middlewares()
@@ -87,22 +104,22 @@ $app->middleware([
 ]);
 ```
 
-### Utiliser le middleware
+## Utiliser le middleware
 
-Après avoir definir un middleware dans le `Kernel`.
+Après avoir definir un middleware dans le `app/Kernel/Loader.php`.
 
 ```php
-$app->middleware(['ip']);
+$app->middleware(['ip', 'autre']);
 // ou
 $app->get('/', 'HomeController::index')->middleware('ip');
-$app->get('/', 'HomeController::index')->middleware(['ip']);
+$app->get('/', 'HomeController::index')->middleware(['ip', 'autre']);
 // ou
 $app->route([
   'path' => '/',
   'method' => 'GET',
   'handler' => 'HomeController::index',
-  'middleware' => ['ip']
+  'middleware' => ['ip', 'autre']
 ]);
 ```
 
-> Section en rédaction
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

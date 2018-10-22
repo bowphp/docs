@@ -15,9 +15,10 @@
     ],
     "Base de donnée": [
       "database",
+      "query-builder",
+      "orm",
       "migration",
-      "seeding",
-      "orm"
+      "seeding"
     ],
     "Http": [
       "http-request",

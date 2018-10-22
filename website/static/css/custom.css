@@ -60,10 +60,6 @@ table td:first-child > code {
   white-space: nowrap;
 }
 
-a {
-  font-weight: bold;
-}
-
 .navigationSlider .slidingNav ul li a {
   align-items: center;
   box-sizing: border-box;
@@ -114,6 +110,12 @@ pre code {
 tt, code, pre {
   font-size: 15px;
   font-family: "Fira", "Fira Code", Monaco, 'Courier New', Courier, monospace;
+}
+
+body {
+  color: #525252;
+  font-family: "Whitney SSm A", "Whitney SSm B", sans-serif;
+  font-size: 14px;
 }
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
