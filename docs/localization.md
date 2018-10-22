@@ -12,6 +12,8 @@ title: i18n
 
 Dans tout application, il y a le besoin de rendre l'application multi-languge. Bow implement un systeme simple tranduction.
 
+<script id="asciicast-zxbid2giZdnaJjOhOkALKBC8G" src="https://asciinema.org/a/zxbid2giZdnaJjOhOkALKBC8G.js" data-rows="20" data-speed="2" async></script>
+
 ### Configuration
 
 Pour utiliser le système de traduction. Il faut d'abort considérer la confirguration qui se trouve dans le dossier `config/trans.php`. Dans le fichier la langue par defaut c'est le francais dont le `fr`.
@@ -61,12 +63,14 @@ Vous pouvez configurer une `lang`, qui sera utilisée lorsque la langue active n
 
 ## Récupération de chaînes de traduction
 
-Vous pouvez extraire des lignes de fichiers de langue à l'aide de la fonction du helper `trans` ou `__`. La méthode `__` accepte le fichier et la clé de la chaîne de traduction comme premier argument. Par exemple, récupérons la chaîne de traduction de bienvenue dans le fichier de langue `components/lang/messages.php`:
+Vous pouvez extraire des lignes de fichiers de langue à l'aide de la fonction du helper `trans` ou `_t`. La méthode `_t` accepte le fichier et la clé de la chaîne de traduction comme premier argument. Par exemple, récupérons la chaîne de traduction de bienvenue dans le fichier de langue `components/lang/messages.php`:
 
 ```php
-echo __('messages.welcome');
+echo _t('messages.welcome');
 // Ou bien
 echo trans('messages.welcome');
+// Ou bien
+echo Bow\Translate\Translator::translate('messages.welcome');
 ```
 
 ### Détermination de la locale actuelle
@@ -93,7 +97,7 @@ if ($trans->isLocale('en')) {
 }
 ```
 
-Si la chaîne de traduction spécifiée n'existe pas, la fonction `__` renverra la clé de la chaîne de traduction. Ainsi, à l'aide de l'exemple ci-dessus, la fonction `__` renverrait `messages.welcome` si la chaîne de traduction n'existe pas.
+Si la chaîne de traduction spécifiée n'existe pas, la fonction `_t` renverra la clé de la chaîne de traduction. Ainsi, à l'aide de l'exemple ci-dessus, la fonction `_t` renverrait `messages.welcome` si la chaîne de traduction n'existe pas.
 
 ### Remplacement de paramètres dans les chaînes de traduction
 
@@ -103,10 +107,10 @@ Si vous le souhaitez, vous pouvez définir des espaces réservés dans vos chaî
 'welcome' => 'Welcome, {name}',
 ```
 
-Pour remplacer les espaces réservés lors de l'extraction d'une chaîne de traduction, transmettez un tableau de remplacements en tant que deuxième argument de la fonction `__` ou `trans`:
+Pour remplacer les espaces réservés lors de l'extraction d'une chaîne de traduction, transmettez un tableau de remplacements en tant que deuxième argument de la fonction `_t` ou `trans`:
 
 ```php
-echo __('messages.welcome', ['name' => 'Galy']);
+echo _t('messages.welcome', ['name' => 'Galy']);
 ```
 
 ## La pluralisation

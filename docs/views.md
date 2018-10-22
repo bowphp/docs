@@ -15,6 +15,8 @@ title: Vues
 
 Les vues contiennent le code HTML fourni par votre application et séparent votre logique de contrôleur / application de votre logique de présentation:
 
+<script id="asciicast-srlT0uYy1bOin8Z3Z35E66JJB" src="https://asciinema.org/a/srlT0uYy1bOin8Z3Z35E66JJB.js" data-speed="3" data-rows="20" async></script>
+
 ## Configuration
 
 Bow framework implement 3 moteur de template par defaut, [Twig](https://twig.symfony.com), [Pug-PHP](https://www.phug-lang.com/), [Mustache-PHP](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags).
