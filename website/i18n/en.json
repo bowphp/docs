@@ -5,6 +5,9 @@
     "previous": "Previous",
     "tagline": "Simply your web development",
     "docs": {
+      "blade": {
+        "title": "Bow Blade"
+      },
       "cli": {
         "title": "CLI Commands"
       },
@@ -44,6 +47,9 @@
       "plugin": {
         "title": "Plugin"
       },
+      "policier": {
+        "title": "Bow Policier"
+      },
       "http-request": {
         "title": "HTTP Request"
       },
@@ -59,14 +65,20 @@
       "http-session": {
         "title": "HTTP Session"
       },
+      "sms": {
+        "title": "Bow Sms"
+      },
       "storage": {
         "title": "Storage"
       },
       "structure": {
         "title": "Structure"
       },
+      "tintin": {
+        "title": "Tintin"
+      },
       "views": {
-        "title": "Templating"
+        "title": "Vues"
       }
     },
     "links": {
@@ -81,7 +93,8 @@
       "Guide": "Guide",
       "Base de donnée": "Base de donnée",
       "Http": "Http",
-      "API": "API"
+      "API": "API",
+      "Package": "Package"
     }
   },
   "pages-strings": {

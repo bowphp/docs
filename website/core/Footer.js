@@ -41,7 +41,7 @@ class Footer extends React.Component {
               Do You want to contribute
             </a>
             <a href={this.props.config.apiUrl}>
-              API Reference (or other categories)
+              API Reference
             </a>
           </div>
           <div>
@@ -53,6 +53,7 @@ class Footer extends React.Component {
               Stack Overflow
             </a>
             <a href="https://bowphp.slack.com/">Slack</a>
+            <a href="https://codedivoire.slack.com/">@Codedivoire</a>
             <a
               href="https://twitter.com/@franck_dakia"
               target="_blank"

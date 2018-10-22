@@ -29,6 +29,9 @@
       "cli",
       "plugin",
       "mixfile"
+    ],
+    "Package": [
+      "tintin"
     ]
   }
 }

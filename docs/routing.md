@@ -39,12 +39,12 @@ de votre application.
 
 ### Avec le methode `route`
 
-C'est méthode permet de faire une mappage rélativement simple.
+C'est méthode permet de faire un mappage rélativement simple.
 
 ```php
 $app->route([
   'path' => '/',
-  'method' => "`GET`",
+  'method' => "GET",
   'handler' => 'handler'
 ]);
 ```
@@ -101,14 +101,13 @@ $app->route([
 
 - Avec le nom d'un controlleur, un middelware et une restriction.
 
-
 ```php
 $app->route([
   'path' => '/:name',
   'method' => "GET",
   'handler' => 'HomeController::showProfile',
   'middleware' => ['auth'],
-  'where' => ['name' => '']
+  'where' => ['name' => '[a-z]+']
 ]);
 ```
 

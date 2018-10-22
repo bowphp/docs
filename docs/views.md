@@ -1,12 +1,12 @@
 ---
 id: views
-title: Templating
+title: Vues
 ---
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
 - [Package supplementaire](#package-supplementaire)
-- [Création de vue](#création-de-vue)
+- [Création de vue](#creation-de-vue)
 - [Vue avec Twig](#vue-avec-twig)
 - [Vue avec Pug PHP](#vue-avec-pug-php)
 - [Vue avec Mustache PHP](#vue-avec-mustache-php)
