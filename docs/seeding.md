@@ -19,7 +19,7 @@ Pour ajouter un seeder on passe par `php bow` avec la commande `add:seeder` ensu
 php bow add:seeder pets
 ```
 
-Un fichier `pets.php` sera créé dans le dossier `db/seeders`. En voici le contenu:
+Un fichier `pets_seeder.php` sera créé dans le dossier `db/seeders`. En voici le contenu:
 
 ```php
 $seeds['pets'] = [];
