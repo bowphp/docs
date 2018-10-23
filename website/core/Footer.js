@@ -35,10 +35,10 @@ class Footer extends React.Component {
           <div>
             <h5>Documentation</h5>
             <a href={this.docUrl('installation.html', this.props.language)}>
-              Getting Started
+              Commencer
             </a>
             <a href={this.docUrl('contribution.html', this.props.language)}>
-              Do You want to contribute
+              Voulez-vous contribuer ?
             </a>
             <a href={this.props.config.apiUrl}>
               API Reference
@@ -55,7 +55,7 @@ class Footer extends React.Component {
             <a href="https://bowphp.slack.com/">Slack</a>
             <a href="https://codedivoire.slack.com/">@Codedivoire</a>
             <a
-              href="https://twitter.com/@franck_dakia"
+              href="https://twitter.com/@bowFramework"
               target="_blank"
               rel="noreferrer noopener">
               Twitter
@@ -65,16 +65,6 @@ class Footer extends React.Component {
             <h5>En plus</h5>
             <a href={`${this.props.config.baseUrl}blog`}>Blog</a>
             <a href="https://github.com/bowphp">GitHub</a>
-            <a
-              className="github-button"
-              href={this.props.config.repoUrl}
-              data-icon="octicon-star"
-              data-count-href="/bowphp/app/stargazers"
-              data-show-count="true"
-              data-count-aria-label="# stargazers on GitHub"
-              aria-label="Star this project on GitHub">
-              Star
-            </a>
           </div>
         </section>
         <section className="copyright">{this.props.config.copyright}</section>

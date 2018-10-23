@@ -8,7 +8,7 @@ title: HTTP Response
   - [Une chaine de caractère](#une-chaine-de-caractère)
   - [Une Collection et Une tableau ou un Object](#une-collection-et-une-tableau-ou-un-object)
   - [Un Model de Barry ORM](un-model-de-barry-orm)
-- [Modification de réponse](#modification-de-réponse)
+- [Modification de réponse](#modification-de-reponse)
   - [Modification du code d'erreur](#modification-du-code-d-erreur)
   - [Ajouter une entête http](#ajouter-une-entête-http)
 - [Envoyer un json](#envoyer-un-json)

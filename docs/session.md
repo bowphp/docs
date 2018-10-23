@@ -4,7 +4,7 @@ title: HTTP Session
 ---
 
 - [Introduction](#introduction)
-- [Utilisation](#introduction)
+- [Utilisation](#uilisation)
   - [Récupération des données](#recuperation-des-donnees)
   - [Le helper global de session](#le-helper-global-de-session)
   - [Récupération de toutes les données de session](#recuperation-de-toutes-les-donnees-de-session)

@@ -9,18 +9,18 @@ title: Routing
     - [Liste des options](#liste-des-options)
   - [Liste des possibilités](#liste-des-possibilites)
 - [Les methods de maping](#les-methods-de-maping)
-  - [get](#get)
-  - [post](#post)
-  - [put](#put)
-  - [delete](#delete)
-  - [patch](#patch)
-  - [options](#options)
-  - [match](#match)
-  - [any](#any)
-  - [prefix](#prefix)
+  - [Mapping avec get](#mapping-avec-get)
+  - [Mapping avec post](#mapping-avec-post)
+  - [Mapping avec put](#mapping-avec-put)
+  - [Mapping avec delete](#mapping-avec-delete)
+  - [Mapping avec patch](#mapping-avec-patch)
+  - [Mapping avec options](#mapping-avec-options)
+  - [Mapping avec match](#mapping-avec-match)
+  - [Mapping avec any](#amapping-avec-ny)
+  - [Mapping avec prefix](#mapping-avec-prefix)
 - [Personnalisation](#personnalisation)
   - [Capturer des variables dans l'url](#capturer-des-variables-dans-l-url)
-  - [Ajouter des critères, des restrictions sur les URLs](#ajouter-des-critères-des-restrictions-sur-les-URLs)
+  - [Ajouter des critères, des restrictions sur les URLs](#ajouter-des-criteres-des-restrictions-sur-les-urls)
   - [Donner un nom au route](#donner-un-nom-au-route)
   - [Association de middleware](#association-de-middleware)
 
@@ -111,7 +111,7 @@ $app->route([
 ]);
 ```
 
-> Plus d'information sur les restrictions [ici](#ajouter-des-critères-des-restrictions-sur-les-URLs)
+> Plus d'information sur les restrictions [ici](#ajouter-des-criteres-des-restrictions-sur-les-urls)
 
 ### En utilisant les verbes HTTP comme méthode
 

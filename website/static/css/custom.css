@@ -104,11 +104,11 @@ pre {
 }
 
 pre code {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 tt, code, pre {
-  font-size: 15px;
+  font-size: 14px;
   font-family: "Fira", "Fira Code", Monaco, 'Courier New', Courier, monospace;
 }
 

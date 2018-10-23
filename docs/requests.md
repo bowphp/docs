@@ -4,17 +4,17 @@ title: HTTP Request
 ---
 
 - [Introduction](#introduction)
-- [Accéder à la Request](#accéder-à-la-request)
-- [Récupération des données](#récupération-des-données)
+- [Accéder à la Request](#acceder-a-la-request)
+- [Récupération des données](#recuperation-des-donnees)
   - [Via des Closures de route](#via-des-closures-de-route)
   - [Via un controlleur](#via-un-controlleur)
-- [Chemin de requête et méthode](#Chemin-de-requête-et-méthode)
-  - [Récupérer le chemin de requête](#récupérer-le-chemin-de-requête)
-  - [Récupérer la méthode de requête](#récupérer-la-méthode-de-requête)
-  - [Vérifier si la requete est en AJAX](#vérifier-si-la-requete-est-en-ajax)
-- [Récupérer une entrée](#récupérer-une-entrée)
+- [Chemin de requête et méthode](#chemin-de-requête-et-methode)
+  - [Récupérer le chemin de requête](#recuperer-le-chemin-de-requête)
+  - [Récupérer la méthode de requête](#recuperer-la-methode-de-requête)
+  - [Vérifier si la requete est en AJAX](#verifier-si-la-requete-est-en-ajax)
+- [Récupérer une entrée](#recuperer-une-entree)
 - [Fichier uploader](#fichier-uploader)
-  - [Validation des téléchargements réussis](#validation-des-téléchargements-réussis)
+  - [Validation des téléchargements réussis](#validation-des-telechargements-ressis)
   - [Savegarder le fichier](#savegarder-le-fichier)
 
 ## Introduction

@@ -6,11 +6,11 @@ title: Controlleur
 - [Introduction](#introduction)
 - [Configuration](#configuration)
 - [contrôleur Basic](#controleur-basic)
-  - [Définir un contrôleur](#définir-un-controleur)
+  - [Définir un contrôleur](#definir-un-controleur)
   - [Contrôleurs et espaces de noms](#controleurs-et-espaces-de-noms)
   - [Contrôleur et Middleware](#controleur-et-middleware)
 - [Controller REST](#controller-rest)
-  - [Définir un contrôleur rest](#définir-un-controleur-rest)
+  - [Définir un contrôleur rest](#definir-un-controleur-rest)
   - [Utilisons notre contrôleur REST](#utilisons-notre-controleur-rest)
     - [Prototype de la methode REST](#prototype-de-la-methode-rest)
     - [Utilisation simple](#utilisation-simple)
@@ -299,10 +299,10 @@ $app->rest('pets', $action, ['id' => '\d+']);
 
 | URL | Method | Nom | Description |
 |----------|------|------|------|
-| `/pets` | `GET` | `pets.index` | Retourne la liste de pets |
+| `/pets` | `GET` | `pets.index` | Retourne la liste des pets |
 | `/pets` | `POST` | `pets.store` | Permet d'ajouter un autre pet |
 | `/pets/:id` | `GET` | `pets.show` | Afficher un seul pet |
-| `/pets/:id` | `PUT` | `pets.update` | Permet de mettre à jour les informations d'un pet |
+| `/pets/:id` | `PUT/PATCH` | `pets.update` | Permet de mettre à jour les informations d'un pet |
 | `/pets/:id` | `DELETE` | `pets.delete` | Ceci va supprimer un pet |
 | `/pets/create` | `GET` | `pets.create` | Permet d'afficher le formulaire d'ajout |
 
