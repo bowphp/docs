@@ -3,6 +3,7 @@ id: installation
 title: Installation
 ---
 
+- [Introduction](#introduction)
 - [Prérequis](#prerequis)
 - [Créer un projet](#creer-un-projet)
 - [Testons](#testons)
@@ -10,6 +11,8 @@ title: Installation
 - [Configuration Serveur Web](#configuration-serveur-web)
   - [Apache](#apache)
   - [Nginx](#nginx)
+
+## Introduction
 
 Dans cette section nous allons apprendre à installer une application Bow framework et faire un test rapide.
 
@@ -85,7 +88,7 @@ Après l'installation de Bow, vous aurez bésoin de configurer quelques permissi
 - [Routing](./routing.md)
 - [Session](./session.md)
 - [Base de donnée](./database.md)
-- [Ressource](./storage.md)
+- [Storage](./storage.md)
 
 ## Configuration Serveur Web
 
@@ -97,7 +100,7 @@ Bow inclut un fichier `public/.htaccess` qui est utilisé pour fair de la ré-é
 
 Si le fichier `.htaccess` par defaut dans Bow ne fonction pas avec votre installation d'Apache, Essayez cette alternative:
 
-```sh
+```bash
 Options +FollowSymLinks
 RewriteEngine On
 

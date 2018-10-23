@@ -26,7 +26,7 @@ Actuellement, Bow prend en charge deux bases de données:
 
 ### Configuration
 
-La configuration de la base donnée de votre application se localise dans le fihcier `config/db.php`. Dans ce fichier, vous pouvez definir tous les connections de votre base de donnée, as well as specify which connection should be used by default. Un exemple en plus definir pour tous les supports de base de donnée est defini dans le fichier.
+La configuration de la base donnée de votre application se localise dans le fihcier `config/db.php`. Dans ce fichier, vous pouvez définir tous les connections de votre base de donnée, as well as specify which connection should be used by default. Un exemple en plus définir pour tous les supports de base de donnée est defini dans le fichier.
 
 ### SQLite Configuration
 

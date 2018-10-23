@@ -16,9 +16,9 @@ Dans tout application, il y a le besoin de rendre l'application multi-languge. B
 
 ### Configuration
 
-Pour utiliser le système de traduction. Il faut d'abort considérer la confirguration qui se trouve dans le dossier `config/trans.php`. Dans le fichier la langue par defaut c'est le francais dont le `fr`.
+Pour utiliser le système de traduction. Il faut d'abort considérer la confirguration qui se trouve dans le dossier `config/trans.php`. Dans ce fichier, la langue par defaut c'est le francais dont le `fr`.
 
-Dans le dossier `components/lang` sont ranger les traductions de votre application. Ce sont des fichier php qui retourne un `array` et si vous remarquez il y a un dossier `fr` et `en`. Ce sont les dossiers pour chaque langue ici `fr` pour français et `en` pour anglais.
+Dans le dossier `components/lang` sont ranger les traductions de votre application. Ce sont des fichier php qui retourne un `array` et si vous remarquez il y a un dossier `fr` et `en`. Ce sont les dossiers pour chaque langue, ici `fr` pour français et `en` pour anglais.
 
 ```
 /components
@@ -29,13 +29,13 @@ Dans le dossier `components/lang` sont ranger les traductions de votre applicati
       messages.php
 ```
 
-Tous les fichiers de langue renvoient un tableau de chaînes à clé. Par exemple
+Tous les fichiers de langue renvoient un tableau de chaînes à clé.
+
+Par exemple:
 
 ```php
 <?php
-
 // components/lang/en/messages.php
-
 return [
   'welcome' => 'Welcome to our application'
 ];
@@ -63,10 +63,10 @@ Vous pouvez configurer une `lang`, qui sera utilisée lorsque la langue active n
 
 ## Récupération de chaînes de traduction
 
-Vous pouvez extraire des lignes de fichiers de langue à l'aide de la fonction du helper `trans` ou `_t`. La méthode `_t` accepte le fichier et la clé de la chaîne de traduction comme premier argument. Par exemple, récupérons la chaîne de traduction de bienvenue dans le fichier de langue `components/lang/messages.php`:
+Vous pouvez extraire des lignes de fichiers de langue à l'aide de la fonction du helper `trans` ou `t`. La méthode `t` accepte le fichier et la clé de la chaîne de traduction comme premier argument. Par exemple, récupérons la chaîne de traduction de bienvenue dans le fichier de langue `components/lang/messages.php`:
 
 ```php
-echo _t('messages.welcome');
+echo t('messages.welcome');
 // Ou bien
 echo trans('messages.welcome');
 // Ou bien
@@ -97,7 +97,7 @@ if ($trans->isLocale('en')) {
 }
 ```
 
-Si la chaîne de traduction spécifiée n'existe pas, la fonction `_t` renverra la clé de la chaîne de traduction. Ainsi, à l'aide de l'exemple ci-dessus, la fonction `_t` renverrait `messages.welcome` si la chaîne de traduction n'existe pas.
+Si la chaîne de traduction spécifiée n'existe pas, la fonction `t` renverra la clé de la chaîne de traduction. Ainsi, à l'aide de l'exemple ci-dessus, la fonction `t` renverrait `messages.welcome` si la chaîne de traduction n'existe pas.
 
 ### Remplacement de paramètres dans les chaînes de traduction
 
@@ -107,10 +107,10 @@ Si vous le souhaitez, vous pouvez définir des espaces réservés dans vos chaî
 'welcome' => 'Welcome, {name}',
 ```
 
-Pour remplacer les espaces réservés lors de l'extraction d'une chaîne de traduction, transmettez un tableau de remplacements en tant que deuxième argument de la fonction `_t` ou `trans`:
+Pour remplacer les espaces réservés lors de l'extraction d'une chaîne de traduction, transmettez un tableau de remplacements en tant que deuxième argument de la fonction `t` ou `trans`:
 
 ```php
-echo _t('messages.welcome', ['name' => 'Galy']);
+echo t('messages.welcome', ['name' => 'Galy']);
 ```
 
 ## La pluralisation
@@ -121,10 +121,10 @@ La pluralisation est un problème complexe, car différentes langues ont une var
 'names' => 'C\'est un utilisateur|Ce sont des utilisateurs',
 ```
 
-Après avoir défini une chaîne de traduction comportant des options de pluralisation, vous pouvez utiliser la fonction `__` ou `trans`. Dans cet exemple, puisque le nombre est supérieur à un, la forme au pluriel de la chaîne de traduction est renvoyée:
+Après avoir défini une chaîne de traduction comportant des options de pluralisation, vous pouvez utiliser la fonction `t` ou `trans`. Dans cet exemple, puisque le nombre est supérieur à un, la forme au pluriel de la chaîne de traduction est renvoyée:
 
 ```php
-echo __('messages.names', count($names) > 1);
+echo t('messages.names', count($names) > 1);
 ```
 
 Avec les données remplacer
@@ -134,7 +134,7 @@ Avec les données remplacer
 ```
 
 ```php
-echo __('messages.names', ['name' => 'Newt'], count($names) == 1);
+echo t('messages.names', ['name' => 'Newt'], count($names) == 1);
 ```
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

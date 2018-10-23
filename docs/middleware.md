@@ -106,7 +106,7 @@ $app->middleware([
 
 ## Utiliser le middleware
 
-Après avoir definir un middleware dans le `app/Kernel/Loader.php`.
+Après avoir définir un middleware dans le `app/Kernel/Loader.php`.
 
 ```php
 $app->middleware(['ip', 'autre']);

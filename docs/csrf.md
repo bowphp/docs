@@ -38,7 +38,7 @@ Outre la vérification du jeton CSRF en tant que paramètre POST, le middleware 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 ```
 
-Ensuite, une fois que vous avez créé la balise `META`, vous pouvez demander à une bibliothèque comme jQuery d'ajouter automatiquement le jeton à tous les en-têtes de requête. Cela fournit une protection CSRF simple et pratique pour vos applications basées sur AJAX:
+Ensuite, une fois que vous avez créé la balise `<meta>`, vous pouvez demander à une bibliothèque comme jQuery d'ajouter automatiquement le jeton à tous les en-têtes de requête. Cela fournit une protection CSRF simple et pratique pour vos applications basées sur AJAX:
 
 ```js
 $.ajaxSetup({

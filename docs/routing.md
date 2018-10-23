@@ -54,11 +54,11 @@ $app->route([
 | paramêtre | Type |
 |----------|------|
 | path | `String` |
-| method | `String`, `Array`, Methode Http |
-| handler | `String`, `Array`, L'action à lancer |
-| middleware | `String`, `Array`, Middleware |
-| where  | `String`, `Array`, Contrainte appliqué sur l'URL |
-| name | `String`, `Array`, Le nom de la route |
+| method | `String`, `Array` - Methode Http |
+| handler | `String`, `Array` - L'action à lancer |
+| middleware | `String`, `Array` - Middleware |
+| where  | `String`, `Array` - Contrainte appliqué sur l'URL |
+| name | `String`, `Array` - Le nom de la route |
 
 `method` correspond au verbe `http` à associer à la route, soit `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`.
 
@@ -126,7 +126,7 @@ $app->[method](url, action);
 | paramêtre | Type |
 |----------|------|
 | url      | `String` |
-| action   | `String`, `Array`, Closure ou Callable |
+| action   | `String`, `Array` - Closure ou Callable |
 
 - Avec une clourse
 
@@ -267,7 +267,7 @@ il faudra créer un champs comme ceci:
 
 Ce qui aura pour but de permettre à Bow de comprendre votre requête.
 
-Tout les méthodes definir ci-dessus retourne l'instance de `Bow\Router\Route::class`. (Plus d'information sur le [`Bow\Router\Route::class`](https://bowphp.github.io/api/master/Bow/Router/Route.html))
+Tout les méthodes définir ci-dessus retourne l'instance de `Bow\Router\Route::class`. (Plus d'information sur le [`Bow\Router\Route::class`](https://bowphp.github.io/api/master/Bow/Router/Route.html))
 
 ## Mapping multiple
 
@@ -299,7 +299,7 @@ Vous pourrez avoir un code qui faire ceci.
 ```php
 use Bow\Http\Request;
 
-$app->match(['`GET`', '`POST`'], '/users', function (Request $request)
+$app->match(['GET', 'POST'], '/users', function (Request $request)
 {
   if ($request->isPost()) {
     // code
@@ -324,7 +324,7 @@ $app->any(url, action);
 | paramêtre | Type |
 |----------|------|
 | url      | `String` - L'url de la route |
-| action   | `String`, `Array`, Closure - L'action à lancer |
+| action   | `String`, `Array` - Closure - L'action à lancer |
 
 ```php
 $app->any('/', function ()
