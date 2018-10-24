@@ -1,6 +1,6 @@
 ---
 id: sms
-title: Bow Sms
+title: Sms
 ---
 
 > Section en rédaction

@@ -9,9 +9,10 @@
       "routing",
       "controlleur",
       "middleware",
-      "i18n",
       "views",
-      "storage"
+      "storage",
+      "mail",
+      "i18n"
     ],
     "Base de donnée": [
       "database",

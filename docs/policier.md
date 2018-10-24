@@ -1,6 +1,6 @@
 ---
 id: policier
-title: Bow Policier
+title: Policier
 ---
 
 > Section en rédaction

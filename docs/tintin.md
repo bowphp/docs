@@ -179,9 +179,9 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
 
 ```
 #loop ($names as $name)
-  #stop($name == 'tintin')
+  #stop ($name == 'tintin')
   // Ou
-  #jump($name == 'tintin')
+  #jump ($name == 'tintin')
 #endloop
 ```
 
@@ -212,7 +212,7 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
 `include` permet d'include un autre fichier de template dans un autre.
 
 ```
- #include('filename')
+ #include ('filename')
 ```
 
 ## Héritage
@@ -270,3 +270,12 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 </body>
 </html>
 ```
+
+## IDE support
+
+Tintin est supporté actuellement par [sublime text](https://www.sublimetext.com).
+
+- [Téléchargez](https://github.com/papac/bow-tintin-sbt3/archive/master.zip) ou clonez le dépot [papac/bow-tintin-sbt3](https://github.com/papac/bow-tintin-sbt3) dans [répètoire d'installation]/Packages/bow-tintin
+- Redémarrez Sublime Text
+- Rouvrez tous les fichiers .tintin
+- Prennez plaisir 😄

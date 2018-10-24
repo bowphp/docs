@@ -4,7 +4,7 @@ title: HTTP Response
 ---
 
 - [Introduction](#introduction)
-- [Envoyé un résponse](#envoyé-un-résponse)
+- [Envoyé un résponse](#envoye-un-response)
   - [Une chaine de caractère](#une-chaine-de-caractère)
   - [Une Collection et Une tableau ou un Object](#une-collection-et-une-tableau-ou-un-object)
   - [Un Model de Barry ORM](un-model-de-barry-orm)

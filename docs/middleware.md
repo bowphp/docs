@@ -70,7 +70,7 @@ Pour notre exemple on aura alors le `process` suivant:
 ```php
 public function process(Request $request, callable $next)
 {
-  if (in_array($request->ip(), ['127.0.0.1'])) {
+  if ($request->ip() == '127.0.0.1') {
     return "MODE DEV";
   }
 

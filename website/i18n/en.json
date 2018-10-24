@@ -20,14 +20,17 @@
       "database": {
         "title": "Démarrage"
       },
-      "helper": {
-        "title": "helper"
+      "helpers": {
+        "title": "Les helpers"
       },
       "installation": {
         "title": "Installation"
       },
       "i18n": {
         "title": "i18n"
+      },
+      "mail": {
+        "title": "Mail"
       },
       "middleware": {
         "title": "Middleware"
@@ -45,7 +48,10 @@
         "title": "Plugin"
       },
       "policier": {
-        "title": "Bow Policier"
+        "title": "Policier"
+      },
+      "query-builder": {
+        "title": "Query Builder"
       },
       "http-request": {
         "title": "HTTP Request"
@@ -63,7 +69,7 @@
         "title": "HTTP Session"
       },
       "sms": {
-        "title": "Bow Sms"
+        "title": "Sms"
       },
       "storage": {
         "title": "Storage"
