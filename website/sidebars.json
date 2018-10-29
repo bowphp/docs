@@ -33,7 +33,8 @@
       "mixfile"
     ],
     "Package": [
-      "tintin"
+      "tintin",
+      "policier"
     ]
   }
 }

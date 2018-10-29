@@ -47,22 +47,21 @@ class Footer extends React.Component {
           <div>
             <h5>Communité</h5>
             <a
-              href="http://stackoverflow.com/questions/tagged/"
+              href="http://ayiyikoh.org/"
               target="_blank"
               rel="noreferrer noopener">
-              Stack Overflow
+              @ayiyikoh
             </a>
-            <a href="https://bowphp.slack.com/">Slack</a>
             <a href="https://codedivoire.slack.com/">@Codedivoire</a>
-            <a
-              href="https://twitter.com/@bowFramework"
+          </div>
+          <div>
+            <h5>En plus</h5>
+            <a href="https://twitter.com/@bowFramework"
               target="_blank"
               rel="noreferrer noopener">
               Twitter
             </a>
-          </div>
-          <div>
-            <h5>En plus</h5>
+            <a href="https://bowphp.slack.com/">Slack</a>
             <a href={`${this.props.config.baseUrl}blog`}>Blog</a>
             <a href="https://github.com/bowphp">GitHub</a>
           </div>

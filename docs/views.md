@@ -128,7 +128,8 @@ class HomeController extends Controller
 ## Vue avec Twig
 
 Twig est un moteur de templates pour le langage de programmation PHP, utilisé par défaut par le framework Symfony.
-Il aurait été inspiré par Jinja, moteur de template Python.
+
+Il aurait été inspiré par `Jinja`, moteur de template Python utilisé dans [Django](https://www.djangoproject.com).
 
 Exemple de code:
 
