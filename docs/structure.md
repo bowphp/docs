@@ -45,6 +45,8 @@ C'est là que vous allez insérer tout les fichiers de votre application. Vous r
 - __lang__: Dossier dans lequel les locales de votre application seront sauvegardés.
 - __views__: Dossier dans lequel sera souvegardé les vues de votre application.
 
+> Consultez la section [Mixfile.js](./mixfile)
+
 ## Le dossier db
 
 - __migration__: Régroupe tout les fichiers de migration de la base de donnée. Il existe un fichier nommé `.registers` qui ne doit en aucun cas être supprimer, c'est la mémoire en effet du système de migration de bow
