@@ -15,7 +15,7 @@ L'orgination de `bow` respect le parten *MVC*, entendez par *M*odel *V*ue *C*ont
 
 | Dossier ou fichier | Description |
 |---------|-------------|
-| __app__ | Contient les dossiers de l'application. C'est le dossier dans lequel vous allez programmer votre application à `80%`. Il contient entre autre le dossier `Controllers`, le dossier `Middelware`, (si vous générez un validateur le dossier Validation apparaitra). Enfin tout les fichiers du model y seront stocker |
+| __app__ | Contient les dossiers de l'application. C'est le dossier dans lequel vous allez programmer votre application à `80%`. Il contient entre autre le dossier `Controllers`, le dossier `Middelware`, (si vous générez un validateur, le dossier Validation apparaitra). Enfin tout les fichiers du model y seront stocker |
 | __components__ | Contient les assets de l'application. Il contient entre autre le dossier `js`, `sass`, `lang` et le dossier `views`. Qui sont le assets de votre application. C'est la que vous allez mettre vos fichiers static et ensuite les compiler |
 | __config__ | Contient tout la configuration de l'application. |
 | __db__ | Dossier dans lequel sera souvegardé les migrations et seeding de votre application |
