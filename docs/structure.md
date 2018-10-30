@@ -41,7 +41,7 @@ Ici vous rétrouverez les dossiers suivant.
 C'est là que vous allez insérer tout les fichiers de votre application. Vous rétrouverez les dossiers suivant.
 
 - __js__: Votre fichier `Javascript` seront sauvegardés ici.
-- __scss__: Votre ficher scss seront sauvégardés ici.
+- __sass__: Votre ficher scss seront sauvégardés ici.
 - __lang__: Dossier dans lequel les locales de votre application seront sauvegardés.
 - __views__: Dossier dans lequel sera souvegardé les vues de votre application.
 
