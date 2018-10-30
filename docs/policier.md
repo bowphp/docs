@@ -6,15 +6,15 @@ title: Policier
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
-- [Set or Get configuration](#set-or-get-configuration)
-  - [Set Configuration](#set-configuration)
-  - [Get configuration](#get-configuration)
-  - [Encode Token](#encode-token)
-  - [Decode Token](#decode-token)
-  - [Parse Token](#parse-token)
-  - [Verify Token](#verify-token)
-  - [Validate Token](#validate-token)
-- [Bow and Policier](#bow-and-policier)
+  - [Mise à jour ou Récupération de la configuration](##mise-à-jour-ou-récupération-de-la-configuration)
+    - [Mise à jour de la Configuration](#mise-à-jour-de-la-configuration)
+    - [Récupération de la Configuration](#récupération-de-la-configuration)
+  - [Encoder un Token](#encoder-un-token)
+  - [Décoder un Token](#decoder-un-token)
+  - [Transformer un Token](#transformer-un-token)
+  - [Vérifier un Token](#vérifier-un-token)
+  - [Valider un Token](#valider-un-token)
+- [Bow Framework et Policier](#bow-framework-et-policier)
   - [Personnalisation du Middleware](#personnalisation-du-middleware)
   - [Publier le middleware](#publier-le-middleware)
 
@@ -100,7 +100,7 @@ $configure = require "/path/to/config/file.php";
 $policier = Policier::configure($configure);
 ```
 
-OU
+Vous pouvez aussi faire comme ceci:
 
 ```php
 use Bow\Jwt\Policier;
@@ -120,9 +120,9 @@ policier($action, ...$args);
 
 La valeur d'action doit être l'une de ces valeurs: `encode`, `decode`, `parse`, `verify`, `validate`.
 
-## Set or Get configuration
+### Mise à jour ou Récupération de la configuration
 
-### Set Configuration
+#### Mise à jour de la Configuration
 
 Vous pouvez mettre à jour la configuration de base avec la méthode `setConfig`:
 
@@ -130,7 +130,7 @@ Vous pouvez mettre à jour la configuration de base avec la méthode `setConfig`
 $policier->setConfig('exp', time() + 72000);
 ```
 
-### Get configuration
+#### Récupération de la Configuration
 
 Vous pouvez également obtenir les informations de configuration avec la méthode `getConfig`:
 
@@ -138,7 +138,7 @@ Vous pouvez également obtenir les informations de configuration avec la méthod
 $policier->getConfig('exp');
 ```
 
-### Encode Token
+### Encoder un Token
 
 Encoder rapidement un token:
 
@@ -168,7 +168,7 @@ Via l'assistant:
 policier('encode', $id, $claims);
 ```
 
-### Decode Token
+### Décoder un Token
 
 Même chose pour le décodage de token:
 
@@ -186,7 +186,7 @@ Via l'assistant:
 policier('decode', $token);
 ```
 
-### Parse Token
+### Transformer un Token
 
 ```php
 $token = $policier->parse($token);
@@ -211,7 +211,7 @@ Via l'assistant:
 policier('parse', $token);
 ```
 
-### Verify Token
+### Vérifier un Token
 
 Vérifier si le jeton est valide avec tous les attributs JWT.
 
@@ -231,7 +231,7 @@ Via l'assistant:
 policier('verify', $token);
 ```
 
-### Validate Token
+### Valider un Token
 
 Validez le jeton avec les informations de réclamation et les informations `exp`.
 
@@ -263,7 +263,7 @@ $claims = [
 policier('validate', $token, $claims);
 ```
 
-## Bow and Policier
+## Bow Framework et Policier
 
 Si vous utilisez [Bow Framework](https://github.com/bowphp/app), vous pouvez utiliser le plugin de configuration `Bow\Jwt\PolicierConfiguration::class` qui lie automatiquement le middleware `Bow\Jwt\PolicierMiddleware::class`. Ce middleware est utilisable via l'alias `api`.
 
