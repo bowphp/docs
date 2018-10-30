@@ -14,6 +14,9 @@ title: Policier
   - [Parse Token](#parse-token)
   - [Verify Token](#verify-token)
   - [Validate Token](#validate-token)
+- [Bow and Policier](#bow-and-policier)
+  - [Personnalisation du Middleware](#personnalisation-du-middleware)
+  - [Publier le middleware](#publier-le-middleware)
 
 La police permet de valider la demande via [JWT](https://jwt.io)
 
@@ -64,12 +67,12 @@ return [
   "alg" => "HS512",
 
   /**
-   * Signature en utilisant votre
+   * Votre Signature, ce champs est obligatoire pour les autres type de hachage sauf RSA
    */
   'signkey' => null,
 
   /**
-   * Signature en utilisant votre RSA
+   * Signature en utilisant votre RSA, ce chargera automatique si la clé de hashage est de type RSA
    */
   "keychain" => [
     /**
@@ -87,7 +90,7 @@ return [
 
 ## Usage
 
-Policier est très simple d'utilisation et possède une API claire.
+Policier est très simple d'utilisation et possède une API claire. La configuration retourne une singleton.
 
 ```php
 use Bow\Jwt\Policier;
@@ -109,7 +112,7 @@ Policier::configure($configure);
 $policier = Policier::getInstance();
 ```
 
-Après la configuration, vous pouvez utiliser l’assistant `policier`:
+Après la configuration, vous pouvez utiliser le helper `policier`:
 
 ```php
 policier($action, ...$args);
@@ -137,7 +140,7 @@ $policier->getConfig('exp');
 
 ### Encode Token
 
-Encoder rapidement le token
+Encoder rapidement un token:
 
 ```php
 $id = uniqid();
@@ -167,7 +170,7 @@ policier('encode', $id, $claims);
 
 ### Decode Token
 
-Même chose pour le décodage de token.
+Même chose pour le décodage de token:
 
 ```php
 $result = $policier->decode($token);
@@ -214,10 +217,11 @@ Vérifier si le jeton est valide avec tous les attributs JWT.
 
 ```php
 $verified = $policier->verify($token);
+
 if ($verified) {
-  echo "Token is valide";
+  echo "Token est valide";
 } else {
-  echo "Token is not valide";
+  echo "Token n'est pas valide";
 }
 ```
 
@@ -237,11 +241,31 @@ $claims = [
   "nickname" => "papac",
   "logged" => true
 ];
+
+$validated = $policier->validate($token, $claims);
+
+if ($validated) {
+  echo "Les informations sont valides";
+} else {
+  echo "Les informations ne sont pas valides";
+}
+```
+
+Via l'assistant:
+
+```php
+$claims = [
+  "name" => "Franck",
+  "nickname" => "papac",
+  "logged" => true
+];
+
+policier('validate', $token, $claims);
 ```
 
 ## Bow and Policier
 
-Si vous utilisez [Bow Framework](https://github.com/bowphp/app), vous pouvez utiliser le plugin de configuration `Bow\Jwt\PolicierConfiguration::class` et lie automatiquement le middleware `Bow\Jwt\PolicierMiddeware::class` qui est utilisable via alias `api`.
+Si vous utilisez [Bow Framework](https://github.com/bowphp/app), vous pouvez utiliser le plugin de configuration `Bow\Jwt\PolicierConfiguration::class` qui lie automatiquement le middleware `Bow\Jwt\PolicierMiddeware::class`. Ce middleware est utilisable via l'alias `api`.
 
 Relier la configuration sur `app\Kernel\Loader.php`:
 
@@ -269,5 +293,86 @@ Le token a été analysé dans l'instance de Policier dans un processus middlewa
 - Obtenez le token avec `getToken`
 - Décoder le token avec `getDecodeToken` - [More information of token parsed](#decode-token)
 - Analyser le token avec `getParsedToken` - [More information of token parsed](#parse-token)
+
+### Personnalisation du Middleware
+
+Notez que vous pouvez créer un autre middleware qui étendra le middleware par defaut `Bow\Jwt\PolicierMiddeware::class`. Ce qui vous donne la possibilité de changer les messages d'erreur en surchargant les methodes `getUnauthorizedMessage`, `getExpirateMessage` et `getCode`.
+
+```bash
+php bow add:middleware CustomPolicierMiddleware
+```
+
+et ensuite vous pouvez faire ceci:
+
+```php
+
+use Bow\Http\Request;
+use Bow\Jwt\PolicierMiddeware;
+
+class CustomPolicierMiddleware extends PolicierMiddeware
+{
+  /**
+   * Get Error message
+   *
+   * @return array
+   */
+  public function getUnauthorizedMessage()
+  {
+    return [
+      'message' => 'unauthorized',
+      'error' => true
+    ];
+  }
+
+  /**
+   * Get Error message
+   *
+   * @return array
+   */
+  public function getExporateMessage()
+  {
+    return [
+      'message' => 'token is expired',
+      'expired' => true,
+      'error' => true
+    ];
+  }
+
+  /**
+   * Get Expirate response code
+   *
+   * @return int
+   */
+  public function getExpirateCode()
+  {
+    return 403;
+  }
+
+  /**
+   * Get Unauthorized response code
+   *
+   * @return int
+   */
+  public function getUnauthorizedCode()
+  {
+    return 403;
+  }
+}
+```
+
+### Publier le middleware
+
+Pour publier le middleware personnalisé et écraser celui par defaut de Policier c'est très simple, il suffit seulement d'ajouter le middleware dans le fichier `app/Kernel/Loader.php` avec la clé `api`.
+
+```php
+publuc function middlewares()
+{
+  return [
+    ...
+    'api' => \App\Middleware\CustomPolicierMiddleware::class,
+    ...
+  ];
+}
+```
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
