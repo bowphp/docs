@@ -13,7 +13,7 @@ title: Vues
 
 ## Introduction
 
-Les vues contiennent le code HTML fourni par votre application et séparent votre logique de contrôleur / application de votre logique de présentation:
+Les vues contiennent le code HTML fourni par votre application et séparent votre logique de contrôleur/application de votre logique de présentation:
 
 <script id="asciicast-srlT0uYy1bOin8Z3Z35E66JJB" src="https://asciinema.org/a/srlT0uYy1bOin8Z3Z35E66JJB.js" data-speed="3" data-rows="20" async></script>
 
@@ -22,7 +22,7 @@ Les vues contiennent le code HTML fourni par votre application et séparent votr
 Bow framework implement 3 moteur de template par defaut, [Twig](https://twig.symfony.com), [Pug-PHP](https://www.phug-lang.com/), [Mustache-PHP](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags).
 La configuration des vues ce trouve dans le fichier `view.php` du dossier `config`/..
 
-Spécifiez le nom du template à utiliser avec option `engine` de la configuration, cette option peut prendre le valeur suivant `twig`, `pug` et `mustache`. Par défaut Bow utilise `twig`.
+Spécifiez le nom du template à utiliser avec option `engine` de la configuration, cette option peut prendre le valeur suivant `twig`, `pug`, `php` et `mustache`. Par défaut Bow utilise `twig`.
 
 Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entré `extension`. Vous verez également que les vues sont stockées dans le répertoire `components/views` par defaut.
 

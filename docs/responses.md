@@ -12,10 +12,10 @@ title: HTTP Response
   - [Modification du code d'erreur](#modification-du-code-d-erreur)
   - [Ajouter une entête http](#ajouter-une-entête-http)
 - [Envoyer un json](#envoyer-un-json)
-  - [Protototype de la methode json](#protototype-de-la-methode-json)
+  - [Protototype de la méthode json](#protototype-de-la-methode-json)
   - [Exemple d'envoye de JSON](#exemple-d-envoye-de-json)
 - [Envoyer une reponse depuis les vues](#envoyer-une-reponse-depuis-les-vues)
-  - [Protototype de la methode render](#protototype-de-la-methode-render)
+  - [Protototype de la méthode render](#protototype-de-la-methode-render)
   - [Exemple d'envoye de vue](#exemple-d-envoye-de-vue)
 - [Redirection](#redirection)
 
@@ -35,7 +35,7 @@ $app->get('/', function () {
 });
 ```
 
-### Une Collection et Une tableau ou un Object
+### Une Collection et Un tableau ou un Object
 
 Une réponse HTTP peut être une instance de [`Bow\Support\Collection`](https://bowphp.github.io/api/master/Bow/Support/Collection.html).
 
@@ -125,7 +125,7 @@ $response->json($data, $code, $headers);
 Exemple:
 
 ```php
-$data = ['message' => 'hello, world'];
+$data = ['message' => 'Hello, World'];
 
 return $response->json($data, $code = 200, [
   'X-Proto-Value' => 1 // Juste un test

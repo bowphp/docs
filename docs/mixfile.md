@@ -11,7 +11,7 @@ title: Mixfile.js
 
 ## Introduction
 
-Bow est preset (Préconfiguré) avec un environement Frontend, notamment avec [Reacjs](https://reactjs.org) et [Sass](https://sass-lang.com). Ce qui permet d'accélérer le développement d'application web.
+Bow est preset (Préconfiguré) avec un environement Frontend, notamment avec [Reacjs](https://reactjs.org), [Vuejs](https://vuejs.org) et [Sass](https://sass-lang.com). Ce qui permet d'accélérer le développement d'application web.
 
 ## Utilisation
 

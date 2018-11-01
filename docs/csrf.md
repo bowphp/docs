@@ -3,9 +3,9 @@ id: csrf-protection
 title: CSRF Protection
 ---
 
-[Introduction](#introduction)
-[X-CSRF-Token](#x-csrf-token)
-[X-XSRF-Token](#x-xsrf-token)
+- [Introduction](#introduction)
+- [X-CSRF-Token](#x-csrf-token)
+- [X-XSRF-Token](#x-xsrf-token)
 
 ## Introduction
 

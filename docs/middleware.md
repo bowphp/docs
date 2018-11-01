@@ -17,11 +17,9 @@ Les middlewares constituent un mécanisme pratique pour filtrer les requêtes HT
 
 ## Comment ça marche
 
-Différents frameworks utilisent le middleware différemment. Bow ajoute un middleware sous forme de couches concentriques entourant votre application principale. Chaque nouvelle couche de middleware entoure les couches de middleware existantes. La structure concentrique se dilate vers l'extérieur à mesure que des couches intermédiaires supplémentaires sont ajoutées.
+Différents frameworks utilisent le système de middleware différemment. Bow ajoute un middleware sous forme de file d'attente au dessus de votre application principale. Chaque nouvelle couche de middleware est ajouté la file de middleware existante. La structure de file se dilate vers l'extérieur au fure et à mesure que les couches intermédiaires supplémentaires sont ajoutées.
 
-Lorsque vous exécutez l'application Bow, les objets Request traversent la structure du middleware de l'extérieur vers l'intérieur. Ils entrent d'abord dans le middleware le plus externe, puis dans le prochain middleware le plus externe (et ainsi de suite), jusqu'à ce qu'ils atteignent l'application elle-même. Une fois que l'application Bow a distribué la route approprié, l'objet Response résultant quitte l'application Bow et est sérialisé dans une réponse HTTP brute et est renvoyé au client HTTP. Voici un diagramme qui illustre le flux de processus du middleware
-
-<img src="/img/arrow.png" alt="Middleware image" width="450"/>
+Lorsque vous exécutez l'application Bow, les objets Request traversent la structure du middleware de l'extérieur vers l'intérieur. Ils entrent d'abord dans le middleware le plus externe, puis dans le prochain middleware le plus externe (et ainsi de suite), jusqu'à ce qu'ils atteignent l'application elle-même. Une fois que l'application Bow a distribué la route approprié, l'objet Response résultant quitte l'application Bow et est sérialisé dans une réponse HTTP qui est renvoyé au client HTTP.
 
 La seule condition stricte est qu'un middleware doit renvoyer une value autre de `null`. Chaque middleware devra appeler le middleware suivant et lui transmettre les objets `Request` comme arguments via la méthode `$next`.
 
@@ -46,7 +44,6 @@ Mais d'abort, regardons le contenu du fichier `IpMiddleware`. C'est la méthode 
 
 namespace App\Middleware;
 
-use Bow\Auth\Auth;
 use Bow\Http\Request;
 
 class IpMiddleware

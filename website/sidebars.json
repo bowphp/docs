@@ -28,7 +28,6 @@
       "http-session"
     ],
     "API": [
-      "cli",
       "plugin",
       "mixfile"
     ],
