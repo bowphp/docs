@@ -3,6 +3,21 @@ id: storage
 title: Storage
 ---
 
+- [Introduction](#introduction)
+- [Configuration](#configuration)
+- [Fonctionnement](#fonctionnement)
+- [Manipulation des fichiers](#manipulation-des-fichiers)
+  - [Récupérer le contenu d'un fichier](#récupérer-le-contenu-d-un-fichier)
+  - [Ajouter/Modifier le contenu d'un fichier](#ajouter-modifier-le-contenu-d-un-fichier)
+  - [Ajouter du contenu au début ou à la fin d'un fichier](#ajouter-du-contenu-au-début-ou-à-la-fin-d-un-fichier)
+  - [Supprimer un fichier](#supprimer-un-fichier)
+  - [Copier un fichier](#copier-un-fichier)
+  - [Créer un dossier](#créer-un-dossier)
+  - [Vérifier si un fichier existe](#vérifier-si-un-fichier-existe)
+  - [Vérifier si le paramêtre est un fichier](#vérifier-si-le-paramêtre-est-un-fichier)
+  - [Vérifier si le paramêtre est un dossier](#vérifier-si-le-paramêtre-est-un-dossier)
+  - [Obtenir le chemin absolu d'un fichier ou dossier](#obtenir-le-chemin-absolu-d'un-fichier-ou-dossier)
+
 ## Introduction
 
 Bow intègre un système de gestion de fichier permettant de manipuler des fichiers avec une grande simplicité.
@@ -101,6 +116,13 @@ $mount = mount('public');
 $mount->delete('app.js');
 ```
 
+### Copier un fichier
+
+```php
+$mount = mount('public');
+$mount->copy('app.txt', 'sous-dossier/app.txt');
+```
+
 ### Créer un dossier
 
 Vous pouvez créer un nouveau dossier à l'aide de la méthode `makeDirectory`:
@@ -108,6 +130,7 @@ Vous pouvez créer un nouveau dossier à l'aide de la méthode `makeDirectory`:
 #### Prototype
 
 ```php
+$mount = mount('public');
 $mount->makeDirectory($dirname, $mode = 0777, $recursive = false);
 ```
 
@@ -122,17 +145,10 @@ $mount = mount('public');
 $mount->makeDirectory('dossier');
 ```
 
-// Changer la permission du dossier
-> Notez vous pouvez changer le mode du fichier et aussi effectuer une creation récursive
+> Notez que vous pouvez changer le mode du dossier et choisir de le créer de manière récursif.
 
 ```php
 $mount->makeDirectory('chemin/vers/un/dossier', 777, true);
-```
-
-### Copiez un fichier
-
-```php
-$mount->copy('app.txt', 'sous-dossier/app.txt');
 ```
 
 ### Vérifier si un fichier existe
@@ -155,8 +171,6 @@ if ($mount->isFile('app.txt')) {
 }
 ```
 
-33
-
 ### Vérifier si le paramêtre est un dossier
 
 ```php
@@ -167,7 +181,7 @@ if ($mount->isDirectory('nom_du_dossier')) {
 }
 ```
 
-### Obtenir le chemin absolute du fichier ou dossier
+### Obtenir le chemin absolu d'un fichier ou dossier
 
 ```php
 $mount = mount('public');
@@ -175,7 +189,7 @@ $mount = mount('public');
 $path = $mount->resolvePath('app.txt');
 
 echo $path;
-// => /chemin/absolue/vers/le/fichier/app.txt
+// => /chemin/absolu/vers/le/fichier/app.txt
 ```
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
