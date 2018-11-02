@@ -18,7 +18,7 @@ title: Policier
   - [Personnalisation du Middleware](#personnalisation-du-middleware)
   - [Publier le middleware](#publier-le-middleware)
 
-La policer **(pronomcez Poli-ssi-eur)** permet de mettre en place un système d'authentification via [JWT](https://jwt.io).
+La policer **(prononcé Poli-ssi-eur)** permet de mettre en place un système d'authentification via [JWT](https://jwt.io).
 
 ## Installation
 
