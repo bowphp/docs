@@ -58,7 +58,7 @@ $command->setControllerDirectory(__DIR__.'/app/Bus/Controllers');
 
 > Visitez ce [lien](./structure.md) pour plus d'information sur la personnalisation de la structure de l'applucation.
 
-## contrôleur basic
+## Contrôleur basic
 
 ### Définir un contrôleur
 
@@ -99,7 +99,7 @@ Vous pouvez générer un contrôleur en utilisant la commande `add:controller` d
 php bow add:controller UserController
 ```
 
-### Contrôleurs et espaces de noms
+### Contrôleur et espaces de noms
 
 Il est très important de noter que nous n’avons pas eu besoin de spécifier le `namespace` du contrôleur complet lors de la définition de la route du contrôleur. Étant donné que `public/index.php` charge vos fichiers de route dans un groupe de routage contenant le `namespace`, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Controllers` de le `namespace`.
 
@@ -127,7 +127,7 @@ Exemple:
 $app->get('profile', 'UserController::show')->middleware('auth');
 ```
 
-## contrôleur REST
+## Contrôleur REST
 
 Les contrôleur REST sont un moyen simple pour mettre en place un API Rest facilement. Cette approche, vous permet de vous concentrez sur votre logique et laisser le framework géré le routage pour vous.
 
