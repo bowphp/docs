@@ -9,14 +9,14 @@ title: Storage
 - [Manipulation des fichiers](#manipulation-des-fichiers)
   - [Récupérer le contenu d'un fichier](#recuperer-le-contenu-d-un-fichier)
   - [Ajouter/Modifier le contenu d'un fichier](#ajouter-modifier-le-contenu-d-un-fichier)
-  - [Ajouter du contenu au début ou à la fin d'un fichier](#ajouter-du-contenu-au-début-ou-à-la-fin-d-un-fichier)
+  - [Ajouter du contenu au début ou à la fin d'un fichier](#ajouter-du-contenu-au-debut-ou-a-la-fin-d-un-fichier)
   - [Supprimer un fichier](#supprimer-un-fichier)
   - [Copier un fichier](#copier-un-fichier)
-  - [Créer un dossier](#créer-un-dossier)
-  - [Vérifier si un fichier existe](#vérifier-si-un-fichier-existe)
-  - [Vérifier si le paramêtre est un fichier](#vérifier-si-le-paramêtre-est-un-fichier)
-  - [Vérifier si le paramêtre est un dossier](#vérifier-si-le-paramêtre-est-un-dossier)
-  - [Obtenir le chemin absolu d'un fichier ou dossier](#obtenir-le-chemin-absolu-d'un-fichier-ou-dossier)
+  - [Créer un dossier](#creer-un-dossier)
+  - [Vérifier si un fichier existe](#verifier-si-un-fichier-existe)
+  - [Vérifier si le paramêtre est un fichier](#verifier-si-le-parametre-est-un-fichier)
+  - [Vérifier si le paramêtre est un dossier](#verifier-si-le-parametre-est-un-dossier)
+  - [Obtenir le chemin absolu d'un fichier ou dossier](#obtenir-le-chemin-absolu-d-un-fichier-ou-dossier)
 
 ## Introduction
 
