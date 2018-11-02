@@ -74,8 +74,7 @@ echo $content;
 
 ### Ajouter/Modifier le contenu d'un fichier
 
-Pour ajouter/modifier le contenu d'un fichier, rien de plus simple. Il vous suffit d'utiliser la méthode `put` qui retourne respectivement `true` ou `false`
-en cas de succès ou d'échec:
+La méthode `put` permet d'ajouter/modifier le contenu d'un fichier:
 
 ```php
 $mount = mount('public');

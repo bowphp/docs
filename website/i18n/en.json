@@ -8,8 +8,8 @@
       "contribution": {
         "title": "Contribution"
       },
-      "controlleur": {
-        "title": "Controlleur"
+      "controleur": {
+        "title": "Contrôleurs"
       },
       "csrf-protection": {
         "title": "CSRF Protection"
