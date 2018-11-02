@@ -7,7 +7,7 @@ title: Storage
 - [Configuration](#configuration)
 - [Fonctionnement](#fonctionnement)
 - [Manipulation des fichiers](#manipulation-des-fichiers)
-  - [Récupérer le contenu d'un fichier](#récupérer-le-contenu-d-un-fichier)
+  - [Récupérer le contenu d'un fichier](#recuperer-le-contenu-d-un-fichier)
   - [Ajouter/Modifier le contenu d'un fichier](#ajouter-modifier-le-contenu-d-un-fichier)
   - [Ajouter du contenu au début ou à la fin d'un fichier](#ajouter-du-contenu-au-début-ou-à-la-fin-d-un-fichier)
   - [Supprimer un fichier](#supprimer-un-fichier)
@@ -53,7 +53,7 @@ Storage::mount("public");
 Storage::mount();
 ```
 
-> Si la méthode `mount` est appelé sans paramêtre, il utilisera par défaut la valeur de la clé `mount`.
+> Si la méthode `mount` est appelé sans paramêtre, elle utilisera par défaut la valeur de la clé `mount`.
 
 Vous pouvez aussi utiliser le helper `mount()` qui fonctionne exactement de la même manière:
 
@@ -161,7 +161,7 @@ if ($mount->exists('app.txt')) {
 }
 ```
 
-### Vérifier si le paramêtre est un un fichier
+### Vérifier si le paramêtre est un fichier
 
 ```php
 $mount = mount('public');

@@ -8,8 +8,6 @@ title: Mail
 Envoyer des emails dans une application est monnaie courante. Bow intègre un système d'envoi d'email facile à utiliser. Vous pouvez utiliser ce système à travers plusieurs pilotes communement appelés drivers:
 
 - Smtp - Envoie direct via un serveur SMTP
-- SES - Le service de SES de AWS
-- [Mailgun](https://www.mailgun.com/) - Le service de messagerie pour les développeurs
 - Mail - Le serivce de mail standard de PHP
 
 ## Configuration
