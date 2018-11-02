@@ -1,6 +1,6 @@
 ---
-id: controlleur
-title: Controlleur
+id: controleur
+title: Contrôleurs
 ---
 
 - [Introduction](#introduction)
@@ -20,7 +20,7 @@ title: Controlleur
 
 ## Introduction
 
-Les contrôleurs sont des moins pour simplifier l'organisation de vos projet.
+Les contrôleurs sont des moyens pour simplifier l'organisation de vos projet.
 
 Au lieu de définir toute la logique de gestion des requête en tant que `closure` dans les fichiers de routage, vous pouvez organiser ce comportement à l'aide de classe de contrôleur. Les contrôleurs peuvent regrouper la logique de traitement des requêtes associée en une seule classe.
 
