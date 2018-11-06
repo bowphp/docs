@@ -11,20 +11,20 @@ title: Configuration
 
 ## Introduction
 
-Tous les fichiers de configuration du framework Bow sont stockés dans le répertoire `config`. Chaque option est documentée, alors n'hésitez pas à parcourir les fichiers et à vous familiariser avec les options à votre disposition.
+Tous les fichiers de configuration du Framework Bow sont stockés dans le répertoire `config`. Chaque option est documentée, alors n'hésitez pas à parcourir les fichiers et à vous familiariser avec les options à votre disposition.
 
 ## Configuration
 
-Aprés mis en place votre configuration et que Bow est chargé tout la configuration.
-Vous pouvez avoir accès la configuration et aussi les modifiées avec le helper `config`.
+Aprés la mise en place votre configuration et que Bow est chargé tout la configuration.
+Vous pouvez avoir accès à la configuration et aussi la modifiée avec le helper `config`. L'accès aux valeurs se font via un système de [dot notation](#explication-de-la-dot-notation).
 
-Récupérer une valeur:
+Pour récupérer une valeur c'est très simple:
 
 ```php
 echo config('app.public_path')
 ```
 
-Modifier une valeur:
+Et la modifier une valeur se fait également très simplement:
 
 ```php
 config('view.engine', 'twig');
@@ -69,13 +69,13 @@ Votre fichier `.env.json` ne doit pas sous controle de version, parce que chaque
 
 ### Récupération les informations
 
-Toutes les variables répertoriées dans le fichier `.env.json` seront chargées dans le super-global PHP $_ENV lorsque votre application recevra une requête. Cependant, vous pouvez utiliser le helper `env` pour récupérer les valeurs de ces variables dans vos fichiers de configuration. En fait, si vous examinez les fichiers de configuration de Bow, vous remarquerez plusieurs des options utilisant déjà cette aide:
+Toutes les variables répertoriées dans le fichier `.env.json` seront chargées lorsque votre application recevra une requête. Cependant, vous pouvez utiliser le helper `env` pour récupérer les valeurs de ces variables dans  fichiers de configuration. En fait, si vous examinez les fichiers de configuration de Bow, vous remarquerez plusieurs des options utilisant déjà cet helper:
 
 ```php
 'database' => env('MYSQL_DATABASE'),
 ```
 
-Dans le case où la variable n'est pas définit `env` retournera `null`, ou bien pouvez passer un deuxième paramêtre à `env` qui sera la valeur par défaut si la valeur n'est pas trouvé.
+Dans le cas où la variable n'est pas définie `env` retournera `null`, ou bien vous pouvez passer un deuxième paramêtre à `env` qui sera la valeur par défaut si la valeur n'est pas trouvé.
 
 ```php
 'database' => env('MYSQL_DATABASE', 'localhost'),
