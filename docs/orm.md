@@ -16,4 +16,5 @@ Un ORM c'est une façon de rélier les tables entre elles en utilisant des class
 
 Dans tout bon Framework qui se respect, il y a un système de ORM et qui posséde un nom super mignon. Celui de Bow se nomme **Barry**, n'est pas mignon ça :smile:.
 
+
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

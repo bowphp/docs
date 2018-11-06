@@ -1,6 +1,6 @@
 ---
 id: container
-title: Bow container
+title: Capsule
 ---
 
 > Section en rédaction

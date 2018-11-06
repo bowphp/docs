@@ -234,4 +234,63 @@ Via le helper `statement`:
 statement('alter table `pets` add `owner` varchar(80) default null;');
 ```
 
+## Database Transactions
+
+Vous pouvez utiliser la méthode de `startTransaction` sur la classe `Database` pour exécuter un ensemble d'opérations dans une transaction de base de données.
+
+Si vous passez une `Closure` et qu'une exception est levée dans la fonction de rappel de la transaction, la transaction sera automatiquement annulée. Si la `Closure` s'exécute correctement, la transaction sera automatiquement validée. Vous n'avez pas à vous soucier de l'annulation manuelle ou de la validation lorsque vous utilisez la méthode de transaction:
+
+```php
+Database::startTransaction(function () {
+  Database::update('update users set votes = :votes', ['votes' => 1]);
+
+  Database::delete('delete from posts');
+});
+```
+
+Via le helper `transaction`:
+
+```php
+transaction(function () {
+  Database::update('update users set votes = :votes', ['votes' => 1]);
+
+  Database::delete('delete from posts');
+});
+```
+
+### Utilisation manuel des transaction
+
+Vous pouvez aussi utiliser manuelement le système de transaction.
+Pour démarrer la transaction avec la méthode:
+
+```php
+Database::startTransaction();
+// Ou
+transaction();
+```
+
+Vous pouez annuler la transaction avec la méthode:
+
+```php
+Database::rollback();
+// Ou
+rollback();
+```
+
+Vous pouez valider la transaction avec la méthode:
+
+```php
+Database::commit();
+// Ou
+commit();
+```
+
+Avec la méthode `inTransaction` vous pouvez vérifier si la base de donnée est en transaction:
+
+```php
+Database::inTransaction()
+// Ou
+inTransaction()
+```
+
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

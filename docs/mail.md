@@ -16,8 +16,8 @@ title: Mail
 
 Envoyer des emails dans une application est monnaie courante. Bow intègre un système d'envoi d'email facile à utiliser. Vous pouvez utiliser ce système à travers plusieurs pilotes communement appelés drivers:
 
-- Smtp - Envoie direct via un serveur SMTP
-- Mail - Le serivce de mail standard de PHP
+- **SMTP** - Envoie direct via un serveur SMTP
+- **MAIL** - Le système utilisera le fonction `email` natif de PHP
 
 ## Configuration
 
