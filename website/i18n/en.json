@@ -3,13 +3,19 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Simply your web development",
+    "tagline": "Simplify Your Web Development",
     "docs": {
+      "concept": {
+        "title": "Concept et Architecture"
+      },
+      "configuration": {
+        "title": "Configuration"
+      },
       "container": {
         "title": "Bow container"
       },
       "contribution": {
-        "title": "Contribution"
+        "title": "Guide de Contribution"
       },
       "controleur": {
         "title": "Contrôleurs"
@@ -25,9 +31,6 @@
       },
       "installation": {
         "title": "Installation"
-      },
-      "lifecycle": {
-        "title": "Cycle de vie de l'application"
       },
       "i18n": {
         "title": "i18n"
@@ -85,6 +88,9 @@
       },
       "views": {
         "title": "Vues"
+      },
+      "what-new": {
+        "title": "what-new"
       }
     },
     "links": {

@@ -67,7 +67,7 @@ const partainers = [
 
 const siteConfig = {
   title: 'Bow Framework', // Title for your website.
-  tagline: 'Simply your web development',
+  tagline: 'Simplify Your Web Development',
   url: 'https://bowphp.github.io', // Your website URL
   baseUrl: '/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:

@@ -59,11 +59,8 @@ Dans le cas ou votre modification affecte plusieur section ? Vous donnez un mess
 
 ## Auteurs
 
-Liste des contributeurs:
+**Franck Dakia** est un développeur Full Stack basé actuellement en Afrique, Côte d'ivore. Passioné de code, et développement collaboratif, Speaker, Formateur et Membre de plusieurs communautés de développeurs.
 
-- Franck Dakia <dakiafranck@gmail.com> [@franck_dakia](https://twitter.com/franck_dakia)
-- Ayiyikoh <fablab@ayiyikoh.org> [@ayiyikoh](https://twitter.com/ayiyikoh) hashtag: __#GoAyiyikoh__
+Contact: [dakiafranck@gmail.com](mailto:dakiafranck@gmail.com) - [@franck_dakia](https://twitter.com/franck_dakia)
 
-## Contact
-
-SVP s'il y a un bogue sur le projet veuillez me contacter par [email](mailto:dakiafranck@gmail "Contact par email") ou laissez moi un message sur le [slack](https://bowphp.slack.com).
+**SVP s'il y a un bogue sur le projet veuillez me contacter par email ou laissez moi un message sur le [slack](https://bowphp.slack.com).**

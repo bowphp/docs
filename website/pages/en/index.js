@@ -82,7 +82,7 @@ class HomeSplash extends React.Component {
           <ProjectTitle />
           <PromoSection>
             <Button href="/api/master">API</Button>
-            <Button href={docUrl('installation.html', language)}>Documentation</Button>
+            <Button href={docUrl('installation', language)}>Documentation</Button>
             <Button href="https://github.com/bowphp">Github</Button>
           </PromoSection>
         </div>
@@ -101,31 +101,31 @@ const Block = props => (
 );
 
 const Features = () => (
-  <Block layout="fourColumn" background="#b6b6b6">
+  <Block layout="twoColumn" background="#b6b6b6">
     {[
       {
-        content: 'Simple, Rapide et Robuste. Concentrez-vous sur votre projet.',
+        content: 'Simple, Rapide et Robuste. <br/>Concentrez-vous sur votre projet.',
         imageAlign: 'top',
         image: imgUrl("idea.svg"),
         title: 'S2R',
       },
       {
-        content: "<b>Bow</b> implemente un ORM extrêmement simple qui se nomme `Barry`.",
+        content: "Un ORM extrêmement simple qui se nomme `Barry`.",
         imageAlign: 'top',
         image: imgUrl("orm.svg"),
         title: 'ORM',
       },
       {
-        content: 'Structure personnalisable à l\'infini. Support de plugin',
+        content: 'Structure personnalisable à l\'infini. <br/>Support de plugin',
         imageAlign: 'top',
         title: 'Extensible',
         image: imgUrl("compose.svg"),
       },
       {
-        content: 'Par défaut Bow est préconfiguré avec Reactjs et Vuejs.',
+        content: 'Par défaut Bow est preset <br/>Reactjs et Vuejs.',
         imageAlign: 'top',
         image: imgUrl("layers.svg"),
-        title: 'Preset Reactjs / Vuejs',
+        title: 'Reactjs / Vuejs',
       }
     ]}
   </Block>

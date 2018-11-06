@@ -2,6 +2,7 @@
   "docs": {
     "Démarrage": [
       "installation",
+      "configuration",
       "structure",
       "contribution"
     ],
