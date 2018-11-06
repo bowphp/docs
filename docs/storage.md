@@ -74,11 +74,11 @@ Supposons que nous avons le fichier `app.txt` dans le disque `public`:
 Hello, world
 ```
 
-> Notez que ces methodes (sauf la methode `get`) retournent respectivement `true` ou `false` en cas de succès ou d'échec
+> Notez que ces méthodes (sauf la méthode `get`) retournent respectivement `true` ou `false` en cas de succès ou d'échec
 
 ### Récupérer le contenu d'un fichier
 
-La methode `get` sert à recupérer le contenu d'un fichier. Elle prend comme paramètre le nom du fichier.
+La méthode `get` sert à recupérer le contenu d'un fichier. Elle prend comme paramètre le nom du fichier.
 
 ```php
 $mount = mount('public');
@@ -99,7 +99,7 @@ $mount->put('app.js', $content );
 
 ### Ajouter du contenu au début ou à la fin d'un fichier
 
-Les methodes `preprend` et `append` vous permettent d'ajouter respectivement du contenu au debut ou la fin d'un fichier:
+Les méthodes `preprend` et `append` vous permettent d'ajouter respectivement du contenu au debut ou la fin d'un fichier:
 
 ```php
 $mount = mount('public');
@@ -109,7 +109,7 @@ $mount->append('app.txt', 'Contenu ajouté à la fin');
 
 ### Supprimer un fichier
 
-La methode `delete` permet de supprimer un fichier.
+La méthode `delete` permet de supprimer un fichier.
 
 ```php
 $mount = mount('public');

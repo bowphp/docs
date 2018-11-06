@@ -78,7 +78,7 @@ Alors notre table à comme colonne:
 
 ### Execution de requête Select
 
-Pour executer une requête brute de type `SELECT` nous devrez utiliser la methode `Database::select` ou le helper `select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour executer une requête brute de type `SELECT` nous devrez utiliser la méthode `Database::select` ou le helper `select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'un requête pour optenir tous les informations de la table `pets`:
 
@@ -108,12 +108,12 @@ Via helper `select`:
 $pet = select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
-Notez que la valeur retournée par la methode `select` est un `array` ou `null` s'il y a aucune informations.
+Notez que la valeur retournée par la méthode `select` est un `array` ou `null` s'il y a aucune informations.
 Dans le cas ou c'est un `array` le contenu est de type `stClass` (plus d'information sur [stClass](http://php.net/manual/fr/language.types.object.php)).
 
 ### Execution de requête Insert
 
-Pour executer une requête brute de type `INSERT` nous devrez utiliser la methode `Database::insert` ou le helper `insert`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour executer une requête brute de type `INSERT` nous devrez utiliser la méthode `Database::insert` ou le helper `insert`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'un requête pour inserer une information dans table `pets`:
 
@@ -141,7 +141,7 @@ $pet = [
 $inserted = insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
-Notez que la valeur retournée par la methode `insert` est un `int` ou `number` qui est le nombre d'insertion.
+Notez que la valeur retournée par la méthode `insert` est un `int` ou `number` qui est le nombre d'insertion.
 
 #### Insertion multiple
 
@@ -174,7 +174,7 @@ $updated = insert('insert into `pets` (id, name, color) values (:id, :name, :col
 
 ### Execution de requête Update
 
-Pour executer une requête brute de type `UPDATE` nous devrez utiliser la methode `Database::update` ou le helper `update`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour executer une requête brute de type `UPDATE` nous devrez utiliser la méthode `Database::update` ou le helper `update`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'un requête de mettre à jour d'information dans table `pets`:
 
@@ -204,7 +204,7 @@ $updated = update('update `pets` set id=:id, name=:name, color=:color where id =
 
 ### Execution de requête Delete
 
-Pour executer une requête brute de type `DELETE` nous devrez utiliser la methode `Database::delete` ou le helper `delete`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour executer une requête brute de type `DELETE` nous devrez utiliser la méthode `Database::delete` ou le helper `delete`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'un requête pour inserer une information dans table `pets`:
 
@@ -221,7 +221,7 @@ $deleted = delete('delete from `pets` where id = :id', ['id' => 2]);
 
 ### Execution de requête
 
-Pour executer une requête brute autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`. Il y a une methode faite pour `Database::statement` ou le helper `statement`.
+Pour executer une requête brute autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`. Il y a une méthode faite pour `Database::statement` ou le helper `statement`.
 
 ```php
 use Bow\Database\Database;

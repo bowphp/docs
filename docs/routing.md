@@ -5,7 +5,7 @@ title: Routing
 
 - [Introduction](#introduction)
 - [Mappage d'URL](#mappage-d-url)
-  - [Avec le methode `route`](#avec-le-methode-route)
+  - [Avec le méthode `route`](#avec-le-methode-route)
     - [Liste des options](#liste-des-options)
   - [Liste des possibilités](#liste-des-possibilites)
 - [Les methods de maping](#les-methods-de-maping)
@@ -37,7 +37,7 @@ de votre application.
 
 ## Mappage d'URL
 
-### Avec le methode `route`
+### Avec le méthode `route`
 
 C'est méthode permet de faire un mappage rélativement simple.
 
@@ -54,7 +54,7 @@ $app->route([
 | paramêtre | Type |
 |----------|------|
 | path | `String` |
-| method | `String`, `Array` - Methode Http |
+| method | `String`, `Array` - méthode Http |
 | handler | `String`, `Array` - L'action à lancer |
 | middleware | `String`, `Array` - Middleware |
 | where  | `String`, `Array` - Contrainte appliqué sur l'URL |

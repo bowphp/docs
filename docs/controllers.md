@@ -12,11 +12,11 @@ title: Contrôleurs
 - [Controller REST](#controller-rest)
   - [Définir un contrôleur rest](#definir-un-controleur-rest)
   - [Utilisons notre contrôleur REST](#utilisons-notre-controleur-rest)
-    - [Prototype de la methode REST](#prototype-de-la-methode-rest)
+    - [Prototype de la méthode REST](#prototype-de-la-methode-rest)
     - [Utilisation simple](#utilisation-simple)
     - [Utilisation avec les contraintes](#utilisation-avec-les-contraintes)
     - [Utilisation via un tableau comme action](#utilisation-via-un-tableau-comme-action)
-    - [Ignore des methodes](#ignore-des-methodes)
+    - [Ignore des méthodes](#ignore-des-methodes)
 
 ## Introduction
 
@@ -30,7 +30,7 @@ Les contrôleurs sont stockés dans le répertoire `app/Controllers`.
 
 ## Configuration
 
-Vous avez la possibilité de modifier le `namespace` des contrôleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La methode `middleware` permet à Bow de savoir quel est le bon `namespace` à ajouter sur le contrôleur lors de l'execution de la réquête ou lors de la génération de contrôleur ou de middleware par le lanceur de tache `php bow`.
+Vous avez la possibilité de modifier le `namespace` des contrôleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La méthode `middleware` permet à Bow de savoir quel est le bon `namespace` à ajouter sur le contrôleur lors de l'execution de la réquête ou lors de la génération de contrôleur ou de middleware par le lanceur de tache `php bow`.
 
 Imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos contrôleurs dans le `namespace` `App\Bus\Controllers`. Alors comment faire ça ?
 
@@ -139,7 +139,7 @@ Pour définir un nouveau contrôleur Rest, nous devez utiliser le lancer de tach
 php bow generate:resource PetController
 ```
 
-Un contrôleur nommé `PetController` sera donc créé. Ce qui fait ça particularité c'est qu'il y a déjà des methodes prédéfinir en lui et ces methodes doivent rester telles quelles sont.
+Un contrôleur nommé `PetController` sera donc créé. Ce qui fait ça particularité c'est qu'il y a déjà des méthodes prédéfinir en lui et ces méthodes doivent rester telles quelles sont.
 
 ```php
 <?php
@@ -228,9 +228,9 @@ class PetController extends Controller
 
 ### Utilisons notre contrôleur REST
 
-Pour utiliser le contrôleur Rest vous avez juste à utiliser le methode `rest` sur la variable globale `$app` dans vos fichiers de routing.
+Pour utiliser le contrôleur Rest vous avez juste à utiliser le méthode `rest` sur la variable globale `$app` dans vos fichiers de routing.
 
-#### Prototype de la methode `rest`
+#### Prototype de la méthode `rest`
 
 ```php
 $app->rest(url, action, where = []);
@@ -258,7 +258,7 @@ Avec une contrainte ça donne ceci:
 $app->rest('pets', 'PetController', ['id' => '\d+']);
 ```
 
-Ici la contrainte s'applique sur tous les methodes. Mais, vous avez aussi la possibilité de restreindre les contraintes sur des methodes comme ceci:
+Ici la contrainte s'applique sur tous les méthodes. Mais, vous avez aussi la possibilité de restreindre les contraintes sur des méthodes comme ceci:
 
 ```php
 $app->rest('pets', 'PetController', [
@@ -269,7 +269,7 @@ $app->rest('pets', 'PetController', [
 
 #### Utilisation via un tableau comme action
 
-Dans le cas ou `action` est un `array` voici les clés / valeurs possible.
+Dans le cas ou `action` est un `array` voici les clés/valeurs possible.
 
 ```php
 $action = [
@@ -280,9 +280,9 @@ $action = [
 $app->rest('pets', $action, ['id' => '\d+']);
 ```
 
-#### Ignore des methodes
+#### Ignore des méthodes
 
-La valeur de `ignores` sear une liste de methode / url qui seront ignorées par le `routeur`. Alors, dans l'exemple précédent les methodes `index` et `create` seront indisponibles.
+La valeur de `ignores` sear une liste de méthode/url qui seront ignorées par le `routeur`. Alors, dans l'exemple précédent les méthodes `index` et `create` seront indisponibles.
 
 #### Url et Action
 

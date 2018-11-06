@@ -71,7 +71,7 @@ $app->get('/', function () {
 
 ### Modification du code d'erreur
 
-Il est très important d'ajouter les codes d'erreurs à votre réponse HTTP si vous développew un API Restful. La methode `status` vous permet de le faire.
+Il est très important d'ajouter les codes d'erreurs à votre réponse HTTP si vous développew un API Restful. La méthode `status` vous permet de le faire.
 
 ```php
 use App\User;
@@ -89,7 +89,7 @@ Si dans votre API, la requête a été traitée avec succès et vous n'avez pas 
 
 ### Ajouter une entête HTTP
 
-Souvent vous serez amener à ajouter d'autre entête HTTP à votre réponse HTTP. La methode `addHeader` et `withHeaders` vous permet de le faire.
+Souvent vous serez amener à ajouter d'autre entête HTTP à votre réponse HTTP. La méthode `addHeader` et `withHeaders` vous permet de le faire.
 
 ```php
 $response->addHeader('Content-Type', 'application/json');
@@ -106,9 +106,9 @@ $response->withHeaders([
 
 ## Envoyer un JSON
 
-Dans les applications REST (Api Rest/RestFul) les informations sont généralement retournés en JSON. Pour envoyer un information JSON au client, vous pouvez utiliser le help `json` ou la methode `json` sur l'instance de `Bow\Http\Response`.
+Dans les applications REST (Api Rest/RestFul) les informations sont généralement retournés en JSON. Pour envoyer un information JSON au client, vous pouvez utiliser le help `json` ou la méthode `json` sur l'instance de `Bow\Http\Response`.
 
-### Protototype de la methode `json`
+### Protototype de la méthode `json`
 
 ```php
 $response->json($data, $code, $headers);
@@ -136,9 +136,9 @@ Ici Bow ajout directement l'entête HTTP `Content-Type` à `application/json`, d
 
 ## Envoyer une reponse depuis les vues
 
-Souvent vous pouvez utiliser un instance de response pour faire le rendu de view via la methode `render`.
+Souvent vous pouvez utiliser un instance de response pour faire le rendu de view via la méthode `render`.
 
-### Protototype de la methode `render`
+### Protototype de la méthode `render`
 
 ```php
 $response->render($view_name, $data, $code, $headers);
@@ -165,9 +165,9 @@ return $response->render('users', ['users' => $users], 200, [
 
 ### Télécharger un fichier
 
-Souvent vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore vous allez faire des applications où il faut s'authentifier avant de télécharge des fichiers du type dropbox. Bow offre un API simple via la classe [Bow\Http\Response](https://bowphp.github.io/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la methode `download`.
+Souvent vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore vous allez faire des applications où il faut s'authentifier avant de télécharge des fichiers du type dropbox. Bow offre un API simple via la classe [Bow\Http\Response](https://bowphp.github.io/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la méthode `download`.
 
-### Protototype de la methode `download`
+### Protototype de la méthode `download`
 
 ```php
 $response->download($file, $filename = null, $headers, $disposition = 'attachment');
@@ -194,7 +194,7 @@ return $response->download($file, 'image.png');
 
 ## Redirection
 
-Vous serez certainement amener à faire des redirections vers d'autres ressources et cela en réalité constitue une réponse HTTP. Les methodes `to` et `back` (qui comme son nom l'indique permet de faire une revenir sur en arrière) de la classe [`Bow\Http\Redirect`](https://bowphp.github.io/api/master/Bow/Http/Redirect.html).
+Vous serez certainement amener à faire des redirections vers d'autres ressources et cela en réalité constitue une réponse HTTP. Les méthodes `to` et `back` (qui comme son nom l'indique permet de faire une revenir sur en arrière) de la classe [`Bow\Http\Redirect`](https://bowphp.github.io/api/master/Bow/Http/Redirect.html).
 
 ### Redirection avec to
 
@@ -234,7 +234,7 @@ return redirect()->back();
 
 ### Redirection avec des informations
 
-Vous pouvez aussi faire la redirection avec les informations envoyés par l'utilisateur et ceci avec la methode `withInput` comme ceci:
+Vous pouvez aussi faire la redirection avec les informations envoyés par l'utilisateur et ceci avec la méthode `withInput` comme ceci:
 
 ```php
  return redirect()->back()->withInput();

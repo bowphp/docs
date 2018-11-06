@@ -3,6 +3,15 @@ id: mail
 title: Mail
 ---
 
+- [Introduction](#introduction)
+- [Configuration](#configuration)
+- [Utilisation](#utilisation)
+  - [La méthode send](#la-methode-send)
+    - [Prototype send](#prototype-send)
+    - [Manipulation de l'instance Message](#manipulation-de-l-instance-message)
+  - [La méthode raw](#la-methode-raw)
+    - [Prototype raw](#prototype-raw)
+
 ## Introduction
 
 Envoyer des emails dans une application est monnaie courante. Bow intègre un système d'envoi d'email facile à utiliser. Vous pouvez utiliser ce système à travers plusieurs pilotes communement appelés drivers:
@@ -18,9 +27,9 @@ Vous trouverez la configuration dans le fichier `config/mail.php` qui est rélat
 
 Pour utiliser le service, vous devez appeler la classe [`Bow\Mail\Mail::class`](https://bowphp.github.io/api/master/Bow/Mail). Il y a deux méthode statique pour l'envoie de mail `send` et `raw`.
 
-### La methode send
+### La méthode send
 
-- **Send** permet d'envoyer des emails en se basant sur une [vue](http://bowphp.github.io/docs/views) dans l'application.
+**send** permet d'envoyer des emails en se basant sur une [vue](http://bowphp.github.io/docs/views) dans l'application.
 
 #### Prototype send
 
@@ -139,7 +148,7 @@ addReplyTo($mail, $name = null)
 addReturnPath($mail, $name = null)
 ```
 
-### La methode raw
+### La méthode raw
 
 **raw** par contre, permet d'envoyer des emails avec un message brute
 
@@ -162,4 +171,4 @@ use Bow\Mail\Mail;
 Mail::raw('hello@exemple.com', "Hello, world", "C'est juste un email de teste");
 ```
 
-> Section en rédaction
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

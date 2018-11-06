@@ -69,7 +69,7 @@ $s3->get('app.js');
 
 ## Manipulation des fichiers
 
-Cette section decrit les differentes methodes disponible pour la manipulation des fichiers et comment les utiliser. Notez que ces méthodes sont valables pour les deux types de système.
+Cette section decrit les differentes méthodes disponible pour la manipulation des fichiers et comment les utiliser. Notez que ces méthodes sont valables pour les deux types de système.
 
 On suppose que nous avons le fichier `app.txt` dans le disque `public`:
 
@@ -80,7 +80,7 @@ Hello, world
 
 ### Récupérer le fichier
 
-Pour récupérer un fichier de votre système de stockage vous allez utiliser la methode `get` qui retourne le contenu du fichier.
+Pour récupérer un fichier de votre système de stockage vous allez utiliser la méthode `get` qui retourne le contenu du fichier.
 
 ```php
 $mount = mount('public');
@@ -91,7 +91,7 @@ echo $content;
 
 ### Sauvegarder un fichier
 
-Pour sauvegarder un fichier, rien de plus simple. Il vous suffit d'utiliser la methode `put` qui retourne `false` si l'action à échouer:
+Pour sauvegarder un fichier, rien de plus simple. Il vous suffit d'utiliser la méthode `put` qui retourne `false` si l'action à échouer:
 
 ```php
 $mount = mount('public');
@@ -101,7 +101,7 @@ $mount->put('app.js', $content );
 
 ### Supprimer un fichier
 
-Pour supprimer un fichier, c'est aussi très simple. Il vous suffit d'utiliser la methode `delete` qui retourne `false` si l'action à échouer et `true` en cas de réussite:
+Pour supprimer un fichier, c'est aussi très simple. Il vous suffit d'utiliser la méthode `delete` qui retourne `false` si l'action à échouer et `true` en cas de réussite:
 
 ```php
 $mount = mount('public');
@@ -114,7 +114,7 @@ if ($has_succeeded) {
 
 ### Ajout du contenu avant ou après un fichier
 
-Les methodes `preprend` et `append` vous permettent d'ajouter respectivement un contenu au debut ou la fin d'un fichier:
+Les méthodes `preprend` et `append` vous permettent d'ajouter respectivement un contenu au debut ou la fin d'un fichier:
 
 ```php
 $mount = mount('public');

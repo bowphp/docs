@@ -44,9 +44,26 @@ const users = [
     // if it is not '/', like: '/test-site/img/docusaurus.svg'.
     image: 'https://avatars3.githubusercontent.com/u/22053891?s=460&v=4',
     infoLink: 'https://github.com/agazinakou',
-    pinned: true,
+    pinned: false,
   }
 ];
+
+const partainers = [
+  {
+    caption: 'Fablab Ayiyikoh',
+    description: "",
+    image: 'http://ayiyikoh.org/wp-content/uploads/2018/04/logo-main-dummy.png',
+    infoLink: 'http://ayiyikoh.org/',
+    pinned: true,
+  },
+  {
+    caption: 'Babilab',
+    description: "",
+    image: 'http://ayiyikoh.org/wp-content/uploads/2018/04/logo-main-dummy.png',
+    infoLink: 'http://ayiyikoh.org/',
+    pinned: true,
+  },
+]
 
 const siteConfig = {
   title: 'Bow Framework', // Title for your website.

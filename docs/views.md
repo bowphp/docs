@@ -59,7 +59,7 @@ $app->get('/', function() {
 ### Utilisation
 
 Exemple d'utilisation: (Avec le classe `View`)
-Cette utilise la methode `parse`.
+Cette utilise la méthode `parse`.
 
 ```php
 View::parse(view, data, status)

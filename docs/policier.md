@@ -296,7 +296,7 @@ Le token a été analysé dans l'instance de Policier dans un processus middlewa
 
 ### Personnalisation du Middleware
 
-Notez que vous pouvez créer un autre middleware qui étendra le middleware par defaut `Bow\Jwt\PolicierMiddleware::class`. Ce qui vous donne la possibilité de changer les messages d'erreur en surchargant les methodes `getUnauthorizedMessage`, `getExpirateMessage`, `getExpirateCode` et `getUnauthorizedCode`.
+Notez que vous pouvez créer un autre middleware qui étendra le middleware par defaut `Bow\Jwt\PolicierMiddleware::class`. Ce qui vous donne la possibilité de changer les messages d'erreur en surchargant les méthodes `getUnauthorizedMessage`, `getExpirateMessage`, `getExpirateCode` et `getUnauthorizedCode`.
 
 ```bash
 php bow add:middleware CustomPolicierMiddleware

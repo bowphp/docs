@@ -122,10 +122,10 @@ const Features = () => (
         image: imgUrl("compose.svg"),
       },
       {
-        content: 'Par défaut Bow est préconfiguré avec Reactjs.',
+        content: 'Par défaut Bow est préconfiguré avec Reactjs et Vuejs.',
         imageAlign: 'top',
         image: imgUrl("layers.svg"),
-        title: 'Preset Reactjs',
+        title: 'Preset Reactjs / Vuejs',
       }
     ]}
   </Block>
@@ -152,6 +152,26 @@ const Showcase = props => {
           Afficher ceux qui utilisent Bow
         </a>
       </div>
+    </div>
+  );
+};
+
+const Partners = props => {
+  if ((siteConfig.partainers || []).length === 0) {
+    return null;
+  }
+
+  const showcase = siteConfig.partainers.filter(user => user.pinned).map(user => (
+    <a href={user.infoLink} key={user.infoLink}>
+      <img src={user.image} alt={user.caption} title={user.caption} />
+    </a>
+  ));
+
+  return (
+    <div className="productShowcaseSection paddingBottom" style={{backgroundColor: "b6b6b6"}}>
+      <h2>Supports</h2>
+      <p>Ce projet est support par ces communautés.</p>
+      <div className="logos">{showcase}</div>
     </div>
   );
 };

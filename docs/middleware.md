@@ -90,7 +90,7 @@ public function middlewares()
 }
 ```
 
-Il est aussi possible d'ajouter les middlwares de façon globle dans l'application. Et ceci se faire dans le fichier de `routes` avec la methode `middleware` sur `$app`.
+Il est aussi possible d'ajouter les middlwares de façon globle dans l'application. Et ceci se faire dans le fichier de `routes` avec la méthode `middleware` sur `$app`.
 
 ```php
 $app->middleware(\App\Middleware\IpMiddleware::class);
