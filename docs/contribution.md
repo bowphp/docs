@@ -1,6 +1,6 @@
 ---
 id: contribution
-title: Contribution
+title: Guide de Contribution
 ---
 
 - [Introduction](#introduction)

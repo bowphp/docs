@@ -5,6 +5,9 @@
     "previous": "Previous",
     "tagline": "Simply your web development",
     "docs": {
+      "container": {
+        "title": "Bow container"
+      },
       "contribution": {
         "title": "Contribution"
       },
@@ -22,6 +25,9 @@
       },
       "installation": {
         "title": "Installation"
+      },
+      "lifecycle": {
+        "title": "Cycle de vie de l'application"
       },
       "i18n": {
         "title": "i18n"
