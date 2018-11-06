@@ -129,7 +129,7 @@ $app->get('profile', 'UserController::show')->middleware('auth');
 
 ## Contrôleur REST
 
-Les contrôleur REST sont un moyen simple pour mettre en place un API Rest facilement. Cette approche, vous permet de vous concentrez sur votre logique et laisser le framework géré le routage pour vous.
+Les contrôleur REST sont un moyen simple pour mettre en place un API Rest facilement. Cette approche, vous permet de vous concentrez sur votre logique et laisser le Framework géré le routage pour vous.
 
 ### Définir un contrôleur rest
 

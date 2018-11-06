@@ -8,7 +8,7 @@ title: Barry ORM
     <br>Barry ORM
 </h1>
 
-<p align="center">Barry c'est l'ORM (<strong>Object Relation Mapping</strong>) intégrer dans Bow framework.</p>
+<p align="center">Barry c'est l'ORM (<strong>Object Relation Mapping</strong>) intégrer dans Bow Framework.</p>
 
 ## Introduction
 

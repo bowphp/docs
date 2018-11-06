@@ -12,7 +12,7 @@
 const users = [
   {
     caption: 'Franck DAKIA',
-    description: "Web and Mobile Developer, DevOps Lover, Trainer and Coach in Web Development. Creator of Bow framework",
+    description: "Web and Mobile Developer, DevOps Lover, Trainer and Coach in Web Development. Creator of Bow Framework",
     // You will need to prepend the image path with your baseUrl
     // if it is not '/', like: '/test-site/img/docusaurus.svg'.
     image: 'https://avatars1.githubusercontent.com/u/9353811?s=460&v=4',

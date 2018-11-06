@@ -19,7 +19,7 @@ Les vues contiennent le code HTML fourni par votre application et séparent votr
 
 ## Configuration
 
-Bow framework implement 3 moteur de template par defaut, [Twig](https://twig.symfony.com), [Pug-PHP](https://www.phug-lang.com/), [Mustache-PHP](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags).
+Bow Framework implement 3 moteur de template par defaut, [Twig](https://twig.symfony.com), [Pug-PHP](https://www.phug-lang.com/), [Mustache-PHP](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags).
 La configuration des vues ce trouve dans le fichier `view.php` du dossier `config`/..
 
 Spécifiez le nom du template à utiliser avec option `engine` de la configuration, cette option peut prendre le valeur suivant `twig`, `pug`, `php` et `mustache`. Par défaut Bow utilise `twig`.
@@ -127,7 +127,7 @@ class HomeController extends Controller
 
 ## Vue avec Twig
 
-Twig est un moteur de templates pour le langage de programmation PHP, utilisé par défaut par le framework Symfony.
+Twig est un moteur de templates pour le langage de programmation PHP, utilisé par défaut par le Framework Symfony.
 
 Il aurait été inspiré par `Jinja`, moteur de template Python utilisé dans [Django](https://www.djangoproject.com).
 

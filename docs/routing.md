@@ -485,7 +485,7 @@ $app->get('/:name', function ($name)
 ### Association de middleware
 
 Un middleware c'est un ou plusieurs actions qui ce placent entre la requete et l'action
-a executer. Tout les framework moderne en sont dotés.
+a executer. Tout les Framework moderne en sont dotés.
 
 Plus d'information sur le sujet allez ce lien [middleware](#documentation-middlewares)
 

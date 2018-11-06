@@ -17,7 +17,7 @@ Les middlewares constituent un mécanisme pratique pour filtrer les requêtes HT
 
 ## Comment ça marche
 
-Différents frameworks utilisent le système de middleware différemment. Bow ajoute un middleware sous forme de file d'attente au dessus de votre application principale. Chaque nouvelle couche de middleware est ajouté la file de middleware existante. La structure de file se dilate vers l'extérieur au fure et à mesure que les couches intermédiaires supplémentaires sont ajoutées.
+Différents Frameworks utilisent le système de middleware différemment. Bow ajoute un middleware sous forme de file d'attente au dessus de votre application principale. Chaque nouvelle couche de middleware est ajouté la file de middleware existante. La structure de file se dilate vers l'extérieur au fure et à mesure que les couches intermédiaires supplémentaires sont ajoutées.
 
 Lorsque vous exécutez l'application Bow, les objets Request traversent la structure du middleware de l'extérieur vers l'intérieur. Ils entrent d'abord dans le middleware le plus externe, puis dans le prochain middleware le plus externe (et ainsi de suite), jusqu'à ce qu'ils atteignent l'application elle-même. Une fois que l'application Bow a distribué la route approprié, l'objet Response résultant quitte l'application Bow et est sérialisé dans une réponse HTTP qui est renvoyé au client HTTP.
 

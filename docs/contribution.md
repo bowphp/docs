@@ -19,7 +19,7 @@ Pour participer au projet il faut:
 
 ## Découpage du projet
 
-Le projet Bow framework est découper en sous projet. Alors chaque participant poura participer sur la section dans laquelle il se sens le mieux.
+Le projet Bow Framework est découper en sous projet. Alors chaque participant poura participer sur la section dans laquelle il se sens le mieux.
 
 Imaginons que vous êtes plus confortable avec la construction des Routing. Il suffit de vous concentrer sur `src/Routing`. Notez que les sections ont faire pour être indépendant et donc possède leur propre configuration du style `SectionConfiguration` et qui implément l'interface `Bow\Configuration\Configuration`.
 

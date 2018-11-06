@@ -14,7 +14,7 @@ title: Installation
 
 ## Introduction
 
-Dans cette section nous allons apprendre à installer une application Bow framework et faire un test rapide.
+Dans cette section nous allons apprendre à installer une application Bow Framework et faire un test rapide.
 
 ## Prérequis
 
@@ -76,7 +76,7 @@ Après l'installation de Bow, vous devrez configurer le `document root` de votre
 
 ### Fichier de configuration
 
-Tout les fichiers de configurations de Bow framework sont stockés dans le dossier `config`. Et tous les options sont documentés pour vous permettre d'aller plus vite dans votre développement. Vous êtes libre de regarder ces fichiers pour vous famillariser avec les options disponibles.
+Tout les fichiers de configurations de Bow Framework sont stockés dans le dossier `config`. Et tous les options sont documentés pour vous permettre d'aller plus vite dans votre développement. Vous êtes libre de regarder ces fichiers pour vous famillariser avec les options disponibles.
 
 ### Permissions sur les dossiers
 
