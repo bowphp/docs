@@ -12,7 +12,7 @@
         "title": "Configuration"
       },
       "container": {
-        "title": "Bow container"
+        "title": "Capsule"
       },
       "contribution": {
         "title": "Guide de Contribution"
@@ -25,9 +25,6 @@
       },
       "database": {
         "title": "Démarrage"
-      },
-      "helpers": {
-        "title": "Les helpers"
       },
       "installation": {
         "title": "Installation"

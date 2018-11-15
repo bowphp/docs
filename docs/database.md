@@ -248,10 +248,10 @@ Database::startTransaction(function () {
 });
 ```
 
-Via le helper `transaction`:
+Via le helper `db_transaction`:
 
 ```php
-transaction(function () {
+db_transaction(function () {
   Database::update('update users set votes = :votes', ['votes' => 1]);
 
   Database::delete('delete from posts');
@@ -266,23 +266,23 @@ Pour démarrer la transaction avec la méthode:
 ```php
 Database::startTransaction();
 // Ou
-transaction();
+db_transaction();
 ```
 
-Vous pouez annuler la transaction avec la méthode:
+Vous pouvez annuler la transaction avec la méthode:
 
 ```php
 Database::rollback();
 // Ou
-rollback();
+db_rollback();
 ```
 
-Vous pouez valider la transaction avec la méthode:
+Vous pouvez valider la transaction avec la méthode:
 
 ```php
 Database::commit();
 // Ou
-commit();
+db_commit();
 ```
 
 Avec la méthode `inTransaction` vous pouvez vérifier si la base de donnée est en transaction:
@@ -290,7 +290,7 @@ Avec la méthode `inTransaction` vous pouvez vérifier si la base de donnée est
 ```php
 Database::inTransaction()
 // Ou
-inTransaction()
+db_transaction_started()
 ```
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

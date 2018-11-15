@@ -11,7 +11,7 @@ title: Configuration
 
 ## Introduction
 
-Tous les fichiers de configuration du Framework Bow sont stockés dans le répertoire `config`. Chaque option est documentée, alors n'hésitez pas à parcourir les fichiers et à vous familiariser avec les options à votre disposition.
+Tous les fichiers de configuration de Bow Framework sont stockés dans le répertoire `config`. Chaque option est documentée, alors n'hésitez pas à parcourir les fichiers et à vous familiariser avec les options à votre disposition.
 
 ## Configuration
 
