@@ -79,7 +79,7 @@ Ajouter cette configuration dans le fichier `app/Kernel/Loader.php`:
 public function configurations() {
   return [
     ...
-    \Tintin\Bow\TintinConfirguration::class,
+    \Tintin\Bow\TintinConfiguration::class,
     ...
   ];
 }

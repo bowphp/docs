@@ -13,7 +13,7 @@ Bow facilite la protection de votre application contre les attaques par contrefa
 
 Bow génère automatiquement un "jeton" CSRF pour chaque session utilisateur active gérée par l'application. Ce jeton est utilisé pour vérifier que l'utilisateur authentifié est celui qui envoie les requêtes à l'application.
 
-Chaque fois que vous définissez un formulaire HTML dans votre application, vous devez inclure un champ de jeton CSRF masqué dans le formulaire afin que le middleware de protection CSRF puisse valider la demande. Vous pouvez utiliser la directive @csrf Blade pour générer le champ de jeton:
+Chaque fois que vous définissez un formulaire HTML dans votre application, vous devez inclure un champ de jeton CSRF masqué dans le formulaire afin que le middleware de protection CSRF puisse valider la demande:
 
 ```twig
 <form method="POST" action="/upload">
