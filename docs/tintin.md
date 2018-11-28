@@ -4,12 +4,8 @@ title: Tintin
 ---
 
 <h1 align="center">
-    <img src="https://github.com/bowphp/arts/raw/master/tintin.jpeg" width="150px">
-    <br/>Tintin
+    <img src="https://github.com/bowphp/arts/raw/master/tintin.jpeg" width="200px" style="border-radius: 50px">
 </h1>
-
-> C'est encore projet en phase pilote.
-
 
 ## Installation
 
@@ -43,7 +39,7 @@ $loader = new Tintin\Loader\Filesystem([
   'cache' => '/path/to/the/cache/directory'
 ]);
 
-$tt = new Tintin\Tintin($loader);
+$tintin = new Tintin\Tintin($loader);
 ```
 
 | paramêtre | Description |
@@ -66,6 +62,36 @@ $tintin->render('dossier.filename', ['name' => 'data']);
 ```
 
 > Notez que la source des fichiers est toujour le chemin vers `path`.
+
+### Configuration pour Bow
+
+Pour permet à Bow d'utiliser Tintin comme moteur de template par defaut, il va faloir faire quelque petit configuration.
+
+Ajouter cette configuration dans le fichier `app/Kernel/Loader.php`:
+
+```php
+public function configurations() {
+  return [
+    ...
+    \Tintin\Bow\TintinConfiguration::class,
+    ...
+  ];
+}
+```
+
+Et encore dans le fichier de configuration des vues situés dans `config/view.php`.
+
+```php
+return [
+  // Définir le moteur à utiliser
+  'engine' => 'tintin',
+
+  // Extension de fichier
+  'extension' => '.tintin.php'
+];
+```
+
+Et c'est tout, désormais votre moteur de template par defaut est `tintin` :+1:
 
 ### Ajouter un commentaire
 
@@ -263,7 +289,7 @@ Ou bien allez dans la page des [issues](https://github.com/bowphp/tintin/issues)
 
 Tintin est supporté actuellement par [sublime text](https://www.sublimetext.com). Comment installer Sublime Package Control ?
 
-- Recherchez ** Bow Tintin ** et installez-le / Téléchargez ou clonez ce référentiel dans [install-dir] / Packages / bow-tintin
+- Recherchez **Bow Tintin** et installez-le / Téléchargez ou clonez ce référentiel dans [install-dir] / Packages / bow-tintin
 - Redémarrez Sublime Text.
 - Rouvrez n’importe quel fichier `.tintin` ou` .tintin.php`.
 - Enjoy: sourire:
