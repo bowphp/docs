@@ -10,6 +10,7 @@ title: Tintin
 
 > C'est encore projet en phase pilote.
 
+
 ## Installation
 
 Pour installer le package il sera plus mieux utiliser `composer` qui est gestionnaire de package `php`.
@@ -27,11 +28,8 @@ require 'vendor/autoload.php';
 
 $tintin = new Tintin\Tintin;
 
-echo $tintin->render(
-  'Hello, {{ strtoupper($name) }}',
-  ['name' => 'tintin']
-);
-// -> Hello, TINTIN
+echo $tintin->render('Hello, world {{ strtoupper($name) }}', ['name' => 'tintin']);
+// -> Hello, world TINTIN
 ```
 
 Pour utiliser proprement le package, il faut suivre plutôt l'installation qui suivant:
@@ -69,43 +67,11 @@ $tintin->render('dossier.filename', ['name' => 'data']);
 
 > Notez que la source des fichiers est toujour le chemin vers `path`.
 
-### Installer la configuration pour Bow
-
-Pour permet à Bow d'utiliser Tintin comme moteur de template par defaut, il va faloir faire quelque petit configuration.
-
-Ajouter cette configuration dans le fichier `app/Kernel/Loader.php`:
-
-```php
-public function configurations() {
-  return [
-    ...
-    \Tintin\Bow\TintinConfiguration::class,
-    ...
-  ];
-}
-```
-
-Et encore dans le fichier de configuration des vues situés dans `config/view.php`.
-
-```php
-return [
-  // Définir le moteur à utiliser
-  'engine' => 'tintin',
-
-  // Extension de fichier
-  'extension' => '.tintin.php'
-];
-```
-
-Et c'est tout, désormais votre moteur de template par defaut est `tintin` :+1:
-
 ### Ajouter un commentaire
 
 Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tintin`.
 
-### Les structures de controls
-
-> `#if` / `#elseif` or `#elif`  / `#else`
+### #if / #elseif or #elif / #else 
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
@@ -121,21 +87,20 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 
 > Vous pouvez utiliser `#elif` à la place de `#elseif`.
 
+### #unless
+
 Petite spécificité, le `#unless` quant à lui, il permet de faire une condition inverse du `#if`.
 Pour faire simple, voici un exemple:
 
 ```
-#unless ($name == 'tintin')
-=> #if (!($name == 'tintin'))
+#unless ($name == 'tintin') => #if (!($name == 'tintin'))
 ```
 
-## Les structures répétitives
-
-> `#loop` comme `foreach` / `#for`, `#while`.
+### #loop / #for / #while
 
 Souvent vous pouvez être amener à faire des listes ou répétitions sur des éléments. Par exemple, afficher tout les utilisateurs de votre plateforme.
 
-### L'utilisation de `#loop`
+#### L'utilisation de #loop
 
 Cette clause faire exactement l'action de `foreach`.
 
@@ -159,9 +124,7 @@ Un exemple rapide.
 
 Vous avez peut-être remarquer le `#stop` il permet de stoper l'éxécution de la boucle. Il y a aussi son conjoint le `#jump`, lui parcontre permet d'arrêter l'éxécution à son niveau et de lancer s'éxécution du prochain tour de la boucle.
 
-### Les sucres syntaxiques
-
-> `#jump(condition)` et `#stop(condition)`
+#### Les sucres syntaxiques #jump et #stop
 
 Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucle `#loop` comme ceci:
 
@@ -179,13 +142,13 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
 
 ```
 #loop ($names as $name)
-  #stop ($name == 'tintin')
+  #stop($name == 'tintin')
   // Ou
-  #jump ($name == 'tintin')
+  #jump($name == 'tintin')
 #endloop
 ```
 
-### L'utilisation de `#for`
+#### L'utilisation de #for
 
 Cette clause faire exactement l'action de `for`.
 
@@ -195,7 +158,7 @@ Cette clause faire exactement l'action de `for`.
 #endfor
 ```
 
-### L'utilisation de `#while`
+#### L'utilisation de #while
 
 Cette clause faire exactement l'action de `while`.
 
@@ -205,25 +168,38 @@ Cette clause faire exactement l'action de `while`.
 #endwhile
 ```
 
-## Inclusion de fichier
+### Inclusion de fichier
 
 Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser les vues de votre application pour être plus flexible et écrire moin de code.
 
-`include` permet d'include un autre fichier de template dans un autre.
+`#include` permet d'include un autre fichier de template dans un autre.
 
 ```
- #include ('filename')
+ #include('filename', data)
 ```
 
-## Héritage
+#### Exemple d'inclusion
 
-> Avec `#extends`, `#block` et `#inject`
+Considérons le fichier `hello.tintin.php` suivant:
+
+```jinja
+Hello {{ $name }}
+```
+
+Utilisation:
+
+```
+#include('hello', ['name' => 'Tintin'])
+// => Hello Tintin
+```
+
+## Héritage avec #extends, #block et #inject 
 
 Comme tout bon système de template **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
 
 Considérérons le code **tintin** suivant:
 
-```html
+```
 // le fichier `layout.tintin.php`
 <!DOCTYPE html>
 <html>
@@ -255,7 +231,7 @@ Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.ph
 
 Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si vous rémarquez bien, dans le fichier `layout.tintin.php` on a la clause `#inject` qui a pour paramètre le nom du `#block` de `content.tintin.php` qui est `content`. Ce qui veut dire que le contenu du `#block` `content` sera remplacé par `#inject`. Ce qui donnéra à la fin ceci:
 
-```html
+```
 <!DOCTYPE html>
 <html>
 <head>
@@ -271,11 +247,23 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 </html>
 ```
 
+## Contribution
+
+Pour participer au projet il faut:
+
++ Fork le projet afin qu'il soit parmi les répertoires de votre compte github ex :`https://github.com/votre-compte/app`
++ Cloner le projet depuis votre compte github `git clone https://github.com/votre-crompte/tintin`
++ Créer un branche qui aura pour nom le résumé de votre modification `git branch branche-de-vos-traveaux`
++ Faire une publication sur votre dépot `git push origin branche-de-vos-traveaux`
++ Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
+
+Ou bien allez dans la page des [issues](https://github.com/bowphp/tintin/issues), faites vos corrections et enfin suivez [publier](#contribution).
+
 ## IDE support
 
-Tintin est supporté actuellement par [sublime text](https://www.sublimetext.com).
+Tintin est supporté actuellement par [sublime text](https://www.sublimetext.com). Comment installer Sublime Package Control ?
 
-- [Téléchargez](https://github.com/papac/bow-tintin-sbt3/archive/master.zip) ou clonez le dépot [papac/bow-tintin-sbt3](https://github.com/papac/bow-tintin-sbt3) dans [répètoire d'installation]/Packages/bow-tintin
-- Redémarrez Sublime Text
-- Rouvrez tous les fichiers .tintin
-- Prennez plaisir 😄
+- Recherchez ** Bow Tintin ** et installez-le / Téléchargez ou clonez ce référentiel dans [install-dir] / Packages / bow-tintin
+- Redémarrez Sublime Text.
+- Rouvrez n’importe quel fichier `.tintin` ou` .tintin.php`.
+- Enjoy: sourire:

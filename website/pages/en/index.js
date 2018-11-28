@@ -101,7 +101,7 @@ const Block = props => (
 );
 
 const Features = () => (
-  <Block layout="twoColumn" background="#b6b6b6">
+  <Block layout="fourColumn" background="#b6b6b6">
     {[
       {
         content: 'Simple, Rapide et Robuste. <br/>Concentrez-vous sur votre projet.',
@@ -191,6 +191,26 @@ class Index extends React.Component {
         </div>
         <div className="mainContainer">
           <Showcase language={language} />
+        </div>
+        <div className="mainContainer" style={{textAlign: "center", fontSize: "13px", backgroundColor: "#eee"}}>
+          
+          <SplashContainer>
+            <div className="inner">
+              <h4 className="projectTitle" style={{fontSize: "30px"}}>
+                Franck DAKIA
+                <small>Développeur Full Stack</small>
+              </h4>
+              <PromoSection>
+                <MarkdownBlock>
+                  **Franck DAKIA** est un Développeur Full Stack basé actuellement en Afrique, Côte d'ivoire, Abidjan. Passioné de code, et développement collaboratif, Speaker, Formateur et Membre de plusieurs communautés de développeurs.
+                </MarkdownBlock>
+                <MarkdownBlock>
+                  **SVP s'il y a un bogue sur le projet veuillez me contacter par email ou laissez moi un message sur le [slack](https://bowphp.slack.com).**
+                  Contact: [dakiafranck@gmail.com](mailto:dakiafranck@gmail.com) - [@franck_dakia](https://twitter.com/franck_dakia)
+                </MarkdownBlock>
+              </PromoSection>
+            </div>
+          </SplashContainer>
         </div>
       </div>
     );
