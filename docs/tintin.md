@@ -6,6 +6,35 @@ title: Tintin
 <h1 align="center">
     <img src="https://github.com/bowphp/arts/raw/master/tintin.jpeg" width="200px" style="border-radius: 50px">
 </h1>
+- [Introduction](#introduction)
+- [Installation](#installation)
+  - [Configuration](#configuration)
+- [Utilisation](#utilisation)
+  - [Configuration pour Bow](#configuration-pour-bow)
+  - [Ajouter un commentaire](#ajouter-un-commentaire)
+  - [#if / #elseif ou #elif / #else](#if--elseif-ou-elif--else)
+  - [#unless](#unless)
+  - [#loop / #for / #while](#loop--for--while)
+    - [L'utilisation de #loop](#lutilisation-de-loop)
+    - [Les sucres syntaxiques #jump et #stop](#les-sucres-syntaxiques-jump-et-stop)
+    - [L'utilisation de #for](#lutilisation-de-for)
+    - [L'utilisation de #while](#lutilisation-de-while)
+  - [Inclusion de fichier](#inclusion-de-fichier)
+    - [Exemple d'inclusion](#exemple-dinclusion)
+- [Héritage avec #extends, #block et #inject](#h%C3%A9ritage-avec-extends-block-et-inject)
+  - [Explication](#explication)
+- [Directive personnelisée](#directive-personnelis%C3%A9e)
+  - [Exemple](#exemple)
+  - [Utilisation des directives](#utilisation-des-directives)
+  - [Compilation du template](#compilation-du-template)
+  - [Sortie après compilation](#sortie-apr%C3%A8s-compilation)
+- [Contribution](#contribution)
+- [Auteur](#auteur)
+- [IDE support](#ide-support)
+
+## Introduction
+
+Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP.
 
 ## Installation
 
@@ -15,7 +44,7 @@ Pour installer le package il sera plus mieux utiliser `composer` qui est gestion
 composer require bowphp/tintin
 ```
 
-## Utilisation
+### Configuration
 
 Vous pouvez utiliser le package simplement, comme ceci. Mais sauf que cette façon de faire ne permet pas d'exploiter le système d'héritage de façon optimal. Utilisez cette façon de faire, seulement si vous voulez tester le package ou pour les petites applications.
 
@@ -28,7 +57,7 @@ echo $tintin->render('Hello, world {{ strtoupper($name) }}', ['name' => 'tintin'
 // -> Hello, world TINTIN
 ```
 
-Pour utiliser proprement le package, il faut suivre plutôt l'installation qui suivant:
+Pour utiliser proprement le package, il faut suivre plutôt la configuration qui suivant:
 
 ```php
 require 'vendor/autoload.php';
@@ -48,7 +77,7 @@ $tintin = new Tintin\Tintin($loader);
 | __extension__ | l'extension des fichiers de template. Par defaut, la valeur est `tintin.php` |
 | __cache__ | Le dossier de cache. C'est là que `tintin` va créé le cache. S'il n'est pas défini, `tintin` mettra en cache les fichiers compilés dans le répertoire temporaire de `php`.  |
 
-Exemple d'utilisation:
+## Utilisation
 
 ```php
 // Configuration faite qu préalabe
@@ -87,7 +116,7 @@ return [
   'engine' => 'tintin',
 
   // Extension de fichier
-  'extension' => 'tintin.php'
+  'extension' => '.tintin.php'
 ];
 ```
 
@@ -97,7 +126,7 @@ Et c'est tout, désormais votre moteur de template par defaut est `tintin` :+1:
 
 Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tintin`.
 
-### #if / #elseif or #elif / #else
+### #if / #elseif ou #elif / #else
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
@@ -219,7 +248,7 @@ Utilisation:
 // => Hello Tintin
 ```
 
-## Héritage avec #extends, #block et #inject 
+## Héritage avec #extends, #block et #inject
 
 Comme tout bon système de template **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
 
@@ -273,23 +302,115 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 </html>
 ```
 
+## Directive personnelisée
+
+Tintin peut être étendu avec son systême de directive personnalisé, pour ce faire utilisé la méthode `directive`
+
+```php
+$tintin->directive('hello', function (array $attributes = []) {
+  return 'Hello, '. $attributes[0];
+});
+
+echo $tintin->render('#hello("Tintin")');
+// => Hello, Tintin
+```
+
+### Exemple
+
+Création de directive pour gérer un formulaires:
+
+```php
+$tintin->directive('input', function (array $attributes = []) {
+  $attribute = $attributes[0];
+
+  return '<input type="'.$attribute['type'].'" name="'.$attribute['name'].'" value="'.$attribute['value'].'" />';
+});
+
+$tintin->directive('textarea', function (array $attributes = []) {
+  $attribute = $attributes[0];
+
+  return '<textarea name="'.$attribute['name'].'">"'.$attribute['value'].'"</textarea>';
+});
+
+$tintin->directive('button', function (array $attributes = []) {
+  $attribute = $attributes[0];
+
+  return '<button type="'.$attribute['type'].'">'.$attribute['label'].'"</button>';
+});
+
+$tintin->directive('form', function (array $attributes = []) {
+  $attribute = " ";
+  
+  if (isset($attributes[0])) {
+    foreach ($attributes[0] as $key => $value) {
+      $attribute .= $key . '="'.$value.'" ';
+    }
+  }
+
+  return '<form "'.trim($attribute).'">';
+});
+
+$tintin->directive('endform', function (array $attributes = []) {
+  return '</form>';
+});
+```
+
+### Utilisation des directives
+
+Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directive précédé la par `#`. Ensuite si cette directive prend des paramètres, lancer la directive comme vous lancez les fonctions dans votre programme. Les paramètres seront régroupés dans la varibles `$attributes` dans l'ordre d'ajout.
+
+```c
+// Fichier form.tintin.php
+#form(['method' => 'post', "action" => "/posts", "enctype" => "multipart/form-data"])
+  #input(["type" => "text", "value" => null, "name" => "name"])
+  #textarea(["value" => null, "name" => "content"])
+  #button(['type' => 'submit', 'label' => 'Add'])
+#endform
+```
+
+### Compilation du template
+
+La compilation se fait comme d'habitude, pour plus d'information sur la [compilation](#utilisation).
+
+```php
+echo $tintin->render('form');
+```
+
+### Sortie après compilation
+
+```html
+<form action="/posts" method="post" enctype="multipart/form-data">
+  <input type="text" name="name" value="" />
+  <textarea name="content"></textarea>
+  <button type="submit">Add</button>
+</form>
+```
+
 ## Contribution
 
 Pour participer au projet il faut:
 
-+ Fork le projet afin qu'il soit parmi les répertoires de votre compte github ex :`https://github.com/votre-compte/app`
-+ Cloner le projet depuis votre compte github `git clone https://github.com/votre-crompte/tintin`
-+ Créer un branche qui aura pour nom le résumé de votre modification `git branch branche-de-vos-traveaux`
-+ Faire une publication sur votre dépot `git push origin branche-de-vos-traveaux`
-+ Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
+- Fork le projet afin qu'il soit parmi les répertoires de votre compte github ex :`https://github.com/votre-compte/app`
+- Cloner le projet depuis votre compte github `git clone https://github.com/votre-crompte/tintin`
+- Créer un branche qui aura pour nom le résumé de votre modification `git branch branche-de-vos-traveaux`
+- Faire une publication sur votre dépot `git push origin branche-de-vos-traveaux`
+- Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
 
 Ou bien allez dans la page des [issues](https://github.com/bowphp/tintin/issues), faites vos corrections et enfin suivez [publier](#contribution).
+
+## Auteur
+
+**Franck DAKIA** est un développeur Full Stack basé actuellement en Afrique, Côte d'ivoire, Abidjan. Passioné de code, et développement collaboratif, Speaker, Formateur et Membre de plusieurs communautés de développeurs.
+
+Contact: [dakiafranck@gmail.com](mailto:dakiafranck@gmail.com) - [@franck_dakia](https://twitter.com/franck_dakia)
+
+**SVP s'il y a un bogue sur le projet veuillez me contacter par email ou laissez moi un message sur le [slack](https://bowphp.slack.com).**
 
 ## IDE support
 
 Tintin est supporté actuellement par [sublime text](https://www.sublimetext.com). Comment installer Sublime Package Control ?
 
-- Recherchez **Bow Tintin** et installez-le / Téléchargez ou clonez ce référentiel dans [install-dir] / Packages / bow-tintin
+- Recherchez **Bow Tintin** et installez-le/Téléchargez ou clonez ce référentiel dans [install-dir]/Packages/bow-tintin
 - Redémarrez Sublime Text.
-- Rouvrez n’importe quel fichier `.tintin` ou` .tintin.php`.
-- Enjoy: sourire:
+- Rouvrez n’importe quel fichier `.tintin` ou `.tintin.php`.
+- Enjoy :smiley:
