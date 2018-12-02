@@ -9,7 +9,7 @@ title: Tintin
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-  - [Configuration](#configuration)
+- [Configuration](#configuration)
 - [Utilisation](#utilisation)
   - [Configuration pour Bow](#configuration-pour-bow)
   - [Ajouter un commentaire](#ajouter-un-commentaire)
@@ -46,7 +46,7 @@ Pour installer le package il sera plus mieux utiliser `composer` qui est gestion
 composer require bowphp/tintin
 ```
 
-### Configuration
+## Configuration
 
 Vous pouvez utiliser le package simplement, comme ceci. Mais sauf que cette façon de faire ne permet pas d'exploiter le système d'héritage de façon optimal. Utilisez cette façon de faire, seulement si vous voulez tester le package ou pour les petites applications.
 
