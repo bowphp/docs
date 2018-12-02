@@ -18,7 +18,7 @@ title: Policier
   - [Personnalisation du Middleware](#personnalisation-du-middleware)
   - [Publier le middleware](#publier-le-middleware)
 
-La policer **(prononcé Poli-ssi-eur)** permet de mettre en place un système d'authentification via [JWT](https://jwt.io).
+La police permet de valider la demande via [JWT](https://jwt.io)
 
 ## Installation
 
@@ -84,7 +84,12 @@ return [
      * Chemin vers votre clé publique
      */
     "public" => null
-  ]
+  ],
+    
+  /**
+   * Nom du middleware Policier
+   */
+  'middleware_name' => 'api',
 ];
 ```
 
@@ -296,7 +301,7 @@ Le token a été analysé dans l'instance de Policier dans un processus middlewa
 
 ### Personnalisation du Middleware
 
-Notez que vous pouvez créer un autre middleware qui étendra le middleware par defaut `Bow\Jwt\PolicierMiddleware::class`. Ce qui vous donne la possibilité de changer les messages d'erreur en surchargant les méthodes `getUnauthorizedMessage`, `getExpirateMessage`, `getExpirateCode` et `getUnauthorizedCode`.
+Notez que vous pouvez créer un autre middleware qui étendra le middleware par defaut `Bow\Jwt\PolicierMiddleware::class`. Ce qui vous donne la possibilité de changer les messages d'erreur en surchargant les methodes `getUnauthorizedMessage`, `getExpirateMessage`, `getExpirateCode` et `getUnauthorizedCode`.
 
 ```bash
 php bow add:middleware CustomPolicierMiddleware
@@ -312,7 +317,7 @@ use Bow\Jwt\PolicierMiddleware;
 class CustomPolicierMiddleware extends PolicierMiddleware
 {
   /**
-   * Get Error message
+   * Obtenir le message d'erreur
    *
    * @return array
    */
@@ -325,11 +330,11 @@ class CustomPolicierMiddleware extends PolicierMiddleware
   }
 
   /**
-   * Get Error message
+   * Obtenir le message d'erreur
    *
    * @return array
    */
-  public function getExpirateMessage()
+  public function getExpirationMessage()
   {
     return [
       'message' => 'token is expired',
@@ -339,21 +344,21 @@ class CustomPolicierMiddleware extends PolicierMiddleware
   }
 
   /**
-   * Get Expirate response code
+   * Obtenir le code de réponse non autorisé
    *
    * @return int
    */
-  public function getExpirateCode()
+  public function getUnauthorizedStatusCode()
   {
     return 403;
   }
 
   /**
-   * Get Unauthorized response code
+   * Obtenir le code de réponse
    *
    * @return int
    */
-  public function getUnauthorizedCode()
+  public function getExpirationStatusCode()
   {
     return 403;
   }
