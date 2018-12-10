@@ -8,8 +8,6 @@ title: Vues
 - [Package supplementaire](#package-supplementaire)
 - [Création de vue](#creation-de-vue)
 - [Vue avec Twig](#vue-avec-twig)
-- [Vue avec Pug PHP](#vue-avec-pug-php)
-- [Vue avec Mustache PHP](#vue-avec-mustache-php)
 
 ## Introduction
 
@@ -19,31 +17,30 @@ Les vues contiennent le code HTML fourni par votre application et séparent votr
 
 ## Configuration
 
-Bow Framework implement 3 moteur de template par defaut, [Twig](https://twig.symfony.com), [Pug-PHP](https://www.phug-lang.com/), [Mustache-PHP](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags).
+Bow Framework implement 3 moteur de template par defaut, [Tintin](./tintin).
 La configuration des vues ce trouve dans le fichier `view.php` du dossier `config`/..
 
-Spécifiez le nom du template à utiliser avec option `engine` de la configuration, cette option peut prendre le valeur suivant `twig`, `pug`, `php` et `mustache`. Par défaut Bow utilise `twig`.
+Spécifiez le nom du template à utiliser avec option `engine` de la configuration, cette option peut prendre le valeur suivant `tintin`, `twig` et `php`. Par défaut Bow utilise `tintin`.
 
 Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entré `extension`. Vous verez également que les vues sont stockées dans le répertoire `components/views` par defaut.
 
 ## Package supplementaire
 
-Dans le cas où vous avez opter pour un autre moteur template, voici la liste des packages nécessaires:
+Dans le cas où vous avez opter pour le moteur de template `twig`, voici la liste du package twig:
 
 | Template | Package |
-| ----------------- | ----------- |
-| `mustache` | `mustache/mustache` |
-| `pug` | `pug-php/pug` |
+| ------- | ------- |
+| Twig | `composer require twig/twig` |
 
 ## Création de vue
 
 Une simple vue peut ressembler à ceci
 
 ```twig
-<!-- View stored in components/views/greeting.twig -->
+<!-- View stored in components/views/greeting.tintin.php -->
 <html>
   <body>
-    <h1>Hello, {{ name }}</h1>
+    <h1>Hello, {{ $name }}</h1>
   </body>
 </html>
 ```
@@ -94,10 +91,10 @@ echo View::parse(
 Avec la vue suivante:
 
 ```twig
-<!-- View stored in components/views/greeting.twig -->
+<!-- View stored in components/views/greeting.tintin.php -->
 <html>
  <body>
-  <h1>Hello, {{ name }}</h1>
+  <h1>Hello, {{ $name }}</h1>
  </body>
 </html>
 ```
@@ -152,66 +149,3 @@ $names = [
 ```
 
 [Lien de la documentation](https://twig.symfony.com/ 'Lien de la documentation')
-
-## Vue avec Pug PHP
-
-Pug est un moteur de templates de haute performance fortement influencé par Haml et implémenté principalement avec JavaScript pour Node.js et navigateurs.
-Pug-PHP est une réécriture de pour PHP avec les mêmes fonctionnalités.
-
-Exemple de code:
-
-```php
-$names = [
-  "resque", "hub", "rip"
-];
-```
-
-```pug
-<!-- components/views/greeting.pug -->
-doctype html
-html
-  body
-    h1 Hello User
-    each name in names
-      p Hello, #{name}
-```
-
-[Lien de la documentation](https://www.phug-lang.com 'Lien de la documentation')
-
-## Vue avec Mustache PHP
-
-Mustache est un moteur de templates de haute performance fortement influencé par Handlebar et implémenté principalement avec JavaScript pour Node.js et navigateurs.
-Mustache-PHP est une réécriture de pour PHP avec les mêmes fonctionnalités.
-
-Exemple de code:
-
-```php
-$names = [
-  ['name' => "resque"],
-  ['name' => "hub"],
-  ['name' => "rip"],
-];
-```
-
-```jinja
-<!-- components/views/greeting.tpl -->
-<html>
-  <body>
-    <h1>Hello, Users</h1>
-    {{# names}}
-      <p>Hello, {{name}}</p>
-    {{/ names}}
-  </body>
-</html>
-```
-
-[Lien de la documentation](https://github.com/bobthecow/mustache.php/wiki/Mustache-Tags 'Lien de la documentation')
-
-### Plugin
-
-Bow implément aussi au travers d'un plugin, le moteur de template `Blade` utilisé par [Laravel](https://laravel.com) et aussi un template extermement simpliste nommé `Tintin`.
-
-- Le plugin Blade [papac/bow-blade](https://github.com/papac/bow-blade)
-- Le plugin Tintin [bowphp/tintin](https://github.com/bowphp/tintin)
-
-> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
