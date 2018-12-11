@@ -124,6 +124,8 @@ return [
 
 Et c'est tout, désormais votre moteur de template par defaut est `tintin` :+1:
 
+> Notez que Tintin est le template par defaut de Bow Framework
+
 ### Affichage des données
 
 Vous pouvez afficher le contenu de la variable name de la manière suivante:

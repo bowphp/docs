@@ -193,7 +193,6 @@ class Index extends React.Component {
           <Showcase language={language} />
         </div>
         <div className="mainContainer" style={{textAlign: "center", fontSize: "13px", backgroundColor: "#eee"}}>
-          
           <SplashContainer>
             <div className="inner">
               <h4 className="projectTitle" style={{fontSize: "30px"}}>
@@ -202,7 +201,7 @@ class Index extends React.Component {
               </h4>
               <PromoSection>
                 <MarkdownBlock>
-                  **Franck DAKIA** est un Développeur Full Stack basé actuellement en Afrique, Côte d'ivoire, Abidjan. Passioné de code, et développement collaboratif, Speaker, Formateur et Membre de plusieurs communautés de développeurs.
+                  **Franck DAKIA** est un Développeur Full Stack basé actuellement en Afrique, Côte d'ivoire, Abidjan. Passionné de code, et développement collaboratif, Speaker, Formateur et Membre de plusieurs communautés de développeurs.
                 </MarkdownBlock>
                 <MarkdownBlock>
                   **SVP s'il y a un bogue sur le projet veuillez me contacter par email ou laissez moi un message sur le [slack](https://bowphp.slack.com).**

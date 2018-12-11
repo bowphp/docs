@@ -23,7 +23,7 @@ title: HTTP Response
 
 Tous les routes et contrôleurs doivent retourner une réponse à renvoyer à l'utilisateur. Bow fournit plusieurs façons différentes de renvoyer des réponses. La réponse la plus élémentaire est le retour d'une chaîne depuis une route ou un contrôleur. Bow convertira automatiquement la chaîne en une réponse HTTP complète.
 
-## Envoyé un résponse
+## Envoyé une réponse
 
 ### Une chaine de caractère
 
@@ -53,9 +53,9 @@ $app->get('/object', function () {
 });
 ```
 
-### Un model Barry
+### Un modèle Barry
 
-La réponse HTTP peut êtres un `Model` ou une `Collection` de model, Bow la convertis directement en `JSON`.
+La réponse HTTP peut être un `Model` ou une `Collection` de modèle, Bow la convertis directement en `JSON`.
 
 ```php
 use App\User;
@@ -71,7 +71,7 @@ $app->get('/', function () {
 
 ### Modification du code d'erreur
 
-Il est très important d'ajouter les codes d'erreurs à votre réponse HTTP si vous développew un API Restful. La méthode `status` vous permet de le faire.
+Il est très important d'ajouter les codes d'erreurs à votre réponse HTTP si vous développez un API RESTFUL. La méthode `status` vous permet de le faire.
 
 ```php
 use App\User;
@@ -85,7 +85,7 @@ $app->get('/', function () {
 
 Pour plus d'information sur les code HTTP. Consultez ce [lien](https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP).
 
-Si dans votre API, la requête a été traitée avec succès et vous n'avez pas d’information à renvoyer. Il est préférable de lui retourne un `204` qu'un `200` :tada:.
+Si dans votre API, la requête a été traitée avec succès et que vous n'avez pas d’information à renvoyer. Il est préférable de lui retourne un `204` qu'un `200` :tada:.
 
 ### Ajouter une entête HTTP
 
@@ -106,7 +106,7 @@ $response->withHeaders([
 
 ## Envoyer un JSON
 
-Dans les applications REST (Api Rest/RestFul) les informations sont généralement retournés en JSON. Pour envoyer un information JSON au client, vous pouvez utiliser le help `json` ou la méthode `json` sur l'instance de `Bow\Http\Response`.
+Dans les applications REST (Api REST/RESTFUL) les informations sont généralement retournés en JSON. Pour envoyer un information JSON au client, vous pouvez utiliser le help `json` ou la méthode `json` sur l'instance de `Bow\Http\Response`.
 
 ### Protototype de la méthode `json`
 
@@ -132,21 +132,31 @@ return $response->json($data, $code = 200, [
 ]);
 ```
 
-Ici Bow ajout directement l'entête HTTP `Content-Type` à `application/json`, donc plus besoin de l'ajouter manuellement dans le `$headers`.
+Avec le HELPER:
 
-## Envoyer une reponse depuis les vues
+```php
+$data = ['message' => 'Hello, World'];
 
-Souvent vous pouvez utiliser un instance de response pour faire le rendu de view via la méthode `render`.
+return json($data, 200, [
+  'X-Proto-Value' => 1 // Juste un test
+]);
+```
+
+Ici, Bow ajout directement l'entête HTTP `Content-Type` à `application/json`, donc plus besoin de l'ajouter manuellement dans le `$headers`.
+
+## Envoyer une réponse depuis les vues
+
+Souvent vous pouvez utiliser un instance de `Bow\Http\Response` pour faire le rendu de [vue](./views) via la méthode `render`.
 
 ### Protototype de la méthode `render`
 
 ```php
-$response->render($view_name, $data, $code, $headers);
+$response->render($name, $data, $code, $headers);
 ```
 
 | paramêtre | Type |
 |----------|------|
-| $view_name  | `String` - Le nom d'une vue à rendre |
+| $name  | `String` - Le nom d'une vue à rendre |
 | $data  | `Array` - Les données à envoyer à la vue |
 | $code  | `Int` - Le code du status HTTP |
 | $headers  | `Array` - Les entêtes à ajouter à la réponse |
@@ -165,7 +175,7 @@ return $response->render('users', ['users' => $users], 200, [
 
 ### Télécharger un fichier
 
-Souvent vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore vous allez faire des applications où il faut s'authentifier avant de télécharge des fichiers du type dropbox. Bow offre un API simple via la classe [Bow\Http\Response](https://bowphp.github.io/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la méthode `download`.
+Souvent vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore vous allez faire des applications où il faut s'authentifier avant de télécharge des fichiers du type dropbox. Bow offre un API simple via la classe [`Bow\Http\Response`](https://bowphp.github.io/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la méthode `download`.
 
 ### Protototype de la méthode `download`
 
@@ -176,9 +186,9 @@ $response->download($file, $filename = null, $headers, $disposition = 'attachmen
 | paramêtre | Type |
 |----------|------|
 | $file  | `String` - Le chemin absolu du fichier |
-| $filename  | `String` - Le nouveau du ficher par defaut est `null` |
+| $filename  | `String` - Le nouveau du fichier par defaut est `null` |
 | $headers  | `Array` - Les entêtes à ajouter à la réponse |
-| $disposition  | `String` - Indiquant si le contenu devrait être affiché en ligne dans le navigateur, c'est-à-dire en tant que page Web ou dans une page Web, ou en pièce jointe est téléchargé et enregistré localement. |
+| $disposition  | `String` - Indiquant si le contenu devrait être affiché en ligne dans le navigateur, c'est-à-dire en tant que page Web, ou en pièce jointe téléchargé et enregistré localement. |
 
 Plus d'information sur l'entête [`Content-Disposition`](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers/Content-Disposition).
 
@@ -196,15 +206,15 @@ return $response->download($file, 'image.png');
 
 Vous serez certainement amener à faire des redirections vers d'autres ressources et cela en réalité constitue une réponse HTTP. Les méthodes `to` et `back` (qui comme son nom l'indique permet de faire une revenir sur en arrière) de la classe [`Bow\Http\Redirect`](https://bowphp.github.io/api/master/Bow/Http/Redirect.html).
 
-### Redirection avec to
+### Redirection avec `to`
 
-La redirection avec `to` permet de faire renvoyer l'utilisateur sur une autre la page.
+La redirection avec `to` permet de renvoyer l'utilisateur sur une autre la page.
 
 ```php
 return redirect()->to($path);
 ```
 
-#### Prototype de To
+#### Prototype de `to`
 
 | paramêtre | Type |
 |----------|------|
@@ -214,15 +224,15 @@ return redirect()->to($path);
 return redirect()->to('/users');
 ```
 
-### Redirection avec back
+### Redirection avec `back`
 
-La redirection avec `back` permet de faire renvoyer l'utilisateur sur la page précédente.
+La redirection avec `back` permet de renvoyer l'utilisateur sur la page précédente.
 
 ```php
 return redirect()->back($status_code);
 ```
 
-#### Prototype de Back
+#### Prototype de `back`
 
 | paramêtre | Type |
 |----------|------|

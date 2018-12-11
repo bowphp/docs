@@ -17,20 +17,14 @@ Les vues contiennent le code HTML fourni par votre application et séparent votr
 
 ## Configuration
 
-Bow Framework implement 3 moteur de template par defaut, [Tintin](./tintin).
-La configuration des vues ce trouve dans le fichier `view.php` du dossier `config`/..
+Bow Framework implémente 2 moteurs de template et le template par defaut est **[Tintin](./tintin)**.
+La configuration des vues ce trouve dans le fichier `view.php` du dossier `config/`.
 
 Spécifiez le nom du template à utiliser avec option `engine` de la configuration, cette option peut prendre le valeur suivant `tintin`, `twig` et `php`. Par défaut Bow utilise `tintin`.
 
+> Notez que si vous définissez `php`, le rendu des vues se fera sans moteur de template
+
 Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entré `extension`. Vous verez également que les vues sont stockées dans le répertoire `components/views` par defaut.
-
-## Package supplementaire
-
-Dans le cas où vous avez opter pour le moteur de template `twig`, voici la liste du package twig:
-
-| Template | Package |
-| ------- | ------- |
-| Twig | `composer require twig/twig` |
 
 ## Création de vue
 
@@ -122,7 +116,17 @@ class HomeController extends Controller
 }
 ```
 
-## Vue avec Twig
+> Tintin est pour l'instant un projet indépendant et peut être utiliser dans n'import quel projet PHP. Pour plus d'information sur le moteur de template Tintin **[ici](./tintin)**
+
+## Package supplémentaire
+
+Dans le cas où vous avez opter pour le moteur de template `twig`, voici la liste du package twig:
+
+| Template | Package |
+| ------- | ------- |
+| Twig | `composer require twig/twig` |
+
+### Vue avec Twig
 
 Twig est un moteur de templates pour le langage de programmation PHP, utilisé par défaut par le Framework Symfony.
 

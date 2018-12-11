@@ -99,8 +99,8 @@ const siteConfig = {
 
   /* Colors for website */
   colors: {
-    primaryColor: '#bd362f', // #d80027
-    secondaryColor: '#414141',
+    primaryColor: '#404040', // #d80027
+    secondaryColor: '#404040', // #404040
   },
 
   /* Custom fonts for website */
@@ -122,7 +122,7 @@ const siteConfig = {
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
-    theme: 'dracula',
+    theme: 'default',
   },
 
   // Add custom scripts here that would be placed in <script> tags.

@@ -4,7 +4,7 @@ title: HTTP Request
 ---
 
 - [Introduction](#introduction)
-- [Accéder à la Request](#acceder-a-la-request)
+- [Accéder à la requête](#acceder-a-la-requete)
 - [Récupération des données](#recuperation-des-donnees)
   - [Via des Closures de route](#via-des-closures-de-route)
   - [Via un controlleur](#via-un-controlleur)
@@ -19,11 +19,11 @@ title: HTTP Request
 
 ## Introduction
 
-Une requête HTTP c'est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autre outil telque `curl`, `httpie` et autre.
+Une requête HTTP est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autre outil tel que `curl`, `httpie` et autre.
 
-Ce message est traité par Bow à travers la classe [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoie par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
+Ce message est traité par Bow à travers la classe [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoyé par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
 
-## Accéder à la Request
+## Accéder à la requête
 
 Pour capturer un message ou requête HTTP, vous pouvez premièrement utiliser le helper `request()` qui vous donne une instance de [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Request.html), deuxièmement vous pouvez passer par l'injecteur de dépendance via une action de contrôleur.
 

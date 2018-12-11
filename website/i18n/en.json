@@ -71,9 +71,6 @@
       "http-session": {
         "title": "HTTP Session"
       },
-      "sms": {
-        "title": "Sms"
-      },
       "storage": {
         "title": "Storage"
       },

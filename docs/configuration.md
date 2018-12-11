@@ -15,8 +15,7 @@ Tous les fichiers de configuration de Bow Framework sont stockés dans le réper
 
 ## Configuration
 
-Aprés la mise en place votre configuration et que Bow est chargé tout la configuration.
-Vous pouvez avoir accès à la configuration et aussi la modifiée avec le helper `config`. L'accès aux valeurs se font via un système de [dot notation](#explication-de-la-dot-notation).
+Aprés la mise en place de votre configuration et que Bow est chargé tout la configuration. Vous pouvez avoir accès à la configuration et aussi la modifiée avec le helper `config`. L'accès aux valeurs se fait via un système de [dot notation](#explication-de-la-dot-notation).
 
 Pour récupérer une valeur c'est très simple:
 
@@ -24,18 +23,18 @@ Pour récupérer une valeur c'est très simple:
 echo config('app.public_path')
 ```
 
-Et la modifier une valeur se fait également très simplement:
+Et modifié une valeur se fait également très simplement:
 
 ```php
 config('view.engine', 'twig');
-config('view.extens', '.twig');
+config('view.extension', '.twig');
 ```
 
 ### Explication de la Dot Notation
 
-Ici `app` représente le nom du fichier de configuration,`public_path` une valeur de la configuration définit dans ce fichier et le `.` permet d'avoir accès à une clé du tableau.
+Ici `app` représente le nom du fichier de configuration,`public_path` une valeur de la configuration défini dans ce fichier et le `.` permet d'avoir accès à une clé du tableau.
 
-Imaginez qu'on a un tableau de ce type et qui est dans le un fichier donc le nom est `bow.php`:
+Imaginez qu'on a un tableau de ce type et qui est dans un fichier dont le nom est `bow.php`:
 
 ```php
 return [
