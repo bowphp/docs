@@ -26,11 +26,11 @@ Actuellement, Bow prend en charge deux bases de données:
 
 ### Configuration
 
-La configuration de la base donnée de votre application se localise dans le fihcier `config/db.php`. Dans ce fichier, vous pouvez définir tous les connections de votre base de donnée, as well as specify which connection should be used by default. Un exemple en plus définir pour tous les supports de base de donnée est defini dans le fichier.
+La configuration de la base donnée de votre application se localise dans le fihcier `config/db.php`. Dans ce fichier, vous pouvez définir tous les connections de votre base de donnée et un exemple en plus pour tous les supports de base de donnée est defini dans ce fichier.
 
 ### SQLite Configuration
 
-Après avoir créé une nouvelle base de données SQLite à l'aide d'une commande telle que `touch storage/database.sqlite`, vous pouvez facilement configurer vos variables d'environnement (dans le fichier `.env.json`) pour qu'elles pointent vers cette base de données nouvellement créée à l'aide du chemin absolu de la base de données:
+Après avoir créé une nouvelle base de données SQLite à l'aide d'une commande tel que `touch storage/database.sqlite`, vous pouvez facilement configurer vos variables d'environnement (dans le fichier `.env.json`) pour qu'elles pointent vers cette base de données nouvellement créée à l'aide du chemin absolu de la base de données:
 
 ```text
 "DB_DEFAULT": "seconds",
@@ -40,10 +40,11 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 
 ### Connexion à plusieur Base de donnée
 
-Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode static de `connexion` sur la classe de la [`Bow\Database\Database`](https://bowphp.github.io/api/master/Bow/Database/Database.html). Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/db.php`:
+Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode static de `connexion` sur la classe [`Bow\Database\Database`](https://bowphp.github.io/api/master/Bow/Database/Database.html). Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/db.php`:
 
 ```php
 use Bow\Database\Database;
+
 $users = Database::connection('seconds')->select(...);
 ```
 
@@ -53,11 +54,11 @@ Ou via le helper `db`:
 $users = db('seconds')->select(...);
 ```
 
-Une fois la configuration changé elle est directement appliquer sur la connexion des Models. Cliquer ici pour plus d'information sur les models.
+Une fois la configuration changé, elle est directement appliquer sur la connexion des modèles. [Cliquer ici](./orm) pour plus d'information sur les models.
 
 ## requête SQL Brute
 
-Les requête brute ici sont les requêtes SQL ecrite litteralement sans passer par un query builder.
+Les requête brute ici sont les requêtes SQL écrite littéralement sans passer par un Query Builder.
 Dans cette section nous allons utiliser une table nommer `pets` pour effectuer nos requête avec.
 
 Voici la description de la table `pets`:

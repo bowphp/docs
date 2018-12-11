@@ -5,7 +5,7 @@ title: HTTP Request
 
 - [Introduction](#introduction)
 - [Accéder à la requête](#acceder-a-la-requete)
-- [Récupération des données](#recuperation-des-donnees)
+- [Recupération des données](#recuperation-des-donnees)
   - [Via des Closures de route](#via-des-closures-de-route)
   - [Via un controlleur](#via-un-controlleur)
 - [Chemin de requête et méthode](#chemin-de-requete-et-methode)
@@ -27,7 +27,7 @@ Ce message est traité par Bow à travers la classe [`Bow\Http\Request`](https:/
 
 Pour capturer un message ou requête HTTP, vous pouvez premièrement utiliser le helper `request()` qui vous donne une instance de [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Request.html), deuxièmement vous pouvez passer par l'injecteur de dépendance via une action de contrôleur.
 
-## Récupération des données
+## Recupération des données
 
 En utilisant quelques méthodes simples, vous pouvez accéder à toutes les entrées utilisateur de votre application.
 
@@ -41,7 +41,7 @@ $app->get('/', function ()
   $request = request();
 
   $name = $request->get('name');
-  //
+  // code ici
 });
 ```
 
@@ -67,8 +67,6 @@ $app->get('/users/:id', 'UserController::show');
 Vous pouvez toujours taper la requête [Bow\Http\Request](https://bowphp.github.io/api/master/Bow/Http/Request.html) et accéder à l'id de votre paramètre de route en définissant votre méthode de contrôleur comme suit:
 
 ```php
-<?php
-
 namespace App\Controllers;
 
 use App\Controllers\Controller;
@@ -173,7 +171,7 @@ $name = $request->name;
 
 Ceci permet juste de récupérer le contenu du champ `name` d'un formulaire ou d'un url en fonction du type de requête.
 
-### Récupération d'une partie des données d'entrée
+### Recupération d'une partie des données d'entrée
 
 Si vous devez extraire un sous-ensemble des données d'entrée, vous pouvez utiliser les méthodes `ignore` et `only`. Ces deux méthodes acceptent un seul tableau ou une liste d'arguments dynamique:
 
