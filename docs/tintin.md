@@ -1,6 +1,6 @@
 ---
 id: tintin
-title: Tintin templating
+title: Tintin Template
 ---
 
 <h1 align="center">
@@ -293,7 +293,7 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
 
 Considérons le fichier `hello.tintin.php` suivant:
 
-```jinja
+```c
 Hello {{ $name }}
 ```
 
@@ -306,9 +306,9 @@ Utilisation:
 
 ## Héritage avec #extends, #block et #inject
 
-Comme tout bon système de templating **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
+Comme tout bon système de templating **Tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
 
-Considérérons le code **tintin** suivant:
+Considérérons le code **Tintin** suivant:
 
 ```c
 // le fichier `layout.tintin.php`
@@ -327,10 +327,10 @@ Considérérons le code **tintin** suivant:
 </html>
 ```
 
-Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.php`
+Et aussi, considérons un autre fichier qui héritera du code du fichier `layout.tintin.php`
 
 ```c
-// le fichier se nomme `content.tintin.php`
+// Le fichier se nomme `content.tintin.php`
 #extends('layout')
 
 #block('content')
@@ -340,9 +340,11 @@ Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.ph
 
 ### Explication
 
-Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si vous rémarquez bien, dans le fichier `layout.tintin.php` on a la clause `#inject` qui a pour paramètre le nom du `#block` de `content.tintin.php` qui est `content`. Ce qui veut dire que le contenu du `#block` `content` sera remplacé par `#inject`. Ce qui donnéra à la fin ceci:
+Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si vous rémarquez bien, dans le fichier `layout.tintin.php` on a la clause `#inject` qui a pour paramètre le nom du `#block` de `content.tintin.php` qui est `"content"`. Ce qui veut dire que le contenu du `#block` `"content"` sera remplacé par `#inject`. 
 
-```c
+Ce qui donnera à la fin ceci:
+
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -360,10 +362,11 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 
 ## Directive personnelisée
 
-Tintin peut être étendu avec son systême de directive personnalisé, pour ce faire utilisé la méthode `directive`
+Tintin peut être étendu avec son systême de directive personnalisé, pour se faire, utilisez la méthode `directive`
 
 ```php
-$tintin->directive('hello', function (array $attributes = []) {
+$tintin->directive('hello', function (array $attributes = [])
+{
   return 'Hello, '. $attributes[0];
 });
 
@@ -376,25 +379,29 @@ echo $tintin->render('#hello("Tintin")');
 Création de directive pour gérer un formulaires:
 
 ```php
-$tintin->directive('input', function (array $attributes = []) {
+$tintin->directive('input', function (array $attributes = [])
+{
   $attribute = $attributes[0];
 
   return '<input type="'.$attribute['type'].'" name="'.$attribute['name'].'" value="'.$attribute['value'].'" />';
 });
 
-$tintin->directive('textarea', function (array $attributes = []) {
+$tintin->directive('textarea', function (array $attributes = [])
+{
   $attribute = $attributes[0];
 
   return '<textarea name="'.$attribute['name'].'">"'.$attribute['value'].'"</textarea>';
 });
 
-$tintin->directive('button', function (array $attributes = []) {
+$tintin->directive('button', function (array $attributes = [])
+{
   $attribute = $attributes[0];
 
   return '<button type="'.$attribute['type'].'">'.$attribute['label'].'"</button>';
 });
 
-$tintin->directive('form', function (array $attributes = []) {
+$tintin->directive('form', function (array $attributes = [])
+{
   $attribute = " ";
   
   if (isset($attributes[0])) {
@@ -406,7 +413,8 @@ $tintin->directive('form', function (array $attributes = []) {
   return '<form "'.trim($attribute).'">';
 });
 
-$tintin->directive('endform', function (array $attributes = []) {
+$tintin->directive('endform', function (array $attributes = [])
+{
   return '</form>';
 });
 ```
@@ -436,7 +444,7 @@ echo $tintin->render('form');
 
 ```html
 <form action="/posts" method="post">
-  <input type="text" name="name" value="" />
+  <input type="text" name="name" value=""/>
   <textarea name="content"></textarea>
   <button type="submit">Add</button>
 </form>
@@ -476,7 +484,13 @@ Maintenant la directive `#super` est disponible et vous pouvez l'utiliser.
 
 ## IDE support
 
-Tintin est supporté actuellement par [sublime text](https://www.sublimetext.com). Comment installer Sublime Package Control ?
+Tintin est supporté actuellement par [sublime text](https://www.sublimetext.com). 
+
+### Comment installer Sublime Package Control ?
+
+Allez sur le [site](https://packagecontrol.io/installation) et suivez les instructions.
+
+### Installer le package Tintin
 
 - Recherchez **Bow Tintin** et installez-le/Téléchargez ou clonez ce référentiel dans [install-dir]/Packages/bow-tintin
 - Redémarrez Sublime Text.
