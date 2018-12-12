@@ -11,21 +11,21 @@
 // List of projects/orgs using your project for the users page.
 const users = [
   {
+    caption: 'Abou KONE',
+    description: "Front end Architect, CTO @akil Tech. Magician @codedivoire.",
+    // You will need to prepend the image path with your baseUrl
+    // if it is not '/', like: '/test-site/img/docusaurus.svg'.
+    image: 'https://avatars1.githubusercontent.com/u/582061?s=460&v=4',
+    infoLink: 'https://github.com/devakone',
+    pinned: true,
+  },
+  {
     caption: 'Franck DAKIA',
     description: "Web and Mobile Developer, DevOps Lover, Trainer and Coach in Web Development. Creator of Bow Framework",
     // You will need to prepend the image path with your baseUrl
     // if it is not '/', like: '/test-site/img/docusaurus.svg'.
     image: 'https://avatars1.githubusercontent.com/u/9353811?s=460&v=4',
     infoLink: 'https://github.com/papac',
-    pinned: true,
-  },
-  {
-    caption: 'Abou Kone',
-    description: "Front end Architect, CTO @akil Tech. Magician @codedivoire.",
-    // You will need to prepend the image path with your baseUrl
-    // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: 'https://avatars1.githubusercontent.com/u/582061?s=460&v=4',
-    infoLink: 'https://github.com/devakone',
     pinned: true,
   },
   {
@@ -99,7 +99,7 @@ const siteConfig = {
 
   /* Colors for website */
   colors: {
-    primaryColor: '#404040', // #d80027
+    primaryColor: '#000', // #d80027
     secondaryColor: '#404040', // #404040
   },
 

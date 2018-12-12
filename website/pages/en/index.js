@@ -183,7 +183,7 @@ class Index extends React.Component {
     return (
       <div>
         <HomeSplash language={language} />
-        <div className="mainContainer" style={{textAlign: "center", fontSize: "25px", backgroundColor: "#303030", color: "#fff"}}>
+        <div className="mainContainer" style={{textAlign: "center", fontSize: "25px", backgroundColor: "#000", color: "#fff"}}>
           <strong>Bow Framework est apprécié par 150+ Développeur(se)s</strong>
         </div>
         <div className="mainContainer" style={{backgroundColor: "#f0f0f0"}}>
