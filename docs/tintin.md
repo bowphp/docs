@@ -89,11 +89,17 @@ $tintin = new Tintin\Tintin($loader);
 // Configuration faite qu préalabe
 $tintin = new Tintin\Tintin($loader);
 
-$tintin->render('filename', ['name' => 'data']);
+$tintin->render('filename', [
+  'name' => 'data'
+]);
 // Ou
-$tintin->render('dossier/filename', ['name' => 'data']);
+$tintin->render('dossier/filename', [
+  'name' => 'data'
+]);
 // Ou
-$tintin->render('dossier.filename', ['name' => 'data']);
+$tintin->render('dossier.filename', [
+  'name' => 'data'
+]);
 ```
 
 > Notez que la source des fichiers est toujour le chemin vers `path`.
@@ -132,23 +138,29 @@ Et c'est tout, désormais votre moteur de template par defaut est `tintin` :+1:
 
 ### Affichage des données
 
-Vous pouvez afficher le contenu de la variable name de la manière suivante:
+Considérons le code suivant:
+
+```php
+$name = "Tintin";
+```
+
+Vous pouvez afficher le contenu de la variable `$name` de la manière suivante:
 
 ```c
 Hello, {{ $name }}.
 ```
 
-Bien entendu, vous n'êtes pas limité à afficher le contenu des variables transmises à la vue. Vous pouvez également faire écho aux résultats de toute fonction PHP. En fait, vous pouvez insérer n'importe quel code PHP dans une instruction echo Tintin:
+Bien entendu, vous n'êtes pas limité à afficher le contenu des variables transmises à la vue. Vous pouvez également faire écho aux résultats de toute fonction PHP (Afficher les résultats de toutes les fonctions PHP). En fait, vous pouvez insérer n'importe quel code PHP dans une instruction `{{}}` Tintin:
 
 ```html
 Hello, {{ strtoupper($name) }}.
 ```
 
-> Les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS.
+> Les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques [XSS](https://fr.wikipedia.org/wiki/Cross-site_scripting).
 
 #### Affichage des données non échappées
 
-Par défaut, les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS. Si vous ne souhaitez pas que vos données soient protégées, vous pouvez utiliser la syntaxe suivante:
+Par défaut, les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques [XSS](https://fr.wikipedia.org/wiki/Cross-site_scripting). Si vous ne souhaitez pas que vos données soient protégées, vous pouvez utiliser la syntaxe suivante:
 
 ```html
 Hello, {{{ $name }}}.
@@ -156,19 +168,24 @@ Hello, {{{ $name }}}.
 
 ### Ajouter un commentaire
 
-Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tintin`.
+Cette clause `{# ... #}` permet d'ajouter un commentaire à votre code `tintin`.
+
+```c
+{# Affichage du nom #}
+Hello, {{ $name }}
+```
 
 ### #if / #elseif ou #elif / #else
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
 ```c
-#if ($name == 'tintin')
-  {{ $name }}
-#elseif ($name == 'template')
-  {{ $name }}
+#if ($name == 'Tintin')
+  // ..
+#elseif ($name == 'Papac')
+  // ..
 #else
-  {{ $name }}
+  // ..
 #endif
 ```
 
@@ -180,7 +197,13 @@ Petite spécificité, le `#unless` quant à lui, il permet de faire une conditio
 Pour faire simple, voici un exemple:
 
 ```c
-#unless ($name == 'tintin') => #if (!($name == 'tintin'))
+#unless ($name == 'tintin')
+  // ..
+#endunless
+// Égale
+#if (!($name == 'tintin'))
+ // ..
+#endif
 ```
 
 ### #loop / #for / #while
@@ -197,8 +220,9 @@ Cette clause faire exactement l'action de `foreach`.
 #endloop
 ```
 
-Cette clause peux être aussi coupler avec tout autre clause telque `#if`.
-Un exemple rapide.
+Cette clause peux être aussi coupler avec tout autre clause tel que `#if`.
+
+Un exemple rapide:
 
 ```c
 #loop ($names as $name)
@@ -209,7 +233,7 @@ Un exemple rapide.
 #endloop
 ```
 
-Vous avez peut-être remarquer le `#stop` il permet de stoper l'éxécution de la boucle. Il y a aussi son conjoint le `#jump`, lui parcontre permet d'arrêter l'éxécution à son niveau et de lancer s'éxécution du prochain tour de la boucle.
+Vous avez peut-être remarquer le `#stop`, il permet de stoper l'exécution de la boucle. Il y a aussi son conjoint le `#jump`, lui parcontre permet d'arrêter l'exécution à son niveau et de lancer s'exécution du prochain tour de la boucle.
 
 #### Les sucres syntaxiques #jump et #stop
 
@@ -393,7 +417,7 @@ Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directiv
 
 ```c
 // Fichier form.tintin.php
-#form(['method' => 'post', "action" => "/posts", "enctype" => "multipart/form-data"])
+#form(['method' => 'post', "action" => "/posts"])
   #input(["type" => "text", "value" => null, "name" => "name"])
   #textarea(["value" => null, "name" => "content"])
   #button(['type' => 'submit', 'label' => 'Add'])
@@ -411,7 +435,7 @@ echo $tintin->render('form');
 ### Sortie après compilation
 
 ```html
-<form action="/posts" method="post" enctype="multipart/form-data">
+<form action="/posts" method="post">
   <input type="text" name="name" value="" />
   <textarea name="content"></textarea>
   <button type="submit">Add</button>
