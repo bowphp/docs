@@ -440,7 +440,7 @@ $app->get('/:name', function ($name)
 // S'il y a plusieurs variables
 $callable = function ($name, $lastname, $number)
 {
-  return sprIntegerf(
+  return sprintf(
     'Bonjour <b>%s %s</b>, votre numéro est %s.', $name, $lastname, $number
   );
 };

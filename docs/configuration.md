@@ -15,15 +15,15 @@ Tous les fichiers de configuration de Bow Framework sont stockés dans le réper
 
 ## Configuration
 
-Aprés la mise en place de votre configuration et que Bow est chargé tout la configuration. Vous pouvez avoir accès à la configuration et aussi la modifiée avec le helper `config`. L'accès aux valeurs se fait via un système de [dot notation](#explication-de-la-dot-notation).
+Aprés la mise en place de votre configuration et que Bow est chargé tout la configuration. Vous pouvez y avoir accès et la modifiée avec le helper `config`. L'accès aux valeurs se fait via un système de [dot notation](#explication-de-la-dot-notation).
 
-Pour récupérer une valeur c'est très simple:
+La récupéreration d'une valeur est très simple:
 
 ```php
 echo config('app.public_path')
 ```
 
-Et modifié une valeur se fait également très simplement:
+Et modifié une valeur se fait également simplement:
 
 ```php
 config('view.engine', 'twig');
@@ -34,7 +34,7 @@ config('view.extension', '.twig');
 
 Ici `app` représente le nom du fichier de configuration,`public_path` une valeur de la configuration défini dans ce fichier et le `.` permet d'avoir accès à une clé du tableau.
 
-Imaginez qu'on a un tableau de ce type et qui est dans un fichier dont le nom est `bow.php`:
+Imaginez qu'on a un tableau défini comme suit et qui est dans un fichier dont le nom est `bow.php`:
 
 ```php
 return [
@@ -58,9 +58,11 @@ config('bow.skill.orm') // true
 config('bow.skill.prrset.0') // reactjs
 ```
 
+> Remarquez qu'en prémier c'est le nom du fichier qui contient la configuration, ici `bow.`
+
 ### Fichier .env.json
 
-Le fichier `.env.json` est le fichier dans lequel sont definit les informations concernant la configuration de votre application au format JSON.
+Le fichier `.env.json` est le fichier dans lequel sont définis les informations concernant la configuration de votre application au format JSON.
 
 Votre fichier `.env.json` ne doit pas sous controle de version, parce que chaque développeur/serveur utilisant votre application peut nécessiter une configuration d'environnement différente. De plus cela constituerait aussi un risque pour la sécurité de votre application dans le cas où un intrus aurait accès à votre dépot de code source, parceque toutes les informations d'identification sensibles seraient exposées.
 
@@ -68,22 +70,22 @@ Votre fichier `.env.json` ne doit pas sous controle de version, parce que chaque
 
 ### Récupération les informations
 
-Toutes les variables répertoriées dans le fichier `.env.json` seront chargées lorsque votre application recevra une requête. Cependant, vous pouvez utiliser le helper `env` pour récupérer les valeurs de ces variables dans  fichiers de configuration. En fait, si vous examinez les fichiers de configuration de Bow, vous remarquerez plusieurs des options utilisant déjà cet helper:
+Toutes les variables répertoriées dans le fichier `.env.json` seront chargées lorsque votre application recevra une requête. Cependant, vous pouvez utiliser le helper `app_env` pour récupérer les valeurs de ces variables dans les fichiers de configuration. En fait, si vous examinez les fichiers de configuration de Bow, vous remarquerez plusieurs des options utilisant déjà cet helper:
 
 ```php
-'database' => env('MYSQL_DATABASE'),
+'database' => app_env('MYSQL_DATABASE'),
 ```
 
-Dans le cas où la variable n'est pas définie `env` retournera `null`, ou bien vous pouvez passer un deuxième paramêtre à `env` qui sera la valeur par défaut si la valeur n'est pas trouvé.
+Dans le cas où la variable n'est pas définie `app_env` retournera `null`, ou bien vous pouvez passer un deuxième paramètre à `app_env` qui sera la valeur par défaut si la valeur n'est pas trouvé.
 
 ```php
-'database' => env('MYSQL_DATABASE', 'localhost'),
+'database' => app_env('MYSQL_DATABASE', 'localhost'),
 ```
 
 ## Les helpers
 
 Bow inclut une variété de fonctions PHP "d'assistance" globales. Beaucoup de ces fonctions sont utilisées par le Framework lui-même; Cependant, vous êtes libre de les utiliser dans vos propres applications si vous les trouvez pratiques.
 
-Notez que dans le fichier `config/helper.php` il aussi des helpers, mais cela ne sont pas utiliser dans le Framework. Vous pouvez definir aussi vos helpers dans ce fichier.
+Notez que dans le fichier `config/helper.php` il y a aussi des helpers, mais cela ne sont pas utiliser dans le Framework. Vous pouvez définir aussi vos helpers dans ce fichier.
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

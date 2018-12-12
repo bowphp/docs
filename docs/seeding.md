@@ -9,7 +9,7 @@ title: Seeding
 
 ## Introduction
 
-Le seeding est un mécanisme qui vous permet d'hydrater votre base de donnée pour pouvoir l'utiliser dans votre développement. Le seeding dans Bow est associer à une table lors de la création.
+Le seeding est un mécanisme qui vous permettra d'hydrater votre base de donnée pour pouvoir l'utiliser dans votre développement. Le seeding dans Bow est associer à une table lors de la création.
 
 ## Ajouter un seeder
 
