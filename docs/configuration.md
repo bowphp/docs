@@ -5,7 +5,7 @@ title: Configuration
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-  - [Explication de la Dot Notation](#explication-de-la-dot-notation)
+  - [Explication de la notation à point](#explication-de-la-notation-a-point)
   - [Fichier .env.json](#fichier-env-json)
   - [Récupération les informations](#récupération-les-informations)
 
