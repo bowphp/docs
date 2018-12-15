@@ -11,28 +11,29 @@ title: Configuration
 
 ## Introduction
 
-Tous les fichiers de configuration de Bow Framework sont stockés dans le répertoire `config`. Chaque option est documentée, alors n'hésitez pas à parcourir les fichiers et à vous familiariser avec les options à votre disposition.
+Tous les fichiers de configuration de Bow Framework sont stockés dans le dossier `config`. Chaque option est documentée, alors n'hésitez pas à parcourir les fichiers et à vous familiariser avec les options à votre disposition.
 
 ## Configuration
 
-Aprés la mise en place de votre configuration et que Bow est chargé tout la configuration. Vous pouvez y avoir accès et la modifiée avec le helper `config`. L'accès aux valeurs se fait via un système de [dot notation](#explication-de-la-dot-notation).
+Vous pouvez accéder et modifier la configuration avec le helper `config`. L'accès aux valeurs se fait via un système de [notation à point](#explication-de-la-notation-a-point) (Dot notation).
 
-La récupéreration d'une valeur est très simple:
+Récupération d'une valeur:
 
 ```php
 echo config('app.public_path')
 ```
 
-Et modifié une valeur se fait également simplement:
+Modification d'une valeur:
 
 ```php
 config('view.engine', 'twig');
 config('view.extension', '.twig');
 ```
 
-### Explication de la Dot Notation
+### Explication de la notation à point
 
-Ici `app` représente le nom du fichier de configuration,`public_path` une valeur de la configuration défini dans ce fichier et le `.` permet d'avoir accès à une clé du tableau.
+Dans une notation à point, la partie avant le premier point représente le nom du fichier et toutes les valeurs suivantes
+représentent des clés ou valeurs du tableau de configuration.
 
 Imaginez qu'on a un tableau défini comme suit et qui est dans un fichier dont le nom est `bow.php`:
 
@@ -40,7 +41,7 @@ Imaginez qu'on a un tableau défini comme suit et qui est dans un fichier dont l
 return [
   'name' => 'Bow',
   'skill' => [
-    'level' => 'esaiest',
+    'level' => 'easiest',
     'orm' => true,
     'preset' => [
       'reactjs', 'vue'
@@ -55,20 +56,23 @@ Avec `config` nous allons voir comment avoir accès à ces valeurs.
 config('bow.name'); // Bow
 config('bow'); // Retourne le tableau entier
 config('bow.skill.orm') // true
-config('bow.skill.prrset.0') // reactjs
+config('bow.skill.preset.0') // reactjs
 ```
 
-> Remarquez qu'en prémier c'est le nom du fichier qui contient la configuration, ici `bow.`
+> Remarquez qu'en premier c'est le nom du fichier qui contient la configuration, ici `bow.`
 
 ### Fichier .env.json
 
-Le fichier `.env.json` est le fichier dans lequel sont définis les informations concernant la configuration de votre application au format JSON.
+Il est souvent souhaitable d'avoir différentes valeurs de configuration selon l'environnement ou notre application est lancée. Par exemple, l'on
+peut vouloir activer des logs de débogage en développement mais pas en production.
 
-Votre fichier `.env.json` ne doit pas sous controle de version, parce que chaque développeur/serveur utilisant votre application peut nécessiter une configuration d'environnement différente. De plus cela constituerait aussi un risque pour la sécurité de votre application dans le cas où un intrus aurait accès à votre dépot de code source, parceque toutes les informations d'identification sensibles seraient exposées.
+Pour cela Bow utilise le fichier `.env.json` fichier dans lequel sont définis les informations concernant la configuration de votre application au format JSON. C'est aussi l'endroit idéal pour définir les informations sensibles comme une clé d'accès à un service.
+
+Votre fichier `.env.json` ne doit pas sous contrôle de version, parce que chaque développeur/serveur utilisant votre application peut nécessiter une configuration d'environnement différente. De plus cela constituerait aussi un risque de sécurité dans le cas où un intrus aurait accès à votre depot de code source, parce que toutes les informations d'identification sensibles seraient exposées.
 
 > Le fichier `.env.example.json` sert de base pour la création du fichier `.env.json`.
 
-### Récupération les informations
+### Récupération des informations
 
 Toutes les variables répertoriées dans le fichier `.env.json` seront chargées lorsque votre application recevra une requête. Cependant, vous pouvez utiliser le helper `app_env` pour récupérer les valeurs de ces variables dans les fichiers de configuration. En fait, si vous examinez les fichiers de configuration de Bow, vous remarquerez plusieurs des options utilisant déjà cet helper:
 
