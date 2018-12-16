@@ -3,6 +3,7 @@ id: policier
 title: Policier
 ---
 
+- [Introduction](#introduction)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
@@ -18,11 +19,13 @@ title: Policier
   - [Personnalisation du Middleware](#personnalisation-du-middleware)
   - [Publier le middleware](#publier-le-middleware)
 
-La police permet de valider la demande via [JWT](https://jwt.io)
+## Introduction
+
+Policier permet de valider la requête via [JWT](https://jwt.io).
 
 ## Installation
 
-Pour installer la stratégie d'installation, vous devez utiliser `composer` (gestionnaire de paquets PHP) comme ceci.
+Pour installer Policier, vous devez utiliser `composer` (Gestionnaire de paquets PHP) comme ceci.
 
 ```bash
 composer require bowphp/policier
@@ -123,7 +126,7 @@ Après la configuration, vous pouvez utiliser le helper `policier`:
 policier($action, ...$args);
 ```
 
-La valeur d'action doit être l'une de ces valeurs: `encode`, `decode`, `parse`, `verify`, `validate`.
+La valeur `$action` doit être l'une de ces valeurs: `encode`, `decode`, `parse`, `verify`, `validate`.
 
 ### Mise à jour ou Récupération de la configuration
 
@@ -165,7 +168,7 @@ echo $token;
 //=> eyJ0eXAiOiJKV1QiLCJhbGciOiI6IjEifQ.eyJpc3MiOiJsb2NhbGhvc3QiLCJhdWQiOiJsb2NhbGhvc3QiLCJqdGkiOi.l7v0bS0rqnK1IeRGRBTFIH5s2TN9KtgD7BLivApq
 ```
 
-`$token` est une instance de `Bow\Jwt\Token` et implémente la méthode magique `__toString`. Vous pouvez obtenir l'heure d'expiration avec `expiredIn` et `getToken` pour prendre la valeur du token.
+`$token` est une instance de `Bow\Jwt\Token` et implémente la méthode magique `__toString`. Vous pouvez obtenir la date d'expiration avec `expiredIn` et `getToken` pour prendre la valeur du token.
 
 Via l'assistant:
 
@@ -190,6 +193,13 @@ Via l'assistant:
 ```php
 policier('decode', $token);
 ```
+
+Le résultat du décodage est un tableau associatif possédant deux clés:
+
+| Paramètre | Description |
+|---------|-------------|
+| __headers__ | Les entêtes tel que `exp` |
+| __claims__ | Contient les informations que vous avez fournir pour l'encodage |
 
 ### Transformer un Token
 

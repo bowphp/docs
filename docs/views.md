@@ -39,11 +39,11 @@ Une simple vue peut ressembler à ceci
 </html>
 ```
 
-Apres avoir modifier et sauvegarde votre vue dans `components/views/greeting.twig`. Vous pouvez maintenant l'envoyer au utilisateur avec le helper view comme ceci:
+Apres avoir modifier et sauvegarde votre vue dans `components/views/greeting.tintin.php`. Vous pouvez maintenant l'envoyer au utilisateur avec le helper view comme ceci:
 
 ```php
 $app->get('/', function() {
-  return view('greeting', ['name' => 'Bowphp']);
+  return view('greeting', ['name' => 'Tintin']);
 });
 ```
 

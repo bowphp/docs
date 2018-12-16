@@ -92,7 +92,7 @@ $app->route([
 $app->route([
   'path' => '/',
   'method' => "GET",
-  'handler' => 'HomeController::showProfile',
+  'handler' => 'HomeController::show',
   'middleware' => ['auth']
 ]);
 ```
@@ -105,7 +105,7 @@ $app->route([
 $app->route([
   'path' => '/:name',
   'method' => "GET",
-  'handler' => 'HomeController::showProfile',
+  'handler' => 'HomeController::show',
   'middleware' => ['auth'],
   'where' => ['name' => '[a-z]+']
 ]);

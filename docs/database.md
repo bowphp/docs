@@ -64,7 +64,11 @@ Dans cette section nous allons utiliser une table nommer `pets` pour effectuer n
 Voici la description de la table `pets`:
 
 ```sql
-CREATE TABLE `pets` (id int primary key, name varchar(200), color varchar(50));
+CREATE TABLE `pets` (
+  id int primary key, 
+  name varchar(200), 
+  color varchar(50)
+);
 ```
 
 Alors notre table à comme colonne:
@@ -85,6 +89,7 @@ Execution d'un requête pour optenir tous les informations de la table `pets`:
 
 ```php
 use Bow\Database\Database;
+
 $pets = Database::select('select * from `pets`');
 ```
 
@@ -100,6 +105,7 @@ Execution d'un requête pour optenir tous les informations de la table `pets` qu
 
 ```php
 use Bow\Database\Database;
+
 $pet = Database::select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
@@ -150,6 +156,7 @@ Vous avez aussi la possibilité d'inserer plusieurs enregistrements en même tem
 
 ```php
 use Bow\Database\Database;
+
 // Liste de pets
 $pets = [
   [
@@ -164,13 +171,19 @@ $pets = [
   ]
 ];
 
-$inserted = Database::insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pets);
+$inserted = Database::insert(
+  'insert into `pets` (id, name, color) values (:id, :name, :color);',
+  $pets
+);
 ```
 
 Via helper `insert`:
 
 ```php
-$updated = insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pets);
+$updated = insert(
+  'insert into `pets` (id, name, color) values (:id, :name, :color);',
+  $pets
+);
 ```
 
 ### Execution de requête Update
@@ -188,7 +201,10 @@ $pet = [
   'color' => 'Purple'
 ];
 
-$updated = Database::update('update `pets` set id = :id, name=:name, color=:color where id = :id', $pet);
+$updated = Database::update(
+  'update `pets` set id = :id, name=:name, color=:color where id = :id',
+  $pet
+);
 ```
 
 Via le helper `update`:
@@ -200,7 +216,10 @@ $pet = [
   'color' => 'Yellow'
 ];
 
-$updated = update('update `pets` set id=:id, name=:name, color=:color where id = :id', $pet);
+$updated = update(
+  'update `pets` set id=:id, name=:name, color=:color where id = :id',
+  $pet
+);
 ```
 
 ### Execution de requête Delete
@@ -211,21 +230,29 @@ Execution d'un requête pour inserer une information dans table `pets`:
 
 ```php
 use Bow\Database\Database;
-$deleted = Database::delete('delete from `pets` where id = :id', ['id' => 1]);
+
+$deleted = Database::delete(
+  'delete from `pets` where id = :id',
+  ['id' => 1]
+);
 ```
 
 Via le helper `delete`:
 
 ```php
-$deleted = delete('delete from `pets` where id = :id', ['id' => 2]);
+$deleted = delete(
+  'delete from `pets` where id = :id',
+  ['id' => 2]
+);
 ```
 
 ### Execution de requête
 
-Pour executer une requête brute autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`. Il y a une méthode faite pour `Database::statement` ou le helper `statement`.
+Pour exécuter une requête brute autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`. Il y a une méthode faite pour `Database::statement` ou le helper `statement`.
 
 ```php
 use Bow\Database\Database;
+
 Database::statement('alter table `pets` add `owner` varchar(80) default null;');
 ```
 
@@ -242,6 +269,8 @@ Vous pouvez utiliser la méthode de `startTransaction` sur la classe `Database` 
 Si vous passez une `Closure` et qu'une exception est levée dans la fonction de rappel de la transaction, la transaction sera automatiquement annulée. Si la `Closure` s'exécute correctement, la transaction sera automatiquement validée. Vous n'avez pas à vous soucier de l'annulation manuelle ou de la validation lorsque vous utilisez la méthode de transaction:
 
 ```php
+use Bow\Database\Database;
+
 Database::startTransaction(function () {
   Database::update('update users set votes = :votes', ['votes' => 1]);
 
@@ -253,9 +282,9 @@ Via le helper `db_transaction`:
 
 ```php
 db_transaction(function () {
-  Database::update('update users set votes = :votes', ['votes' => 1]);
+  update('update users set votes = :votes', ['votes' => 1]);
 
-  Database::delete('delete from posts');
+  delete('delete from posts');
 });
 ```
 
@@ -265,6 +294,8 @@ Vous pouvez aussi utiliser manuelement le système de transaction.
 Pour démarrer la transaction avec la méthode:
 
 ```php
+use Bow\Database\Database;
+
 Database::startTransaction();
 // Ou
 db_transaction();
@@ -273,6 +304,8 @@ db_transaction();
 Vous pouvez annuler la transaction avec la méthode:
 
 ```php
+use Bow\Database\Database;
+
 Database::rollback();
 // Ou
 db_rollback();
@@ -281,6 +314,8 @@ db_rollback();
 Vous pouvez valider la transaction avec la méthode:
 
 ```php
+use Bow\Database\Database;
+
 Database::commit();
 // Ou
 db_commit();
@@ -289,9 +324,72 @@ db_commit();
 Avec la méthode `inTransaction` vous pouvez vérifier si la base de donnée est en transaction:
 
 ```php
+use Bow\Database\Database;
+
 Database::inTransaction()
 // Ou
 db_transaction_started()
 ```
+
+## Query Builder (Contructeur de sql à la volée)
+
+Bow fourni un api lié à la construction de requête. Avec la méthode `table` permet de construire une requête `sql` en se basant sur la nom de la table et retour une instance de [`Bow\Database\QueryBuilder::class`](https://bowphp.github.io/api/master/Bow/Database/QueryBuilder.html).
+
+```php
+use Bow\Database\Database;
+
+$builder = Database::table('pets');
+// => Instance \Bow\Database\QueryBuilder::class
+```
+
+Sur l'instance de la `QueryBuilder` de Bow, il y a plusieurs méthodes qui vont vous permettre de construire une requête SQL.
+Par exemple la methode `toSql` qui permet d'affichez la requête construite.
+
+```php
+$builder->toSql();
+// select * from `pets`
+```
+
+## Recupéré les informations
+
+Pour recupérer les informations avec le builder, vous devez utiliser le méthode `get` qui retourne une collection, `first` qui lui retourne `null` ou un objet `stdclass` et `last` qui se comporte comme `first` sauf qu'il retourne plutôt le dernier élément du résultat de l'exécution de la requête.
+
+### Exemple avec `get`:
+
+```php
+$builder = Database::table('pets');
+
+$pets = $builder->get();
+
+if (count($pets) > 0) {
+  // Code ici
+} else {
+  // Vide
+}
+```
+
+> Notez que vous pouvez passer un tableau à `get` qui est une liste des colonnes de la projection comme ceci `$builder->get(['name'])`.
+
+### Exemple avec `first`:
+
+```php
+$pet = $builder->first();
+
+if (is_null($pet)) {
+  // Vide
+} else {
+  echo $pet->name;
+}
+```
+
+### Exemple avec `last`:
+
+```php
+$pet = $builder->last();
+```
+
+## Ajoutez des restrictions
+
+Avec le builder vous pouvez ajouter des restrictions sur le 
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

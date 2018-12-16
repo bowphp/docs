@@ -47,10 +47,10 @@ send($view, array $data, callable $callable)
 
 Exemple d'utilisation:
 
-Considérons la vue `notification-email.twig` qui contient les informations suivantes:
+Considérons la vue `notification-email.tintin.php` qui contient les informations suivantes:
 
 ```twig
-Bonjour {{ name }},
+Bonjour {{ $name }},
 
 Nous vous informons que vous compte viens d'être créditer de 100.000 F.
 
@@ -168,7 +168,11 @@ raw($to, $subject, $message, array $headers = [])
 ```php
 use Bow\Mail\Mail;
 
-Mail::raw('hello@exemple.com', "Hello, world", "C'est juste un email de teste");
+$email = "hello@exemple.com";
+$subject = "Hello, world";
+$message = "C'est juste un email de teste";
+
+Mail::raw($email, $subject, $message);
 ```
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

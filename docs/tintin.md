@@ -77,16 +77,16 @@ $loader = new Tintin\Loader\Filesystem([
 $tintin = new Tintin\Tintin($loader);
 ```
 
-| paramêtre | Description |
+| Paramètre | Description |
 |---------|-------------|
 | __php__ | Le chemin vers le dossier des vues de votre applications |
 | __extension__ | l'extension des fichiers de template. Par defaut, la valeur est `tintin.php` |
-| __cache__ | Le dossier de cache. C'est là que `tintin` va créé le cache. S'il n'est pas défini, `tintin` mettra en cache les fichiers compilés dans le répertoire temporaire de `php`.  |
+| __cache__ | Le dossier de cache. C'est là que `tintin` va créer le cache. S'il n'est pas défini, `tintin` mettra en cache les fichiers compilés dans le répertoire temporaire de `php`.  |
 
 ## Utilisation
 
 ```php
-// Configuration faite qu préalabe
+// Configuration faite au préalabe
 $tintin = new Tintin\Tintin($loader);
 
 $tintin->render('filename', [

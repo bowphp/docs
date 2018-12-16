@@ -34,7 +34,7 @@ Bow utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Do
 $ composer create-project --prefer-dist bowphp/app mon-projet
 ```
 
-> __NB__: Il est conseillé d'installer `composer` de façon globale sur votre machine. Pour ce faire référez-vous à la [documentation](https://getcomposer.org/download) d'installation de composer.
+> Nous vous conseillons d'installer `composer` de façon globale sur votre machine. Pour ce faire référez-vous à la [documentation](https://getcomposer.org/download) d'installation de composer.
 > Si vous n'êtes pas familier à `composer`, nous vous invitons à parcourir la documentation.
 
 <script id="asciicast-s8HpeoaUwnxEZ7OOPRxxXE52z" src="https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z.js" data-speed="2"  data-rows="20" async></script>
@@ -48,7 +48,7 @@ $ cd mon-projet
 $ php bow run:server --port=8000 --host=0.0.0.0
 ```
 
-Ouvrez votre navigateur et tapez `http://localhost:8000/`.
+Ouvrez votre navigateur et tapez `http://localhost:8000`.
 
 > `5000` est le port par défaut quand le port n'est pas spécifié avec la commande `php bow run:server`.
 
@@ -94,6 +94,7 @@ location / {
 }
 ```
 
+<<<<<<< Updated upstream
 > Vous pouvez continuez vers ces sections pour démarrer votre développement.
 
 - [Contrôleur](./controllers.md)
@@ -102,4 +103,6 @@ location / {
 - [Base de donnée](./database.md)
 - [Storage](./storage.md)
 
+=======
+>>>>>>> Stashed changes
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
