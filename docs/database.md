@@ -202,7 +202,7 @@ $pet = [
 ];
 
 $updated = Database::update(
-  'update `pets` set id = :id, name=:name, color=:color where id = :id',
+  'update `pets` set id = :id, name = :name, color = :color where id = :id',
   $pet
 );
 ```
@@ -217,7 +217,7 @@ $pet = [
 ];
 
 $updated = update(
-  'update `pets` set id=:id, name=:name, color=:color where id = :id',
+  'update `pets` set id = :id, name = :name, color = :color where id = :id',
   $pet
 );
 ```

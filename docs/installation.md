@@ -94,7 +94,6 @@ location / {
 }
 ```
 
-<<<<<<< Updated upstream
 > Vous pouvez continuez vers ces sections pour démarrer votre développement.
 
 - [Contrôleur](./controllers.md)
@@ -103,6 +102,4 @@ location / {
 - [Base de donnée](./database.md)
 - [Storage](./storage.md)
 
-=======
->>>>>>> Stashed changes
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
