@@ -4,30 +4,32 @@ title: Guide de Contribution
 ---
 
 - [Introduction](#introduction)
-- [Découpage du projet](#decoupage-du-projet)
-- [Comment faire les commits](#comment-faire-les-commits)
+- [Processus de contribution](#processus-de-contribution)
+- [Format des messages de commit](#format-des-messages-de-commit)
 
 ## Introduction
 
-Pour participer au projet il faut:
+Les contributions sont les bienvenues et seront entièrement créditées. Si vous voulez contribuer au projet, veuillez d'abord discuter
+des changements que vous voulez apporter via email, en créant une issue sur github, avec les responsables du dépôt avant
+de coder votre solution.
 
-- Fork le projet afin qu'il soit parmi les répertoires de votre compte github ex: `https://github.com/votre-compte/app`
-- Cloner le projet depuis votre compte github `git clone https://github.com/votre-crompte/app`
-- Créer un branche qui aura pour nom le résumé de votre modification `git branch branche-de-vos-traveaux`
-- Faire une publication sur votre dépot `git push origin branche-de-vos-traveaux`
-- Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
+Veuillez s'il vous plaît vous conformer au code de conduite lors de vos interactions sur ce projet.
 
-## Découpage du projet
+Nous acceptons les contributions via Pull Request sur [GitHub](https://github.com).
 
-Le projet Bow Framework est découper en sous projet. Alors chaque participant poura participer sur la section dans laquelle il se sens le mieux.
+## Processus de contribution
 
-Imaginons que vous êtes plus confortable avec la construction des Routing. Il suffit de vous concentrer sur `src/Routing`. Notez que les sections sont faites pour être indépendant et donc possède leur propre configuration du style `SectionConfiguration` et qui implément l'interface `Bow\Configuration\Configuration`.
+- Fork le projet
+- Créez une branche avec un nom descriptif de vos modifications
+- Utilisez des messages de commits descriptifs
+- Documentez vos modifications - Assurez vous que la documentation est mise à jour selon vos modifications
+- Un pull request par fonctionnalité - Si vous voulez faire plus d'une chose, faites plusieurs pull requests
+- Mettez à jour la version - Nous suivons le schema SemVer
 
-## Comment faire les commits
+## Format des messages de commit
 
-Les commits permettent de valider vos modifications. Mais dans le projet Bow, il y a une façon d'écrire le message de commit. Prenons un exemple, vous avez travailler sur la section `src/Session` et vous voulez valider vos modification.
-
-Pour le faire, regardons un peu la nomenclature d'un message de commit:
+Pour faciliter la maintenance du dépôt, Bow utilise un format pour les messages de commits. Veuillez vous référer à
+l'exemple suivant:
 
 ```sh
 git commit
@@ -41,18 +43,18 @@ Dans votre éditeur
 Description
 ```
 
-Dans notre exemple précédant nous allons donc faire:
+Si la modification affecte une section:
 
 ```sh
 git commit -m "[session] modification message"
 ```
 
-La modification peut aussi affecté un élément dans un section:
+Si la modification affecte un élément dans une section:
 
 ```sh
 git commit -m "[http:request] bug fix #40"
 ```
 
-Dans le cas ou votre modification affecte plusieur section ? Vous donnez un message et un description des modifications sous forme de liste à puce.
+Dans le cas où vos modifications affectent plusieurs sections, ajoutez une description avec votre commit sous forme de liste à puce.
 
 > Notez que les messages de commit doivent être en anglais.
