@@ -22,6 +22,7 @@ Nous acceptons les contributions via Pull Request sur [GitHub](https://github.co
 - Fork le projet
 - Créez une branche avec un nom descriptif de vos modifications
 - Utilisez des messages de commits descriptifs
+- Ajoutez des test unitaires
 - Documentez vos modifications - Assurez vous que la documentation est mise à jour selon vos modifications
 - Un pull request par fonctionnalité - Si vous voulez faire plus d'une chose, faites plusieurs pull requests
 - Mettez à jour la version - Nous suivons le schema SemVer
