@@ -1,6 +1,6 @@
 ---
-id: plugin
-title: Plugin
+id: package
+title: Package
 ---
 
 ## Introduction
@@ -39,8 +39,6 @@ php bow add:configuration EmailCheckerConfiguration
 Dans le dossier `app` nous allons ajouter un dossier `Package` dans ce dossier, nous allons encore ajouter le fichier `EmailCheckController.php`:
 
 ```php
-<?php
-
 namespace App\Package;
 
 use Bow\Http\Request;
@@ -77,8 +75,6 @@ class EmailCheckController
 Vous allons maintenant créer note configuration:
 
 ```php
-<?php
-
 namespace App\Configurations;
 
 use Bow\Configuration\Loader;
@@ -94,25 +90,22 @@ class EmailCheckController extends Configuration
    */
   public function create(Loader $config)
   {
-    $this->container->make('app')->get(
+    $this->container->make('app')->post(
       '/email/checker', \App\Package\EmailCheckController::class
     );
-  }
-
-  /**
-   * Permet de démarrer le package configuré
-   *
-   * @return void
-   */
-  public function run()
-  {
-    //
   }
 }
 ```
 
+Allons notre application Bow Framework avec la commande `php bow run:server`.
+
 ### Testons notre package
 
-Avec `curl` ou client
+Avec `curl` nous allons tester notre code:
 
-> Section en rédaction
+```bash
+curl -X POST -d "email=exemple@exemple.com" http://localhost:5000/email/checker
+# {"message": "Ok", "error": false}
+```
+
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

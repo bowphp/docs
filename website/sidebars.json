@@ -27,11 +27,9 @@
       "http-response",
       "http-session"
     ],
-    "API": [
-      "plugin",
-      "mixfile"
-    ],
-    "Package": [
+    "Misc": [
+      "package",
+      "frontend",
       "tintin",
       "policier"
     ]

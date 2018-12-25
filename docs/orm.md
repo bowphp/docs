@@ -58,7 +58,23 @@ $todo = App\Todo::find(1);
 ```
 
 ```php
-$todo = App\Todo::find(1);
+$todo = App\Todo::latest(1);
+```
+
+```php
+$todo = App\Todo::findAndDelete(1);
+```
+
+```php
+$todo = App\Todo::findOrFail(1);
+```
+
+```php
+$todo = App\Todo::create(1);
+```
+
+```php
+$todo = App\Todo::paginate(1);
 ```
 
 static:

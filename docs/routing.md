@@ -144,13 +144,15 @@ $app->get('/', function ()
 ```php
 $callables = [];
 
-$callables[] = function () {
+$callables[] = function ()
+{
   echo 'hello world';
 
   return true;
 };
 
-$callables[] = function () {
+$callables[] = function ()
+{
   echo 'Bien merci';
 };
 

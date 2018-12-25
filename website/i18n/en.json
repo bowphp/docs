@@ -26,6 +26,9 @@
       "database": {
         "title": "Démarrage"
       },
+      "frontend": {
+        "title": "Frontend"
+      },
       "installation": {
         "title": "Installation"
       },
@@ -41,14 +44,11 @@
       "migration": {
         "title": "Migration"
       },
-      "mixfile": {
-        "title": "Mixfile.js"
-      },
       "orm": {
         "title": "Barry ORM"
       },
-      "plugin": {
-        "title": "Plugin"
+      "package": {
+        "title": "Package"
       },
       "policier": {
         "title": "Policier"
@@ -96,8 +96,7 @@
       "Guide": "Guide",
       "Base de donnée": "Base de donnée",
       "Http": "Http",
-      "API": "API",
-      "Package": "Package"
+      "Misc": "Misc"
     }
   },
   "pages-strings": {

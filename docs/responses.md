@@ -30,7 +30,8 @@ Tous les routes et contrôleurs doivent retourner une réponse à renvoyer à l'
 Une réponse HTTP peut être une chaine de caractère.
 
 ```php
-$app->get('/', function () {
+$app->get('/', function () 
+{
   return "Hello, world";
 });
 ```
@@ -40,15 +41,18 @@ $app->get('/', function () {
 Une réponse HTTP peut être une instance de [`Bow\Support\Collection`](https://bowphp.github.io/api/master/Bow/Support/Collection.html).
 
 ```php
-$app->get('/array', function () {
+$app->get('/array', function () 
+{
   return [10, 2, 12, 'name' => 'Dakia'];
 });
 
-$app->get('/collection', function () {
+$app->get('/collection', function ()
+{
   return collect([10, 2, 12]);
 });
 
-$app->get('/object', function () {
+$app->get('/object', function ()
+{
   return (object) ['name' => 'Dakia'];
 });
 ```
@@ -60,7 +64,8 @@ La réponse HTTP peut être un `Model` ou une `Collection` de modèle, Bow la co
 ```php
 use App\User;
 
-$app->get('/', function () {
+$app->get('/', function ()
+{
   $model = User::where('id', 1)->first();
   
   return $model;
@@ -76,7 +81,8 @@ Il est très important d'ajouter les codes d'erreurs à votre réponse HTTP si v
 ```php
 use App\User;
 
-$app->get('/', function () {
+$app->get('/', function ()
+{
   $response = response();
   
   return $response->status(400);
