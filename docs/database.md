@@ -356,11 +356,11 @@ $builder->toSql();
 // select * from `users`
 ```
 
-## Recupéré les informations
+### Recupéré les informations
 
 Pour recupérer les informations avec le builder, vous devez utiliser le méthode `get` qui retourne une collection, `first` qui lui retourne `null` ou un objet `stdclass` et `last` qui se comporte comme `first` sauf qu'il retourne plutôt le dernier élément du résultat de l'exécution de la requête.
 
-### Exemple avec `get`:
+#### Exemple avec `get`:
 
 ```php
 $builder = Database::table('users');
@@ -374,7 +374,7 @@ foreach ($users as $user) {
 
 > Notez que vous pouvez passer un tableau à `get` qui est une liste des colonnes de la projection comme ceci `$builder->get(['name'])`.
 
-### Exemple avec `first`:
+#### Exemple avec `first`
 
 ```php
 $user = table('users')->first();
@@ -385,15 +385,15 @@ is_null($user)
 echo $user->name;
 ```
 
-### Exemple avec `last`:
+#### Exemple avec `last`
 
 ```php
 $user = $builder->last();
 ```
 
-## Ajoutez des restrictions
+### Ajoutez des restrictions
 
-### Restriction simple
+#### Restriction simple
 
 Avec le builder, vous pouvez ajouter des restrictions simple sur la construction de la requête SQL avec la méthode `where`.
 
@@ -403,7 +403,7 @@ $users = table('users')->where('id', 1)->get();
 $users = table('users')->where('id', '!=', 1)->get();
 ```
 
-### La clause OR
+#### La clause OR
 
 Vous pouvez enchainer la restriction en ajoutant un `or` dans votre requête. La méthode `orWhere` vous permet de faire cela:
 
@@ -462,9 +462,9 @@ La méthode `whereNotBetween` vérifie que la valeur d'une colonne se situe en d
 $users = table('users')->whereNotBetween('votes', [1, 100])->get();
 ```
 
-## Ordonner, Grouper, et limiter
+### Ordonner, Grouper, et limiter
 
-### orderBy
+#### orderBy
 
 La méthode `orderBy` vous permet de trier le résultat de la requête en fonction d'une colonne donnée. Le premier argument de la méthode `orderBy` devrait être la colonne que vous souhaitez trier, tandis que le second argument contrôle le sens du tri et peut être `asc` ou `desc`:
 
@@ -472,7 +472,7 @@ La méthode `orderBy` vous permet de trier le résultat de la requête en foncti
 $users = table('users')->orderBy('name', 'desc')->get();
 ```
 
-### groupBy et having
+#### groupBy et having
 
 Les méthodes `groupBy` et `having` peuvent être utilisées pour regrouper les résultats de la requête. La signature de la méthode `having` est similaire à celle de la méthode `where`:
 
@@ -483,7 +483,7 @@ $users = table('orders')
   ->get();
 ```
 
-### jump et take
+#### jump et take
 
 Pour limiter le nombre de résultats renvoyés par la requête ou pour ignorer un nombre donné de résultats dans la requête, vous pouvez utiliser les méthodes `jump` (pour ignorer) et `take` (pour renvoyer un nombre):
 
@@ -491,7 +491,7 @@ Pour limiter le nombre de résultats renvoyés par la requête ou pour ignorer u
 $users = DB::table('users')->jump(10)->take(5)->get();
 ```
 
-## Aggregates
+### Aggregates
 
 Le générateur de requêtes fournit également une variété de méthodes d'agrégation telles que `count`, `max`, `min`, `avg` et `sum`. Vous pouvez appeler n'importe laquelle de ces méthodes après avoir construit votre requête.
 
@@ -503,7 +503,7 @@ $price = table('orders')->max('price');
 $avg = table('orders')->avg('price');
 ```
 
-## Déterminer si des enregistrements existent
+#### Déterminer si des enregistrements existent
 
 Au lieu d'utiliser la méthode `count` pour déterminer s'il existe des enregistrements correspondant aux contraintes de votre requête, vous pouvez utiliser la méthode `exists`:
 
@@ -511,7 +511,7 @@ Au lieu d'utiliser la méthode `count` pour déterminer s'il existe des enregist
 $exists = table('users')->where('id', 1)->exists();
 ```
 
-## Spécification d'une clause de sélection
+### Spécification d'une clause de sélection
 
 Bien entendu, il se peut que vous ne souhaitiez pas toujours sélectionner toutes les colonnes d'une table de base de données. À l'aide de la méthode `select`, vous pouvez spécifier une clause select personnalisée pour la requête:
 
@@ -521,20 +521,42 @@ $price = table('orders')->select('price')->get();
 $price = table('orders')->select(['id', 'price'])->get();
 ```
 
-## Insertion d'information
+### Insertion d'information
 
 Le générateur de requêtes fournit également une méthode `insert` pour insérer des enregistrements dans la table de base de données. La méthode insert accepte un tableau de noms de colonnes et de valeurs:
 
 ```php
-table('pets')->insert(
+table('users')->insert(
   ['email' => 'exemple@gmail.com', 'age' => 27]
 );
 ```
 
 Vous pouvez même insérer plusieurs enregistrements dans la table avec un seul appel à insérer en transmettant un tableau de tableaux. Chaque tableau représente une ligne à insérer dans la table:
 
-## Mise à jour
+### Mise à jour
 
-Bien entendu, en plus d'insérer des enregistrements dans la base de données, le générateur de requêtes peut également mettre à jour des enregistrements existants à l'aide de la méthode update. La méthode update, comme la méthode insert, accepte un tableau de paires de colonnes et de valeurs contenant les colonnes à mettre à jour. Vous pouvez contraindre la requête de mise à jour à l'aide de clauses where:
+Bien entendu, en plus d'insérer des enregistrements dans la base de données, le générateur de requêtes peut également mettre à jour des enregistrements existants à l'aide de la méthode `update`. La méthode update, comme la méthode `insert`, accepte un tableau de paires de colonnes et de valeurs contenant les colonnes à mettre à jour. Vous pouvez contraindre la requête de mise à jour à l'aide de clauses `where`:
+
+```php
+table('users')->where('id', 1)->update(
+  ['email' => 'exemple@gmail.com', 'age' => 27]
+);
+```
+
+### Supprimer un enregistrement
+
+Le générateur de requêtes peut également être utilisé pour supprimer des enregistrements de la table via la méthode `delete`. Vous pouvez contraindre des instructions delete en ajoutant des clauses where avant d'appeler la méthode `delete`:
+
+```php
+table('users')->delete();
+
+table('users')->where('age', '>', 27)->delete();
+```
+
+Si vous souhaitez vider la table entière, ce qui supprimera toutes les lignes et réinitialisera l'ID d'auto-incrémentation à zéro, vous pouvez utiliser la méthode `truncate`:
+
+```php
+table('pets')->truncate();
+```
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
