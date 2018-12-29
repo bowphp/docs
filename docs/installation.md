@@ -94,7 +94,7 @@ location / {
 }
 ```
 
-> Vous pouvez continuez vers ces sections pour démarrer votre développement.
+Vous pouvez continuez vers ces sections pour démarrer votre développement.
 
 - [Contrôleur](./controllers.md)
 - [Routing](./routing.md)
