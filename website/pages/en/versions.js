@@ -35,10 +35,10 @@ function Versions() {
               <tr>
                 <th>{latestVersion}</th>
                 <td>
-                  <a href="">Documentation</a>
+                  <a href={'docs/' + latestVersion}>Documentation</a>
                 </td>
                 <td>
-                  <a href="">Release Notes</a>
+                  <a href={"docs/" + latestVersion}>Release Notes</a>
                 </td>
               </tr>
             </tbody>

@@ -24,7 +24,7 @@
         "title": "CSRF Protection"
       },
       "database": {
-        "title": "Démarrage"
+        "title": "database"
       },
       "frontend": {
         "title": "Frontend"
@@ -90,7 +90,7 @@
     "links": {
       "DOCUMENTATION": "DOCUMENTATION",
       "API": "API",
-      "USER": "USER",
+      "UTILISATEUR": "UTILISATEUR",
       "BLOG": "BLOG",
       "GITHUB": "GITHUB"
     },

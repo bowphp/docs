@@ -82,7 +82,7 @@ const siteConfig = {
   headerLinks: [
     {doc: 'installation', label: 'DOCUMENTATION'},
     {href: 'https://bowphp.github.io/api/master', label: 'API'},
-    {page: 'users', label: 'USER'},
+    {page: 'users', label: 'UTILISATEUR'},
     {blog: true, label: 'BLOG'},
     {href: 'https://github.com/bowphp', label: 'GITHUB'},
   ],
