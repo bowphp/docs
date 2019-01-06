@@ -40,8 +40,6 @@ Alors, le middleware que nous venons d'ajouter, vérifira l'adresse IP du client
 Mais d'abort, regardons le contenu du fichier `IpMiddleware`. C'est la méthode `process` qui permet de lancer le middleware et la callable permet de lancer le prochaine middleware.
 
 ```php
-<?php
-
 namespace App\Middleware;
 
 use Bow\Http\Request;

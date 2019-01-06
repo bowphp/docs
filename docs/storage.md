@@ -186,7 +186,7 @@ if ($mount->isDirectory('nom_du_dossier')) {
 ```php
 $mount = mount('public');
 
-$path = $mount->resolvePath('app.txt');
+$path = $mount->path('app.txt');
 
 echo $path;
 // => /chemin/absolu/vers/le/fichier/app.txt

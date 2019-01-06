@@ -75,7 +75,7 @@ class EmailCheckController
 Vous allons maintenant créer note configuration:
 
 ```php
-namespace App\Configurations;
+namespace App\Configuration;
 
 use Bow\Configuration\Loader;
 use Bow\Configuration\Configuration;

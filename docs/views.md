@@ -24,14 +24,14 @@ Spécifiez le nom du template à utiliser avec option `engine` de la configurati
 
 > Notez que si vous définissez `php`, le rendu des vues se fera sans moteur de template
 
-Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entré `extension`. Vous verez également que les vues sont stockées dans le répertoire `components/views` par defaut.
+Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entré `extension`. Vous verez également que les vues sont stockées dans le répertoire `frontend/views` par defaut.
 
 ## Création de vue
 
 Une simple vue peut ressembler à ceci
 
 ```twig
-<!-- View stored in components/views/greeting.tintin.php -->
+<!-- View stored in frontend/views/greeting.tintin.php -->
 <html>
   <body>
     <h1>Hello, {{ $name }}</h1>
@@ -39,7 +39,7 @@ Une simple vue peut ressembler à ceci
 </html>
 ```
 
-Apres avoir modifier et sauvegarde votre vue dans `components/views/greeting.tintin.php`. Vous pouvez maintenant l'envoyer au utilisateur avec le helper view comme ceci:
+Apres avoir modifier et sauvegarde votre vue dans `frontend/views/greeting.tintin.php`. Vous pouvez maintenant l'envoyer au utilisateur avec le helper view comme ceci:
 
 ```php
 $app->get('/', function() {
@@ -85,7 +85,7 @@ echo View::parse(
 Avec la vue suivante:
 
 ```twig
-<!-- View stored in components/views/greeting.tintin.php -->
+<!-- View stored in frontend/views/greeting.tintin.php -->
 <html>
  <body>
   <h1>Hello, {{ $name }}</h1>
@@ -96,9 +96,9 @@ Avec la vue suivante:
 Exemple dans un controlleur:
 
 ```php
-namespace App\Controllers;
+namespace App\Controller;
 
-use App\Controllers\Controller;
+use App\Controller\Controller;
 
 class HomeController extends Controller
 {
@@ -141,7 +141,7 @@ $names = [
 ```
 
 ```twig
-{# components/views/greeting.twig #}
+{# frontend/views/greeting.twig #}
 <html>
   <body>
     <h1>Hello, User</h1>

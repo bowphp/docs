@@ -26,8 +26,6 @@ php bow add:migration create_todos_table --create=todos
 Dans le fichier créé:
 
 ```php
-<?php
-
 use Bow\Database\Migration\Schema;
 use Bow\Database\Migration\Migration;
 use Bow\Database\Migration\TablePrinter as Printer;

@@ -67,9 +67,9 @@ $app->get('/users/:id', 'UserController::show');
 Vous pouvez toujours taper la requête [Bow\Http\Request](https://bowphp.github.io/api/master/Bow/Http/Request.html) et accéder à l'id de votre paramètre de route en définissant votre méthode de contrôleur comme suit:
 
 ```php
-namespace App\Controllers;
+namespace App\Controller;
 
-use App\Controllers\Controller;
+use App\Controller\Controller;
 use App\User;
 use Bow\Http\Request;
 

@@ -17,6 +17,7 @@
     ],
     "Base de donnée": [
       "database",
+      "query-build",
       "orm",
       "migration",
       "seeding"

@@ -30,7 +30,7 @@ Le routing vous permet de maper une URL sur un controlleur ou une action particu
 Le système de routing de Bow est greffé directement sur l'instance de l'application,
 donc sur la variable `$app` qui est une variable super global.
 
-Les routes de l'application sont dans le fichier `app.php` du dossier `routes`
+Les routes de l'application sont dans le fichier `app.php` du dossier `routing`
 de votre application.
 
 <script id="asciicast-eFxk7E2J7ESjz1YYUIhgFSZq1" src="https://asciinema.org/a/eFxk7E2J7ESjz1YYUIhgFSZq1.js" data-speed="2" data-rows="20" async></script>

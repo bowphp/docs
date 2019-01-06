@@ -24,14 +24,12 @@ Pour ajouter un modêle il faut utiliser la ligne de commande `php bow` avec la 
 php bow add:model Todo
 ```
 
-Après création du modele, un fichier du meme nom sera créer, dans note cas `Todo.php`, à la racine du dossier `app`.
+Après création du modele, un fichier du meme nom sera créer, dans note cas `Todo.php`, à la racine du dossier `app/Model`.
 
-Voici un apercu du fichier:
+Voici un aperçu du fichier:
 
 ```php
-<?php
-
-namespace App;
+namespace App\Model;
 
 use Bow\Database\Barry\Model;
 
@@ -50,46 +48,31 @@ Ici Chaque model suit le parten Active Recorde.
 Pour manipuler les données de la base de donnée
 
 ```php
-$todos = App\Todo::all();
+$todos = App\Model\Todo::all();
 ```
 
 ```php
-$todo = App\Todo::find(1);
+$todo = App\Model\Todo::find(1);
 ```
 
 ```php
-$todo = App\Todo::latest(1);
+$todo = App\Model\Todo::latest(1);
 ```
 
 ```php
-$todo = App\Todo::findAndDelete(1);
+$todo = App\Model\Todo::findAndDelete(1);
 ```
 
 ```php
-$todo = App\Todo::findOrFail(1);
+$todo = App\Model\Todo::findOrFail(1);
 ```
 
 ```php
-$todo = App\Todo::create(1);
+$todo = App\Model\Todo::create(1);
 ```
 
 ```php
-$todo = App\Todo::paginate(1);
+$todo = App\Model\Todo::paginate(1);
 ```
 
-static:
-find, all, first, latest, describe, findAndDelete, findOrFail, create, paginate
-
-Event:
-deleted, created, updated
-
-method:
-getKey, save, touch, delete
-
-setter/getter:
-setAttributes, setAttribute, setConnexion, getAttributes, getAttribute, toArray
-
-builder:
-appel static sur le builder
-ex: Todo::where()->where()->get();
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

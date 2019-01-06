@@ -53,6 +53,9 @@
       "policier": {
         "title": "Policier"
       },
+      "query-build": {
+        "title": "SQL Builder"
+      },
       "http-request": {
         "title": "HTTP Request"
       },
