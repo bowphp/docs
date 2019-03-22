@@ -30,7 +30,7 @@ La seule condition stricte est qu'un middleware doit renvoyer une value autre de
 Pour ajouter un middleware il faut utiliser la commande `add:middleware` de `php bow`:
 
 ```sh
-php bow add:middlware IpMiddleware
+php bow add:middleware IpMiddleware
 ```
 
 Notez que tout les middlewares sont sauvegardés par défaut dans le fichier `app/Middleware`.
