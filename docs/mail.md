@@ -14,7 +14,7 @@ title: Mail
 
 ## Introduction
 
-Envoyer des emails dans une application est monnaie courante. Bow intègre un système d'envoi d'email facile à utiliser. Vous pouvez utiliser ce système à travers plusieurs pilotes communement appelés drivers:
+Envoyer des emails dans une application est monnaie courante. Bow Framework intègre un système d'envoi d'email facile à utiliser. Vous pouvez utiliser ce système à travers plusieurs pilotes communement appelés drivers:
 
 - **SMTP** - Envoie direct via un serveur SMTP
 - **MAIL** - Le système utilisera le fonction `email` natif de PHP
@@ -47,7 +47,7 @@ send($view, array $data, callable $callable)
 
 Exemple d'utilisation:
 
-Considérons la vue `notification-email.tintin.php` qui contient les informations suivantes:
+Considérons la vue `email-view.tintin.php` qui contient les informations suivantes:
 
 ```twig
 Bonjour {{ $name }},
@@ -65,87 +65,87 @@ $data = [
   'name' => 'Franck',
 ];
 
-Mail::send('notification-email', $data, function (Message $message) {
+Mail::send('email-view', $data, function (Message $message) {
   $message->to('info@exemple.com');
   $message->subject("Paiement !");
   $messate->from("Bow <info@exemple.com>");
 });
 ```
 
-#### Manipulation de l'instance Message
+### API de Message
 
-Bow va donc passer une instance de `Bow\Mail\Message` qui vous permettra d'ajouter des informations supplémentaires à votre email, notamment le destinataire.
+Bow Framework va donc passer une instance de `Bow\Mail\Message` qui vous permettra d'ajouter des informations supplémentaires à votre email, notamment le destinataire.
 
-`addHeader`, ajout des entêtes personnalisés
+##### `addHeader`, ajout des entêtes personnalisés
 
 ```php
-addHeader(string $key, string $value)
+$message->addHeader(string $key, string $value)
 ```
 
-`to`, définit le destinataire
+##### `to`, définit le destinataire
 
 ```php
-to(string $to, string $name = null)
+$message->to(string $to, string $name = null)
 ```
 
-`toList`, Ajout plusieurs destinataires
+##### `toList`, Ajout plusieurs destinataires
 
 ```php
-toList(array $list_desc)
+$message->toList(array $list_desc)
 ```
 
-`addFile`, Permet d'ajouter une pièce jointe
+##### `addFile`, Permet d'ajouter une pièce jointe
 
 ```php
-addFile(string $file)
+$message->addFile(string $file)
 ```
 
-`subject`, Définit l'objet du mail
+##### `subject`, Définit l'objet du mail
 
 ```php
-subject(string $subject)
+$message->subject(string $subject)
 ```
 
-`from`, définit l'expéditeur du mail
+##### `from`, définit l'expéditeur du mail
 
 ```php
-from(string $from, string $name = null)
+$message->from(string $from, string $name = null)
 ```
 
-`toHtml`, définir le type de contenu en text/html
+##### `toHtml`, définir le type de contenu en text/html
 
 ```php
-html($html)
+$message->html($html)
 ```
 
-`toText`, Définit le corps du message
+##### `toText`, Définit le corps du message
 
 ```php
-text(string $text)
+$message->text(string $text)
 ```
 
-`addBcc`, ajout l'entête Carbon Copy
+##### `addBcc`, ajout l'entête Carbon Copy
 
 ```php
-addBcc(string $mail, string $name = null)
+$message->addBcc(string $mail, string $name = null)
 ```
 
-`addCc`, ajout l'entête Carbon Copy
+##### `addCc`, ajout l'entête Carbon Copy
 
 ```php
-addCc(string $mail, string $name = null)
+$message->addCc(string $mail, string $name = null)
 ```
 
-`addReplyTo`, ajout l'entête Reply-To
+##### `addReplyTo`, ajout l'entête Reply-To
 
 ```php
-addReplyTo($mail, $name = null)
+$message->addReplyTo($mail, $name = null)
 ```
 
-`addReturnPath`, ajout l'entête Return-Path
+##### `addReturnPath`, ajout l'entête Return-Path
 
 ```php
-addReturnPath($mail, $name = null)
+$message->addReturnPath($mail, $name = null)
 ```
 
 ### La méthode raw

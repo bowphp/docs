@@ -75,7 +75,7 @@ prennent en compte les instructions du fichier `.htaccess`.
 
 Si le fichier `.htaccess` par défaut dans Bow ne fonctionne pas avec votre installation d'Apache, essayez cette alternative:
 
-```bash
+```c
 Options +FollowSymLinks
 RewriteEngine On
 
@@ -88,15 +88,15 @@ RewriteRule ^ index.php [L]
 
 Si vous utilisez Nginx, les directives suivantes dans votre configuration redirigerons les requêtes vers le front contrôleur:
 
-```sh
+```nginx
 location / {
-    try_files $uri $uri/ /index.php?$query_string;
+  try_files $uri $uri/ /index.php?$query_string;
 }
 ```
 
 Vous pouvez continuez vers ces sections pour démarrer votre développement.
 
-- [Contrôleur](./controllers.md)
+- [Contrôleur](./controller.md)
 - [Routing](./routing.md)
 - [Session](./session.md)
 - [Base de donnée](./database.md)

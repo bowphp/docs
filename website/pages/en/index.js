@@ -80,11 +80,12 @@ class HomeSplash extends React.Component {
         <Logo img_src={imgUrl("bow.jpg")} />
         <div className="inner">
           <ProjectTitle />
-          <PromoSection>
-            <Button href="/api/master">API</Button>
-            <Button href={docUrl('installation', language)}>Documentation</Button>
-            <Button href="https://github.com/bowphp">Github</Button>
-          </PromoSection>
+          <script 
+            id="asciicast-s8HpeoaUwnxEZ7OOPRxxXE52z" 
+            src="https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z.js" 
+            data-speed="2" 
+            data-rows="25"
+            async/>
         </div>
       </SplashContainer>
     );
@@ -104,25 +105,25 @@ const Features = () => (
   <Block layout="fourColumn" background="#b6b6b6">
     {[
       {
-        content: 'Simple, Rapide et Robuste. <br/>Concentrez-vous sur votre projet.',
+        content: 'Simple, Rapide et Robuste. Concentrez-vous sur votre projet.',
         imageAlign: 'top',
         image: imgUrl("idea.svg"),
         title: 'S2R',
       },
       {
-        content: "Un ORM extrêmement simple qui se nomme `Barry`.",
+        content: "Un ORM extrêmement simple qui se nomme Barry.",
         imageAlign: 'top',
         image: imgUrl("orm.svg"),
         title: 'ORM',
       },
       {
-        content: 'Structure personnalisable à l\'infini. <br/>Support de plugin',
+        content: 'Structure personnalisable à l\'infini. Support de plugin',
         imageAlign: 'top',
         title: 'Extensible',
         image: imgUrl("compose.svg"),
       },
       {
-        content: 'Par défaut Bow est preset <br/>Reactjs et Vuejs.',
+        content: 'Par défaut Bow est preset Reactjs et Vuejs.',
         imageAlign: 'top',
         image: imgUrl("layers.svg"),
         title: 'Reactjs / Vuejs',
@@ -143,14 +144,25 @@ const Showcase = props => {
   ));
 
   return (
-    <div className="productShowcaseSection paddingBottom" style={{backgroundColor: "b6b6b6"}}>
-      <h2>Qui utilise Bow ?</h2>
-      <p>Ce projet est utilisé par toutes ces personnes.</p>
-      <div className="logos">{showcase}</div>
-      <div className="more-users">
-        <a className="button" href={pageUrl('users.html', props.language)}>
-          Afficher ceux qui utilisent Bow
-        </a>
+    <div>
+      <div className="productShowcaseSection paddingBottom">
+        <h2>BOW FRAMEWORK IN ACTION</h2>
+        <script
+          id="asciicast-zxbid2giZdnaJjOhOkALKBC8G"
+          src="https://asciinema.org/a/zxbid2giZdnaJjOhOkALKBC8G.js"
+          data-rows="25"
+          data-speed="2"
+          async/>
+      </div>
+      <div className="productShowcaseSection paddingBottom">
+        <h2>QUI UTILISE BOW FRAMEWORK?</h2>
+        <p>Ce projet est utilisé par toutes ces personnes.</p>
+        <div className="logos">{showcase}</div>
+        <div className="more-users">
+          <a className="button" href={pageUrl('users.html', props.language)}>
+            Afficher ceux qui utilisent Bow
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -168,8 +180,8 @@ const Partners = props => {
   ));
 
   return (
-    <div className="productShowcaseSection paddingBottom" style={{backgroundColor: "b6b6b6"}}>
-      <h2>Supports</h2>
+    <div className="productShowcaseSection paddingBottom">
+      <h2>SUPPORTS</h2>
       <p>Ce projet est support par ces communautés.</p>
       <div className="logos">{showcase}</div>
     </div>
@@ -183,33 +195,14 @@ class Index extends React.Component {
     return (
       <div>
         <HomeSplash language={language} />
-        <div className="mainContainer" style={{textAlign: "center", fontSize: "25px", backgroundColor: "#000", color: "#fff"}}>
-          <strong>Bow Framework est apprécié par 150+ Développeur(se)s</strong>
+        <div className="mainContainer" style={{textAlign: "center", fontSize: "25px"}}>
+          <strong>Bow Framework est apprécié par +180 Développeur(se)s</strong>
         </div>
         <div className="mainContainer" style={{backgroundColor: "#f0f0f0"}}>
           <Features />
         </div>
         <div className="mainContainer">
           <Showcase language={language} />
-        </div>
-        <div className="mainContainer" style={{textAlign: "center", fontSize: "13px", backgroundColor: "#eee"}}>
-          <SplashContainer>
-            <div className="inner">
-              <h4 className="projectTitle" style={{fontSize: "30px"}}>
-                Franck DAKIA
-                <small>Développeur Full Stack</small>
-              </h4>
-              <PromoSection>
-                <MarkdownBlock>
-                  **Franck DAKIA** est un Développeur Full Stack basé actuellement en Afrique, Côte d'ivoire, Abidjan. Passionné de code, et développement collaboratif, Speaker, Formateur et Membre de plusieurs communautés de développeurs.
-                </MarkdownBlock>
-                <MarkdownBlock>
-                  **SVP s'il y a un bogue sur le projet veuillez me contacter par email ou laissez moi un message sur le [slack](https://bowphp.slack.com).**
-                  Contact: [dakiafranck@gmail.com](mailto:dakiafranck@gmail.com) - [@franck_dakia](https://twitter.com/franck_dakia)
-                </MarkdownBlock>
-              </PromoSection>
-            </div>
-          </SplashContainer>
         </div>
       </div>
     );

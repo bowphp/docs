@@ -75,7 +75,7 @@ public function process(Request $request, callable $next)
 
 ## Enregistrement de middleware
 
-Généralement l'enregistrement ce faire dans le fichier `app/Kernel/Loader.php` avec une clé qui l'identifie.
+Généralement l'enregistrement ce faire dans le fichier `app/Kernel.php` avec une clé qui l'identifie.
 
 ```php
 public function middlewares()

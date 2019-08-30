@@ -62,7 +62,6 @@ class Footer extends React.Component {
               Twitter
             </a>
             <a href="https://bowphp.slack.com/">Slack</a>
-            <a href={`${this.props.config.baseUrl}blog`}>Blog</a>
             <a href="https://github.com/bowphp">GitHub</a>
           </div>
         </section>

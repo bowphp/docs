@@ -1,13 +1,16 @@
 {
   "docs": {
-    "Démarrage": [
+    "DÉMARRAGE": [
       "installation",
       "configuration",
       "structure",
       "contribution"
     ],
-    "Guide": [
-      "tutorial",
+
+    "TUTORIEL": [
+      "tutorial"
+    ],
+    "GUIDE": [
       "routing",
       "controleur",
       "middleware",
@@ -16,20 +19,20 @@
       "mail",
       "i18n"
     ],
-    "Base de donnée": [
+    "BASE DE DONNÉE": [
       "database",
       "querybuild",
       "orm",
       "migration",
       "seeding"
     ],
-    "Http": [
+    "HTTP": [
       "http-request",
       "csrf-protection",
       "http-response",
       "http-session"
     ],
-    "Misc": [
+    "MISC": [
       "package",
       "frontend",
       "policier"

@@ -43,7 +43,7 @@ class Users extends React.Component {
       <div className="mainContainer">
           <div className="showcaseSection">
             <div className="prose">
-              <h1>Qui utilise cela?</h1>
+              <h1>QUI UTILISE BOW FRAMEWORK?</h1>
               <p>Ce projet est utilisé par beaucoup de gens</p>
             </div>
           </div>

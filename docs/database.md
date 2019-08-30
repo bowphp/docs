@@ -36,10 +36,11 @@ La configuration de la base donnée de votre application se localise dans le fih
 
 Après avoir créé une nouvelle base de données SQLite à l'aide d'une commande tel que `touch var/database.sqlite`, vous pouvez facilement configurer vos variables d'environnement (dans le fichier `.env.json`) pour qu'elles pointent vers cette base de données nouvellement créée à l'aide du chemin absolu de la base de données:
 
-```text
-"DB_DEFAULT": "seconds",
-...
-"SQLITE_DATABASE": "/absolute/path/to/database.sqlite",
+```json
+{
+  "DB_DEFAULT": "mysql",
+  "SQLITE_DATABASE": "/absolute/path/to/database.sqlite",
+}
 ```
 
 ## Connexion à plusieur Base de donnée
@@ -49,13 +50,13 @@ Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque conne
 ```php
 use Bow\Database\Database;
 
-$users = Database::connection('seconds')->select(...);
+$users = Database::connection('mysql')->select(...);
 ```
 
 Ou via le helper `db`:
 
 ```php
-$users = db('seconds')->select(...);
+$users = db('mysql')->select(...);
 ```
 
 Une fois la configuration changé, elle est directement appliquer sur la connexion des modèles. [Cliquer ici](./orm.md) pour plus d'information sur les models.
@@ -330,9 +331,9 @@ Avec la méthode `inTransaction` vous pouvez vérifier si la base de donnée est
 ```php
 use Bow\Database\Database;
 
-Database::inTransaction()
+Database::inTransaction();
 // Ou
-db_transaction_started()
+db_transaction_started();
 ```
 
 ## Les jointures

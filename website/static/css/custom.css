@@ -1,4 +1,10 @@
 /* your custom css */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 16px;
+}
+
 @font-face{
   font-family: 'Fira Code';
   src: url('eot/FiraCode-Light.eot');
@@ -39,7 +45,7 @@
        url('woff2/FiraCode-Bold.woff2') format('woff2'),
        url('woff/FiraCode-Bold.woff') format('woff'),
        url('ttf/FiraCode-Bold.ttf') format('truetype');
-  font-weight: 700;
+  font-weight: 900;
   font-style: normal;
 }
 
@@ -54,6 +60,7 @@ h2 {
   margin: 0;
   position: relative;
   z-index: 9999;
+  color: #181818;
 }
 
 table td:first-child > code {
@@ -73,8 +80,13 @@ table td:first-child > code {
 }
 
 .navigationSlider .slidingNav ul li a {
-  color: #fff;
+  color: #181818;
   text-decoration: none
+}
+
+.navigationSlider .slidingNav ul li.siteNavItemActive a, .navigationSlider .slidingNav ul li.siteNavGroupActive a {
+  color: #181818;
+  font-weight: bold;
 }
 
 .headerTitleWithLogo {
@@ -82,12 +94,12 @@ table td:first-child > code {
 }
 
 .headerTitleWithLogo:hover {
-  color: #fff;
+  color: #181818;
   text-decoration: none
 }
 
 .headerWrapper a:hover {
-  color: #fff;
+  color: #181818;
   background-color: transparent;
   text-decoration: none;
 }
@@ -98,51 +110,27 @@ table td:first-child > code {
   font-size: 15px;
 }
 
-pre code {
-  padding: 0px;
-  font-size: 12px;
-  background: rgba(238, 238, 238, 0.35);
-  border-radius: 3px;
-  padding: 10px;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
-}
-
 tt, code, pre {
   position: relative;
-  text-shadow: 0 1px white;
   font-family: Monaco, "Fira Code", Consolas, Monaco, "Andale Mono", monospace;
   font-size: 13px;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  font-size: 16px;
 }
 
 blockquote {
   background: rgba(238, 238, 238, 0.35);
   border-radius: 3px;
-  padding: 10px;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
+  padding: 5px;
 }
 
 a {
   color: #d80027;
 }
 
-@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
+.button {
+  color: #181818;
+  border-color: #181818;
 }
 
-@media only screen and (min-width: 1024px) {
-}
-
-@media only screen and (max-width: 1023px) {
-}
-
-@media only screen and (min-width: 1400px) {
-}
-
-@media only screen and (min-width: 1500px) {
+.projectTitle {
+  color: #181818;
 }

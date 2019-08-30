@@ -77,29 +77,35 @@
       "structure": {
         "title": "Structure"
       },
+      "views": {
+        "title": "Vues"
+      },
       "tintin": {
         "title": "Tintin Template"
       },
-      "views": {
-        "title": "Vues"
+      "tutorial": {
+        "title": "Tutoriel"
+      },
+      "http-upload": {
+        "title": "Upload File"
       },
       "what-new": {
         "title": "what-new"
       }
     },
     "links": {
-      "DOCUMENTATION": "DOCUMENTATION",
-      "API": "API",
-      "UTILISATEUR": "UTILISATEUR",
-      "BLOG": "BLOG",
-      "GITHUB": "GITHUB"
+      "Documentation": "Documentation",
+      "Utilisateur": "Utilisateur",
+      "Github": "Github",
+      "API": "API"
     },
     "categories": {
-      "Démarrage": "Démarrage",
-      "Guide": "Guide",
-      "Base de donnée": "Base de donnée",
-      "Http": "Http",
-      "Misc": "Misc"
+      "DÉMARRAGE": "DÉMARRAGE",
+      "TUTORIEL": "TUTORIEL",
+      "GUIDE": "GUIDE",
+      "BASE DE DONNÉE": "BASE DE DONNÉE",
+      "HTTP": "HTTP",
+      "MISC": "MISC"
     }
   },
   "pages-strings": {

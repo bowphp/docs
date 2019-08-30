@@ -94,7 +94,7 @@ Via le helper `trans`
 ```php
 $locale = trans()->getLocale();
 
-if ($trans->isLocale('en')) {
+if (trans()->isLocale('en')) {
  //
 }
 ```
@@ -120,23 +120,23 @@ echo t('messages.welcome', ['name' => 'Galy']);
 La pluralisation est un problème complexe, car différentes langues ont une variété de règles complexes pour la pluralisation. En utilisant un caractère "pipe" (`|`), vous pouvez distinguer les formes singulière et plurielle d'une chaîne:
 
 ```php
-'names' => 'C\'est un utilisateur|Ce sont des utilisateurs',
+"names" => "C'est un utilisateur|Ce sont des utilisateurs",
 ```
 
 Après avoir défini une chaîne de traduction comportant des options de pluralisation, vous pouvez utiliser la fonction `t` ou `trans`. Dans cet exemple, puisque le nombre est supérieur à un, la forme au pluriel de la chaîne de traduction est renvoyée:
 
 ```php
-echo t('messages.names', count($names) > 1);
+echo t("messages.names", count($names) > 1);
 ```
 
 Avec les données remplacer
 
 ```php
-'names' => 'Bonjour {name}|Bonjour à tous',
+"names" => "Bonjour {name}|Bonjour à tous",
 ```
 
 ```php
-echo t('messages.names', ['name' => 'Newt'], count($names) == 1);
+echo t("messages.names", ["name" => "Newt"], count($names) == 1);
 // => Bonjour Mewt
 ```
 

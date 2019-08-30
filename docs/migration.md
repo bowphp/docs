@@ -29,10 +29,10 @@ Dans le fichier créé:
 use Bow\Database\Migration\Migration;
 use Bow\Database\Migration\SQLGenerator;
 
-class CreatTodosTable extends Migration
+class Version20170407084225CreateTodosTable extends Migration
 {
   /**
-   * create Table
+   * Create Table
    */
   public function up()
   {
