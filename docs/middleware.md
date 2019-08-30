@@ -108,6 +108,7 @@ $app->middleware(['ip', 'autre']);
 // ou
 $app->get('/', 'HomeController::index')->middleware('ip');
 $app->get('/', 'HomeController::index')->middleware(['ip', 'autre']);
+
 // ou
 $app->route([
   'path' => '/',

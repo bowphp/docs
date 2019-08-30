@@ -14,7 +14,7 @@ title: Frontend
 
 ## Introduction
 
-Bow est preset (Préconfiguré) avec un environement Frontend, notamment avec [Reacjs](https://reactjs.org), [Vuejs](https://vuejs.org) et [Sass](https://sass-lang.com) base sur le package `laravel-mix`. Ce qui permet d'accélérer le développement d'application web.
+Bow est preset (Préconfiguré) avec un environement Frontend, notamment avec [Reacjs](https://reactjs.org), [Vuejs](https://vuejs.org) et [Sass](https://sass-lang.com) base sur le package [laravel-mix](https://laravel-mix.com). Ce qui permet d'accélérer le développement d'application web.
 
 ## Utilisation
 
@@ -30,7 +30,7 @@ npm run dev
 
 ### Compilation et minification les fichiers sources
 
-Compile les sources définient dans webpack.mix.js et optimise les fichiers.
+Compile les sources définient dans `webpack.mix.js` et optimise les fichiers.
 
 ```bash
 npm run prod

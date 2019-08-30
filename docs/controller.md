@@ -68,7 +68,7 @@ Voici un exemple de classe de contrôleur de base. Notez que le contrôleur hér
 namespace App\Controller;
 
 use App\Controller\Controller;
-use App\User;
+use App\Model\User;
 
 class UserController extends Controller
 {
@@ -85,7 +85,7 @@ class UserController extends Controller
 }
 ```
 
-Vous pouvez définir une route vers cette action de contrôleur comme suit:
+Vous pouvez définir une route dans le fichier `routing/app.php` vers cette action de contrôleur comme suit:
 
 ```php
 $app->get('user/:id', 'UserController::show');
@@ -115,6 +115,8 @@ Vous pouvez générer un contrôleur en utilisant la commande `add:controller` d
 php bow add:controller Photo/AdminController
 ```
 
+> Remarquez bien le nom du dossier c'est en camel case. Le framework crééra le namespace approprié pour la classe `AdminController` et qui sera `namepsace App\Controller\Photo;`. Vous trouverez le controller dans un dossier `app/Controller/Photo/AdminController`.
+
 Plus d'information sur le [routing](./routing.md).
 
 ### Contrôleur et Middleware
@@ -129,7 +131,7 @@ $app->get('profile', 'UserController::show')->middleware('auth');
 
 ## Contrôleur REST
 
-Les contrôleur REST sont un moyen simple pour mettre en place un API Rest facilement. Cette approche, vous permet de vous concentrez sur votre logique et laisser le Framework géré le routage pour vous.
+Les contrôleur REST sont un moyen simple pour mettre en place un API Rest. Cette approche, vous permet de vous concentrez sur votre logique et laisser le Framework géré le routage pour vous.
 
 ### Définir un contrôleur rest
 
@@ -139,12 +141,13 @@ Pour définir un nouveau contrôleur Rest, nous devez utiliser le lancer de tach
 php bow generate:resource PetController
 ```
 
-Un contrôleur nommé `PetController` sera donc créé. Ce qui fait ça particularité c'est qu'il y a déjà des méthodes prédéfinir en lui et ces méthodes doivent rester telles quelles sont.
+Un contrôleur nommé `PetController` sera donc créé. Ce qui fait ça particularité c'est qu'il y a déjà des méthodes prédéfinir en lui et ces méthodes doivent rester telles quelles.
 
 ```php
 namespace App\Controller;
 
 use App\Controller\Controller;
+use App\Model\Pet;
 
 class PetController extends Controller
 {
@@ -226,7 +229,7 @@ class PetController extends Controller
 
 ### Utilisons notre contrôleur REST
 
-Pour utiliser le contrôleur Rest vous avez juste à utiliser le méthode `rest` sur la variable globale `$app` dans vos fichiers de routing.
+Pour utiliser le contrôleur Rest vous avez juste à utiliser le méthode `rest` sur la variable globale `$app` dans vos fichiers de [routing](./routing.md).
 
 #### Prototype de la méthode `rest`
 
@@ -295,7 +298,7 @@ $action = [
 $app->rest('pets', $action, ['id' => '\d+']);
 ```
 
-| URL | Method | Nom | Description |
+| URL | Méthode HTTP | Nom de la route | Description |
 |----------|------|------|------|
 | `/pets` | `GET` | `pets.index` | Retourne la liste des pets |
 | `/pets` | `POST` | `pets.store` | Permet d'ajouter un autre pet |

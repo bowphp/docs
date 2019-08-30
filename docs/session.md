@@ -26,10 +26,10 @@ il existe deux manières principales de travailler avec les données de `session
 Premièrement, examinons l’accès à la session via une instance `Bow\Http\Request`, qui peut être indexée sur une méthode de contrôleur. N'oubliez pas que les dépendances des méthodes du contrôleur sont automatiquement injectées via le conteneur Bow:
 
 ```php
-App\Controllers;
+App\Controller;
 
-use App\Controllers\Controller;
-use App\User;
+use App\Controller\Controller;
+use App\Model\User;
 use Bow\Http\Request;
 
 class UserController extends Controller
@@ -133,12 +133,17 @@ $request->session()->clearFlash();
 
 ## Suppression de données
 
-La méthode de `remove` supprimera une donnée de la session. Si vous souhaitez supprimer toutes les données de la session, vous pouvez utiliser la méthode `flush` ou supprimer tout les informations sauf les informations de `flash`, vous pouvez utiliser la méthode `clear`:
+La méthode de `remove` supprimera une donnée de la session. Si vous souhaitez supprimer toutes les données de la session, vous pouvez utiliser la méthode `flush`. Si par contre vous souhaitez supprimer tout les informations sauf les informations de flash, vous pouvez utiliser la méthode `clear`:
 
 ```php
+// Supprimer une donnée de la session
 $request->session()->remove('key');
 
+// Supprimer tout les informations sauf les informations de flash
 $request->session()->clear();
 
+// Supprimer toutes les données de la session
 $request->session()->flush();
 ```
+
+> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

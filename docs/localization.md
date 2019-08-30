@@ -18,10 +18,10 @@ Dans tout application, il y a le besoin de rendre l'application multi-languge. B
 
 Pour utiliser le système de traduction. Il faut d'abort considérer la confirguration qui se trouve dans le dossier `config/trans.php`, dans ce fichier, la langue par defaut c'est le français, donc le `'lang' => 'fr'`.
 
-Dans le dossier `components/lang` sont ranger les traductions de votre application. Ce sont des fichier `php` qui retournent un `array` et si vous remarquez il y a un dossier `fr` et `en`. Ce sont les dossiers pour chaque langue, ici `fr` pour le français et `en` pour l'anglais et s'il y avait une autre langage par exemple l'espagnol, se serait `es` le nom du dossier.
+Dans le dossier `frontend/lang` sont ranger les traductions de votre application. Ce sont des fichier `php` qui retournent un `array` et si vous remarquez il y a un dossier `fr` et `en`. Ce sont les dossiers pour chaque langue, ici `fr` pour le français et `en` pour l'anglais et s'il y avait une autre langage par exemple l'espagnol, se serait `es` le nom du dossier.
 
 ```
-/components
+/frontend
   /lang
     /en
       messages.php
@@ -34,7 +34,7 @@ Tous les fichiers de langue renvoient un tableau de chaînes à clé.
 Par exemple:
 
 ```php
-// components/lang/en/messages.php
+// frontend/lang/en/messages.php
 return [
   'welcome' => 'Welcome to our application'
 ];
@@ -61,7 +61,7 @@ Vous pouvez configurer une `lang`, qui sera utilisée lorsque la langue active n
 
 ## Récupération de chaînes de traduction
 
-Vous pouvez extraire des lignes de fichiers de langue à l'aide de la fonction du helper `trans` ou `t`. La méthode `t` accepte le fichier et la clé de la chaîne de traduction comme premier argument. Par exemple, récupérons la chaîne de traduction de bienvenue dans le fichier de langue `components/lang/messages.php`:
+Vous pouvez extraire des lignes de fichiers de langue à l'aide de la fonction du helper `trans` ou `t`. La méthode `t` accepte le fichier et la clé de la chaîne de traduction comme premier argument. Par exemple, récupérons la chaîne de traduction de bienvenue dans le fichier de langue `frontend/lang/messages.php`:
 
 ```php
 echo t('messages.welcome');

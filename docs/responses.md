@@ -62,7 +62,7 @@ $app->get('/object', function ()
 La réponse HTTP peut être un `Model` ou une `Collection` de modèle, Bow la convertis directement en `JSON`.
 
 ```php
-use App\User;
+use App\Model\User;
 
 $app->get('/', function ()
 {
@@ -79,7 +79,7 @@ $app->get('/', function ()
 Il est très important d'ajouter les codes d'erreurs à votre réponse HTTP si vous développez un API RESTFUL. La méthode `status` vous permet de le faire.
 
 ```php
-use App\User;
+use App\Model\User;
 
 $app->get('/', function ()
 {

@@ -35,7 +35,7 @@ Considérons la configuration suivante:
 'disk' =>[
   'mount' => 'storage',
   'path' => [
-    'storage' => __DIR__.'/../storage/app',
+    'storage' => __DIR__.'/../var/app',
     'public' => __DIR__.'/../public',
   ]
 ];
@@ -83,17 +83,19 @@ La méthode `get` sert à recupérer le contenu d'un fichier. Elle prend comme p
 ```php
 $mount = mount('public');
 $content = $mount->get("app.txt");
+
 echo $content;
 // => Hello, world
 ```
 
 ### Ajouter/Modifier le contenu d'un fichier
 
-La méthode `put` permet d'ajouter/modifier le contenu d'un fichier:
+La méthode `put` permet d'ajouter ou de modifier le contenu d'un fichier:
 
 ```php
 $mount = mount('public');
 $content = 'console.log("Hello, world")';
+
 $mount->put('app.js', $content );
 ```
 
@@ -103,6 +105,7 @@ Les méthodes `preprend` et `append` vous permettent d'ajouter respectivement du
 
 ```php
 $mount = mount('public');
+
 $mount->prepend('app.txt', 'Contenu ajouté au début');
 $mount->append('app.txt', 'Contenu ajouté à la fin');
 ```
@@ -113,6 +116,7 @@ La méthode `delete` permet de supprimer un fichier.
 
 ```php
 $mount = mount('public');
+
 $mount->delete('app.js');
 ```
 
@@ -120,6 +124,7 @@ $mount->delete('app.js');
 
 ```php
 $mount = mount('public');
+
 $mount->copy('app.txt', 'sous-dossier/app.txt');
 ```
 
@@ -131,6 +136,7 @@ Vous pouvez créer un nouveau dossier à l'aide de la méthode `makeDirectory`:
 
 ```php
 $mount = mount('public');
+
 $mount->makeDirectory($dirname, $mode = 0777, $recursive = false);
 ```
 
@@ -142,6 +148,7 @@ $mount->makeDirectory($dirname, $mode = 0777, $recursive = false);
 
 ```php
 $mount = mount('public');
+
 $mount->makeDirectory('dossier');
 ```
 

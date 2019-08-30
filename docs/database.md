@@ -21,7 +21,7 @@ title: Démarrage
 
 ## Introduction
 
-Bow rend l'interaction avec les bases de données extrêmement simple sur deux backends de bases de données en utilisant le `SQL brut`, `le générateur de requêtes courant` et l'ORM Barry.
+Bow rend l'interaction avec les bases de données extrêmement simple sur deux backends de bases de données en utilisant le `SQL brut`, `le générateur de requêtes courant` et l'[ORM](./orm.md) Barry.
 
 Actuellement, Bow prend en charge deux bases de données:
 
@@ -34,7 +34,7 @@ La configuration de la base donnée de votre application se localise dans le fih
 
 ## SQLite Configuration
 
-Après avoir créé une nouvelle base de données SQLite à l'aide d'une commande tel que `touch storage/database.sqlite`, vous pouvez facilement configurer vos variables d'environnement (dans le fichier `.env.json`) pour qu'elles pointent vers cette base de données nouvellement créée à l'aide du chemin absolu de la base de données:
+Après avoir créé une nouvelle base de données SQLite à l'aide d'une commande tel que `touch var/database.sqlite`, vous pouvez facilement configurer vos variables d'environnement (dans le fichier `.env.json`) pour qu'elles pointent vers cette base de données nouvellement créée à l'aide du chemin absolu de la base de données:
 
 ```text
 "DB_DEFAULT": "seconds",
@@ -333,6 +333,22 @@ use Bow\Database\Database;
 Database::inTransaction()
 // Ou
 db_transaction_started()
+```
+
+## Les jointures
+
+```sql
+create table `author` (
+  `id` int primary key,
+  `name` varchar(200)
+);
+
+create table `pets` (
+  `id` int primary key,
+  `name` varchar(200),
+  `color` varchar(50),
+  `author_id` int default 0
+);
 ```
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

@@ -70,7 +70,7 @@ Vous pouvez toujours taper la requête [Bow\Http\Request](https://bowphp.github.
 namespace App\Controller;
 
 use App\Controller\Controller;
-use App\User;
+use App\Model\User;
 use Bow\Http\Request;
 
 class UserController extends Controller
@@ -79,6 +79,7 @@ class UserController extends Controller
    * Afficher le profil pour l'utilisateur donné
    *
    * @param Request $reuest
+   * @return mixed
    */
   public function show(Request $reuest, $id)
   {
@@ -119,27 +120,8 @@ La méthode `method` retournera le verbe HTTP pour la requête. Vous pouvez util
 $method = $request->method();
 
 if ($request->isPost()) {
-  //
-}
-
-if ($request->isGet()) {
-  //
-}
-
-if ($request->isPut()) {
-  //
-}
-
-if ($request->isDelete()) {
-  //
-}
-
-if ($request->isOptions()) {
-  //
-}
-
-if ($request->isPatch()) {
-  //
+  $filename = $request->file('filename');
+  $filename->moveTo('/some/directory');
 }
 ```
 

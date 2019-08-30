@@ -47,32 +47,4 @@ Ici Chaque model suit le parten Active Recorde.
 
 Pour manipuler les données de la base de donnée
 
-```php
-$todos = App\Model\Todo::all();
-```
-
-```php
-$todo = App\Model\Todo::find(1);
-```
-
-```php
-$todo = App\Model\Todo::latest(1);
-```
-
-```php
-$todo = App\Model\Todo::findAndDelete(1);
-```
-
-```php
-$todo = App\Model\Todo::findOrFail(1);
-```
-
-```php
-$todo = App\Model\Todo::create(1);
-```
-
-```php
-$todo = App\Model\Todo::paginate(1);
-```
-
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

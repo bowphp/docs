@@ -85,10 +85,9 @@ class EmailCheckController extends Configuration
   /**
    * Permet de lancement de configuration
    *
-   * @param Loader $config
    * @return void
    */
-  public function create(Loader $config)
+  public function run()
   {
     $this->container->make('app')->post(
       '/email/checker', \App\Package\EmailCheckController::class
