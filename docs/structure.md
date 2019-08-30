@@ -11,9 +11,9 @@ title: Structure
 
 ## Structure globale
 
-Bow se conforme au modèle *MVC* (*M*odèle *V*ue *C*ontrôleur).
+Bow Framework se conforme au modèle *MVC* (*M*odèle *V*ue *C*ontrôleur).
 
-| Dossier ou fichier | Description |
+| Dossier | Description |
 |---------|-------------|
 | __app__ | Contient la logique principale de votre application. Presque toutes les classes de votre application seront dans ce dossier |
 | __frontend__ | Contient les scripts et fichiers de styles de l'application. Il contient entre autre le dossier `js`, `sass`, `lang` et le dossier `views`. C'est là que vous allez mettre vos fichiers static et ensuite les compiler |

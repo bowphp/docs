@@ -12,7 +12,7 @@
 const users = [
   {
     caption: 'Abou KONE',
-    description: "Front end Architect, CTO @akil Tech. Magician @codedivoire.",
+    description: "Frontend Architect, CTO @akilTech. Magician @codedivoire.",
     // You will need to prepend the image path with your baseUrl
     // if it is not '/', like: '/test-site/img/docusaurus.svg'.
     image: 'https://avatars1.githubusercontent.com/u/582061?s=460&v=4',
@@ -38,13 +38,13 @@ const users = [
     pinned: true,
   },
   {
-    caption: 'Lamine AZINAKOU',
-    description: "Hi, i'm Aziz, UI & UX Designer, i touch everything that is web and mobile with a specialization on JavaScript universes and everything that makes \"HTML5\"",
+    caption: 'Salomon DION',
+    description: "Aspiring Cloud Engineer with strong interest in software development and data science and I’m a member of the core development team.",
     // You will need to prepend the image path with your baseUrl
     // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: 'https://avatars3.githubusercontent.com/u/22053891?s=460&v=4',
-    infoLink: 'https://github.com/agazinakou',
-    pinned: false,
+    image: 'https://avatars3.githubusercontent.com/u/25983025?s=460&v=4',
+    infoLink: 'https://github.com/mrdionjr',
+    pinned: true,
   }
 ];
 
@@ -80,11 +80,11 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'installation', label: 'DOCUMENTATION'},
+    {doc: 'installation', label: 'Documentation'},
     {href: 'https://bowphp.github.io/api/master', label: 'API'},
-    {page: 'users', label: 'UTILISATEUR'},
-    {blog: true, label: 'BLOG'},
-    {href: 'https://github.com/bowphp', label: 'GITHUB'},
+    {page: 'users', label: 'Utilisateur'},
+    // {blog: true, label: 'Blog'},
+    {href: 'https://github.com/bowphp', label: 'Github'},
   ],
 
   apiUrl: "https://bowphp.github.io/api/master",
@@ -99,7 +99,7 @@ const siteConfig = {
 
   /* Colors for website */
   colors: {
-    primaryColor: '#000', // #d80027
+    primaryColor: '#101010', // #d80027
     secondaryColor: '#404040', // #404040
   },
 
@@ -144,13 +144,13 @@ const siteConfig = {
 
   gaTrackingId: "UA-127753823-1",
 
-  defaultVersionShown: "3.0.1",
+  defaultVersionShown: "4.x",
 
   twitter: true,
   twitterUsername: "franck_dakia",
 
-  editUrl: "https://github.com/bowphp/docs/edit/3.0/docs/",
-  enableUpdateTime: true,
+  editUrl: "https://github.com/bowphp/docs/edit/4.0/docs",
+  enableUpdateTime: false,
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...

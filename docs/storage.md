@@ -20,7 +20,7 @@ title: Storage
 
 ## Introduction
 
-Bow intègre un système de gestion de fichier permettant de manipuler des fichiers avec une grande simplicité.
+Bow Framework intègre un système de gestion de fichier permettant de manipuler des fichiers avec une grande simplicité.
 
 ## Configuration
 

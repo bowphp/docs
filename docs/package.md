@@ -15,7 +15,7 @@ Si vous avez une application Bow, il vous suffit de faire la création via `php 
 php bow add:configuration PluginConfiguration
 ```
 
-Le fichier `PluginConfiguration.php` sera créé dans le dossier `app/Configurations` qui contient deux méthode `create` et `run`.
+Le fichier `PluginConfiguration.php` sera créé dans le dossier `app/Configuration` qui contient deux méthode `create` et `run`.
 
 - `create` permet d'initialiser le package
 - `run` permet de lancer d'initialisation le package.

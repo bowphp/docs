@@ -15,17 +15,12 @@ title: Policier
   - [Vérifier un Token](#v%C3%A9rifier-un-token)
   - [Valider un Token](#valider-un-token)
 - [Bow Framework et Policier](#bow-framework-et-policier)
-    - [Personnalisation du Middleware](#personnalisation-du-middleware)
+  - [Personnalisation du Middleware](#personnalisation-du-middleware)
     - [Publier le middleware](#publier-le-middleware)
-- [Laravel et Policier](#laravel-et-policier)
-    - [Publier le Service provider de Policier:](#publier-le-service-provider-de-policier)
-    - [Publier la Facade de Policier:](#publier-la-facade-de-policier)
-    - [Publier le Middleware de Policer:](#publier-le-middleware-de-policer)
-  - [Utilisation du middleware:](#utilisation-du-middleware)
-
-La police permet de valider la demande via [JWT](https://jwt.io)
 
 ## Installation
+
+Policier permet de valider la demande via [JWT](https://jwt.io)
 
 Pour installer la stratégie d'installation, vous devez utiliser `composer` (gestionnaire de paquets PHP) comme ceci.
 
@@ -158,7 +153,7 @@ $claims = [
 
 $token = $policier->encode($id, $claims);
 
-$token->expiredIn(); // Expired In
+$token->expireIn(); // Expired In
 $token->getToken(); // Token value
 
 echo $token;
@@ -304,11 +299,11 @@ $app->get('/api', function () {
 
 Le token a été analysé dans l'instance de Policier dans le processus middleware via la méthode `plug`. Après l'exécution du middleware, vous pouvez:
 
-- [Obtenez](#encoder-un-token) le token avec `getToken`
+- Obtenez le token avec `getToken`
 - [Décoder](#decode-token) le token avec `getDecodeToken`
 - [Analyser](#parse-token) le token avec `getParsedToken`
 
-#### Personnalisation du Middleware
+### Personnalisation du Middleware
 
 Notez que vous pouvez créer un autre middleware qui étendra le middleware par defaut `Policier\Bow\PolicierMiddleware::class`. Ce qui vous donne la possibilité de changer les messages d'erreur en surchargant les methodes `getUnauthorizedMessage`, `getExpirateMessage`, `getExpirateCode` et `getUnauthorizedCode`.
 
