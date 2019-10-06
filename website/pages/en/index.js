@@ -80,12 +80,6 @@ class HomeSplash extends React.Component {
         <Logo img_src={imgUrl("bow.jpg")} />
         <div className="inner">
           <ProjectTitle />
-          <script 
-            id="asciicast-s8HpeoaUwnxEZ7OOPRxxXE52z" 
-            src="https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z.js" 
-            data-speed="2" 
-            data-rows="25"
-            async/>
         </div>
       </SplashContainer>
     );
@@ -150,8 +144,11 @@ const Showcase = props => {
         <script
           id="asciicast-zxbid2giZdnaJjOhOkALKBC8G"
           src="https://asciinema.org/a/zxbid2giZdnaJjOhOkALKBC8G.js"
-          data-rows="25"
+          data-rows="30"
           data-speed="2"
+          data-theme="tango"
+          data-t="10"
+          data-loop="true"
           async/>
       </div>
       <div className="productShowcaseSection paddingBottom">
@@ -196,7 +193,7 @@ class Index extends React.Component {
       <div>
         <HomeSplash language={language} />
         <div className="mainContainer" style={{textAlign: "center", fontSize: "25px"}}>
-          <strong>Bow Framework est apprécié par +180 Développeur(se)s</strong>
+          <strong>Bow Framework est apprécié par +{siteConfig.numberOfFollowers} Développeur(se)s</strong>
         </div>
         <div className="mainContainer" style={{backgroundColor: "#f0f0f0"}}>
           <Features />

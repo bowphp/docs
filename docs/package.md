@@ -1,6 +1,6 @@
 ---
-id: package
-title: Package
+id: packaging
+title: Packaging
 ---
 
 ## Introduction

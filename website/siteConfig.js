@@ -81,7 +81,7 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'installation', label: 'Documentation'},
-    {page: 'users', label: 'Utilisateur'},
+    // {page: 'users', label: 'Utilisateur'},
     // {blog: true, label: 'Blog'},
     {href: 'https://github.com/bowphp', label: 'Github'},
     {href: 'https://bowphp.github.io/api/master', label: 'API'},
@@ -99,7 +99,7 @@ const siteConfig = {
 
   /* Colors for website */
   colors: {
-    primaryColor: '#fff', // #d80027
+    primaryColor: '#181818', // #d80027
     secondaryColor: '#404040', // #404040
   },
 
@@ -155,6 +155,8 @@ const siteConfig = {
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
   repoUrl: 'https://github.com/bowphp/app',
+
+  numberOfFollowers: 220
 };
 
 module.exports = siteConfig;

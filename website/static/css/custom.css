@@ -53,6 +53,10 @@ h2 {
 	background-color: transparent;
 }
 
+.fixedHeaderContainer {
+  background: #fff;
+}
+
 .fixedHeaderContainer header .headerTitleWithLogo {
   display: block;
   font-size: 1.25em;
@@ -70,7 +74,6 @@ table td:first-child > code {
 .navigationSlider .slidingNav ul li a {
   align-items: center;
   box-sizing: border-box;
-  color: #D80027;
   display: flex;
   font-size: 1em;
   justify-content: center;
@@ -85,7 +88,6 @@ table td:first-child > code {
 }
 
 .navigationSlider .slidingNav ul li.siteNavItemActive a, .navigationSlider .slidingNav ul li.siteNavGroupActive a {
-  color: #181818;
   font-weight: bold;
 }
 
@@ -94,7 +96,7 @@ table td:first-child > code {
 }
 
 .headerTitleWithLogo:hover {
-  color: #181818;
+  /*color: #181818;*/
   text-decoration: none
 }
 
@@ -113,7 +115,7 @@ table td:first-child > code {
 tt, code, pre {
   position: relative;
   font-family: Monaco, "Fira Code", Consolas, Monaco, "Andale Mono", monospace;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 blockquote {
@@ -124,11 +126,6 @@ blockquote {
 
 a {
   color: #d80027;
-}
-
-.button {
-  color: #181818;
-  border-color: #181818;
 }
 
 .projectTitle {

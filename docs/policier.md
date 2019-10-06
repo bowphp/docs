@@ -157,7 +157,7 @@ $token->expireIn(); // Expired In
 $token->getToken(); // Token value
 
 echo $token;
-//=> eyJ0eXAiOiJKV1QiLCJhbGciOiI6IjEifQ.eyJpc3MiOiJsb2NhbGhvc3QiLCJhdWQiOiJsb2NhbGhvc3QiLCJqdGkiOi.l7v0bS0rqnK1IeRGRBTFIH5s2TN9KtgD7BLivApq
+//=> eyJ0eX...OiJKV1.eyJpc3Mi...OiJsb2.l7v0bS0r...qnK1IeR
 ```
 
 `$token` est une instance de `Policier\Token` et implémente la méthode magique `__toString`. Vous pouvez obtenir l'heure d'expiration avec `expiredIn` et `getToken` pour prendre la valeur du token.

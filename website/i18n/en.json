@@ -47,8 +47,8 @@
       "orm": {
         "title": "Barry ORM"
       },
-      "package": {
-        "title": "Package"
+      "packaging": {
+        "title": "Packaging"
       },
       "policier": {
         "title": "Policier"
@@ -84,7 +84,7 @@
         "title": "Tintin Template"
       },
       "tutorial": {
-        "title": "Tutoriel"
+        "title": "Tutoriel pour bien comprendre"
       },
       "http-upload": {
         "title": "Upload File"
@@ -100,12 +100,11 @@
       "API": "API"
     },
     "categories": {
-      "DÉMARRAGE": "DÉMARRAGE",
-      "TUTORIEL": "TUTORIEL",
-      "GUIDE": "GUIDE",
-      "BASE DE DONNÉE": "BASE DE DONNÉE",
-      "HTTP": "HTTP",
-      "MISC": "MISC"
+      "Démarrage": "Démarrage",
+      "Guide": "Guide",
+      "Base de donnée": "Base de donnée",
+      "Http": "Http",
+      "Misc": "Misc"
     }
   },
   "pages-strings": {
