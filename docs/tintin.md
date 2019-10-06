@@ -26,12 +26,12 @@ title: Tintin Template
   - [Compilation du template](#compilation-du-template)
   - [Sortie après compilation](#sortie-apr%c3%a8s-compilation)
 - [IDE support](#ide-support)
-  - [Comment installer Sublime Package Control ?](#comment-installer-sublime-package-control)
+  - [Comment installer Sublime Package Control](#comment-installer-sublime-package-control)
   - [Installer le package Tintin](#installer-le-package-tintin)
 
 ## Introduction
 
-Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP. Par défaut #Tintin est le moteur de template de Bow Framework utilise. 
+Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP. Par défaut #Tintin est le moteur de template de Bow Framework utilise.
 
 ### Configuration
 
@@ -366,7 +366,7 @@ Maintenant la directive `#super` est disponible et vous pouvez l'utiliser.
 
 Tintin est supporté actuellement par [sublime text](https://www.sublimetext.com).
 
-### Comment installer Sublime Package Control ?
+### Comment installer Sublime Package Control
 
 Allez sur le [site](https://packagecontrol.io/installation) et suivez les instructions.
 
