@@ -229,11 +229,11 @@ Bien entendu, le générateur de schéma contient divers types de colonnes que v
 | Commande | Description |
 |----------|------|
 | $table->addIncrement('id') | Incrémentation automatique de la colonne équivalente à INTEGER (clé primaire). |
-| $table->addString('name', array $attributes = []) | Colonne équivalente à VARCGAR. |
-| $table->addInteger('price', array $attributes = []) | Colonne équivalente à INTEGER. |
-| $table->addBigInteger('price', array $attributes = []) | Colonne équivalente à BIGINT. |
-| $table->addDouble('price', array $attributes = []) | Colonne équivalente à DOUBLE. |
-| $table->addTinyInteger('status', array $attributes = []) | Colonne équivalente à TINYINT |
+| $table->addString('name', $attr = []) | Colonne équivalente à VARCGAR. |
+| $table->addInteger('price', $attr = []) | Colonne équivalente à INTEGER. |
+| $table->addBigInteger('price', $attr = []) | Colonne équivalente à BIGINT. |
+| $table->addDouble('price', $attr = []) | Colonne équivalente à DOUBLE. |
+| $table->addTinyInteger('status', $attr = []) | Colonne équivalente à TINYINT |
 | $table->addBoolean('verified') | Colonne équivalente à BOOLEAN |
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
