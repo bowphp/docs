@@ -5,18 +5,19 @@ title: Contrôleurs
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-- [contrôleur Basic](#controleur-basic)
-  - [Définir un contrôleur](#definir-un-controleur)
-  - [Contrôleurs et espaces de noms](#controleurs-et-espaces-de-noms)
-  - [Contrôleur et Middleware](#controleur-et-middleware)
-- [Controller REST](#controller-rest)
-  - [Définir un contrôleur rest](#definir-un-controleur-rest)
-  - [Utilisons notre contrôleur REST](#utilisons-notre-controleur-rest)
-    - [Prototype de la méthode REST](#prototype-de-la-methode-rest)
+- [Contrôleur basic](#contr%c3%b4leur-basic)
+  - [Définir un contrôleur](#d%c3%a9finir-un-contr%c3%b4leur)
+  - [Contrôleur et espaces de noms](#contr%c3%b4leur-et-espaces-de-noms)
+  - [Contrôleur et Middleware](#contr%c3%b4leur-et-middleware)
+- [Contrôleur REST](#contr%c3%b4leur-rest)
+  - [Définir un contrôleur rest](#d%c3%a9finir-un-contr%c3%b4leur-rest)
+  - [Utilisons notre contrôleur REST](#utilisons-notre-contr%c3%b4leur-rest)
+    - [Prototype de la méthode `rest`](#prototype-de-la-m%c3%a9thode-rest)
     - [Utilisation simple](#utilisation-simple)
     - [Utilisation avec les contraintes](#utilisation-avec-les-contraintes)
     - [Utilisation via un tableau comme action](#utilisation-via-un-tableau-comme-action)
-    - [Ignore des méthodes](#ignore-des-methodes)
+    - [Ignore des méthodes](#ignore-des-m%c3%a9thodes)
+    - [Url et Action](#url-et-action)
 
 ## Introduction
 

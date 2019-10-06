@@ -4,6 +4,27 @@ title: SQL Builder
 ---
 
 - [Introduction](#introduction)
+- [Recupéré les informations](#recup%c3%a9r%c3%a9-les-informations)
+  - [Exemple avec `get`](#exemple-avec-get)
+  - [Exemple avec `first`](#exemple-avec-first)
+  - [Exemple avec `last`](#exemple-avec-last)
+  - [Ajoutez des restrictions](#ajoutez-des-restrictions)
+    - [Restriction simple](#restriction-simple)
+    - [La clause OR](#la-clause-or)
+  - [Clauses additionnelles](#clauses-additionnelles)
+    - [whereNull / whereNotNull](#wherenull--wherenotnull)
+    - [whereIn / whereNotIn](#wherein--wherenotin)
+    - [whereBetween / whereNotBetween](#wherebetween--wherenotbetween)
+  - [Ordonner, Grouper, et limiter](#ordonner-grouper-et-limiter)
+    - [orderBy](#orderby)
+    - [groupBy et having](#groupby-et-having)
+    - [jump et take](#jump-et-take)
+- [Aggregates](#aggregates)
+  - [Déterminer si des enregistrements existent](#d%c3%a9terminer-si-des-enregistrements-existent)
+  - [Spécification d'une clause de sélection](#sp%c3%a9cification-dune-clause-de-s%c3%a9lection)
+  - [Insertion d'information](#insertion-dinformation)
+  - [Mise à jour](#mise-%c3%a0-jour)
+  - [Supprimer un enregistrement](#supprimer-un-enregistrement)
 
 ## Introduction
 

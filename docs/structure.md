@@ -6,8 +6,8 @@ title: Structure
 - [Structure globale](#structure-globale)
 - [Le dossier app](#le-dossier-app)
 - [Le dossier frontend](#le-dossier-frontend)
-- [Le dossier db](#le-dossier-db)
-- [Le dossier storage](#le-dossier-storage)
+- [Les dossier `migration` et `seeders`](#les-dossier-migration-et-seeders)
+- [Le dossier var](#le-dossier-var)
 
 ## Structure globale
 

@@ -3,6 +3,8 @@ id: tutorial
 title: Tutoriel
 ---
 
+- [Introduction](#introduction)
+
 Ce tutoriel a pour but de vous présenter Bow Framework et les principes de base de l’architecture MVC. Il vous montrera comment une application Bow Framework de base est construite étape par étape.
 
 Dans ce tutoriel, vous allez créer une application d'actualités de base. Vous commencerez par écrire le code pouvant charger des pages statiques. Vous allez ensuite créer une section de nouvelles qui lit les nouvelles d'une base de données. Enfin, vous allez ajouter un formulaire pour créer des éléments d’actualité dans la base de données.

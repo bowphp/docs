@@ -4,10 +4,9 @@ title: Tintin Template
 ---
 
 - [Introduction](#introduction)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Utilisation](#utilisation)
-  - [Configuration pour Bow](#configuration-pour-bow)
+  - [Configuration](#configuration)
+  - [Affichage des données](#affichage-des-donn%c3%a9es)
+    - [Affichage des données non échappées](#affichage-des-donn%c3%a9es-non-%c3%a9chapp%c3%a9es)
   - [Ajouter un commentaire](#ajouter-un-commentaire)
   - [#if / #elseif ou #elif / #else](#if--elseif-ou-elif--else)
   - [#unless](#unless)
@@ -18,16 +17,17 @@ title: Tintin Template
     - [L'utilisation de #while](#lutilisation-de-while)
   - [Inclusion de fichier](#inclusion-de-fichier)
     - [Exemple d'inclusion](#exemple-dinclusion)
-- [Héritage avec #extends, #block et #inject](#h%C3%A9ritage-avec-extends-block-et-inject)
+- [Héritage avec #extends, #block et #inject](#h%c3%a9ritage-avec-extends-block-et-inject)
   - [Explication](#explication)
-- [Directive personnelisée](#directive-personnelis%C3%A9e)
-  - [Exemple](#exemple)
+- [Directive personnelisée](#directive-personnelis%c3%a9e)
+  - [Ajouter vos directive de la configuration](#ajouter-vos-directive-de-la-configuration)
+  - [Exemple de création de directive](#exemple-de-cr%c3%a9ation-de-directive)
   - [Utilisation des directives](#utilisation-des-directives)
   - [Compilation du template](#compilation-du-template)
-  - [Sortie après compilation](#sortie-apr%C3%A8s-compilation)
-  - [Ajouter vos directive de la configuration](#ajouter-vos-directive-de-la-configuration)
-- [Contribution](#contribution)
-- [Auteur](#auteur)
+  - [Sortie après compilation](#sortie-apr%c3%a8s-compilation)
+- [IDE support](#ide-support)
+  - [Comment installer Sublime Package Control ?](#comment-installer-sublime-package-control)
+  - [Installer le package Tintin](#installer-le-package-tintin)
 
 ## Introduction
 

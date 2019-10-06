@@ -5,7 +5,16 @@ title: Migration
 
 - [Introduction](#introduction)
 - [Ajouter une migration](#ajouter-une-migration)
-- [Liste de méthode](liste-de-methode)
+- [Structure de migration](#structure-de-migration)
+- [Exécuter des migrations](#ex%c3%a9cuter-des-migrations)
+- [Faire reculer les migrations](#faire-reculer-les-migrations)
+- [Création de table](#cr%c3%a9ation-de-table)
+- [Connexion à la base de données et options de table](#connexion-%c3%a0-la-base-de-donn%c3%a9es-et-options-de-table)
+- [Renommer / Supprimer des tables](#renommer--supprimer-des-tables)
+- [Créer des colonnes](#cr%c3%a9er-des-colonnes)
+- [Api de migration](#api-de-migration)
+  - [Examinons ensemble](#examinons-ensemble)
+  - [Liste des helpers](#liste-des-helpers)
 
 ## Introduction
 

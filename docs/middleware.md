@@ -4,7 +4,7 @@ title: Middleware
 ---
 
 - [Introduction](#introduction)
-- [Comment ça marche](#comment-ca-marche)
+- [Comment ça marche](#comment-%c3%a7a-marche)
 - [Ajouter un middleware](#ajouter-un-middleware)
 - [Enregistrement de middleware](#enregistrement-de-middleware)
 - [Utiliser le middleware](#utiliser-le-middleware)

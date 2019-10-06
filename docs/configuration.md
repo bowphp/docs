@@ -5,9 +5,10 @@ title: Configuration
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-  - [Explication de la notation à point](#explication-de-la-notation-a-point)
-  - [Fichier .env.json](#fichier-env-json)
-  - [Récupération les informations](#récupération-les-informations)
+  - [Explication de la notation à point](#explication-de-la-notation-%c3%a0-point)
+  - [Fichier .env.json](#fichier-envjson)
+  - [Récupération des informations](#r%c3%a9cup%c3%a9ration-des-informations)
+- [Les helpers](#les-helpers)
 
 ## Introduction
 

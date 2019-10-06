@@ -4,14 +4,14 @@ title: HTTP Session
 ---
 
 - [Introduction](#introduction)
-- [Utilisation](#uilisation)
-  - [Récupération des données](#recuperation-des-donnees)
+- [Utilisation](#utilisation)
+  - [Récupération des données](#r%c3%a9cup%c3%a9ration-des-donn%c3%a9es)
   - [Le helper global de session](#le-helper-global-de-session)
-  - [Récupération de toutes les données de session](#recuperation-de-toutes-les-donnees-de-session)
-  - [Déterminer si un élément existe dans la session](#determiner-si-un-element-existe-dans-la-session)
-  - [Stocker des données](#stocker-des-donnees)
-- [Données flash](#donnees-flash)
-- [Suppression de données](#suppression-de-donnees)
+  - [Récupération de toutes les données de session](#r%c3%a9cup%c3%a9ration-de-toutes-les-donn%c3%a9es-de-session)
+  - [Déterminer si un élément existe dans la session](#d%c3%a9terminer-si-un-%c3%a9l%c3%a9ment-existe-dans-la-session)
+  - [Stocker des données](#stocker-des-donn%c3%a9es)
+- [Données flash](#donn%c3%a9es-flash)
+- [Suppression de données](#suppression-de-donn%c3%a9es)
 
 ## Introduction
 

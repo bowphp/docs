@@ -4,8 +4,9 @@ title: CSRF Protection
 ---
 
 - [Introduction](#introduction)
-- [X-CSRF-Token](#x-csrf-token)
-- [X-XSRF-Token](#x-xsrf-token)
+  - [Jetons CSRF & JavaScript](#jetons-csrf--javascript)
+- [X-CSRF-TOKEN](#x-csrf-token)
+- [X-XSRF-TOKEN](#x-xsrf-token)
 
 ## Introduction
 

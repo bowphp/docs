@@ -3,10 +3,14 @@ id: installation
 title: Installation
 ---
 
-- [Prérequis](#prerequis)
-- [Créer un projet](#creer-un-projet)
-- [Démarrer votre projet](#demarrer-votre-projet)
+- [Prérequis](#pr%c3%a9requis)
+- [Créer un projet](#cr%c3%a9er-un-projet)
+  - [Via Composer create-project](#via-composer-create-project)
+- [Démarrer votre projet](#d%c3%a9marrer-votre-projet)
 - [Configuration](#configuration)
+  - [Dossier Public](#dossier-public)
+  - [Fichiers de configuration](#fichiers-de-configuration)
+  - [Permissions sur les dossiers](#permissions-sur-les-dossiers)
 - [Configuration Serveur Web](#configuration-serveur-web)
   - [Apache](#apache)
   - [Nginx](#nginx)

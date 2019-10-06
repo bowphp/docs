@@ -3,6 +3,11 @@ id: packaging
 title: Packaging
 ---
 
+- [Introduction](#introduction)
+- [Création de plugin](#cr%c3%a9ation-de-plugin)
+  - [Exemple de création](#exemple-de-cr%c3%a9ation)
+  - [Testons notre package](#testons-notre-package)
+
 ## Introduction
 
 Ce système permet d'étendre votre application, de gréffer des package externe dans une application Bow.

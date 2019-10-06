@@ -164,6 +164,13 @@ a {
   color: #d80027;
 }
 
+blockquote a {
+  color: #eee;
+}
+blockquote a:hover {
+  color: #ddd;
+}
+
 .projectTitle {
   color: #181818;
 }

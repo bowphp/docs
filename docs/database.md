@@ -3,21 +3,21 @@ id: database
 title: Démarrage
 ---
 
-- [id: database](#id-database)
 - [Introduction](#introduction)
 - [Configuration](#configuration)
 - [SQLite Configuration](#sqlite-configuration)
-- [Connexion à plusieur Base de donnée](#connexion-%C3%A0-plusieur-base-de-donn%C3%A9e)
-- [Utilisation de requête SQL Brute](#utilisation-de-requ%C3%AAte-sql-brute)
-  - [Execution de requête Select](#execution-de-requ%C3%AAte-select)
-  - [Sélection conditionnel](#s%C3%A9lection-conditionnel)
-  - [Execution de requête Insert](#execution-de-requ%C3%AAte-insert)
+- [Connexion à plusieur Base de donnée](#connexion-%c3%a0-plusieur-base-de-donn%c3%a9e)
+- [Utilisation de requête SQL Brute](#utilisation-de-requ%c3%aate-sql-brute)
+  - [Execution de requête Select](#execution-de-requ%c3%aate-select)
+  - [Sélection conditionnel](#s%c3%a9lection-conditionnel)
+  - [Execution de requête Insert](#execution-de-requ%c3%aate-insert)
     - [Insertion multiple](#insertion-multiple)
-  - [Execution de requête Update](#execution-de-requ%C3%AAte-update)
-  - [Execution de requête Delete](#execution-de-requ%C3%AAte-delete)
-  - [Execution de requête](#execution-de-requ%C3%AAte)
+  - [Execution de requête Update](#execution-de-requ%c3%aate-update)
+  - [Execution de requête Delete](#execution-de-requ%c3%aate-delete)
+  - [Execution de requête](#execution-de-requ%c3%aate)
 - [Database Transactions](#database-transactions)
   - [Utilisation manuel des transaction](#utilisation-manuel-des-transaction)
+- [Les jointures](#les-jointures)
 
 ## Introduction
 
