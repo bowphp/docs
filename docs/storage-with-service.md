@@ -133,7 +133,7 @@ Vous pouvez créer un nouveau dossier à l'aide de la méthode `makeDirectory`:
 $mount->makeDirectory($dirname, $mode = 0777, $recursive = false);
 ```
 
-| paramêtre | Type |
+| Paramètre | Type |
 |----------|------|
 | path | `String` - le dossier à créer |
 | mode | `Int` - Le mode du dossier par défaut 777 |

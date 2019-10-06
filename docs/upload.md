@@ -16,7 +16,7 @@ Considérons le formulaire suivant:
 </form>
 ```
 
-> Comment avoir accès au fichier envoyé ?8
+> Comment avoir accès au fichier envoyé ?
 
 Ici nous pouvons utiliser la méthode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadFile`](https://bowphp.github.io/api/master/Bow/Http/UploadFile.html).
 

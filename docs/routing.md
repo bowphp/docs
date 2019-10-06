@@ -51,14 +51,14 @@ $app->route([
 
 #### Liste des options
 
-| Paramètre | Type |
-|----------|------|
-| path | `String` |
-| method | `String`, `Array` - méthode Http |
-| handler | `String`, `Array` - L'action à lancer |
-| middleware | `String`, `Array` - Middleware |
-| where  | `String`, `Array` - Contrainte appliqué sur l'URL |
-| name | `String`, `Array` - Le nom de la route |
+| Paramètre | Type | Description |
+|----------|------|------|
+| path | `String` | Le parten d'url à matcher |
+| method | `String`, `Array` | méthode Http |
+| handler | `String`, `Array` | L'action à lancer |
+| middleware | `String`, `Array` | Middleware |
+| where  | `String`, `Array` | Contrainte appliqué sur l'URL |
+| name | `String`, `Array` | Le nom de la route |
 
 `method` correspond au verbe `http` à associer à la route, soit `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`.
 
@@ -123,10 +123,10 @@ $app->[method](url, action);
 
 `method` correspond au verbe `http` à associer à la route, soit `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH` écrit en minuscule.
 
-| Paramètre | Type |
-|----------|------|
-| url      | `String` |
-| action   | `String`, `Array` - Closure ou Callable |
+| Paramètre | Type | Description |
+|----------|------|------|
+| url      | `String` | Le parten d'url a matcher |
+| action   | `String`, `Array` | Closure ou Callable |
 
 - Avec une clourse
 
@@ -280,11 +280,11 @@ Prototype de la méthode `match`.
 $app->match(verbes, url, action);
 ```
 
-| Paramètre | Type |
-|----------|------|
-| verbes | `Array` - La liste des méthodes `http` |
-| url    | `String` - L'URL de la route |
-| action | `String`, `Array`, `Closure` - L'action à lancer |
+| Paramètre | Type | Description |
+|----------|------|------|
+| verbes | `Array` | La liste des méthodes `http` |
+| url    | `String` | L'URL de la route |
+| action | `String`, `Array`, `Closure` | L'action à lancer |
 
 ```php
 $app->match(['`GET`', '`POST`'], '/users', function ()
@@ -320,10 +320,10 @@ Prototype de la méthode `any`.
 $app->any(url, action);
 ```
 
-| Paramètre | Type |
-|----------|------|
-| url      | `String` - L'url de la route |
-| action   | `String`, `Array` - Closure - L'action à lancer |
+| Paramètre | Type | Description |
+|----------|------|------|
+| url      | `String` | L'url de la route |
+| action   | `String`, `Array` | Closure - L'action à lancer |
 
 ```php
 $app->any('/', function ()
@@ -361,10 +361,10 @@ Prototype de le méthode `prefix`.
 $app->prefix(url, action);
 ```
 
-| Paramètre | Type |
-|----------|------|
-| url      | `String` - l'URL à prefixer |
-| action   | `Closure` - Cette fonction prendra en paramètre l'instance de l'application |
+| Paramètre | Type | Description |
+|----------|------|------|
+| url      | `String` | l'URL à prefixer |
+| action   | `Closure` | Cette fonction prendra en paramètre l'instance de l'application |
 
 Donc pour réorganiser le code précédent, il faudra faire comme suit:
 
@@ -427,11 +427,11 @@ where(name, rule);
 where(array rules);
 ```
 
-| Paramètre | Type |
-|----------|------|
-| name     | `String` - Le nom de la variable |
-| value    | `String` - Le critaire de validation |
-| rules    | `Array` - Tableau associatif dont la clé est la varibale à sécuriser et la valeur est le critaire de validation |
+| Paramètre | Type | Description |
+|----------|------|------|
+| name     | `String` | Le nom de la variable |
+| value    | `String` | Le critaire de validation |
+| rules    | `Array` | Tableau associatif dont la clé est la varibale à sécuriser et la valeur est le critaire de validation |
 
 ```php
 $app->get('/:name', function ($name)
@@ -468,9 +468,9 @@ Prototype de la méthode `name`.
 name(name);
 ```
 
-| Paramètre | Type |
-|----------|------|
-| name  | `String` - Le nom de la route |
+| Paramètre | Type | Description |
+|----------|------|------|
+| name  | `String` | Le nom de la route |
 
 ```php
 $app->get('/:name', function ($name)

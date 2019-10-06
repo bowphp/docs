@@ -37,7 +37,7 @@ Pour utiliser le service, vous devez appeler la classe [`Bow\Mail\Mail::class`](
 send($view, array $data, callable $callable)
 ```
 
-| paramêtre | Type |
+| Paramètre | Type |
 |----------|------|
 | view | `String` L'email du destinataire |
 | data | `Array` Les informations à passer à la vue |
@@ -158,7 +158,7 @@ $message->addReturnPath($mail, $name = null)
 raw($to, $subject, $message, array $headers = [])
 ```
 
-| paramêtre | Type |
+| Paramètre | Type |
 |----------|------|
 | to | `String` L'email du destinataire |
 | subject | `String` L'objet du mail |

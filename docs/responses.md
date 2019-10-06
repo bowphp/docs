@@ -30,7 +30,7 @@ Tous les routes et contrôleurs doivent retourner une réponse à renvoyer à l'
 Une réponse HTTP peut être une chaine de caractère.
 
 ```php
-$app->get('/', function () 
+$app->get('/', function ()
 {
   return "Hello, world";
 });
@@ -41,7 +41,7 @@ $app->get('/', function ()
 Une réponse HTTP peut être une instance de [`Bow\Support\Collection`](https://bowphp.github.io/api/master/Bow/Support/Collection.html).
 
 ```php
-$app->get('/array', function () 
+$app->get('/array', function ()
 {
   return [10, 2, 12, 'name' => 'Dakia'];
 });
@@ -91,7 +91,7 @@ $app->get('/', function ()
 
 Pour plus d'information sur les code HTTP. Consultez ce [lien](https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP).
 
-Si dans votre API, la requête a été traitée avec succès et que vous n'avez pas d’information à renvoyer. Il est préférable de lui retourne un `204` qu'un `200` :tada:.
+Si dans votre API, la requête a été traitée avec succès et que vous n'avez pas d’information à renvoyer. Il est préférable de lui retourne un **204** qu'un **200** :tada:.
 
 ### Ajouter une entête HTTP
 
@@ -120,11 +120,11 @@ Dans les applications REST (Api REST/RESTFUL) les informations sont généraleme
 $response->json($data, $code, $headers);
 ```
 
-| paramêtre | Type |
-|----------|------|
-| $data  | `Array`, `stdClass`, `Iterable`, `JsonSerializable` - Les données à sérialiser |
-| $code  | `Int` - Le code du status HTTP |
-| $headers  | `Array` - Les entêtes à ajouter sur le réponse |
+| Paramètre | Type | Description |
+|----------|------|------|
+| $data  | **Array**, `stdClass`, `Iterable`, `JsonSerializable` | Les données à sérialiser |
+| $code  | **Int** | Le code du status HTTP |
+| $headers  | **Array** | Les entêtes à ajouter sur le réponse |
 
 ### Exemple d'envoye de JSON
 
@@ -160,12 +160,12 @@ Souvent vous pouvez utiliser un instance de `Bow\Http\Response` pour faire le re
 $response->render($name, $data, $code, $headers);
 ```
 
-| paramêtre | Type |
+| Paramètre | Type | Description |
 |----------|------|
-| $name  | `String` - Le nom d'une vue à rendre |
-| $data  | `Array` - Les données à envoyer à la vue |
-| $code  | `Int` - Le code du status HTTP |
-| $headers  | `Array` - Les entêtes à ajouter à la réponse |
+| $name  | **String** - Le nom d'une vue à rendre |
+| $data  | **Array** - Les données à envoyer à la vue |
+| $code  | **Int** - Le code du status HTTP |
+| $headers  | **Array** - Les entêtes à ajouter à la réponse |
 
 ### Exemple d'envoye de vue
 
@@ -189,12 +189,12 @@ Souvent vous serez amener à mettre en place des systèmes de téléchargement d
 $response->download($file, $filename = null, $headers, $disposition = 'attachment');
 ```
 
-| paramêtre | Type |
-|----------|------|
-| $file  | `String` - Le chemin absolu du fichier |
-| $filename  | `String` - Le nouveau du fichier par defaut est `null` |
-| $headers  | `Array` - Les entêtes à ajouter à la réponse |
-| $disposition  | `String` - Indiquant si le contenu devrait être affiché en ligne dans le navigateur, c'est-à-dire en tant que page Web, ou en pièce jointe téléchargé et enregistré localement. |
+| Paramètre | Type | Description |
+|----------|------|------|
+| $file  | **String** | Le chemin absolu du fichier |
+| $filename  | **String** | Le nouveau du fichier par defaut est **null** |
+| $headers  | **Array** | Les entêtes à ajouter à la réponse |
+| $disposition  | **String** | Indiquant si le contenu devrait être affiché en ligne dans le navigateur, c'est-à-dire en tant que page Web, ou en pièce jointe téléchargé et enregistré localement. |
 
 Plus d'information sur l'entête [`Content-Disposition`](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers/Content-Disposition).
 
@@ -222,9 +222,9 @@ return redirect()->to($path);
 
 #### Prototype de `to`
 
-| paramêtre | Type |
-|----------|------|
-| $path  | `String` - L'URL de rédirection |
+| Paramètre | Type | Description |
+|----------|------|------|
+| $path  | **String** | L'URL de rédirection |
 
 ```php
 return redirect()->to('/users');
@@ -240,9 +240,9 @@ return redirect()->back($status_code);
 
 #### Prototype de `back`
 
-| paramêtre | Type |
+| Paramètre | Type |
 |----------|------|
-| $status_code  | `Int` - Le code HTTP de la réponse par defaut est égale à `302` |
+| $status_code  | **Int** - Le code HTTP de la réponse par defaut est égale à `302` |
 
 ```php
 return redirect()->back();

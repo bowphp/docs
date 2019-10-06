@@ -116,7 +116,7 @@ $this->connection('name')->create("users", function (SQLGenerator $table) {
 
 Vous pouvez utiliser les commandes suivantes dans le générateur de schéma pour définir les options de la table:
 
-| Paramètre | Type |
+| Paramètre | Description |
 |----------|------|
 | $table->withEngine('InnoDB') | Ici, on modifie le système de storage |
 | $table->withCharset('utf8') | Ici, on modifie l'encodage |

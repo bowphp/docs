@@ -140,7 +140,7 @@ $mount = mount('public');
 $mount->makeDirectory($dirname, $mode = 0777, $recursive = false);
 ```
 
-| paramêtre | Type |
+| Paramètre | Type |
 |----------|------|
 | path | `String` - le dossier à créer |
 | mode | `Int` - Le mode du dossier par défaut 777 |
