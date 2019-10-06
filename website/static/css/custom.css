@@ -174,3 +174,12 @@ blockquote a:hover {
 .projectTitle {
   color: #181818;
 }
+
+.fixedHeaderContainer {
+  border-bottom: 5px solid #eee;
+}
+
+.docsNavContainer {
+  background: #eee;
+  padding-left: 10px;
+}
