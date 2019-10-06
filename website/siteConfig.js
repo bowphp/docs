@@ -81,8 +81,8 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'installation', label: 'Documentation'},
+    {href: 'https://bowphp.github.io/api/master', label: 'API'},
     // {page: 'users', label: 'Utilisateur'},
-    // {blog: true, label: 'Blog'},
     {href: 'https://github.com/bowphp', label: 'Github'},
     {href: 'https://bowphp.github.io/api/master', label: 'API'},
   ],

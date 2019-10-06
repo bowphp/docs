@@ -4,8 +4,8 @@ title: Barry ORM
 ---
 
 <h1 align="center">
-    <img src="https://raw.githubusercontent.com/bowphp/arts/master/barry.jpg" width="150px">
-    <br>Barry ORM
+  <img src="https://raw.githubusercontent.com/bowphp/arts/master/barry.jpg" width="150px">
+  <br>Barry ORM
 </h1>
 
 <p align="center">Barry c'est l'ORM (<strong>Object Relation Mapping</strong>) intégrer dans Bow Framework.</p>

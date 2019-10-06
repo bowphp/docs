@@ -45,7 +45,7 @@ UploadFile {#92 ▼
 }
 ```
 
-### Determiner si un fichier existe
+## Determiner si un fichier existe
 
 Vous pouvez déterminer si un fichier est présent sur la requête en utilisant la méthode `hasFile`:
 
@@ -55,7 +55,7 @@ if ($request->hasFile('photo')) {
 }
 ```
 
-### Validation des téléchargements réussis
+## Validation des téléchargements réussis
 
 Vous pouvez vérifier qu'il n'y a pas eu de problèmes lors du téléchargement avec la méthode `isUploaded`:
 
@@ -67,7 +67,7 @@ if ($file->isUploaded()) {
 }
 ```
 
-### Savegarder le fichier
+## Savegarder le fichier
 
 Cela consiste juste à déplacer le fichier uploader dans une autre dossier et ceci grace à la méthode `moveTo`.
 

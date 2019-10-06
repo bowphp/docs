@@ -1,6 +1,6 @@
 ---
 id: tutorial
-title: Tutoriel pour bien comprendre
+title: Tutoriel
 ---
 
 Ce tutoriel a pour but de vous présenter Bow Framework et les principes de base de l’architecture MVC. Il vous montrera comment une application Bow Framework de base est construite étape par étape.
@@ -22,4 +22,4 @@ L'ensemble du tutoriel est divisé en plusieurs partie, chacune expliquant une p
 - Créez des éléments d'actualité, qui introduiront des opérations de base de données plus avancées et la validation des formulaires.
 - Conclusion, qui vous donnera des indications sur des lectures complémentaires et d’autres ressources.
 
-# Introduction
+## Introduction

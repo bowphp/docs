@@ -2,7 +2,7 @@
 
 The Bow Framework documentation web site is [here](https://bowphp.github.io)
 
-### Contributing
+## Contributing
 
 Thank you for considering contributing to Bow Framework! The contribution guide is in the framework documentation.
 

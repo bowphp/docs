@@ -56,7 +56,7 @@ Cette utilise la méthode `parse`.
 View::parse(view, data, status)
 ```
 
-| paramètre | type | description|
+| Paramètre | type | description|
 |-----------|------|------------|
 | `view`      | `String` | Le chemin de la vue sachant dans le moteur se base sur le dossier des vues|
 | `data`      | `Array`, `Object` | Les données a passé à la vue|
@@ -112,6 +112,8 @@ class HomeController extends Controller
     return view('greeting', ['name' => 'Bowphp']);
     // Ou
     return $this->render('greeting', ['name' => "Bowphp"]);
+    // Ou
+    return response()->render('greeting', ['name' => "Bowphp"]);
   }
 }
 ```

@@ -51,7 +51,7 @@ $app->route([
 
 #### Liste des options
 
-| paramètre | Type |
+| Paramètre | Type |
 |----------|------|
 | path | `String` |
 | method | `String`, `Array` - méthode Http |
@@ -123,7 +123,7 @@ $app->[method](url, action);
 
 `method` correspond au verbe `http` à associer à la route, soit `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH` écrit en minuscule.
 
-| paramètre | Type |
+| Paramètre | Type |
 |----------|------|
 | url      | `String` |
 | action   | `String`, `Array` - Closure ou Callable |
@@ -280,7 +280,7 @@ Prototype de la méthode `match`.
 $app->match(verbes, url, action);
 ```
 
-| paramètre | Type |
+| Paramètre | Type |
 |----------|------|
 | verbes | `Array` - La liste des méthodes `http` |
 | url    | `String` - L'URL de la route |
@@ -320,7 +320,7 @@ Prototype de la méthode `any`.
 $app->any(url, action);
 ```
 
-| paramètre | Type |
+| Paramètre | Type |
 |----------|------|
 | url      | `String` - L'url de la route |
 | action   | `String`, `Array` - Closure - L'action à lancer |
@@ -361,7 +361,7 @@ Prototype de le méthode `prefix`.
 $app->prefix(url, action);
 ```
 
-| paramètre | Type |
+| Paramètre | Type |
 |----------|------|
 | url      | `String` - l'URL à prefixer |
 | action   | `Closure` - Cette fonction prendra en paramètre l'instance de l'application |
@@ -427,7 +427,7 @@ where(name, rule);
 where(array rules);
 ```
 
-| paramètre | Type |
+| Paramètre | Type |
 |----------|------|
 | name     | `String` - Le nom de la variable |
 | value    | `String` - Le critaire de validation |
@@ -468,7 +468,7 @@ Prototype de la méthode `name`.
 name(name);
 ```
 
-| paramètre | Type |
+| Paramètre | Type |
 |----------|------|
 | name  | `String` - Le nom de la route |
 

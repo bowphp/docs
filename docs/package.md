@@ -57,13 +57,13 @@ class EmailCheckController
 
     if (Str::isMail($email)) {
       $response = [
-        'message' => 'ok',
-        'error' => true
+        'message' => 'Ok',
+        'error' => false
       ];
     } else {
       $response = [
         'message' => 'C\'est un mauvais email !',
-        'error' => false
+        'error' => true
       ];
     }
 
@@ -96,11 +96,11 @@ class EmailCheckController extends Configuration
 }
 ```
 
-Allons notre application Bow Framework avec la commande `php bow run:server`.
+Allons tester notre application Bow Framework avec la commande `php bow run:server` pour lancer le serveur de développement.
 
 ### Testons notre package
 
-Avec `curl` nous allons tester notre code:
+Pour cette exemple nous allons texter node code avec `curl`:
 
 ```bash
 curl -X POST -d "email=exemple@exemple.com" http://localhost:5000/email/checker

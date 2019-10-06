@@ -41,7 +41,7 @@ Vous trouverez la configuration dans le fichier `config/view.php` et c'est dans 
 
 Vous pouvez afficher le contenu de la variable name de la manière suivante:
 
-```c
+```jinja
 Hello, {{ $name }}.
 ```
 
@@ -69,7 +69,7 @@ Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tin
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
-```c
+```jinja
 #if ($name == 'tintin')
   {{ $name }}
 #elseif ($name == 'template')
@@ -86,7 +86,7 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 Petite spécificité, le `#unless` quant à lui, il permet de faire une condition inverse du `#if`.
 Pour faire simple, voici un exemple:
 
-```c
+```jinja
 #unless ($name == 'tintin') => #if (!($name == 'tintin'))
 ```
 
@@ -98,7 +98,7 @@ Souvent vous pouvez être amener à faire des listes ou répétitions sur des é
 
 Cette clause faire exactement l'action de `foreach`.
 
-```c
+```jinja
 #loop ($names as $name)
   Bonjour {{ $name }}
 #endloop
@@ -106,7 +106,7 @@ Cette clause faire exactement l'action de `foreach`.
 
 Cette clause peux être aussi coupler avec tout autre clause telque `#if`. Voici un exemple rapide:
 
-```c
+```jinja
 #loop ($names as $name)
   #if ($name == 'tintin')
     Bonjour {{ $name }}
@@ -121,7 +121,7 @@ Vous avez peut-être remarquer le `#stop` il permet de stoper l'éxécution de l
 
 Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucle `#loop` comme ceci:
 
-```c
+```jinja
 #loop ($names as $name)
   #if ($name == 'tintin')
     #stop
@@ -133,7 +133,7 @@ Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucl
 
 Avec les sucres syntaxique, on peut réduire le code comme ceci:
 
-```c
+```jinja
 #loop ($names as $name)
   #stop($name == 'tintin')
   // Ou
@@ -145,7 +145,7 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
 
 Cette clause faire exactement l'action de `for`.
 
-```c
+```jinja
 #for ($i = 0; $i < 10; $i++)
  // ..
 #endfor
@@ -155,7 +155,7 @@ Cette clause faire exactement l'action de `for`.
 
 Cette clause faire exactement l'action de `while`.
 
-```c
+```jinja
 #while ($name != 'tintin')
  // ..
 #endwhile
@@ -167,7 +167,7 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
 
 `#include` permet d'include un autre fichier de template dans un autre.
 
-```c
+```jinja
  #include('filename', data)
 ```
 
@@ -175,13 +175,13 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
 
 Considérons le fichier `hello.tintin.php` suivant:
 
-```c
+```jinja
 Hello {{ $name }}
 ```
 
 Utilisation:
 
-```c
+```jinja
 #include('hello', ['name' => 'Tintin'])
 // => Hello Tintin
 ```
@@ -211,7 +211,7 @@ Considérérons le code **tintin** suivant:
 
 Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.php`
 
-```c
+```jinja
 // le fichier se nomme `content.tintin.php`
 #extends('layout')
 
@@ -271,9 +271,11 @@ class TintinDirectiveConfiguration extends \Tintin\Bow\TintinConfiguration
 }
 ```
 
+Pour fin en beauté. remplacez la configuration par defaut de Tintin dans le `app/Kernel.php`.
+
 ### Exemple de création de directive
 
-Si nous ajoutons un directive simple qui est `#hello`
+Ajoutons une directive simple. On l'appelera `#hello`
 
 ```php
 $tintin->directive('hello', function (array $attributes = []) {
@@ -353,7 +355,6 @@ echo $tintin->render('form');
 </form>
 ```
 
-
 Maintenant la directive `#super` est disponible et vous pouvez l'utiliser.
 
 ```php
@@ -363,7 +364,7 @@ Maintenant la directive `#super` est disponible et vous pouvez l'utiliser.
 
 ## IDE support
 
-Tintin est supporté actuellement par [sublime text](https://www.sublimetext.com). 
+Tintin est supporté actuellement par [sublime text](https://www.sublimetext.com).
 
 ### Comment installer Sublime Package Control ?
 

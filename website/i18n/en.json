@@ -84,7 +84,7 @@
         "title": "Tintin Template"
       },
       "tutorial": {
-        "title": "Tutoriel pour bien comprendre"
+        "title": "Tutoriel"
       },
       "http-upload": {
         "title": "Upload File"
@@ -95,9 +95,9 @@
     },
     "links": {
       "Documentation": "Documentation",
+      "API": "API",
       "Utilisateur": "Utilisateur",
-      "Github": "Github",
-      "API": "API"
+      "Github": "Github"
     },
     "categories": {
       "Démarrage": "Démarrage",
