@@ -34,8 +34,8 @@ Bow utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Do
 
 ### Via Composer create-project
 
-```sh
-$ composer create-project --prefer-dist bowphp/app mon-projet
+```bash
+composer create-project --prefer-dist bowphp/app mon-projet
 ```
 
 > Nous vous conseillons d'installer `composer` de façon globale sur votre machine. Pour ce faire référez-vous à la [documentation](https://getcomposer.org/download) d'installation de composer.
@@ -47,9 +47,9 @@ $ composer create-project --prefer-dist bowphp/app mon-projet
 
 Rendez vous à la racine de votre projet et démarrez le serveur:
 
-```sh
-$ cd mon-projet
-$ php bow run:server --port=8000 --host=0.0.0.0
+```bash
+cd mon-projet
+php bow run:server --port=8000 --host=0.0.0.0
 ```
 
 Ouvrez votre navigateur et tapez `http://localhost:8000`.

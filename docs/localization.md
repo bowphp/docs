@@ -23,7 +23,7 @@ Pour utiliser le système de traduction. Il faut d'abort considérer la confirgu
 
 Dans le dossier `frontend/lang` sont ranger les traductions de votre application. Ce sont des fichier `php` qui retournent un `array` et si vous remarquez il y a un dossier `fr` et `en`. Ce sont les dossiers pour chaque langue, ici `fr` pour le français et `en` pour l'anglais et s'il y avait une autre langage par exemple l'espagnol, se serait `es` le nom du dossier.
 
-```
+```txt
 /frontend
   /lang
     /en
