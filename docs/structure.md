@@ -18,11 +18,11 @@ Bow Framework se conforme au modèle *MVC* (*M*odèle *V*ue *C*ontrôleur).
 | __app__ | Contient la logique principale de votre application. Presque toutes les classes de votre application seront dans ce dossier |
 | __frontend__ | Contient les scripts et fichiers de styles de l'application. Il contient entre autre le dossier `js`, `sass`, `lang` et le dossier `views`. C'est là que vous allez mettre vos fichiers static et ensuite les compiler |
 | __config__ | Contient les différents fichier de configuration des composants de l'application. |
-| __migration__ | Dossier dans lequel sera sauvegardé les migrations de votre application |
+| __migrations__ | Dossier dans lequel sera sauvegardé les migrations de votre application |
 | __seeders__ | Dossier dans lequel sera sauvegardé les seeding de votre application |
 | __public__ | Le front contrôleur et les fichiers compilés sont stockés dans ce dossier. |
-| __routing__ | Contient les routes de votre applications |
-| __storage__ | Contient le dossier dans lequel est sauvegardé les `cache`, les `log` et le stockage de fichier télécharger via le système de `Storage` de Bow.|
+| __routes__ | Contient les routes de votre applications |
+| __var__ | Contient le dossier dans lequel est sauvegardé les `cache`, les `log` et le stockage de fichier télécharger via le système de `Storage` de Bow.|
 | __tests__ | Contient les tests de l'application. |
 
 ## Le dossier app
