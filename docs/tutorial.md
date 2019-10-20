@@ -59,7 +59,7 @@ Dans le fichier `welcome.tintin.php`. Modifiez le contenu de la section comme ce
 
 En actualisons la page. Normalement si tout c'est bien passé vous verrez le message `Ah, bow c'est top.` affiché.
 
-> Défi: Prenez le temps pour manipuler les vues et observer le fichier `routes/app.php` et `app/Controller/HomeController`.
+> Défi: Prenez le temps pour manipuler les vues et observer le fichier `routes/app.php` et `app/Controller/WelcomeController`.
 
 Dans le fichier `routes/app.php` vous avez certainement remarquer le contenu:
 
@@ -103,13 +103,13 @@ Un contrôleur est simplement une classe qui aide à déléguer le travail. C'es
 
 > Pour des contrôleurs ? C'est juste une question de bien organiser les choses et aussi de respecter le parten SRP (Single Responsibility Principle)
 
-Pour ajouter une contrôleur dans votre application vous pouvez utiliser l'assistant `php bow` et ici nous allons créer une contrôleur nommer `NewController`.
+Pour ajouter une contrôleur dans votre application vous pouvez utiliser l'assistant `php bow` et ici nous allons créer une contrôleur nommer `ActualityController`.
 
 ```bash
-php bow add:controller NewController
+php bow add:controller ActualityController
 ```
 
-Normalement vous devez avoir une contrôleur `NewController` dans le dossier `app/Controller`. Regardons un peu son contenu:
+Normalement vous devez avoir une contrôleur `ActualityController` dans le dossier `app/Controller`. Regardons un peu son contenu:
 
 ```php
 namespace App\Controller;
@@ -117,13 +117,13 @@ namespace App\Controller;
 use App\Controller\Controller;
 use Bow\Http\Request;
 
-class NewController extends Controller
+class ActualityController extends Controller
 {
   //
 }
 ```
 
-> Vous pouvez supprimer le contrôleur `app\Controller\HomeController` et l'ignorer.
+> Vous pouvez supprimer le contrôleur `app\Controller\WelcomeController` et l'ignorer.
 
 Ensuite ajoutez une méthode dans le contrôler que nous allons appelé `showView`.
 Donc notre contrôleur deviendra:
@@ -134,7 +134,7 @@ namespace App\Controller;
 use App\Controller\Controller;
 use Bow\Http\Request;
 
-class NewController extends Controller
+class ActualityController extends Controller
 {
   /**
    * Show view page
@@ -152,22 +152,16 @@ Maintenant que vous avez créé votre première méthode, il est temps de créer
 
 > Supprimez le content du dossier `frontend/templates` sauf le dossier `errors`.
 
-Créez la page principe (layouyt) dans **frontend/templates/layout.tintin.php** (Cette page existe peut être déjà par défaut):
+Créez la page principe (layout) dans **frontend/templates/layout.tintin.php** (Cette page existe peut être déjà par défaut):
 
 ```html
 <!DOCTYPE html>
 <html>
   <head>
     <title>Page Title</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
-
-  <p>Bienvenue sur mon site</p>
-
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <p>Bienvenue sur mon site</p>
   </body>
 </html>
 ```
@@ -190,7 +184,7 @@ Nous avons parlé un temps soit peut des routes des applications.
 Ouvrez le fichier de routage situé dans `routes/app.php` et ajoutez les deux lignes suivantes. Supprimez tout autre code définissant une route et ajoutons le code suivant:
 
 ```php
-$app->get('/', 'NewController::showView');
+$app->get('/', 'ActualityController::showView');
 ```
 
 Pour rappel, Bow Framework lit ses règles de routage de haut en bas et achemine la demande vers la première règle correspondante. Chaque règle est une expression régulière (à gauche) mappée sur un contrôleur et un nom de méthode séparés par des "::" (à droite).
