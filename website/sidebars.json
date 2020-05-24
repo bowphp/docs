@@ -14,11 +14,12 @@
       "views",
       "storage",
       "mail",
+      "auth",
       "i18n"
     ],
     "Base de donnée": [
       "database",
-      "querybuild",
+      "query-builder",
       "orm",
       "migration",
       "seeding"

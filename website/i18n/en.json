@@ -5,6 +5,9 @@
     "previous": "Previous",
     "tagline": "Simplify Your Web Development",
     "docs": {
+      "auth": {
+        "title": "Autentification"
+      },
       "concept": {
         "title": "Concept et Architecture"
       },
@@ -53,7 +56,7 @@
       "policier": {
         "title": "Policier"
       },
-      "query-build": {
+      "query-builder": {
         "title": "SQL Builder"
       },
       "http-request": {

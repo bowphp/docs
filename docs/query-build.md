@@ -1,5 +1,5 @@
 ---
-id: query-build
+id: query-builder
 title: SQL Builder
 ---
 
