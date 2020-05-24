@@ -1,0 +1,38 @@
+{
+  "version-4.1.x-docs": {
+    "Démarrage": [
+      "version-4.1.x-installation",
+      "version-4.1.x-configuration",
+      "version-4.1.x-structure",
+      "version-4.1.x-tutorial",
+      "version-4.1.x-contribution"
+    ],
+    "Guide": [
+      "version-4.1.x-routing",
+      "version-4.1.x-controleur",
+      "version-4.1.x-middleware",
+      "version-4.1.x-views",
+      "version-4.1.x-storage",
+      "version-4.1.x-mail",
+      "version-4.1.x-i18n"
+    ],
+    "Base de donnée": [
+      "version-4.1.x-database",
+      "version-4.1.x-querybuild",
+      "version-4.1.x-orm",
+      "version-4.1.x-migration",
+      "version-4.1.x-seeding"
+    ],
+    "Http": [
+      "version-4.1.x-http-request",
+      "version-4.1.x-csrf-protection",
+      "version-4.1.x-http-response",
+      "version-4.1.x-http-session"
+    ],
+    "Misc": [
+      "version-4.1.x-package",
+      "version-4.1.x-frontend",
+      "version-4.1.x-policier"
+    ]
+  }
+}
