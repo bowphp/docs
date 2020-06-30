@@ -6,12 +6,12 @@ title: Tutoriel
 - [Introduction](#introduction)
 - [Des pages statiques](#des-pages-statiques)
   - [Exeminons le code par defaut dans le framework](#exeminons-le-code-par-defaut-dans-le-framework)
-  - [Créons notre premier contrôleur](#cr%c3%a9ons-notre-premier-contr%c3%b4leur)
-  - [Ajout de logique au contrôleur](#ajout-de-logique-au-contr%c3%b4leur)
+  - [Créons notre premier contrôleur](#créons-notre-premier-contrôleur)
+  - [Ajout de logique au contrôleur](#ajout-de-logique-au-contrôleur)
   - [Routing](#routing)
 - [La section Nouvelles](#la-section-nouvelles)
-  - [Mise en place de votre modèle](#mise-en-place-de-votre-mod%c3%a8le)
-- [Créez des éléments d'actualité](#cr%c3%a9ez-des-%c3%a9l%c3%a9ments-dactualit%c3%a9)
+  - [Mise en place de votre modèle](#mise-en-place-de-votre-modèle)
+- [Créez des éléments d'actualité](#créez-des-éléments-dactualité)
 - [Conclusion](#conclusion)
 
 ## Introduction
@@ -112,9 +112,9 @@ php bow add:controller ActualityController
 Normalement vous devez avoir une contrôleur `ActualityController` dans le dossier `app/Controller`. Regardons un peu son contenu:
 
 ```php
-namespace App\Controller;
+namespace App\Controllers;
 
-use App\Controller\Controller;
+use App\Controllers\Controller;
 use Bow\Http\Request;
 
 class ActualityController extends Controller
@@ -123,15 +123,15 @@ class ActualityController extends Controller
 }
 ```
 
-> Vous pouvez supprimer le contrôleur `app\Controller\WelcomeController` et l'ignorer.
+> Vous pouvez supprimer le contrôleur `app\Controllers\WelcomeController` et l'ignorer.
 
 Ensuite ajoutez une méthode dans le contrôler que nous allons appelé `showView`.
 Donc notre contrôleur deviendra:
 
 ```php
-namespace App\Controller;
+namespace App\Controllers;
 
-use App\Controller\Controller;
+use App\Controllers\Controller;
 use Bow\Http\Request;
 
 class ActualityController extends Controller
@@ -201,7 +201,7 @@ Dans la dernière section, nous avons passé en revue quelques concepts de base 
 
 Au lieu d'écrire les opérations de base de données directement dans le contrôleur, les requêtes doivent être placées dans un modèle afin de pouvoir être facilement réutilisées ultérieurement. Les modèles sont l'endroit où vous récupérez, insérez et mettez à jour des informations dans votre base de données ou dans d'autres magasins de données. Ils représentent vos données.
 
-Ouvrez le répertoire `app/Model`, vous verrez un fichier `User.php` c'est une modèle. Pour ajouter un modèle dans notre application nous allons utiliser `php bow`.
+Ouvrez le répertoire `app/Models`, vous verrez un fichier `User.php` c'est une modèle. Pour ajouter un modèle dans notre application nous allons utiliser `php bow`.
 
 ```bash
 php bow add:model Actuality

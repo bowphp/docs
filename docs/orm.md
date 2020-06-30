@@ -29,7 +29,7 @@ Après création du modele, un fichier du meme nom sera créer, dans note cas `T
 Voici un aperçu du fichier:
 
 ```php
-namespace App\Model;
+namespace App\Models;
 
 use Bow\Database\Barry\Model;
 

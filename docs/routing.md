@@ -5,10 +5,10 @@ title: Routing
 
 - [Introduction](#introduction)
 - [Mappage d'URL](#mappage-durl)
-  - [Avec le méthode `route`](#avec-le-m%c3%a9thode-route)
+  - [Avec le méthode `route`](#avec-le-méthode-route)
     - [Liste des options](#liste-des-options)
-  - [En utilisant les verbes HTTP comme méthode](#en-utilisant-les-verbes-http-comme-m%c3%a9thode)
-  - [Liste des possibilités](#liste-des-possibilit%c3%a9s)
+  - [En utilisant les verbes HTTP comme méthode](#en-utilisant-les-verbes-http-comme-méthode)
+  - [Liste des possibilités](#liste-des-possibilités)
 - [Les methods de mapping](#les-methods-de-mapping)
   - [Mapping avec `get`](#mapping-avec-get)
   - [Mapping avec `post`](#mapping-avec-post)
@@ -22,7 +22,7 @@ title: Routing
   - [Mapping avec `prefix`](#mapping-avec-prefix)
 - [Personnalisation](#personnalisation)
   - [Capturer des variables dans l'URL](#capturer-des-variables-dans-lurl)
-  - [Ajouter des critères, des restrictions sur les URLs](#ajouter-des-crit%c3%a8res-des-restrictions-sur-les-urls)
+  - [Ajouter des critères, des restrictions sur les URLs](#ajouter-des-critères-des-restrictions-sur-les-urls)
   - [Donner un nom aux routes](#donner-un-nom-aux-routes)
   - [Association de middleware](#association-de-middleware)
     - [La composition d'action](#la-composition-daction)
@@ -290,7 +290,7 @@ $app->match(verbes, url, action);
 | action | `String`, `Array`, `Closure` | L'action à lancer |
 
 ```php
-$app->match(['`GET`', '`POST`'], '/users', function ()
+$app->match(['GET', 'POST'], '/users', function ()
 {
   // Code ici
 });
@@ -493,7 +493,12 @@ Pour plus d'information sur le sujet, allez ce lien [middleware](#documentation-
 $app->get('/:name', ['middleware' => 'ip', function ($name)
 {
   return 'Bonjour ' . $name;
-}])->name('hello');
+}]);
+
+// Ou
+$app->get('/:name', function ($name) {
+  return 'Bonjour ' . $name;
+})->middleware('ip');
 ```
 
 #### La composition d'action

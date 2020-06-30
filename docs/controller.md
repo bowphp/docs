@@ -5,18 +5,18 @@ title: Contrôleurs
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-- [Contrôleur basic](#contr%c3%b4leur-basic)
-  - [Définir un contrôleur](#d%c3%a9finir-un-contr%c3%b4leur)
-  - [Contrôleur et espaces de noms](#contr%c3%b4leur-et-espaces-de-noms)
-  - [Contrôleur et Middleware](#contr%c3%b4leur-et-middleware)
-- [Contrôleur REST](#contr%c3%b4leur-rest)
-  - [Définir un contrôleur rest](#d%c3%a9finir-un-contr%c3%b4leur-rest)
-  - [Utilisons notre contrôleur REST](#utilisons-notre-contr%c3%b4leur-rest)
-    - [Prototype de la méthode `rest`](#prototype-de-la-m%c3%a9thode-rest)
+- [Contrôleur basic](#contrôleur-basic)
+  - [Définir un contrôleur](#définir-un-contrôleur)
+  - [Contrôleur et espaces de noms](#contrôleur-et-espaces-de-noms)
+  - [Contrôleur et Middleware](#contrôleur-et-middleware)
+- [Contrôleur REST](#contrôleur-rest)
+  - [Définir un contrôleur rest](#définir-un-contrôleur-rest)
+  - [Utilisons notre contrôleur REST](#utilisons-notre-contrôleur-rest)
+    - [Prototype de la méthode `rest`](#prototype-de-la-méthode-rest)
     - [Utilisation simple](#utilisation-simple)
     - [Utilisation avec les contraintes](#utilisation-avec-les-contraintes)
     - [Utilisation via un tableau comme action](#utilisation-via-un-tableau-comme-action)
-    - [Ignore des méthodes](#ignore-des-m%c3%a9thodes)
+    - [Ignore des méthodes](#ignore-des-méthodes)
     - [Url et Action](#url-et-action)
 
 ## Introduction
@@ -25,15 +25,15 @@ Les contrôleurs sont des moyens pour simplifier l'organisation de vos projet.
 
 Au lieu de définir toute la logique de gestion des requête en tant que `closure` dans les fichiers de routage, vous pouvez organiser ce comportement à l'aide de classe de contrôleur. Les contrôleurs peuvent regrouper la logique de traitement des requêtes associée en une seule classe.
 
-Les contrôleurs sont stockés dans le répertoire `app/Controller`.
+Les contrôleurs sont stockés dans le répertoire `app/Controllers`.
 
 <script id="asciicast-1r0hZPnP5wY5fCPcxNXtLTQ4r" src="https://asciinema.org/a/1r0hZPnP5wY5fCPcxNXtLTQ4r.js" data-speed="2" data-rows="20" async></script>
 
 ## Configuration
 
-Vous avez la possibilité de modifier le `namespace` des contrôleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel\Loader.php`. La méthode `middleware` permet à Bow de savoir quel est le bon `namespace` à ajouter sur le contrôleur lors de l'execution de la réquête ou lors de la génération de contrôleur ou de middleware par le lanceur de tache `php bow`.
+Vous avez la possibilité de modifier le `namespace` des contrôleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel.php`. La méthode `middlewares` permet à Bow de savoir quel est le bon `namespace` à ajouter sur le contrôleur lors de l'execution de la réquête ou lors de la génération de contrôleur ou de middleware par le lanceur de tache `php bow`.
 
-Imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos contrôleurs dans le `namespace` `App\Bus\Controller`. Alors comment faire ça ?
+Imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos contrôleurs dans le `namespace` `App\Bus\Controllers`. Alors comment faire ça ?
 
 Voici le code que cela pourrai donnée:
 
@@ -42,7 +42,7 @@ Voici le code que cela pourrai donnée:
 public function namespaces()
 {
   return [
-    "controller" => "App\\Bus\\Controller",
+    "controller" => "App\\Bus\\Controllers",
     ...
   ]
 }
@@ -54,7 +54,7 @@ Ensuite il faudra aussi changer un peu la configuration du lancer de tache:
 # Dans le fichier `bow`
 $command = new Bow\Console\Command(__DIR__);
 ...
-$command->setControllerDirectory(__DIR__.'/app/Bus/Controller');
+$command->setControllerDirectory(__DIR__.'/app/Bus/Controllers');
 ```
 
 > Visitez ce [lien](./structure.md) pour plus d'information sur la personnalisation de la structure de l'applucation.
@@ -63,13 +63,13 @@ $command->setControllerDirectory(__DIR__.'/app/Bus/Controller');
 
 ### Définir un contrôleur
 
-Voici un exemple de classe de contrôleur de base. Notez que le contrôleur hérite de la classe de `App\Controller\Controller` de base incluse avec Bow. La classe de base fournit quelques méthodes pratiques telles que la méthode du `render`, qui peut être utilisée pour compiler une vue.
+Voici un exemple de classe de contrôleur de base. Notez que le contrôleur hérite de la classe de `App\Controllers\Controller` de base incluse avec Bow. La classe de base fournit quelques méthodes pratiques telles que la méthode du `render`, qui peut être utilisée pour compiler une vue.
 
 ```php
-namespace App\Controller;
+namespace App\Controllers;
 
-use App\Controller\Controller;
-use App\Model\User;
+use App\Controllers\Controller;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -86,7 +86,7 @@ class UserController extends Controller
 }
 ```
 
-Vous pouvez définir une route dans le fichier `routing/app.php` vers cette action de contrôleur comme suit:
+Vous pouvez définir une route dans le fichier `routes/app.php` vers cette action de contrôleur comme suit:
 
 ```php
 $app->get('user/:id', 'UserController::show');
@@ -102,9 +102,9 @@ php bow add:controller UserController
 
 ### Contrôleur et espaces de noms
 
-Il est très important de noter que nous n’avons pas eu besoin de spécifier le `namespace` du contrôleur complet lors de la définition de la route du contrôleur. Étant donné que `public/index.php` charge vos fichiers de route dans un groupe de routage contenant le `namespace`, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Controller` de le `namespace`.
+Il est très important de noter que nous n’avons pas eu besoin de spécifier le `namespace` du contrôleur complet lors de la définition de la route du contrôleur. Étant donné que `public/index.php` charge vos fichiers de route dans un groupe de routage contenant le `namespace`, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Controllers` de le `namespace`.
 
-Si vous choisissez d'imbriquer vos contrôleurs plus profondément dans le répertoire `App\Controller`, utilisez le nom de classe spécifique relatif à le `namespace` racine `App\Controller`. Donc, si votre classe de contrôleur complète est `App\Controller\Photo\AdminController`, vous devez enregistrer les routes sur le contrôleur comme suit:
+Si vous choisissez d'imbriquer vos contrôleurs plus profondément dans le répertoire `App\Controllers`, utilisez le nom de classe spécifique relatif à le `namespace` racine `App\Controllers`. Donc, si votre classe de contrôleur complète est `App\Controllers\Photo\AdminController`, vous devez enregistrer les routes sur le contrôleur comme suit:
 
 ```php
 $app->get('/foo', 'Photo\AdminController::action');
@@ -122,7 +122,7 @@ Plus d'information sur le [routing](./routing.md).
 
 ### Contrôleur et Middleware
 
-Les middlewares peuvent être assigner à la route du contrôleur dans vos fichiers de route. Les middleware sont stockés dans le dossier `app\Middleware`. Pour plus d'information sur les middlewares, visitez ce [lien](./middleware.md).
+Les middlewares peuvent être assigner à la route du contrôleur dans vos fichiers de route. Les middleware sont stockés dans le dossier `app\Middlewares`. Pour plus d'information sur les middlewares, visitez ce [lien](./middleware.md).
 
 Exemple:
 
@@ -147,8 +147,8 @@ Un contrôleur nommé `PetController` sera donc créé. Ce qui fait ça particul
 ```php
 namespace App\Controller;
 
-use App\Controller\Controller;
-use App\Model\Pet;
+use App\Controllers\Controller;
+use App\Models\Pet;
 
 class PetController extends Controller
 {

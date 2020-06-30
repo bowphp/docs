@@ -6,17 +6,20 @@ title: Storage
 - [Introduction](#introduction)
 - [Configuration](#configuration)
 - [Fonctionnement](#fonctionnement)
+  - [Système de fichier local](#système-de-fichier-local)
+    - [Explication du concept](#explication-du-concept)
+  - [Les services S3 et FTP](#les-services-s3-et-ftp)
 - [Manipulation des fichiers](#manipulation-des-fichiers)
-  - [Récupérer le contenu d'un fichier](#r%c3%a9cup%c3%a9rer-le-contenu-dun-fichier)
+  - [Récupérer le contenu d'un fichier](#récupérer-le-contenu-dun-fichier)
   - [Ajouter/Modifier le contenu d'un fichier](#ajoutermodifier-le-contenu-dun-fichier)
-  - [Ajouter du contenu au début ou à la fin d'un fichier](#ajouter-du-contenu-au-d%c3%a9but-ou-%c3%a0-la-fin-dun-fichier)
+  - [Ajouter du contenu au début ou à la fin d'un fichier](#ajouter-du-contenu-au-début-ou-à-la-fin-dun-fichier)
   - [Supprimer un fichier](#supprimer-un-fichier)
   - [Copier un fichier](#copier-un-fichier)
-  - [Créer un dossier](#cr%c3%a9er-un-dossier)
+  - [Créer un dossier](#créer-un-dossier)
     - [Prototype](#prototype)
-  - [Vérifier si un fichier existe](#v%c3%a9rifier-si-un-fichier-existe)
-  - [Vérifier si le paramêtre est un fichier](#v%c3%a9rifier-si-le-param%c3%aatre-est-un-fichier)
-  - [Vérifier si le paramêtre est un dossier](#v%c3%a9rifier-si-le-param%c3%aatre-est-un-dossier)
+  - [Vérifier si un fichier existe](#vérifier-si-un-fichier-existe)
+  - [Vérifier si le paramêtre est un fichier](#vérifier-si-le-paramêtre-est-un-fichier)
+  - [Vérifier si le paramêtre est un dossier](#vérifier-si-le-paramêtre-est-un-dossier)
   - [Obtenir le chemin absolu d'un fichier ou dossier](#obtenir-le-chemin-absolu-dun-fichier-ou-dossier)
 
 ## Introduction
@@ -29,7 +32,16 @@ Le fichier de configuration du système de gestion de fichiers se trouve dans `c
 
 ## Fonctionnement
 
-Nous appelerons les différents dossiers spécifiés `disque`.
+Vous avez la possibilité d'utiliser les services ou travailler dans votre disque local. Les méthodes statiques `mount` et `service` permettent reciproquement de manipuler le système de disque et les services de stockage actuellement `ftp` et `s3`.
+
+### Système de fichier local
+
+Pour gérer votre système de fichier local avec Bow Framework vous allez utiliser la méthode statique `mount`.
+
+#### Explication du concept
+
+Nous appelerons les différents dossiers spécifiés `disk`.
+
 Considérons la configuration suivante:
 
 ```php
@@ -64,6 +76,17 @@ mount('public');
 mount()->get('app.js');
 ```
 
+### Les services S3 et FTP
+
+Pour utiliser un système de stockage externe. Cela se fait via la méthode `service`. Cette méthode, vous permet de séléctionner le type de stockage externe que vous voulez utiliser. Vous trouverez la configuration nécessaire des services dans le fichier de configuration section `services` du fichier `config/resource.php`.
+
+Exemple avec le service `ftp`:
+
+```php
+$service = Storage::service('ftp');
+$service->get('app.js');
+```
+
 ## Manipulation des fichiers
 
 Cette section décrit les différentes méthodes disponible pour la manipulation de fichiers et leur utilisation.
@@ -85,9 +108,15 @@ La méthode `get` sert à recupérer le contenu d'un fichier. Elle prend comme p
 $mount = mount('public');
 $content = $mount->get("app.txt");
 
+// Avec un service
+$service = Storage::service('ftp');
+$content = $service->get("app.txt");
+
 echo $content;
 // => Hello, world
 ```
+
+> `service` et `mount` utilise la même interface de manipulation. Ce qui veux dire que les méthodes disponibles pour `mount` existe aussi pour `service`.
 
 ### Ajouter/Modifier le contenu d'un fichier
 

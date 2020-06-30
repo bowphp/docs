@@ -18,12 +18,12 @@ Chaque fois que vous définissez un formulaire HTML dans votre application, vous
 
 ```html
 <form method="POST" action="/upload">
-  {{ csrf_field() }}
+  {{{ csrf_field() }}}
   ...
 </form>
 ```
 
-Le middleware `CsrfMiddleware`, qui est inclus dans le groupe de middleware Web, vérifie automatiquement que le jeton dans l'entrée de la requête correspond au jeton stocké dans la session.
+Le middleware `App\Middlewares\ClientCsrfMiddleware::class`, qui est inclus dans le groupe de middleware Web, vérifie automatiquement que le jéton dans l'entrée de la requête correspond au jeton stocké dans la session.
 
 ### Jetons CSRF & JavaScript
 
@@ -33,7 +33,7 @@ Le middleware CSRF est automatiquement ajouté lors de l'exécution de chaque re
 
 ## X-CSRF-TOKEN
 
-Outre la vérification du jeton CSRF en tant que paramètre POST, le middleware `CsrfMiddleware` vérifie également l’en-tête de demande X-CSRF-TOKEN. Vous pouvez, par exemple, stocker le jeton dans une balise META HTML:
+Outre la vérification du jeton CSRF en tant que paramètre POST, le middleware `App\Middlewares\ClientCsrfMiddleware::class` vérifie également l’en-tête de demande `X-CSRF-TOKEN`. Vous pouvez, par exemple, stocker le jeton dans une balise META HTML:
 
 ```html
 <meta name="csrf-token" content="{{ csrf_token() }}">

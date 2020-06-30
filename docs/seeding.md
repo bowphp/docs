@@ -33,9 +33,9 @@ $seeds['pets'] = [];
 
 foreach (range(1, 5) as $key) {
   $seeds['pets'][] = [
-    'id' => faker('autoincrement'),
-    'created_at' => faker('date'),
-    'updated_at' => faker('date')
+    'name' => $faker->name,
+    'created_at' => date('Y-m-d H:i:s'),
+    'updated_at' => date('Y-m-d H:i:s'),
   ];
 }
 

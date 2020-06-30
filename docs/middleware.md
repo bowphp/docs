@@ -4,7 +4,7 @@ title: Middleware
 ---
 
 - [Introduction](#introduction)
-- [Comment ça marche](#comment-%c3%a7a-marche)
+- [Comment ça marche](#comment-ça-marche)
 - [Ajouter un middleware](#ajouter-un-middleware)
 - [Enregistrement de middleware](#enregistrement-de-middleware)
 - [Utiliser le middleware](#utiliser-le-middleware)
@@ -40,7 +40,7 @@ Alors, le middleware que nous venons d'ajouter, vérifira l'adresse IP du client
 Mais d'abort, regardons le contenu du fichier `IpMiddleware`. C'est la méthode `process` qui permet de lancer le middleware et la callable permet de lancer le prochaine middleware.
 
 ```php
-namespace App\Middleware;
+namespace App\Middlewares;
 
 use Bow\Http\Request;
 
@@ -82,30 +82,31 @@ public function middlewares()
 {
   return [
     ...
-    'ip' => \App\Middleware\IpMiddleware::class
+    'ip' => \App\Middlewares\IpMiddleware::class
     ...
   ];
 }
 ```
 
-Il est aussi possible d'ajouter les middlwares de façon globle dans l'application. Et ceci se faire dans le fichier de `routes` avec la méthode `middleware` sur `$app`.
+Il est aussi possible d'ajouter les middlwares de façon globle dans l'application. Et ceci se faire dans le fichier de `routes` avec la méthode `middleware` sur `$app` qui va nous retourné une instance de `\Bow\Router\Router::class` donc tout les routes qui sera definir avec cette instance héritérons des middlewares spécifiés.
 
 ```php
-$app->middleware(\App\Middleware\IpMiddleware::class);
+$router = $app->middleware(\App\Middlewares\IpMiddleware::class);
+$router->get('/', 'HomeController::index');
+
 // Ou
-$app->middleware([
-  \App\Middleware\IpMiddleware::class,
-  \App\Middleware\OtherMiddleware::class,
+$router = $app->middleware([
+  \App\Middlewares\IpMiddleware::class,
+  \App\Middlewares\OtherMiddleware::class,
 ]);
+$router->get('/', 'HomeController::index');
 ```
 
 ## Utiliser le middleware
 
-Après avoir définir un middleware dans le `app/Kernel/Loader.php`.
+Après avoir définir un middleware dans le `app/Kernel.php`.
 
 ```php
-$app->middleware(['ip', 'autre']);
-// ou
 $app->get('/', 'HomeController::index')->middleware('ip');
 $app->get('/', 'HomeController::index')->middleware(['ip', 'autre']);
 

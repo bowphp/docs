@@ -31,16 +31,16 @@ C'est votre répertoire de travail sur bow. C'est là que vous allez insérer to
 
 Ici vous retrouverez les dossiers suivants:
 
-- __Configuration__: Dossier dans lequel sera sauvegardé les Configuration personnalisés de l'application.
-- __Controller__: Dossier dans lequel sera sauvegardé les contrôleurs de l'application.
-- __Middleware__: Dossier dans lequel sera sauvegardé les middlewares de l'application.
-- __Model__: Dossier dans lequel sera sauvegardé les modèles de l'application.
-- __Validation__: Dossier dans lequel sera sauvegardé les validations de l'application.
+- __Configurations__: Dossier dans lequel sera sauvegardé les Configuration personnalisés de l'application.
+- __Controllers__: Dossier dans lequel sera sauvegardé les contrôleurs de l'application.
+- __Middlewares__: Dossier dans lequel sera sauvegardé les middlewares de l'application.
+- __Models__: Dossier dans lequel sera sauvegardé les modèles de l'application.
+- __Validations__: Dossier dans lequel sera sauvegardé les validations de l'application.
+- __Exceptions__: Dossier dans lequel sera sauvegardé les exceptions personnalisés de l'application.
 
 Vous trouverez aussi les fichiers suivants:
 
 - __Kernel.php__: La configuration du lanceur de l'application.
-- __ErrorHandle.php__: Ce fichier permet au framework d'envoyer les erreurs internes et externes vers la partie frontend pour permettre au développeur de les mieux traiter
 
 ## Le dossier frontend
 

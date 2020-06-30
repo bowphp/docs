@@ -5,13 +5,13 @@ title: HTTP Session
 
 - [Introduction](#introduction)
 - [Utilisation](#utilisation)
-  - [Récupération des données](#r%c3%a9cup%c3%a9ration-des-donn%c3%a9es)
+  - [Récupération des données](#récupération-des-données)
   - [Le helper global de session](#le-helper-global-de-session)
-  - [Récupération de toutes les données de session](#r%c3%a9cup%c3%a9ration-de-toutes-les-donn%c3%a9es-de-session)
-  - [Déterminer si un élément existe dans la session](#d%c3%a9terminer-si-un-%c3%a9l%c3%a9ment-existe-dans-la-session)
-  - [Stocker des données](#stocker-des-donn%c3%a9es)
-- [Données flash](#donn%c3%a9es-flash)
-- [Suppression de données](#suppression-de-donn%c3%a9es)
+  - [Récupération de toutes les données de session](#récupération-de-toutes-les-données-de-session)
+  - [Déterminer si un élément existe dans la session](#déterminer-si-un-élément-existe-dans-la-session)
+  - [Stocker des données](#stocker-des-données)
+- [Données flash](#données-flash)
+- [Suppression de données](#suppression-de-données)
 
 ## Introduction
 
@@ -28,8 +28,8 @@ Premièrement, examinons l’accès à la session via une instance `Bow\Http\Req
 ```php
 App\Controller;
 
-use App\Controller\Controller;
-use App\Model\User;
+use App\Controllers\Controller;
+use App\Models\User;
 use Bow\Http\Request;
 
 class UserController extends Controller
