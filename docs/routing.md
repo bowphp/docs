@@ -264,7 +264,7 @@ $app->options('/', function ()
 Les navigateurs ne supportent pas cette méthode. Alors dans votre formulaire d'envoie, il faudra créer un champs comme ceci:
 
 ```html
-<input type="hidden" name="_method" value="`DELETE`">
+<input type="hidden" name="_method" value="DELETE">
 ```
 
 Ce qui aura pour but de permettre à Bow de comprendre votre requête et c'est valable pour PUT et PATCH.
