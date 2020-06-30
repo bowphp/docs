@@ -6,9 +6,9 @@ original_id: configuration
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-  - [Explication de la notation à point](#explication-de-la-notation-%c3%a0-point)
+  - [Explication de la notation à point](#explication-de-la-notation-à-point)
   - [Fichier .env.json](#fichier-envjson)
-  - [Récupération des informations](#r%c3%a9cup%c3%a9ration-des-informations)
+  - [Récupération des informations](#récupération-des-informations)
 - [Les helpers](#les-helpers)
 
 ## Introduction

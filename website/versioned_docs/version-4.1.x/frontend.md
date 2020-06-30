@@ -8,7 +8,7 @@ original_id: frontend
 - [Utilisation](#utilisation)
   - [Compilation simplement](#compilation-simplement)
   - [Compilation et minification les fichiers sources](#compilation-et-minification-les-fichiers-sources)
-  - [Surveiller le changement de fichier et récompile en fonction](#surveiller-le-changement-de-fichier-et-r%c3%a9compile-en-fonction)
+  - [Surveiller le changement de fichier et récompile en fonction](#surveiller-le-changement-de-fichier-et-récompile-en-fonction)
   - [Pour lancer code sniffer](#pour-lancer-code-sniffer)
 - [Webpack.mix.js](#webpackmixjs)
 

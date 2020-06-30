@@ -4,10 +4,10 @@ title: Installation
 original_id: installation
 ---
 
-- [Prérequis](#pr%c3%a9requis)
-- [Créer un projet](#cr%c3%a9er-un-projet)
+- [Prérequis](#prérequis)
+- [Créer un projet](#créer-un-projet)
   - [Via Composer create-project](#via-composer-create-project)
-- [Démarrer votre projet](#d%c3%a9marrer-votre-projet)
+- [Démarrer votre projet](#démarrer-votre-projet)
 - [Configuration](#configuration)
   - [Dossier Public](#dossier-public)
   - [Fichiers de configuration](#fichiers-de-configuration)

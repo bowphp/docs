@@ -6,13 +6,13 @@ original_id: http-session
 
 - [Introduction](#introduction)
 - [Utilisation](#utilisation)
-  - [Récupération des données](#r%c3%a9cup%c3%a9ration-des-donn%c3%a9es)
+  - [Récupération des données](#récupération-des-données)
   - [Le helper global de session](#le-helper-global-de-session)
-  - [Récupération de toutes les données de session](#r%c3%a9cup%c3%a9ration-de-toutes-les-donn%c3%a9es-de-session)
-  - [Déterminer si un élément existe dans la session](#d%c3%a9terminer-si-un-%c3%a9l%c3%a9ment-existe-dans-la-session)
-  - [Stocker des données](#stocker-des-donn%c3%a9es)
-- [Données flash](#donn%c3%a9es-flash)
-- [Suppression de données](#suppression-de-donn%c3%a9es)
+  - [Récupération de toutes les données de session](#récupération-de-toutes-les-données-de-session)
+  - [Déterminer si un élément existe dans la session](#déterminer-si-un-élément-existe-dans-la-session)
+  - [Stocker des données](#stocker-des-données)
+- [Données flash](#données-flash)
+- [Suppression de données](#suppression-de-données)
 
 ## Introduction
 
