@@ -1,10 +1,5 @@
 /* your custom css */
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Droid Sans", "Helvetica Neue", sans-serif;
-  font-size: 15px;
-  font-weight: 400
-}
 
 @font-face{
   font-family: 'Fira Code';
@@ -13,7 +8,7 @@ body {
        url('woff2/FiraCode-Light.woff2') format('woff2'),
        url('woff/FiraCode-Light.woff') format('woff'),
        url('ttf/FiraCode-Light.ttf') format('truetype');
-  font-weight: 300;
+  font-weight: 400;
   font-style: normal;
 }
 
@@ -26,6 +21,13 @@ body {
        url('ttf/FiraCode-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 15px !important;
+  font-weight: 400;
+  line-height: 1,7;
 }
 
 .navigationSlider .slidingNav ul {
@@ -84,7 +86,7 @@ h2 {
 
 .fixedHeaderContainer header .headerTitleWithLogo {
   display: block;
-  font-size: 1.25em;
+  font-size: 1.55em;
   line-height: 18px;
   margin: 0;
   position: relative;
@@ -139,36 +141,25 @@ table td:first-child > code {
 
 tt, code, pre {
   position: relative;
-  font-family: Consolas, Monaco, "Fira Code", Consolas, Monaco, "Andale Mono", monospace;
-  font-size: 15px;
+  font-family: "Fira Code", Consolas, Monaco, monospace;
+  font-size: 13px !important;
 }
 
 tt, code {
   padding: 1px 2px;
-  font-size: 11px;
-  font-weight: bold
-}
-
-blockquote {
-  background: rgb(70, 69, 69);
-  border-radius: 3px;
-  border-width: 5px;
-  font-weight: normal;
-  font-size: 14px;
-  padding: 5px;
-  color: #fff;
 }
 
 a {
   color: #d80027;
 }
 
-blockquote a {
+/* blockquote a {
   color: #eee;
 }
+
 blockquote a:hover {
   color: #ddd;
-}
+} */
 
 .projectTitle {
   color: #181818;

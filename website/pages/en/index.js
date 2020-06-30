@@ -1,15 +1,5 @@
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 const React = require('react');
-
 const CompLibrary = require('../../core/CompLibrary.js');
-
-const MarkdownBlock = CompLibrary.MarkdownBlock; /* Used to read markdown */
 const Container = CompLibrary.Container;
 const GridBlock = CompLibrary.GridBlock;
 
@@ -126,17 +116,34 @@ const Features = () => (
   </Block>
 );
 
-const Showcase = props => {
+const Team = props => {
   if ((siteConfig.users || []).length === 0) {
     return null;
   }
 
-  const showcase = siteConfig.users.filter(user => user.pinned).map(user => (
+  const teams = siteConfig.users.filter(user => user.pinned).map(user => (
     <a href={user.infoLink} key={user.infoLink}>
       <img src={user.image} alt={user.caption} title={user.caption} />
     </a>
   ));
 
+  return (
+    <div>
+      <div className="productShowcaseSection paddingBottom">
+        <h2>CEUX UTILISE BOW FRAMEWORK?</h2>
+        <p>Ce projet est utilisé par toutes ces personnes influentes dans les communautés technologiques de CI.</p>
+        <div className="logos">{teams}</div>
+        {/* <div className="more-users">
+          <a className="button" href={pageUrl('users.html', props.language)}>
+            Afficher ceux qui utilisent Bow
+          </a>
+        </div> */}
+      </div>
+    </div>
+  );
+};
+
+const Showcase = (props) => {
   return (
     <div>
       <div className="productShowcaseSection paddingBottom">
@@ -151,26 +158,16 @@ const Showcase = props => {
           data-loop="true"
           async/>
       </div>
-      <div className="productShowcaseSection paddingBottom">
-        <h2>QUI UTILISE BOW FRAMEWORK?</h2>
-        <p>Ce projet est utilisé par toutes ces personnes.</p>
-        <div className="logos">{showcase}</div>
-        <div className="more-users">
-          <a className="button" href={pageUrl('users.html', props.language)}>
-            Afficher ceux qui utilisent Bow
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-};
+  </div>
+  )
+}
 
 const Partners = props => {
   if ((siteConfig.partainers || []).length === 0) {
     return null;
   }
 
-  const showcase = siteConfig.partainers.filter(user => user.pinned).map(user => (
+  const partainers = siteConfig.partainers.filter(user => user.pinned).map(user => (
     <a href={user.infoLink} key={user.infoLink}>
       <img src={user.image} alt={user.caption} title={user.caption} />
     </a>
@@ -178,9 +175,9 @@ const Partners = props => {
 
   return (
     <div className="productShowcaseSection paddingBottom">
-      <h2>SUPPORTS</h2>
-      <p>Ce projet est support par ces communautés.</p>
-      <div className="logos">{showcase}</div>
+      <h2>NOS SPONNORS</h2>
+      <p>Ce projet est parrainé par ces START-UP TECH.</p>
+      <div className="logos">{partainers}</div>
     </div>
   );
 };
@@ -200,6 +197,12 @@ class Index extends React.Component {
         </div>
         <div className="mainContainer">
           <Showcase language={language} />
+        </div>
+        <div className="mainContainer">
+          <Partners language={language} />
+        </div>
+        <div className="mainContainer">
+          <Team language={language} />
         </div>
       </div>
     );

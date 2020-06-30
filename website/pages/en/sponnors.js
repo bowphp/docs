@@ -1,17 +1,7 @@
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 const React = require('react');
-
 const CompLibrary = require('../../core/CompLibrary.js');
-
 const Container = CompLibrary.Container;
 const GridBlock = CompLibrary.GridBlock;
-
 const siteConfig = require(`${process.cwd()}/siteConfig.js`);
 
 const Block = props => (
@@ -23,14 +13,13 @@ const Block = props => (
   </Container>
 );
 
-class Users extends React.Component {
+class Sponnors extends React.Component {
   render() {
     if ((siteConfig.users || []).length === 0) {
       return null;
     }
 
-    const editUrl = `${siteConfig.repoUrl}/edit/master/website/siteConfig.js`;
-    const users = siteConfig.users.map(user => {
+    const partainers = siteConfig.partainers.map(user => {
       return {
         content: user.description,
         imageAlign: 'top',
@@ -43,14 +32,14 @@ class Users extends React.Component {
       <div className="mainContainer">
           <div className="showcaseSection">
             <div className="prose">
-              <h1>QUI UTILISE BOW FRAMEWORK?</h1>
-              <p>Ce projet est utilisé par beaucoup de gens</p>
+              <h1>NOS SPONNORS?</h1>
+              <p>Ce projet est sponsorisé par ces Start-UP</p>
             </div>
           </div>
-          <Block layout="fourColumn" background="#b6b6b6">{users}</Block>
+          <Block layout="fourColumn" background="#b6b6b6">{partainers}</Block>
           <div className="showcaseSection">
-            <p>Utilisez-vous ce projet?</p>
-            <a href="mailto:dakiafranck@gmail.com" className="button">
+            <p>Devez vous aussi sponnor</p>
+            <a href="mailto:hello@bowphp.com" className="button">
               Ajouter votre entreprise
             </a>
           </div>
@@ -59,4 +48,4 @@ class Users extends React.Component {
   }
 }
 
-module.exports = Users;
+module.exports = Sponnors;

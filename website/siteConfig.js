@@ -50,20 +50,20 @@ const users = [
 
 const partainers = [
   {
-    caption: 'Fablab Ayiyikoh',
-    description: "",
-    image: 'http://ayiyikoh.org/wp-content/uploads/2018/04/logo-main-dummy.png',
-    infoLink: 'http://ayiyikoh.org/',
+    caption: 'Adjemin',
+    description: "Avec la communauté Adjemin, achetez, vendez et gérez votre stock. ",
+    image: 'https://adjemin.com/images/Admin/LOGO-ADJEMIN-150x150.png',
+    infoLink: 'https://adjemin.com/',
     pinned: true,
   },
   {
-    caption: 'Babilab',
-    description: "",
-    image: 'http://ayiyikoh.org/wp-content/uploads/2018/04/logo-main-dummy.png',
-    infoLink: 'http://ayiyikoh.org/',
+    caption: 'Akil Technologies',
+    description: "Ne perdez plus de temps à chercher, notre offre couvre tous vos besoins en technologie et nos services viennent avec la serenite de savoir que quelques soient les difficultés, nous allons livrer.",
+    image: 'https://akiltechnologies.com/wp-content/uploads/2017/09/Akil-Technologies-Logotype_Bleu.png',
+    infoLink: 'https://akiltechnologies.com/',
     pinned: true,
   },
-]
+];
 
 const siteConfig = {
   title: 'Bow Framework', // Title for your website.
@@ -82,15 +82,14 @@ const siteConfig = {
   headerLinks: [
     {doc: 'installation', label: 'Documentation'},
     {href: 'http://bowphp.com/api/master', label: 'API'},
-    // {page: 'users', label: 'Utilisateur'},
     {href: 'https://github.com/bowphp', label: 'Github'},
-    {href: 'http://bowphp.com/api/master', label: 'API'},
   ],
 
   apiUrl: "http://bowphp.com/api/master",
 
   // If you have users set above, you add it here:
   users,
+  partainers,
 
   /* path to images for header/footer */
   headerIcon: 'img/bow.jpg',
@@ -122,8 +121,14 @@ const siteConfig = {
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
-    theme: 'default',
+    theme: 'github',
+    // androidstudio
+    // atom-one-dark
+    // dracula
+    // atom-one-dark
   },
+
+  // version "4.1.x"
 
   // Add custom scripts here that would be placed in <script> tags.
   scripts: [
@@ -150,13 +155,13 @@ const siteConfig = {
   twitterUsername: "franck_dakia",
 
   // editUrl: "https://github.com/bowphp/docs/edit/4.0/docs",
-  enableUpdateTime: false,
+  enableUpdateTime: true,
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
   repoUrl: 'https://github.com/bowphp/app',
 
-  numberOfFollowers: 380
+  numberOfFollowers: 1500
 };
 
 module.exports = siteConfig;
