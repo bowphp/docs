@@ -64,7 +64,7 @@ const sponsors = [
 const siteConfig = {
   title: 'Bow Framework', // Title for your website.
   tagline: 'Simplify Your Web Development',
-  url: 'http://bowphp.com', // Your website URL
+  url: 'https://bowphp.com', // Your website URL
   baseUrl: '/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
@@ -78,11 +78,11 @@ const siteConfig = {
   headerLinks: [
     {doc: 'installation', label: 'Documentation'},
     {page: 'sponsors', label: 'Sponsors'},
-    {href: 'http://bowphp.com/api/master', label: 'API'},
+    {href: 'https://bowphp.com/api/master', label: 'API'},
     {href: 'https://github.com/bowphp', label: 'Github'},
   ],
 
-  apiUrl: "http://bowphp.com/api/master",
+  apiUrl: "https://bowphp.com/api/master",
 
   // If you have users set above, you add it here:
   users,
