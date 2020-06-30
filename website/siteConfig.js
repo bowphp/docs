@@ -40,7 +40,7 @@ const users = [
 const sponsors = [
   {
     caption: 'Adjemin',
-    description: "Adjemin est une application mobile qui vous permet de faire du e-commerce sans intermédiaire. La Startup met également à votre disposition <a href=\"https://adjemin.com/Read_MoreSmartLivraison\">SmartLivraison</a> qui vous permet de gérer mieux votre services de livraison en temps réel.",
+    description: "Adjemin est une application mobile qui vous permet de faire du e-commerce sans intermédiaire. La Startup met également à votre disposition <a href=\"https://smartlivraison.com\">SmartLivraison</a> qui vous permet de gérer mieux votre services de livraison en temps réel.",
     image: 'https://adjemin.com/images/Admin/LOGO-ADJEMIN-150x150.png',
     infoLink: 'https://adjemin.com/',
     pinned: true,
