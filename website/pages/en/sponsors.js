@@ -32,7 +32,7 @@ class Sponsors extends React.Component {
       <div className="mainContainer">
           <div className="showcaseSection">
             <div className="prose">
-              <h2>NOS SPONSORS</h2>
+              <h1>NOS SPONSORS</h1>
               <p>Ce projet est parrainé par ces START-UP TECH.</p>
             </div>
           </div>
