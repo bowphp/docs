@@ -1,14 +1,3 @@
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-// See https://docusaurus.io/docs/site-config for all the possible
-// site configuration options.
-
-// List of projects/orgs using your project for the users page.
 const users = [
   {
     caption: 'Abou KONE',
@@ -48,19 +37,26 @@ const users = [
   }
 ];
 
-const partainers = [
+const sponsors = [
   {
     caption: 'Adjemin',
-    description: "Avec la communauté Adjemin, achetez, vendez et gérez votre stock. ",
+    description: "Adjemin est une application mobile qui vous permet de faire du e-commerce sans intermédiaire. La Startup met également à votre disposition <a href=\"https://adjemin.com/Read_MoreSmartLivraison\">SmartLivraison</a> qui vous permet de gérer mieux votre services de livraison en temps réel.",
     image: 'https://adjemin.com/images/Admin/LOGO-ADJEMIN-150x150.png',
     infoLink: 'https://adjemin.com/',
     pinned: true,
   },
   {
     caption: 'Akil Technologies',
-    description: "Ne perdez plus de temps à chercher, notre offre couvre tous vos besoins en technologie et nos services viennent avec la serenite de savoir que quelques soient les difficultés, nous allons livrer.",
+    description: "En existence depuis 2015, AKIL a la base c&rsquo;est la mise en avant du savoir faire technologique Africain et plus précisément ivoirien, depuis Abidjan où nous sommes basés. Nous sommes fiers de nos équipes, représentatives du talent formé localement aux normes de développement internationales.",
     image: 'https://akiltechnologies.com/wp-content/uploads/2017/09/Akil-Technologies-Logotype_Bleu.png',
     infoLink: 'https://akiltechnologies.com/',
+    pinned: true,
+  },
+  {
+    caption: 'Etudesk',
+    description: "ETUDESK permet aux particuliers de se former en ligne sur des compétences orientées-entreprise afin de répondre à la problématique d’inadéquation formation/emploi en Afrique",
+    image: 'https://www.etudesk.com/images/logo.png',
+    infoLink: 'https://www.etudesk.com/',
     pinned: true,
   },
 ];
@@ -81,6 +77,7 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'installation', label: 'Documentation'},
+    {page: 'sponsors', label: 'Sponsors'},
     {href: 'http://bowphp.com/api/master', label: 'API'},
     {href: 'https://github.com/bowphp', label: 'Github'},
   ],
@@ -89,7 +86,7 @@ const siteConfig = {
 
   // If you have users set above, you add it here:
   users,
-  partainers,
+  sponsors,
 
   /* path to images for header/footer */
   headerIcon: 'img/bow.jpg',
@@ -117,7 +114,7 @@ const siteConfig = {
   */
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
-  copyright: `Copyright © ${new Date().getFullYear()} Franck DAKIA`,
+  copyright: `Copyright © ${new Date().getFullYear()} <a href="https://github.com/papac">Franck DAKIA</a>`,
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.

@@ -162,22 +162,22 @@ const Showcase = (props) => {
   )
 }
 
-const Partners = props => {
-  if ((siteConfig.partainers || []).length === 0) {
+const Sponsors = props => {
+  if ((siteConfig.sponsors || []).length === 0) {
     return null;
   }
 
-  const partainers = siteConfig.partainers.filter(user => user.pinned).map(user => (
-    <a href={user.infoLink} key={user.infoLink}>
+  const sponsors = siteConfig.sponsors.filter(user => user.pinned).map(user => (
+    <a href={user.infoLink} key={user.infoLink} target="_blank">
       <img src={user.image} alt={user.caption} title={user.caption} />
     </a>
   ));
 
   return (
     <div className="productShowcaseSection paddingBottom">
-      <h2>NOS SPONNORS</h2>
+      <h2>NOS SPONSORS</h2>
       <p>Ce projet est parrainé par ces START-UP TECH.</p>
-      <div className="logos">{partainers}</div>
+      <div className="logos">{sponsors}</div>
     </div>
   );
 };
@@ -196,10 +196,10 @@ class Index extends React.Component {
           <Features />
         </div>
         <div className="mainContainer">
-          <Showcase language={language} />
+          <Sponsors language={language} />
         </div>
         <div className="mainContainer">
-          <Partners language={language} />
+          <Showcase language={language} />
         </div>
         <div className="mainContainer">
           <Team language={language} />

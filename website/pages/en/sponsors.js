@@ -13,18 +13,18 @@ const Block = props => (
   </Container>
 );
 
-class Sponnors extends React.Component {
+class Sponsors extends React.Component {
   render() {
     if ((siteConfig.users || []).length === 0) {
       return null;
     }
 
-    const partainers = siteConfig.partainers.map(user => {
+    const sponsors = siteConfig.sponsors.map(user => {
       return {
         content: user.description,
         imageAlign: 'top',
         image: user.image,
-        title: '<a href="' + user.infoLink + '"> ' + user.caption + '</a>'
+        title: '<a href="' + user.infoLink + '" target="_blank"> ' + user.caption + '</a>'
       }
     });
 
@@ -32,14 +32,14 @@ class Sponnors extends React.Component {
       <div className="mainContainer">
           <div className="showcaseSection">
             <div className="prose">
-              <h1>NOS SPONNORS?</h1>
-              <p>Ce projet est sponsorisé par ces Start-UP</p>
+              <h2>NOS SPONSORS</h2>
+              <p>Ce projet est parrainé par ces START-UP TECH.</p>
             </div>
           </div>
-          <Block layout="fourColumn" background="#b6b6b6">{partainers}</Block>
+          <Block layout="fourColumn" background="#b6b6b6">{sponsors}</Block>
           <div className="showcaseSection">
-            <p>Devez vous aussi sponnor</p>
-            <a href="mailto:hello@bowphp.com" className="button">
+            <p>Devez vous aussi <b>Sponsor</b></p>
+            <a href="mailto:papac@bowphp.com" className="button">
               Ajouter votre entreprise
             </a>
           </div>
@@ -48,4 +48,4 @@ class Sponnors extends React.Component {
   }
 }
 
-module.exports = Sponnors;
+module.exports = Sponsors;
