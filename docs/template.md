@@ -5,9 +5,9 @@ title: Vues
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-- [Création de vue](#cr%c3%a9ation-de-vue)
+- [Création de vue](#création-de-vue)
   - [Utilisation](#utilisation)
-- [Package supplémentaire](#package-suppl%c3%a9mentaire)
+- [Package supplémentaire](#package-supplémentaire)
   - [Installation de twig](#installation-de-twig)
   - [Vue avec Twig](#vue-avec-twig)
 

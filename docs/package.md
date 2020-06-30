@@ -4,8 +4,8 @@ title: Packaging
 ---
 
 - [Introduction](#introduction)
-- [Création de plugin](#cr%c3%a9ation-de-plugin)
-  - [Exemple de création](#exemple-de-cr%c3%a9ation)
+- [Création de plugin](#création-de-plugin)
+  - [Exemple de création](#exemple-de-création)
   - [Testons notre package](#testons-notre-package)
 
 ## Introduction

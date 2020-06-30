@@ -94,6 +94,90 @@
       },
       "what-new": {
         "title": "what-new"
+      },
+      "version-4.1.x/version-4.1.x-concept": {
+        "title": "Concept et Architecture"
+      },
+      "version-4.1.x/version-4.1.x-configuration": {
+        "title": "Configuration"
+      },
+      "version-4.1.x/version-4.1.x-container": {
+        "title": "Capsule"
+      },
+      "version-4.1.x/version-4.1.x-contribution": {
+        "title": "Guide de Contribution"
+      },
+      "version-4.1.x/version-4.1.x-controleur": {
+        "title": "Contrôleurs"
+      },
+      "version-4.1.x/version-4.1.x-csrf-protection": {
+        "title": "CSRF Protection"
+      },
+      "version-4.1.x/version-4.1.x-database": {
+        "title": "Démarrage"
+      },
+      "version-4.1.x/version-4.1.x-frontend": {
+        "title": "Frontend"
+      },
+      "version-4.1.x/version-4.1.x-installation": {
+        "title": "Installation"
+      },
+      "version-4.1.x/version-4.1.x-i18n": {
+        "title": "i18n"
+      },
+      "version-4.1.x/version-4.1.x-mail": {
+        "title": "Mail"
+      },
+      "version-4.1.x/version-4.1.x-middleware": {
+        "title": "Middleware"
+      },
+      "version-4.1.x/version-4.1.x-migration": {
+        "title": "Migration"
+      },
+      "version-4.1.x/version-4.1.x-orm": {
+        "title": "Barry ORM"
+      },
+      "version-4.1.x/version-4.1.x-packaging": {
+        "title": "Packaging"
+      },
+      "version-4.1.x/version-4.1.x-policier": {
+        "title": "Policier"
+      },
+      "version-4.1.x/version-4.1.x-query-build": {
+        "title": "SQL Builder"
+      },
+      "version-4.1.x/version-4.1.x-http-request": {
+        "title": "HTTP Request"
+      },
+      "version-4.1.x/version-4.1.x-http-response": {
+        "title": "HTTP Response"
+      },
+      "version-4.1.x/version-4.1.x-routing": {
+        "title": "Routing"
+      },
+      "version-4.1.x/version-4.1.x-seeding": {
+        "title": "Seeding"
+      },
+      "version-4.1.x/version-4.1.x-http-session": {
+        "title": "HTTP Session"
+      },
+      "version-4.1.x/version-4.1.x-storage": {
+        "title": "Storage"
+      },
+      "version-4.1.x/version-4.1.x-structure": {
+        "title": "Structure"
+      },
+      "version-4.1.x/version-4.1.x-views": {
+        "title": "Vues"
+      },
+      "version-4.1.x/version-4.1.x-tintin": {
+        "title": "Tintin Template"
+      },
+      "version-4.1.x/version-4.1.x-tutorial": {
+        "title": "Tutoriel"
+      },
+      "version-4.1.x/version-4.1.x-http-upload": {
+        "title": "Upload File"
       }
     },
     "links": {

@@ -4,7 +4,7 @@ title: SQL Builder
 ---
 
 - [Introduction](#introduction)
-- [Recupéré les informations](#recup%c3%a9r%c3%a9-les-informations)
+- [Recupéré les informations](#recupéré-les-informations)
   - [Exemple avec `get`](#exemple-avec-get)
   - [Exemple avec `first`](#exemple-avec-first)
   - [Exemple avec `last`](#exemple-avec-last)
@@ -20,10 +20,10 @@ title: SQL Builder
     - [groupBy et having](#groupby-et-having)
     - [jump et take](#jump-et-take)
 - [Aggregates](#aggregates)
-  - [Déterminer si des enregistrements existent](#d%c3%a9terminer-si-des-enregistrements-existent)
-  - [Spécification d'une clause de sélection](#sp%c3%a9cification-dune-clause-de-s%c3%a9lection)
+  - [Déterminer si des enregistrements existent](#déterminer-si-des-enregistrements-existent)
+  - [Spécification d'une clause de sélection](#spécification-dune-clause-de-sélection)
   - [Insertion d'information](#insertion-dinformation)
-  - [Mise à jour](#mise-%c3%a0-jour)
+  - [Mise à jour](#mise-à-jour)
   - [Supprimer un enregistrement](#supprimer-un-enregistrement)
 
 ## Introduction

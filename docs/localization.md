@@ -6,9 +6,9 @@ title: i18n
 - [Introduction](#introduction)
   - [Configuration](#configuration)
   - [Configuration de la locale](#configuration-de-la-locale)
-- [Récupération de chaînes de traduction](#r%c3%a9cup%c3%a9ration-de-cha%c3%aenes-de-traduction)
-  - [Détermination de la locale actuelle](#d%c3%a9termination-de-la-locale-actuelle)
-  - [Remplacement de paramètres dans les chaînes de traduction](#remplacement-de-param%c3%a8tres-dans-les-cha%c3%aenes-de-traduction)
+- [Récupération de chaînes de traduction](#récupération-de-chaînes-de-traduction)
+  - [Détermination de la locale actuelle](#détermination-de-la-locale-actuelle)
+  - [Remplacement de paramètres dans les chaînes de traduction](#remplacement-de-paramètres-dans-les-chaînes-de-traduction)
 - [La pluralisation](#la-pluralisation)
 
 ## Introduction

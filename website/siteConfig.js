@@ -68,7 +68,7 @@ const partainers = [
 const siteConfig = {
   title: 'Bow Framework', // Title for your website.
   tagline: 'Simplify Your Web Development',
-  url: 'https://bowphp.github.io', // Your website URL
+  url: 'http://bowphp.com', // Your website URL
   baseUrl: '/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
@@ -81,13 +81,13 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'installation', label: 'Documentation'},
-    {href: 'https://bowphp.github.io/api/master', label: 'API'},
+    {href: 'http://bowphp.com/api/master', label: 'API'},
     // {page: 'users', label: 'Utilisateur'},
     {href: 'https://github.com/bowphp', label: 'Github'},
-    {href: 'https://bowphp.github.io/api/master', label: 'API'},
+    {href: 'http://bowphp.com/api/master', label: 'API'},
   ],
 
-  apiUrl: "https://bowphp.github.io/api/master",
+  apiUrl: "http://bowphp.com/api/master",
 
   // If you have users set above, you add it here:
   users,
