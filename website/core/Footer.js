@@ -50,9 +50,9 @@ class Footer extends React.Component {
               href="http://ayiyikoh.org/"
               target="_blank"
               rel="noreferrer noopener">
-              @ayiyikoh
+              @Ayiyikoh
             </a>
-            <a href="https://codedivoire.slack.com/">@Codedivoire</a>
+            <a href="https://codedivoire.slack.com">@Codedivoire</a>
           </div>
           <div>
             <h5>En plus</h5>
@@ -61,11 +61,11 @@ class Footer extends React.Component {
               rel="noreferrer noopener">
               Twitter
             </a>
-            <a href="https://bowphp.slack.com/">Slack</a>
+            <a href="https://bowphp.slack.com">Slack</a>
             <a href="https://github.com/bowphp">GitHub</a>
           </div>
         </section>
-        <section className="copyright">{this.props.config.copyright}</section>
+        <section className="copyright" dangerouslySetInnerHTML>{this.props.config.copyright}</section>
       </footer>
     );
   }
