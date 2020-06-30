@@ -130,7 +130,7 @@ const Team = props => {
   return (
     <div>
       <div className="productShowcaseSection paddingBottom">
-        <h2>CEUX UTILISE BOW FRAMEWORK?</h2>
+        <h2>CEUX QUI UTILISENT BOW FRAMEWORK?</h2>
         <p>Ce projet est utilisé par toutes ces personnes influentes dans les communautés technologiques de CI.</p>
         <div className="logos">{teams}</div>
         {/* <div className="more-users">
