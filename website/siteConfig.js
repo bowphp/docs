@@ -1,65 +1,6 @@
-const users = [
-  {
-    caption: 'Abou KONE',
-    description: "Frontend Architect, CTO @akilTech. Magician @codedivoire.",
-    // You will need to prepend the image path with your baseUrl
-    // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: 'https://avatars1.githubusercontent.com/u/582061?s=460&v=4',
-    infoLink: 'https://github.com/devakone',
-    pinned: true,
-  },
-  {
-    caption: 'Franck DAKIA',
-    description: "Web and Mobile Developer, DevOps Lover, Trainer and Coach in Web Development. Creator of Bow Framework",
-    // You will need to prepend the image path with your baseUrl
-    // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: 'https://avatars1.githubusercontent.com/u/9353811?s=460&v=4',
-    infoLink: 'https://github.com/papac',
-    pinned: true,
-  },
-  {
-    caption: 'François KOBON',
-    description: "#Coder. #Builder. #Hacker - Free & Open Source Software enthusiast (#ilovefs, #FOSS) - Innovation and Social Transformation - Ivorian - Jesus's Lovers",
-    // You will need to prepend the image path with your baseUrl
-    // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: 'https://avatars1.githubusercontent.com/u/10742869?s=460&v=4',
-    infoLink: 'https://github.com/fkobon',
-    pinned: true,
-  },
-  {
-    caption: 'Salomon DION',
-    description: "Aspiring Cloud Engineer with strong interest in software development and data science and I’m a member of the core development team.",
-    // You will need to prepend the image path with your baseUrl
-    // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: 'https://avatars3.githubusercontent.com/u/25983025?s=460&v=4',
-    infoLink: 'https://github.com/mrdionjr',
-    pinned: true,
-  }
-];
-
-const sponsors = [
-  {
-    caption: 'Adjemin',
-    description: "Adjemin est une application mobile qui vous permet de faire du e-commerce sans intermédiaire. La Startup met également à votre disposition <a href=\"https://smartlivraison.com\">SmartLivraison</a> qui vous permet de gérer mieux votre services de livraison en temps réel.",
-    image: 'https://adjemin.com/images/Admin/LOGO-ADJEMIN-150x150.png',
-    infoLink: 'https://adjemin.com/',
-    pinned: true,
-  },
-  {
-    caption: 'Akil Technologies',
-    description: "En existence depuis 2015, AKIL a la base c&rsquo;est la mise en avant du savoir faire technologique Africain et plus précisément ivoirien, depuis Abidjan où nous sommes basés. Nous sommes fiers de nos équipes, représentatives du talent formé localement aux normes de développement internationales.",
-    image: 'https://akiltechnologies.com/wp-content/uploads/2017/09/Akil-Technologies-Logotype_Bleu.png',
-    infoLink: 'https://akiltechnologies.com/',
-    pinned: true,
-  },
-  {
-    caption: 'Etudesk',
-    description: "ETUDESK permet aux particuliers de se former en ligne sur des compétences orientées-entreprise afin de répondre à la problématique d’inadéquation formation/emploi en Afrique",
-    image: 'https://www.etudesk.com/images/logo.png',
-    infoLink: 'https://www.etudesk.com/',
-    pinned: true,
-  },
-];
+const fans = require('./communauty');
+const users = require('./users');
+const sponsors = require('./sponsors');
 
 const siteConfig = {
   title: 'Bow Framework', // Title for your website.
@@ -87,6 +28,7 @@ const siteConfig = {
   // If you have users set above, you add it here:
   users,
   sponsors,
+  fans,
 
   /* path to images for header/footer */
   headerIcon: 'img/bow.jpg',

@@ -65,7 +65,7 @@ class Footer extends React.Component {
             <a href="https://github.com/bowphp">GitHub</a>
           </div>
         </section>
-        <section className="copyright" dangerouslySetInnerHTML>{this.props.config.copyright}</section>
+        <section className="copyright" dangerouslySetInnerHTML={{__html: this.props.config.copyright}}></section>
       </footer>
     );
   }

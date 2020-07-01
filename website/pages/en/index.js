@@ -131,7 +131,7 @@ const Team = props => {
     <div>
       <div className="productShowcaseSection paddingBottom">
         <h2>CEUX QUI UTILISENT BOW FRAMEWORK?</h2>
-        <p>Ce projet est utilisé par toutes ces personnes influentes dans les communautés technologiques de CI.</p>
+        <p>Ce projet est utilisé par toutes ces personnes influentes dans les communautés technologiques de Côte d'ivoire et dans reste du Monde.</p>
         <div className="logos">{teams}</div>
         {/* <div className="more-users">
           <a className="button" href={pageUrl('users.html', props.language)}>
@@ -148,6 +148,7 @@ const Showcase = (props) => {
     <div>
       <div className="productShowcaseSection paddingBottom">
         <h2>BOW FRAMEWORK IN ACTION</h2>
+        <p>Utilisation de l'API de traduction.</p>
         <script
           id="asciicast-zxbid2giZdnaJjOhOkALKBC8G"
           src="https://asciinema.org/a/zxbid2giZdnaJjOhOkALKBC8G.js"
@@ -196,13 +197,13 @@ class Index extends React.Component {
           <Features />
         </div>
         <div className="mainContainer">
-          <Sponsors language={language} />
+          <Sponsors />
+        </div>
+        <div className="mainContainer" style={{backgroundColor: "#f0f0f0"}}>
+          <Showcase />
         </div>
         <div className="mainContainer">
-          <Showcase language={language} />
-        </div>
-        <div className="mainContainer">
-          <Team language={language} />
+          <Team />
         </div>
       </div>
     );
