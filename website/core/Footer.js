@@ -61,7 +61,7 @@ class Footer extends React.Component {
               rel="noreferrer noopener">
               Twitter
             </a>
-            <a href="https://bowphp.slack.com">Slack</a>
+            <a href="https://join.slack.com/t/bowphp/shared_invite/zt-9c90n2iv-Rx1zdUG0YRAnDULhgELD0g">Slack</a>
             <a href="https://github.com/bowphp">GitHub</a>
           </div>
         </section>

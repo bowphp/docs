@@ -21,6 +21,7 @@ const siteConfig = {
     {page: 'sponsors', label: 'Sponsors'},
     {href: 'https://bowphp.com/api/master', label: 'API'},
     {href: 'https://github.com/bowphp', label: 'Github'},
+    {href: 'https://join.slack.com/t/bowphp/shared_invite/zt-9c90n2iv-Rx1zdUG0YRAnDULhgELD0g', label: 'Rejoignez-nous'}
   ],
 
   apiUrl: "https://bowphp.com/api/master",
@@ -71,7 +72,7 @@ const siteConfig = {
 
   // Add custom scripts here that would be placed in <script> tags.
   scripts: [
-    "https://www.googletagmanager.com/gtag/js?id=UA-127753823-1",
+    "https://www.googletagmanager.com/gtag/js?id=UA-97409420-1",
     'https://buttons.github.io/buttons.js',
     "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js",
     "/js/script.js"
@@ -86,7 +87,7 @@ const siteConfig = {
   ogImage: 'img/bow.jpg',
   twitterImage: 'img/bow.jpg',
 
-  gaTrackingId: "UA-127753823-1",
+  gaTrackingId: "UA-97409420-1",
 
   defaultVersionShown: "4.x",
 
