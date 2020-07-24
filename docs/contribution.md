@@ -29,8 +29,13 @@ Nous acceptons les contributions via Pull Request sur [GitHub](https://github.co
 
 ## Format des messages de commit
 
-Pour faciliter la maintenance du dépôt, Bow utilise un format pour les messages de commits. Veuillez vous référer à
-l'exemple suivant:
+Pour faciliter la maintenance du dépôt, Bow utilise un format pour les messages de commits.
+
+- `change` pour ajouter un changement sur un functionnement
+- `fix` pour fixer une bug
+- `feat` pour ajouter une nouvelle fonctionnalité
+
+Veuillez vous référer à l'exemple suivant:
 
 ```sh
 git commit
@@ -38,22 +43,22 @@ git commit
 
 Dans votre éditeur
 
-```sh
-[nom-de-la-section] message of commit
+```txt
+change(module_name): your commit message
 
 Description
 ```
 
 Si la modification affecte une section:
 
-```sh
-git commit -m "[session] modification message"
+```bash
+git commit -m "change(session): rename init variable"
 ```
 
 Si la modification affecte un élément dans une section:
 
-```sh
-git commit -m "[http:request] bug fix #40"
+```bash
+git commit -m "fix(http:request): bug fix #40"
 ```
 
 Dans le cas où vos modifications affectent plusieurs sections, ajoutez une description avec votre commit sous forme de liste à puce.
