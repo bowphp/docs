@@ -22,6 +22,8 @@ title: HTTP Request
   - [Récupérer le IP du server](#récupérer-le-ip-du-server)
   - [Récupérer le domaine Origin](#récupérer-le-domaine-origin)
   - [Récupérer le temps de la requête](#récupérer-le-temps-de-la-requête)
+  - [Récupérer une instance de la session](#récupérer-une-instance-de-la-session)
+  - [Récupérer l'authentification courante](#récupérer-lauthentification-courante)
 
 ## Introduction
 
@@ -276,6 +278,29 @@ Il est souvent intéressent de voir combien de temps à faire une requête. La m
 $time = $request->time();
 
 echo $time;
+```
+
+### Récupérer une instance de la session
+
+Il est souvent intéressent de manipuler la session directement. La méthode `session` nous permet de le faire et elle retourne l'instance de la session.
+
+```php
+$session = $request->session();
+
+var_dump($session);
+```
+
+> Pour plus d'information sur la session visitez cette page [HTTP Session](./seeding.md)
+
+### Récupérer l'authentification courante
+
+Vous pouvez aussi avoir l'authenticiation en cours si vous avez utiliser le système d'authentification native de Bow Framework.
+
+```php
+$user = $request->user();
+
+// Definir le guard
+$user = $request->user('api');
 ```
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

@@ -7,7 +7,7 @@ title: HTTP Response
 - [Envoyé une réponse](#envoyé-une-réponse)
   - [Une chaine de caractère](#une-chaine-de-caractère)
   - [Une Collection et Un tableau ou un Object](#une-collection-et-un-tableau-ou-un-object)
-  - [Un modèle Barry](#un-modèle-barry)
+  - [Un modèle BARRY](#un-modèle-barry)
 - [Modification de réponse](#modification-de-réponse)
   - [Modification du code d'erreur](#modification-du-code-derreur)
   - [Ajouter une entête HTTP](#ajouter-une-entête-http)
@@ -65,12 +65,12 @@ $app->get('/object', function ()
 });
 ```
 
-### Un modèle Barry
+### Un modèle BARRY
 
 La réponse HTTP peut être un `Model` ou une `Collection` de modèle, Bow la convertis directement en `JSON`.
 
 ```php
-use App\Model\User;
+use App\Models\User;
 
 $app->get('/', function ()
 {
@@ -87,7 +87,7 @@ $app->get('/', function ()
 Il est très important d'ajouter les codes d'erreurs à votre réponse HTTP si vous développez un API RESTFUL. La méthode `status` vous permet de le faire.
 
 ```php
-use App\Model\User;
+use App\Models\User;
 
 $app->get('/', function ()
 {
@@ -258,12 +258,18 @@ return redirect()->back();
 
 ### Redirection avec des informations
 
-Vous pouvez aussi faire la redirection avec les informations envoyés par l'utilisateur et ceci avec la méthode `withInput` comme ceci:
+Vous pouvez aussi faire la redirection avec les informations envoyés par l'utilisateur et ceci avec la méthode `withInput`, `withFlash` comme ceci:
 
 ```php
  return redirect()->back()->withInput();
  // Ou
  return redirect()->to("/home")->withInput();
+```
+
+Avec un message flash
+
+```php
+ return redirect()->back()->withFlash('success', 'Papac');
 ```
 
 Notez que vous pouvez donner une tableau de valeur à `withInput` qui sera une collection d'information à envoyer à utilisateur.
