@@ -157,8 +157,8 @@ class TodoController extends Controller
   /**
    * Créez une nouvelle instance de todo.
    *
-   * @param  Request  $request
-   * @return Response
+   * @param Request $request
+   * @return mixed
    */
   public function store(Request $request)
   {
