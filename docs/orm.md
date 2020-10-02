@@ -8,7 +8,7 @@ title: Barry ORM
   <br>Barry ORM
 </h1>
 
-<p align="center">Barry c'est l'ORM (<strong>Object Relation Mapping</strong>) intégrer dans Bow Framework.</p>
+<p align="center">BARRY c'est l'ORM (<strong>Object Relation Mapping</strong>) intégrer dans Bow Framework.</p>
 
 ## Introduction
 
@@ -94,12 +94,26 @@ Une fois que vous avez créé un modèle et sa table de base de données associ�
 Par exemple:
 
 ```php
-$todos = App\Models\Todo::all();
+use App\Models\Todo;
+
+$todos = Todo::all();
 
 foreach ($todos as $todo) {
   echo $todo->title;
 }
 ```
+
+La méthode `find` et `findBy` permet aussi de récupérer les informations:
+
+```php
+// Avec find
+$todo = Todo::find(1);
+
+// Avec findBy
+$todo = Todo::findBy('id', 1);
+```
+
+> La méthode peut aussi retourner `null` dans le case ou il y a aucun enrégistrement trouvé
 
 ## Ajout de contraintes supplémentaires
 
@@ -161,6 +175,22 @@ class TodoController extends Controller
 
 Dans cet exemple, nous affectons le paramètre de nom de la requête HTTP entrante à les attributs `title`, `budget` de l'instance de modèle `App\Models\Todo`. Lorsque nous appelons la méthode `save`, un enregistrement sera inséré dans la base de données. Les horodatages `created_at` et `updated_at` seront automatiquement définis lorsque la méthode de sauvegarde sera appelée, il n'est donc pas nécessaire de les définir manuellement.
 
+### Insert via CREATE
+
+Les objets Active Record peuvent être créés à partir d'un hachage, d'un bloc ou avoir leurs attributs définis manuellement après la création. La nouvelle méthode renverra un nouvel objet tandis que `create` renverra l'objet et l'enregistrera dans la base de données.
+
+Par exemple, étant donné un utilisateur modèle avec des attributs de nom et d'occupation, l'appel de la méthode create créera et enregistrera un nouvel enregistrement dans la base de données:
+
+```php
+use App\Models\Todo;
+
+$user = Todo::create([
+  'title' => 'Acheter un ticket metro',
+  'budget' => 2000,
+  'status' => 'pending',
+]);
+```
+
 ### UPDATE
 
 La méthode `save` peut également être utilisée pour mettre à jour des modèles qui existent déjà dans la base de données. Pour mettre à jour un modèle, vous devez le récupérer, définir les attributs que vous souhaitez mettre à jour, puis appeler la méthode `save`. Encore une fois, l'horodatage `updated_at` sera automatiquement mis à jour, il n'est donc pas nécessaire de définir manuellement sa valeur:
@@ -181,5 +211,26 @@ App\Models\Todo::where('status', 'done')
 ```
 
 La méthode `update` attend un tableau de paires de colonnes et de valeurs représentant les colonnes à mettre à jour.
+
+## Suppression de donnée
+
+De même, une fois récupéré, un objet Active Record peut être détruit, ce qui le supprime de la base de données.
+
+```php
+use App\Models\Todo;
+
+$todo = Todo::find(1);
+$todo->delete();
+```
+
+Si vous souhaitez supprimer plusieurs enregistrements en masse, vous pouvez utiliser la méthode `destroyBy` ou `truncate`:
+
+```php
+// find and delete all todo by id
+Todo::destroyBy('id', 'David');
+
+// delete all todo
+Todo::truncate();
+```
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
