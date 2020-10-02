@@ -16,7 +16,7 @@ Un ORM c'est une façon de rélier les tables entre elles en utilisant des class
 
 L'ORM BARRY inclus avec Bow Framework fournit une implémentation ActiveRecord belle et simple pour travailler avec votre base de données. Chaque table de base de données a un "modèle" correspondant qui est utilisé pour interagir avec cette table. Les modèles vous permettent de rechercher des données dans vos tables, ainsi que d'insérer de nouveaux enregistrements dans la table.
 
-Dans tout bon Framework qui se respect, il y a un système de ORM et qui posséde un nom super mignon. Celui de Bow se nomme **BARRAY**, n'est pas mignon ça :smile:.
+Dans tout bon Framework qui se respect, il y a un système de ORM et qui posséde un nom super mignon. Celui de Bow se nomme **BARRY**, n'est pas mignon ça :smile:.
 
 > Avant de commencer, assurez-vous de configurer une connexion à la base de données dans `config/database.php`.
 
