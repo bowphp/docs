@@ -112,4 +112,74 @@ $flights = App\Models\Todo::where('status', 'done')
             ->get();
 ```
 
+## Récupération d'agrégats
+
+Vous pouvez également utiliser les méthodes `count`, `sum`, `max` et d'autres méthodes d'agrégation fournies par le [générateur de requêtes](./query-build.md). Ces méthodes renvoient la valeur scalaire appropriée au lieu d'une instance de modèle complète:
+
+```php
+$count = App\Models\Todo::where('status', 'done')->count();
+
+$max = App\Models\Todo::where('status', 'done')->max('budget');
+```
+
+## Insertion et mise à jour de modèles
+
+### INSERT
+
+Pour créer un nouvel enregistrement dans la base de données, créez une nouvelle instance de modèle, définissez des attributs sur le modèle, puis appelez la méthode de sauvegarde:
+
+```php
+
+namespace App\Http\Controllers;
+
+use App\Controllers\Controller;
+use App\Models\Todo;
+use Bow\Http\Request;
+
+class TodoController extends Controller
+{
+  /**
+   * Créez une nouvelle instance de todo.
+   *
+   * @param  Request  $request
+   * @return Response
+   */
+  public function store(Request $request)
+  {
+    // Validez la demande...
+
+    $todo = new Todo;
+
+    $todo->title = $request->get('title');
+    $todo->budget = $request->get('budget', 0);
+    $todo->status = 'pending';
+
+    $todo->save();
+  }
+}
+```
+
+Dans cet exemple, nous affectons le paramètre de nom de la requête HTTP entrante à les attributs `title`, `budget` de l'instance de modèle `App\Models\Todo`. Lorsque nous appelons la méthode `save`, un enregistrement sera inséré dans la base de données. Les horodatages `created_at` et `updated_at` seront automatiquement définis lorsque la méthode de sauvegarde sera appelée, il n'est donc pas nécessaire de les définir manuellement.
+
+### UPDATE
+
+La méthode `save` peut également être utilisée pour mettre à jour des modèles qui existent déjà dans la base de données. Pour mettre à jour un modèle, vous devez le récupérer, définir les attributs que vous souhaitez mettre à jour, puis appeler la méthode `save`. Encore une fois, l'horodatage `updated_at` sera automatiquement mis à jour, il n'est donc pas nécessaire de définir manuellement sa valeur:
+
+```php
+$todo = App\Models\Flight::find(1);
+
+$todo->title = 'Shopping pour Franck';
+
+$todo->save();
+```
+
+Ou bien vous pouvez aussi utiliser la methode `update`. Seulement vous dévez definir les conditions pour ainsi limiter l'impact de la mise à jour.
+
+```php
+App\Models\Todo::where('status', 'done')
+  ->update(['title' => 'Achat de ticket d\'avion']);
+```
+
+La méthode `update` attend un tableau de paires de colonnes et de valeurs représentant les colonnes à mettre à jour.
+
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
