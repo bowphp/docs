@@ -145,7 +145,7 @@ php bow generate:resource PetController
 Un contrôleur nommé `PetController` sera donc créé. Ce qui fait ça particularité c'est qu'il y a déjà des méthodes prédéfinir en lui et ces méthodes doivent rester telles quelles.
 
 ```php
-namespace App\Controller;
+namespace App\Controllers;
 
 use App\Controllers\Controller;
 use App\Models\Pet;
