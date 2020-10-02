@@ -131,9 +131,11 @@ $flights = App\Models\Todo::where('status', 'done')
 Vous pouvez également utiliser les méthodes `count`, `sum`, `max` et d'autres méthodes d'agrégation fournies par le [générateur de requêtes](./query-build.md). Ces méthodes renvoient la valeur scalaire appropriée au lieu d'une instance de modèle complète:
 
 ```php
-$count = App\Models\Todo::where('status', 'done')->count();
+use App\Models\Todo;
 
-$max = App\Models\Todo::where('status', 'done')->max('budget');
+$count = Todo::where('status', 'done')->count();
+
+$max = Todo::where('status', 'done')->max('budget');
 ```
 
 ## Insertion et mise à jour de modèles
@@ -196,7 +198,9 @@ $user = Todo::create([
 La méthode `save` peut également être utilisée pour mettre à jour des modèles qui existent déjà dans la base de données. Pour mettre à jour un modèle, vous devez le récupérer, définir les attributs que vous souhaitez mettre à jour, puis appeler la méthode `save`. Encore une fois, l'horodatage `updated_at` sera automatiquement mis à jour, il n'est donc pas nécessaire de définir manuellement sa valeur:
 
 ```php
-$todo = App\Models\Flight::find(1);
+use App\Models\Todo;
+
+$todo = Todo::find(1);
 
 $todo->title = 'Shopping pour Franck';
 
@@ -206,7 +210,9 @@ $todo->save();
 Ou bien vous pouvez aussi utiliser la methode `update`. Seulement vous dévez definir les conditions pour ainsi limiter l'impact de la mise à jour.
 
 ```php
-App\Models\Todo::where('status', 'done')
+use App\Models\Todo;
+
+Todo::where('status', 'done')
   ->update(['title' => 'Achat de ticket d\'avion']);
 ```
 
