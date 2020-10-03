@@ -5,7 +5,7 @@ title: Upload File
 
 # Traiter les fichiers uploader
 
-Souvent les requêtes sont associés à des fichiers envoyés par l'utilisateur, vous pouvez traiter ces fichiers sur [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Request.html) les méthodes `file` et le helper du même nom.
+Souvent les requêtes sont associés à des fichiers envoyés par l'utilisateur, vous pouvez traiter ces fichiers sur [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html) les méthodes `file` et le helper du même nom.
 
 Considérons le formulaire suivant:
 
@@ -18,7 +18,7 @@ Considérons le formulaire suivant:
 
 > Comment avoir accès au fichier envoyé ?
 
-Ici nous pouvons utiliser la méthode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadFile`](https://bowphp.github.io/api/master/Bow/Http/UploadFile.html).
+Ici nous pouvons utiliser la méthode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadFile`](https://bowphp.com/api/master/Bow/Http/UploadFile.html).
 
 ```php
 use Bow\Http\Request;
@@ -77,9 +77,9 @@ $file = $request->file('photo');
 $file->moveTo("/path/to/your/store/directory", $filename = null);
 ```
 
-Si `$filename` est `null`, sa valeur sera le nom du fichier hasher avec la méthode [`getHashName`](https://bowphp.github.io/api/master/Bow/Http/UploadFile.html#method_getHashName).
+Si `$filename` est `null`, sa valeur sera le nom du fichier hasher avec la méthode [`getHashName`](https://bowphp.com/api/master/Bow/Http/UploadFile.html#method_getHashName).
 
-Souvent dans le cas où vous attendez des fichiers envoyé via un formulaire dont le champs est sous la forme `photo[]`. la méthode `file` retourne une [`Bow\Support\Collection`](https://bowphp.github.io/api/master/Bow/Support/Collection.html):
+Souvent dans le cas où vous attendez des fichiers envoyé via un formulaire dont le champs est sous la forme `photo[]`. la méthode `file` retourne une [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html):
 
 ```html
 <form action="/upload" method="post" enctype="multipart/form-data">
@@ -89,7 +89,7 @@ Souvent dans le cas où vous attendez des fichiers envoyé via un formulaire don
 </form>
 ```
 
-Dans cette exemple, la méthode `file` retournera une [`Bow\Support\Collection`](https://bowphp.github.io/api/master/Bow/Support/Collection.html) qui contiendra pour chaque oruccencre une instance de [`Bow\Http\UploadFile`](https://bowphp.github.io/api/master/Bow/Http/UploadFile.html).
+Dans cette exemple, la méthode `file` retournera une [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html) qui contiendra pour chaque oruccencre une instance de [`Bow\Http\UploadFile`](https://bowphp.com/api/master/Bow/Http/UploadFile.html).
 
 ```php
 use Bow\Http\Request;

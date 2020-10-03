@@ -12,7 +12,7 @@ const siteConfig = {
   //   baseUrl: '/test-site/',
 
   // Used for publishing and more
-  projectName: 'bowphp.github.io',
+  projectName: 'bowphp.com',
   organizationName: 'bowphp',
 
   // For no header links in the top nav bar -> headerLinks: [],

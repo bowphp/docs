@@ -28,7 +28,7 @@ title: SQL Builder
 
 ## Introduction
 
-Bow fourni un api lié à la construction de requête. Avec la méthode `table` permet de construire une requête `sql` en se basant sur la nom de la table et retour une instance de [`Bow\Database\QueryBuilder::class`](https://bowphp.github.io/api/master/Bow/Database/QueryBuilder.html).
+Bow fourni un api lié à la construction de requête. Avec la méthode `table` permet de construire une requête `sql` en se basant sur la nom de la table et retour une instance de [`Bow\Database\QueryBuilder::class`](https://bowphp.com/api/master/Bow/Database/QueryBuilder.html).
 
 ```php
 use Bow\Database\Database

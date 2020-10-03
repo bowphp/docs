@@ -37,11 +37,11 @@ Vous trouverez la configuration dans le fichier `config/mail.php` qui est rélat
 
 ## Utilisation
 
-Pour utiliser le service, vous devez appeler la classe [`Bow\Mail\Mail::class`](https://bowphp.github.io/api/master/Bow/Mail). Il y a deux méthode statique pour l'envoie de mail `send` et `raw`.
+Pour utiliser le service, vous devez appeler la classe [`Bow\Mail\Mail::class`](https://bowphp.com/api/master/Bow/Mail). Il y a deux méthode statique pour l'envoie de mail `send` et `raw`.
 
 ### La méthode send
 
-**send** permet d'envoyer des emails en se basant sur une [vue](http://bowphp.github.io/docs/views) dans l'application.
+**send** permet d'envoyer des emails en se basant sur une [vue](http://bowphp.com/docs/views) dans l'application.
 
 #### Prototype send
 
@@ -55,7 +55,7 @@ send($view, array $data, callable $callable)
 | data | `Array` Les informations à passer à la vue |
 | callable | `Closure` Le constructeur du message |
 
-`$callable` vous permet de construire le message et prend en paramètre une instance de [`Bow\Mail\Message`](https://bowphp.github.io/api/master/Bow/Mail/Message.html) qui permet d'ajouter le destinataire, l'objet, les pièces jointes, l'expéditeur.
+`$callable` vous permet de construire le message et prend en paramètre une instance de [`Bow\Mail\Message`](https://bowphp.com/api/master/Bow/Mail/Message.html) qui permet d'ajouter le destinataire, l'objet, les pièces jointes, l'expéditeur.
 
 Exemple d'utilisation:
 

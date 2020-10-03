@@ -29,11 +29,11 @@ title: HTTP Request
 
 Une requête HTTP est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autre outil tel que `curl`, `httpie` et autre.
 
-Ce message est traité par Bow à travers la classe [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoyé par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
+Ce message est traité par Bow à travers la classe [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoyé par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
 
 ## Accéder à la requête
 
-Pour capturer un message ou requête HTTP, vous pouvez premièrement utiliser le helper `request()` qui vous donne une instance de [`Bow\Http\Request`](https://bowphp.github.io/api/master/Bow/Http/Request.html), deuxièmement vous pouvez passer par l'injecteur de dépendance via une action de contrôleur.
+Pour capturer un message ou requête HTTP, vous pouvez premièrement utiliser le helper `request()` qui vous donne une instance de [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html), deuxièmement vous pouvez passer par l'injecteur de dépendance via une action de contrôleur.
 
 ## Recupération des données
 
@@ -72,7 +72,7 @@ Si votre méthode de contrôleur attend également une entrée d'un paramètre d
 $app->get('/users/:id', 'UserController::show');
 ```
 
-Vous pouvez toujours taper la requête [Bow\Http\Request](https://bowphp.github.io/api/master/Bow/Http/Request.html) et accéder à l'id de votre paramètre de route en définissant votre méthode de contrôleur comme suit:
+Vous pouvez toujours taper la requête [Bow\Http\Request](https://bowphp.com/api/master/Bow/Http/Request.html) et accéder à l'id de votre paramètre de route en définissant votre méthode de contrôleur comme suit:
 
 ```php
 namespace App\Controllers;

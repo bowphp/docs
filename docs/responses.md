@@ -46,7 +46,7 @@ $app->get('/', function ()
 
 ### Une Collection et Un tableau ou un Object
 
-Une réponse HTTP peut être une instance de [`Bow\Support\Collection`](https://bowphp.github.io/api/master/Bow/Support/Collection.html).
+Une réponse HTTP peut être une instance de [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html).
 
 ```php
 $app->get('/array', function ()
@@ -189,7 +189,7 @@ return $response->render('users', ['users' => $users], 200, [
 
 ### Télécharger un fichier
 
-Souvent vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore vous allez faire des applications où il faut s'authentifier avant de télécharge des fichiers du type dropbox. Bow offre un API simple via la classe [`Bow\Http\Response`](https://bowphp.github.io/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la méthode `download`.
+Souvent vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore vous allez faire des applications où il faut s'authentifier avant de télécharge des fichiers du type dropbox. Bow offre un API simple via la classe [`Bow\Http\Response`](https://bowphp.com/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la méthode `download`.
 
 ### Protototype de la méthode `download`
 
@@ -218,7 +218,7 @@ return $response->download($file, 'image.png');
 
 ## Redirection
 
-Vous serez certainement amener à faire des redirections vers d'autres ressources et cela en réalité constitue une réponse HTTP. Les méthodes `to` et `back` (qui comme son nom l'indique permet de faire une revenir sur en arrière) de la classe [`Bow\Http\Redirect`](https://bowphp.github.io/api/master/Bow/Http/Redirect.html).
+Vous serez certainement amener à faire des redirections vers d'autres ressources et cela en réalité constitue une réponse HTTP. Les méthodes `to` et `back` (qui comme son nom l'indique permet de faire une revenir sur en arrière) de la classe [`Bow\Http\Redirect`](https://bowphp.com/api/master/Bow/Http/Redirect.html).
 
 ### Redirection avec `to`
 

@@ -269,7 +269,7 @@ Les navigateurs ne supportent pas cette méthode. Alors dans votre formulaire d'
 
 Ce qui aura pour but de permettre à Bow de comprendre votre requête et c'est valable pour PUT et PATCH.
 
-> Tout les méthodes définir ci-dessus retourne l'instance de `Bow\Router\Route::class`. (Plus d'information sur le [`Bow\Router\Route::class`](https://bowphp.github.io/api/master/Bow/Router/Route.html))
+> Tout les méthodes définir ci-dessus retourne l'instance de `Bow\Router\Route::class`. (Plus d'information sur le [`Bow\Router\Route::class`](https://bowphp.com/api/master/Bow/Router/Route.html))
 
 ## Mapping multiple
 
@@ -458,7 +458,7 @@ $app->get('/:name/:lastname/:number', $callable)
   ]);
 ```
 
-> Notez que `where` est une méthode de l'instance [`Bow\Router\Route`](https://bowphp.github.io/api/master/Bow/Router/Route.html).
+> Notez que `where` est une méthode de l'instance [`Bow\Router\Route`](https://bowphp.com/api/master/Bow/Router/Route.html).
 
 ### Donner un nom aux routes
 

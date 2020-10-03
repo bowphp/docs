@@ -127,9 +127,9 @@ Vous pouvez utiliser les commandes suivantes dans le générateur de schéma pou
 
 | Paramètre | Description |
 |----------|------|
-| $table->withEngine('InnoDB') | Ici, on modifie le système de storage |
-| $table->withCharset('utf8') | Ici, on modifie l'encodage |
-| $table->withCollation('utf8_unicode_ci') | Ici, Spécifier un classement par défaut pour la table |
+| **$table->withEngine('InnoDB')** | Ici, on modifie le système de storage |
+| **$table->withCharset('utf8')** | Ici, on modifie l'encodage |
+| **$table->withCollation('utf8_unicode_ci')** | Ici, Spécifier un classement par défaut pour la table |
 
 ## Renommer / Supprimer des tables
 
@@ -142,7 +142,7 @@ public function up()
 }
 ```
 
-Pour supprimer une table existante, vous pouvez utiliser les méthodes drop ou dropIfExists:
+Pour supprimer une table existante, vous pouvez utiliser les méthodes drop ou `dropIfExists`:
 
 ```php
 public function rollback()

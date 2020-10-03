@@ -116,7 +116,7 @@ Vous pouvez générer un contrôleur en utilisant la commande `add:controller` d
 php bow add:controller Photo/AdminController
 ```
 
-> Remarquez bien le nom du dossier c'est en camel case. Le framework crééra le namespace approprié pour la classe `AdminController` et qui sera `namepsace App\Controller\Photo;`. Vous trouverez le controller dans un dossier `app/Controller/Photo/AdminController`.
+> Remarquez bien le nom du dossier c'est en camel case. Le framework crééra le namespace approprié pour la classe `AdminController` et qui sera `namepsace App\Controllers\Photo;`. Vous trouverez le controller dans un dossier `app/Controllers/Photo/AdminController`.
 
 Plus d'information sur le [routing](./routing.md).
 

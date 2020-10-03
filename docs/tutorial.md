@@ -11,8 +11,6 @@ title: Tutoriel
   - [Routing](#routing)
 - [La section Nouvelles](#la-section-nouvelles)
   - [Mise en place de votre modèle](#mise-en-place-de-votre-modèle)
-- [Créez des éléments d'actualité](#créez-des-éléments-dactualité)
-- [Conclusion](#conclusion)
 
 ## Introduction
 
@@ -45,13 +43,13 @@ Dans le code de base de l'application, quand vous lancez le serveur de développ
 
 > Ici le port 5000 est celui par défaut dans l'application.
 
-Vous aurez une page d'accueil présentant le framework. Alors cette page ne sort pas de nul part mais est stocké dans le dossier `frontend/templates` qui héberge tout les vues de votre application.
+Vous aurez une page d'accueil présentant le framework. Alors cette page ne sort pas de nul part mais est stocké dans le dossier `templates` qui héberge tout les vues de votre application.
 
 Dans ce dossier vous verez le fichier `layout.tintin.php` et `welcome.tintin.php` (Ne vous laissez par intimider par l'extension `tintin.php`, nous allons revenir dessus dans la suite).
 
 Dans le fichier `welcome.tintin.php`. Modifiez le contenu de la section comme ceci:
 
-```html
+```css
 #block('content')
   Ah, bow c'est top.
 #endblock
@@ -59,7 +57,7 @@ Dans le fichier `welcome.tintin.php`. Modifiez le contenu de la section comme ce
 
 En actualisons la page. Normalement si tout c'est bien passé vous verrez le message `Ah, bow c'est top.` affiché.
 
-> Défi: Prenez le temps pour manipuler les vues et observer le fichier `routes/app.php` et `app/Controller/WelcomeController`.
+> Défi: Prenez le temps pour manipuler les vues et observer le fichier `routes/app.php` et `app/Controllers/WelcomeController`.
 
 Dans le fichier `routes/app.php` vous avez certainement remarquer le contenu:
 
@@ -150,9 +148,9 @@ class ActualityController extends Controller
 
 Maintenant que vous avez créé votre première méthode, il est temps de créer des modèles de page de base. Nous allons créer deux "vues" (un layout) qui sera la page modèle et une page pour afficher la vue en temps que tel.
 
-> Supprimez le content du dossier `frontend/templates` sauf le dossier `errors`.
+> Supprimez le content du dossier `templates` sauf le dossier `errors`.
 
-Créez la page principe (layout) dans **frontend/templates/layout.tintin.php** (Cette page existe peut être déjà par défaut):
+Créez la page principe (layout) dans **templates/layout.tintin.php** (Cette page existe peut être déjà par défaut):
 
 ```html
 <!DOCTYPE html>
@@ -168,7 +166,7 @@ Créez la page principe (layout) dans **frontend/templates/layout.tintin.php** (
 
 ### Ajout de logique au contrôleur
 
-Pour l'instant la méthode n'accepte pas de paramètre (dans la suite nous verrons comment injecter des informations à la méthode). Les vues statiques seront situés dans le répertoire `frontend/templates` (pour le rappel). Entrons le code suivant dans la fonction `showView`:
+Pour l'instant la méthode n'accepte pas de paramètre (dans la suite nous verrons comment injecter des informations à la méthode). Les vues statiques seront situés dans le répertoire `templates` (pour le rappel). Entrons le code suivant dans la fonction `showView`:
 
 ```php
 public function showView()
@@ -206,7 +204,3 @@ Ouvrez le répertoire `app/Models`, vous verrez un fichier `User.php` c'est une 
 ```bash
 php bow add:model Actuality
 ```
-
-## Créez des éléments d'actualité
-
-## Conclusion

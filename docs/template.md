@@ -32,7 +32,7 @@ Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'en
 
 Une simple vue peut ressembler à ceci
 
-```twig
+```html
 <!-- View stored in templates/greeting.tintin.php -->
 <html>
   <body>
@@ -86,7 +86,7 @@ echo View::parse(
 
 Avec la vue suivante:
 
-```twig
+```html
 <!-- View stored in templates/greeting.tintin.php -->
 <html>
  <body>
@@ -150,7 +150,7 @@ $names = [
 ];
 ```
 
-```twig
+```html
 {# templates/greeting.twig #}
 <html>
   <body>

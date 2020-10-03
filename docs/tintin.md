@@ -5,8 +5,8 @@ title: Tintin Template
 
 - [Introduction](#introduction)
   - [Configuration](#configuration)
-  - [Affichage des données](#affichage-des-donn%c3%a9es)
-    - [Affichage des données non échappées](#affichage-des-donn%c3%a9es-non-%c3%a9chapp%c3%a9es)
+  - [Affichage des données](#affichage-des-données)
+    - [Affichage des données non échappées](#affichage-des-données-non-échappées)
   - [Ajouter un commentaire](#ajouter-un-commentaire)
   - [#if / #elseif ou #elif / #else](#if--elseif-ou-elif--else)
   - [#unless](#unless)
@@ -17,14 +17,14 @@ title: Tintin Template
     - [L'utilisation de #while](#lutilisation-de-while)
   - [Inclusion de fichier](#inclusion-de-fichier)
     - [Exemple d'inclusion](#exemple-dinclusion)
-- [Héritage avec #extends, #block et #inject](#h%c3%a9ritage-avec-extends-block-et-inject)
+- [Héritage avec #extends, #block et #inject](#héritage-avec-extends-block-et-inject)
   - [Explication](#explication)
-- [Directive personnelisée](#directive-personnelis%c3%a9e)
+- [Directive personnelisée](#directive-personnelisée)
   - [Ajouter vos directive de la configuration](#ajouter-vos-directive-de-la-configuration)
-  - [Exemple de création de directive](#exemple-de-cr%c3%a9ation-de-directive)
+  - [Exemple de création de directive](#exemple-de-création-de-directive)
   - [Utilisation des directives](#utilisation-des-directives)
   - [Compilation du template](#compilation-du-template)
-  - [Sortie après compilation](#sortie-apr%c3%a8s-compilation)
+  - [Sortie après compilation](#sortie-après-compilation)
 - [IDE support](#ide-support)
   - [Comment installer Sublime Package Control](#comment-installer-sublime-package-control)
   - [Installer le package Tintin](#installer-le-package-tintin)
@@ -35,29 +35,29 @@ Tintin est un template PHP qui se veut très simple et extensible. Il peut être
 
 ### Configuration
 
-Vous trouverez la configuration dans le fichier `config/view.php` et c'est dans le dossier `frontend/templates` que sont sauvegardés le fichier de template avec l'extension `.tintin.php`.
+Vous trouverez la configuration dans le fichier `config/view.php` et c'est dans le dossier `templates` que sont sauvegardés le fichier de template avec l'extension `.tintin.php`.
 
 ### Affichage des données
 
 Vous pouvez afficher le contenu de la variable name de la manière suivante:
 
-```jinja
+```css
 Hello, {{ $name }}.
 ```
 
 Bien entendu, vous n'êtes pas limité à afficher le contenu des variables transmises à la vue. Vous pouvez également faire écho aux résultats de toute fonction PHP. En fait, vous pouvez insérer n'importe quel code PHP dans une instruction echo Blade:
 
-```html
+```css
 Hello, {{ strtoupper($name) }}.
 ```
 
-> Les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS.
+> Les instructions Tintin `{{ }}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS.
 
 #### Affichage des données non échappées
 
-Par défaut, les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS. Si vous ne souhaitez pas que vos données soient protégées, vous pouvez utiliser la syntaxe suivante:
+Par défaut, les instructions Tintin `{{ }}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS. Si vous ne souhaitez pas que vos données soient protégées, vous pouvez utiliser la syntaxe suivante:
 
-```html
+```css
 Hello, {{{ $name }}}.
 ```
 
@@ -69,7 +69,8 @@ Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tin
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
-```jinja
+```css
+<p>
 #if ($name == 'tintin')
   {{ $name }}
 #elseif ($name == 'template')
@@ -77,6 +78,7 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 #else
   {{ $name }}
 #endif
+</p>
 ```
 
 > Vous pouvez utiliser `#elif` à la place de `#elseif`.
@@ -86,8 +88,11 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 Petite spécificité, le `#unless` quant à lui, il permet de faire une condition inverse du `#if`.
 Pour faire simple, voici un exemple:
 
-```jinja
-#unless ($name == 'tintin') => #if (!($name == 'tintin'))
+```css
+#unless ($name == 'tintin')
+
+// Egale à
+#if (!($name == 'tintin'))
 ```
 
 ### #loop / #for / #while
@@ -98,7 +103,7 @@ Souvent vous pouvez être amener à faire des listes ou répétitions sur des é
 
 Cette clause faire exactement l'action de `foreach`.
 
-```jinja
+```css
 #loop ($names as $name)
   Bonjour {{ $name }}
 #endloop
@@ -106,7 +111,7 @@ Cette clause faire exactement l'action de `foreach`.
 
 Cette clause peux être aussi coupler avec tout autre clause telque `#if`. Voici un exemple rapide:
 
-```jinja
+```css
 #loop ($names as $name)
   #if ($name == 'tintin')
     Bonjour {{ $name }}
@@ -121,7 +126,7 @@ Vous avez peut-être remarquer le `#stop` il permet de stoper l'éxécution de l
 
 Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucle `#loop` comme ceci:
 
-```jinja
+```css
 #loop ($names as $name)
   #if ($name == 'tintin')
     #stop
@@ -133,7 +138,7 @@ Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucl
 
 Avec les sucres syntaxique, on peut réduire le code comme ceci:
 
-```jinja
+```css
 #loop ($names as $name)
   #stop($name == 'tintin')
   // Ou
@@ -145,7 +150,7 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
 
 Cette clause faire exactement l'action de `for`.
 
-```jinja
+```css
 #for ($i = 0; $i < 10; $i++)
  // ..
 #endfor
@@ -155,7 +160,7 @@ Cette clause faire exactement l'action de `for`.
 
 Cette clause faire exactement l'action de `while`.
 
-```jinja
+```css
 #while ($name != 'tintin')
  // ..
 #endwhile
@@ -167,7 +172,7 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
 
 `#include` permet d'include un autre fichier de template dans un autre.
 
-```jinja
+```css
  #include('filename', data)
 ```
 
@@ -175,13 +180,13 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
 
 Considérons le fichier `hello.tintin.php` suivant:
 
-```jinja
+```css
 Hello {{ $name }}
 ```
 
 Utilisation:
 
-```jinja
+```css
 #include('hello', ['name' => 'Tintin'])
 // => Hello Tintin
 ```
@@ -211,7 +216,7 @@ Considérérons le code **tintin** suivant:
 
 Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.php`
 
-```jinja
+```css
 // le fichier se nomme `content.tintin.php`
 #extends('layout')
 
@@ -245,17 +250,17 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 Tintin peut être étendu avec son systême de directive personnalisé, pour ce faire utilisé la méthode `directive`. Pour se faire nous avons créer un configuration et extendre la configuration native `\Tintin\Bow\TintinConfiguration::class`.
 
 ```bash
-php bow add:configuration TintinDirectiveConfiguration
+php bow add:configuration TintinConfiguration
 ```
 
 ### Ajouter vos directive de la configuration
 
-Après avoir créé la configuration vous trouverez le fichier `app/Configuration/TintinDirectiveConfiguration.php` qui va étendre la configuration par défaut de Tintin qui est `\Tintin\Bow\TintinConfiguration::class` et ensuite modifier la méthode `onRunning`.
+Après avoir créé la configuration vous trouverez le fichier `app/Configurations/TintinConfiguration.php` qui va étendre la configuration par défaut de Tintin qui est `\Tintin\Bow\TintinConfiguration::class` et ensuite modifier la méthode `onRunning`.
 
 ```php
 use Tintin\Tintin;
 
-class TintinDirectiveConfiguration extends \Tintin\Bow\TintinConfiguration
+class TintinConfiguration extends \Tintin\Bow\TintinConfiguration
 {
   /**
    * Add action in tintin
@@ -271,7 +276,14 @@ class TintinDirectiveConfiguration extends \Tintin\Bow\TintinConfiguration
 }
 ```
 
-Pour fin en beauté. remplacez la configuration par defaut de Tintin dans le `app/Kernel.php`.
+Pour fin en beauté. remplacez la configuration par defaut de Tintin dans le `app/Kernel.php` par `App/Configurations/TintinConfiguration::class`.
+
+Maintenant la directive `#super` est disponible et vous pouvez l'utiliser.
+
+```php
+  return $tintin->render('#super');
+  // => Super !
+```
 
 ### Exemple de création de directive
 
@@ -328,8 +340,8 @@ $tintin->directive('endform', function (array $attributes = []) {
 
 Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directive précédé la par `#`. Ensuite si cette directive prend des paramètres, lancer la directive comme vous lancez les fonctions dans votre programme. Les paramètres seront régroupés dans la varibles `$attributes` dans l'ordre d'ajout.
 
-```html
-// Fichier form.tintin.php
+```css
+/** Fichier form.tintin.php **/
 #form(['method' => 'post', "action" => "/posts", "enctype" => "multipart/form-data"])
   #input(["type" => "text", "value" => null, "name" => "name"])
   #textarea(["value" => null, "name" => "content"])
@@ -353,13 +365,6 @@ echo $tintin->render('form');
   <textarea name="content"></textarea>
   <button type="submit">Add</button>
 </form>
-```
-
-Maintenant la directive `#super` est disponible et vous pouvez l'utiliser.
-
-```php
-  return $tintin->render('#super');
-  // => Super !
 ```
 
 ## IDE support

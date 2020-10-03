@@ -1,6 +1,6 @@
 # Bow Framework
 
-The Bow Framework documentation web site is [here](https://bowphp.github.io)
+The Bow Framework documentation web site is [here](https://bowphp.com)
 
 ## Contributing
 

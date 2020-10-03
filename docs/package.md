@@ -41,10 +41,10 @@ Vous allons faire un plugin aui va vérifier un email, alors on crée la configu
 php bow add:configuration EmailCheckerConfiguration
 ```
 
-Dans le dossier `app` nous allons ajouter un dossier `Package` dans ce dossier, nous allons encore ajouter le fichier `EmailCheckController.php`:
+Dans le dossier `app` nous allons ajouter un dossier `Packages` dans ce dossier, nous allons encore ajouter le fichier `EmailCheckController.php`:
 
 ```php
-namespace App\Package;
+namespace App\Packages;
 
 use Bow\Http\Request;
 use Bow\Support\Str;
@@ -55,6 +55,7 @@ class EmailCheckController
    * Check the email
    *
    * @param Request $request
+   * @return mixed
    */
   public function __invoke(Request $request)
   {
@@ -80,7 +81,7 @@ class EmailCheckController
 Vous allons maintenant créer note configuration:
 
 ```php
-namespace App\Configuration;
+namespace App\Configurations;
 
 use Bow\Configuration\Loader;
 use Bow\Configuration\Configuration;
@@ -95,7 +96,7 @@ class EmailCheckController extends Configuration
   public function run()
   {
     $this->container->make('app')->post(
-      '/email/checker', \App\Package\EmailCheckController::class
+      '/email/checker', \App\Packages\EmailCheckController::class
     );
   }
 }

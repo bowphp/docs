@@ -8,7 +8,7 @@ title: Barry ORM
   <br>BARRY ORM
 </h1>
 
-<p align="center">BARRY c'est l'ORM (<strong>Object Relation Mapping</strong>) intégrer dans Bow Framework.</p>
+<p align="center">BARRY c'est l'ORM (<strong>Object Relation Mapping</strong>) intégré dans Bow Framework.</p>
 
 ## Introduction
 
@@ -19,6 +19,35 @@ L'ORM BARRY inclus avec Bow Framework fournit une implémentation ActiveRecord b
 Dans tout bon Framework qui se respect, il y a un système de ORM et qui posséde un nom super mignon. Celui de Bow se nomme **BARRY**, n'est pas mignon ça :smile:.
 
 > Avant de commencer, assurez-vous de configurer une connexion à la base de données dans `config/database.php`.
+
+Avant de continuer veuillez ajouter une migration:
+
+```bash
+php bow add:migration CreateTodoTable
+```
+
+Ensuite modifiez la migration:
+
+```php
+public function up()
+{
+  $this->create("todos", function (SQLGenerator $table) {
+    $table->addIncrement('id');
+    $table->addString('title');
+    $table->addString('status', 0);
+    $table->addInteger('budget', 0);
+    $table->addTimestamps();
+  });
+}
+```
+
+En fin de faire la migration:
+
+```bash
+php bow migration:migrate
+```
+
+> Cette migration sera utilisé pour vous permettre de faire directement les tests sur le modèle `App\Models\Todo::class`.
 
 ## Ajouter un model
 
@@ -232,8 +261,8 @@ $todo->delete();
 Si vous souhaitez supprimer plusieurs enregistrements en masse, vous pouvez utiliser la méthode `destroyBy` ou `truncate`:
 
 ```php
-// find and delete all todo by id
-Todo::destroyBy('id', 'David');
+// Delete all todo by id
+Todo::deleteBy('id', 'David');
 
 // delete all todo
 Todo::truncate();
