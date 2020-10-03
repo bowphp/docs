@@ -338,6 +338,8 @@ db_transaction_started();
 
 ## Les jointures
 
+Considérons les tables suivantes:
+
 ```sql
 create table `author` (
   `id` int primary key,
@@ -350,6 +352,40 @@ create table `pets` (
   `color` varchar(50),
   `author_id` int default 0
 );
+```
+
+Pour faire une jointure dans Bow Framework c'est très simple en fait. Pour ce faire on utilise la méthode `join`.
+
+```php
+$results = table('pets')->join('autors', 'authors.id', 'pets.author_id')->get();
+```
+
+Souvant il est intéressant d'ajouter des contraintes dans la réquête normalement avec la clause `WHERE`.
+
+```php
+$results = table('pets')
+  ->join('authors', 'authors.id', 'pets.author_id')
+  ->whereColumn('pets.author_id', 1)->get();
+```
+
+Normalement vous pouvez ajouter plusieur jointure dans l'appel de méthode.
+Pour l'exemple disons qu'il y a une autre table nommé `countries` qui est le pays du propriétaire et que la table `authors` est maintenant:
+
+```sql
+create table `author` (
+  `id` int primary key,
+  `name` varchar(200),
+  `country_id` int
+);
+```
+
+Notre requête sera maintenant:
+
+```php
+$results = table('authors')
+  ->join('authors', 'authors.id', 'pets.author_id')
+  ->join('countries', 'countries.id', 'pets.country_id')
+  ->whereColumn('pets.author_id', 1)->get();
 ```
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.

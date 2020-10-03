@@ -58,8 +58,8 @@ npm run php-sniffer
 `webpack.mix.js` est une fichier qui vous permet de définir les fichiers JavaScript, JSx et Sass à compiler et est préconfiguré comme suit:
 
 ```js
-mix.react('components/js/app.js', 'public/js')
-  .sass('components/js/app.scss', 'public/css');
+mix.react('frontend/js/app.js', 'public/js')
+  .sass('frontend/js/app.scss', 'public/css');
 ```
 
 Pour plus d'information sur [laravel-mix](https://laravel-mix.com/docs/4.0/basic-example).

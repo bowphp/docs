@@ -19,7 +19,7 @@ title: Installation
 
 Pour créer une nouvelle application Bow, veuillez d'abord vous assurez que votre ordinateur remplit les conditions suivantes:
 
-- PHP >= 7
+- PHP >= 7.1
 - OpenSSL PHP Extension
 - PDO PHP Extension
 - Mbstring PHP Extension
@@ -35,7 +35,7 @@ Bow utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Do
 ### Via Composer create-project
 
 ```bash
-composer create-project --prefer-dist bowphp/app mon-projet
+composer create-project --prefer-dist bowphp/app nom-du-projet
 ```
 
 > Nous vous conseillons d'installer `composer` de façon globale sur votre machine. Pour ce faire référez-vous à la [documentation](https://getcomposer.org/download) d'installation de composer.

@@ -132,7 +132,7 @@ Après avoir défini une chaîne de traduction comportant des options de plurali
 echo t("messages.names", count($names) > 1);
 ```
 
-Avec les données remplacer
+Avec les données remplacées
 
 ```php
 "names" => "Bonjour {name}|Bonjour à tous",
