@@ -151,15 +151,22 @@ Bow Framework dans son démarrage optimise le donnée envoyés au serveur en rem
 
 ```php
 $name = $request->get('name');
-```
 
-ou
-
-```php
+// Récupérer directement la valeur via le nom du champ
 $name = $request->name;
 ```
 
-Ceci permet juste de récupérer le contenu du champ `name` d'un formulaire ou d'un url en fonction du type de requête.
+> Vous pouvez aussi défini une valeur par défaut à `get`
+
+```php
+$name = $request->get('name', 'Papac');
+
+$name = $request->get('name', function () {
+  return User::first()->name;
+});
+```
+
+Ceci permet justement de récupérer le contenu du champ `name` d'un formulaire ou d'un url en fonction du type de requête.
 
 ### Recupération d'une partie des données d'entrée
 
