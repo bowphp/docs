@@ -177,14 +177,14 @@ Notons pour l'instant que tous ces méthodes sont en réalité des helpers de la
 Prototype de la méthode `addColumn`.
 
 ```php
-$table->addColumn(string $columnName, string $columnType, array $columnAttributes);
+$table->addColumn(string $column_name, string $column_type, array $column_attributes);
 ```
 
 | Paramètre | Type | Description |
 |----------|------|------|
-| $columnName  | **String** | Le nom de la colonne de la table |
-| $columnType  | **String** | Le type de la colonne de la table |
-| $columnAttributes   | **Array** | Les différents attributes de la colonne en fonction du type |
+| $column_name  | **String** | Le nom de la colonne de la table |
+| $column_type  | **String** | Le type de la colonne de la table |
+| $column_attributes   | **Array** | Les différents attributes de la colonne en fonction du type |
 
 Liste des attributes: **unique**, **primary**, **index**, **increment**, **default**, **size**, **nullable**, **unsigned**.
 
@@ -209,8 +209,6 @@ $table->addColumn('id', 'int', [
 ]);
 
 $table->addColumn('price', 'int', [
-  'primary' => true,
-  'increment' => true,
   'size' => 11,
   'unsigned' => true
 ]);
