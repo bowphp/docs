@@ -6,7 +6,7 @@
     "tagline": "Simplify Your Web Development",
     "docs": {
       "auth": {
-        "title": "Autentification"
+        "title": "Authentification"
       },
       "concept": {
         "title": "Concept et Architecture"
@@ -80,9 +80,6 @@
       "structure": {
         "title": "Structure"
       },
-      "views": {
-        "title": "Vues"
-      },
       "tintin": {
         "title": "Tintin Template"
       },
@@ -91,6 +88,9 @@
       },
       "http-upload": {
         "title": "Upload File"
+      },
+      "views": {
+        "title": "Vues"
       },
       "what-new": {
         "title": "what-new"

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&family=Source+Sans+Pro&display=swap');
 @font-face{
   font-family: 'Fira Code';
   src: url('eot/FiraCode-Light.eot');
@@ -21,10 +22,9 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 15px !important;
   font-weight: 400;
-  line-height: 1,7;
+  line-height: 1.7;
 }
 
 .navigationSlider .slidingNav ul {
@@ -43,7 +43,8 @@ body {
 }
 
 .toc .toggleNav ul li.navListItemActive a::before {
-  content: "+ ";
+  content: "> ";
+  font-weight: bold;
 }
 
 .toc .toggleNav .navGroup .navGroupCategoryTitle {
