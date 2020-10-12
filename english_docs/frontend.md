@@ -47,10 +47,10 @@ npm run watch
 
 Code sniffer c'est un outil qui permet de formater le code, validé sa qualité et réorganisé votre code dans le standard de dévelopement (Ici me standard c'est le `psr-2`).
 
-Cette commande va aussi lancer `php-sniffer` qui est simple outil de validation synthaxique pour PHP.
+Cette commande va aussi lancer `format` qui est simple outil de validation synthaxique pour PHP.
 
 ```bash
-npm run php-sniffer
+npm run format
 ```
 
 ## Webpack.mix.js
