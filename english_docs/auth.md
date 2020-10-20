@@ -1,10 +1,10 @@
 ---
 id: auth
-title: Authentification
+title: Authentication
 ---
 
 ## Introduction
 
-Bow Framework intègre un système d'authentification native. Cela vous permettra faire une authentification très simple qui sera accéssible directement dans tout votre application.
+Bow Framework integrates a native authentication system. This will allow you to make a very simple authentication which will be directly accessible in all your application.
 
-> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
+> Feel free to give your opinion on the quality of the documentation or suggest patches.
