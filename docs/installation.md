@@ -60,7 +60,9 @@ Ouvrez votre navigateur et tapez `http://localhost:8000`.
 
 ### Dossier Public
 
-Après l'installation de Bow, vous devez configurer le `document root` de votre serveur pour qu'il pointe vers le dossier `public`. Le fichier `index.php` qui se trouve dans le dossier public sert de point d'entrée pour toutes les requêtes HTTP (c'est le **front contrôleur**).
+Après l'installation de Bow Framework, vous devez configurer le `document root` de votre serveur pour qu'il pointe vers le dossier `public`.
+
+Le fichier `index.php` qui se trouve dans le dossier public sert de point d'entrée pour toutes les requêtes HTTP (c'est le **Front Contrôleur**).
 
 ### Fichiers de configuration
 
@@ -68,7 +70,7 @@ Tous les fichiers de configurations de Bow Framework sont stockés dans le dossi
 
 ### Permissions sur les dossiers
 
-Après l'installation de Bow, vous aurez besoin de configurer quelques permissions. Les dossiers contenu dans le dossier `storage` doivent avoir les permissions d'écriture sur le serveur web.
+Après l'installation de Bow, vous aurez besoin de configurer quelques permissions. Les dossiers contenu dans le dossier `var` doivent avoir les permissions d'écriture sur le serveur web.
 
 ## Configuration Serveur Web
 
@@ -100,10 +102,10 @@ location / {
 
 Vous pouvez continuez vers ces sections pour démarrer votre développement.
 
-- [Contrôleur](./controller.md)
-- [Routing](./routing.md)
-- [Session](./session.md)
-- [Base de donnée](./database.md)
-- [Storage](./storage.md)
+- [Plus de contrôleur](./controller.md)
+- [Ajouter des routes à votre application](./routing.md)
+- [Manipulé les sessions](./session.md)
+- [Comment ajouter des données dans une Base de donnée ?](./database.md)
+- [Consultez aussi le système de stockage](./storage.md)
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
