@@ -33,9 +33,9 @@ Les contrôleurs sont stockés dans le répertoire `app/Controllers`.
 
 Vous avez la possibilité de modifier le `namespace` des contrôleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel.php`. La méthode `middlewares` permet à Bow de savoir quel est le bon `namespace` à ajouter sur le contrôleur lors de l'execution de la réquête ou lors de la génération de contrôleur ou de middleware par le lanceur de tache `php bow`.
 
-Imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos contrôleurs dans le `namespace` `App\Bus\Controllers`. Alors comment faire ça ?
+Imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos contrôleurs dans le `App\Bus\Controllers`. Alors comment faire ça ?
 
-Voici le code que cela pourrai donnée:
+Voici le code que cela pourrait donnée:
 
 ```php
 # Dans le fichier `app\Kernel.php`
@@ -57,13 +57,13 @@ $command = new Bow\Console\Command(__DIR__);
 $command->setControllerDirectory(__DIR__.'/app/Bus/Controllers');
 ```
 
-> Visitez ce [lien](./structure.md) pour plus d'information sur la personnalisation de la structure de l'applucation.
+> Visitez ce [lien](./structure.md) pour plus d'information sur la personnalisation de la structure de l'application.
 
 ## Contrôleur basic
 
 ### Définir un contrôleur
 
-Voici un exemple de classe de contrôleur de base. Notez que le contrôleur hérite de la classe de `App\Controllers\Controller` de base incluse avec Bow. La classe de base fournit quelques méthodes pratiques telles que la méthode du `render`, qui peut être utilisée pour compiler une vue.
+Voici un exemple de classe de contrôleur de base. Notez que le contrôleur hérite de la classe `App\Controllers\Controller` de base. Cette classe de base fournit quelques méthodes pratiques telles que la méthode du `render`, qui peut être utilisée pour compiler une vue.
 
 ```php
 namespace App\Controllers;
