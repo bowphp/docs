@@ -41,7 +41,7 @@ Pour utiliser le service, vous devez appeler la classe [`Bow\Mail\Mail::class`](
 
 ### La méthode send
 
-**send** permet d'envoyer des emails en se basant sur une [vue](http://bowphp.com/docs/views) dans l'application.
+**send** permet d'envoyer des emails en se basant sur une [vue](./views) dans l'application.
 
 #### Prototype send
 
@@ -61,13 +61,15 @@ Exemple d'utilisation:
 
 Considérons la vue `email-view.tintin.php` qui contient les informations suivantes:
 
-```twig
+```jinja
 Bonjour {{ $name }},
 
-Nous vous informons que vous compte viens d'être créditer de 100.000 F.
+Nous vous informons que vous compte viens d'être créditer de 100.000.000 F.
 
 Cordialement,
 ```
+
+Ecrivons maintenant le code qui envoie le mail:
 
 ```php
 use Bow\Mail\Mail;
@@ -151,13 +153,13 @@ $message->addCc(string $mail, string $name = null)
 ##### `addReplyTo`, ajout l'entête Reply-To
 
 ```php
-$message->addReplyTo($mail, $name = null)
+$message->addReplyTo(string $mail, $name = null)
 ```
 
 ##### `addReturnPath`, ajout l'entête Return-Path
 
 ```php
-$message->addReturnPath($mail, $name = null)
+$message->addReturnPath(string $mail, $name = null)
 ```
 
 ### La méthode raw
