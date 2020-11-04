@@ -12,23 +12,23 @@ title: Concept et Architecture
 <a href="https://github.com/bowphp/app/blob/master/LICENSE" title="license"><img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square"/></a>
 <a href="https://travis-ci.org/bowphp/app" title="Travis branch"><img src="https://img.shields.io/travis/bowphp/app/master.svg?style=flat-square"/></a>
 
-Bow est un framework PHP, écrit par **[Franck DAKIA](http://github.com/papac)** et plusieurs autres contributeurs.
+Bow is a PHP framework, written by **[Franck DAKIA](http://github.com/papac)** and several others contributors.
 
-L’objectif est de permettre aux débutants qui souhaitent travailler sur un projet un peu plus gros de se lancer, de comprendre le fonctionnement du **développement collaboratif**. Et faites de ce framework une référence dans la communauté PHP du monde entier.
+The objective is to allow beginners who wish to work on a larger project and understand how **collaborative development** works to get started with ease and make this framework a reference in the PHP community.
 
-**N'hésitez pas à commencer maintenant par la [documentation](https://bowphp.com).**
+**Get an idea by starting with the [documentation](https://bowphp.com).**
 
 ## Contributing
 
-Merci d'avoir envisagé de contribuer à Bow Framework! Le guide de contribution se trouve dans la documentation-cadre.
+Thank you for considering contributing to Bow Framework! The contribution guide can be found in the documentation.
 
 - [Franck DAKIA](https://github.com/papac)
-- [Merci aux collaborateurs](https://github.com/bowphp/app/graphs/contributors)
+- [Thanks to the collaborators](https://github.com/bowphp/app/graphs/contributors)
 
 ## Contact
 
 [dakiafranck@gmail.com](mailto:dakiafranck@gmail.com) - [@franck_dakia](https://twitter.com/franck_dakia)
 
-**S'il vous plaît, s'il y a un bug sur le projet s'il vous plaît contactez-moi par email ou laissez-moi un message sur le [slack](https://bowphp.slack.com) ou [rejoignez-nous sur slask](https://join.slack.com/t/bowphp/shared_invite/enQtNzMxOTQ0MTM2ODM5LTQ3MWQ3Mzc1NDFiNDYxMTAyNzBkNDJlMTgwNDJjM2QyMzA2YTk4NDYyN2NiMzM0YTZmNjU1YjBhNmJjZThiM2Q)**
+**Please, if there is a bug on the project please contact me by email or leave me a message on [slack](https://bowphp.slack.com) or [join us on slack](https://join.slack.com/t/bowphp/shared_invite/enQtNzMxOTQ0MTM2ODM5LTQ3MWQ3Mzc1NDFiNDYxMTAyNzBkNDJlMTgwNDJjM2QyMzA2YTk4NDYyN2NiMzM0YTZmNjU1YjBhNmJjZThiM2Q)**
 
-> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
+> Do not hesitate to give your opinion on the quality of the documentation or suggest patches.
