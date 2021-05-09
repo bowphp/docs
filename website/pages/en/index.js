@@ -34,7 +34,7 @@ Button.defaultProps = {
 };
 
 const SplashContainer = props => (
-  <div className="homeContainer">
+  <div className="homeContainer" style={{padding: 50}}>
     <div className="homeSplashFade">
       <div className="wrapper homeWrapper">{props.children}</div>
     </div>
