@@ -2,6 +2,19 @@
 
 The Bow Framework documentation web site is [here](https://bowphp.com)
 
+## Installation
+
+Install the documentation localy and contrib on.
+
+```bash
+git clone https://github.com/bowphp/docs documentation
+cd documentation/website
+npm install
+npm run start
+```
+
+Edit the content of `documentation/docs` for update documentation and save.
+
 ## Contributing
 
 Thank you for considering contributing to Bow Framework! The contribution guide is in the framework documentation.
