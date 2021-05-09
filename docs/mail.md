@@ -1,6 +1,6 @@
 ---
 id: mail
-title: ✉️ Envoyer Mail
+title: ✉️ Envoie de Mail
 ---
 
 - [Introduction](#introduction)
@@ -29,6 +29,7 @@ title: ✉️ Envoyer Mail
 Envoyer des emails dans une application est monnaie courante. Bow Framework intègre un système d'envoi d'email facile à utiliser. Vous pouvez utiliser ce système à travers plusieurs pilotes communement appelés drivers:
 
 - **SMTP** - Envoie direct via un serveur SMTP
+- **SES** - Vous pouvez aussi utiliser SES
 - **MAIL** - Le système utilisera le fonction `email` natif de PHP
 
 ## Configuration
@@ -37,16 +38,16 @@ Vous trouverez la configuration dans le fichier `config/mail.php` qui est rélat
 
 ## Utilisation
 
-Pour utiliser le service, vous devez appeler la classe [`Bow\Mail\Mail::class`](https://bowphp.com/api/master/Bow/Mail). Il y a deux méthode statique pour l'envoie de mail `send` et `raw`.
+Pour utiliser le service, vous devez appeler la classe [`Bow\Mail\Mail::class`](https://bowphp.com/api/master/Bow/Mail). Il y a deux méthode statique pour l'envoie de mail `email` et `raw_email`.
 
 ### La méthode send
 
-**send** permet d'envoyer des emails en se basant sur une [vue](./views) dans l'application.
+**email** permet d'envoyer des emails en se basant sur une [vue](./views) dans l'application.
 
 #### Prototype send
 
 ```php
-send($view, array $data, callable $callable)
+email($view, array $data, callable $callable)
 ```
 
 | Paramètre | Type |
@@ -169,7 +170,7 @@ $message->addReturnPath(string $mail, $name = null)
 #### Prototype raw
 
 ```php
-raw($to, $subject, $message, array $headers = [])
+raw_email($to, $subject, $message, array $headers = [])
 ```
 
 | Paramètre | Type |

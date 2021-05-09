@@ -45,7 +45,7 @@
         "title": "🎎 i18n"
       },
       "mail": {
-        "title": "✉️ Envoyer Mail"
+        "title": "✉️ Envoie de Mail"
       },
       "middleware": {
         "title": "🚥 Middleware"
@@ -90,7 +90,7 @@
         "title": "⚙️ App Structure"
       },
       "tutorial": {
-        "title": "🖼 Avec un tutoriel"
+        "title": "👩🏿‍🏫 Avec un tutoriel"
       },
       "http-upload": {
         "title": "🛫 Envoie de fichier"
@@ -99,7 +99,7 @@
         "title": "🚧 Validation de donnée"
       },
       "views": {
-        "title": "🖼 Utiliser les vues"
+        "title": "🎨 Utiliser les vues"
       },
       "what-new": {
         "title": "what-new"

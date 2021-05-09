@@ -186,7 +186,8 @@ a {
 }
 
 .fixedHeaderContainer {
-  border-bottom: 5px solid #eee;
+  border-bottom: 1px solid #eee;
+  box-shadow: 1px 1px 3px rgba(24, 24, 24, 0.4);
 }
 
 blockquote {
