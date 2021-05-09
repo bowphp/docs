@@ -1,6 +1,6 @@
 ---
 id: storage
-title: Storage
+title: 💿 Stockage de fichier
 ---
 
 - [Introduction](#introduction)

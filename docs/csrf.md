@@ -1,6 +1,6 @@
 ---
 id: csrf-protection
-title: CSRF Protection
+title: 🙅🏽‍♂️ CSRF Protection
 ---
 
 - [Introduction](#introduction)

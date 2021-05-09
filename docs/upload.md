@@ -1,6 +1,6 @@
 ---
 id: http-upload
-title: Upload File
+title: 🛫 Envoie de fichier
 ---
 
 # Traiter les fichiers uploader

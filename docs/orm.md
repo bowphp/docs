@@ -1,6 +1,6 @@
 ---
 id: orm
-title: Barry ORM
+title: ORM Barry
 ---
 
 <h1 align="center">

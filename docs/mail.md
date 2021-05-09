@@ -1,6 +1,6 @@
 ---
 id: mail
-title: Mail
+title: ✉️ Envoyer Mail
 ---
 
 - [Introduction](#introduction)

@@ -6,91 +6,100 @@
     "tagline": "Simplify Your Web Development",
     "docs": {
       "auth": {
-        "title": "Authentification"
+        "title": "👮🏽 Authentification"
       },
       "concept": {
-        "title": "Concept et Architecture"
+        "title": "👨🏽‍💻 Concept et Architecture"
       },
       "configuration": {
-        "title": "Configuration"
+        "title": "👨🏽‍🔧 App Configuration"
+      },
+      "console": {
+        "title": "Bow Console"
       },
       "container": {
         "title": "Capsule"
       },
       "contribution": {
-        "title": "Guide de Contribution"
+        "title": "👩🏽‍🍳 Guide de Contribution"
       },
       "controleur": {
-        "title": "Contrôleurs"
+        "title": "👨🏽‍✈️ Contrôleurs"
       },
       "csrf-protection": {
-        "title": "CSRF Protection"
+        "title": "🙅🏽‍♂️ CSRF Protection"
       },
       "database": {
-        "title": "Démarrage"
+        "title": "🗂 Démarrage la base de donnée"
       },
       "frontend": {
-        "title": "Frontend"
+        "title": "📯 Front-End"
+      },
+      "helpers": {
+        "title": "🪒 Application Helpers"
       },
       "installation": {
-        "title": "Installation"
+        "title": "🚀 Installation"
       },
       "i18n": {
-        "title": "i18n"
+        "title": "🎎 i18n"
       },
       "mail": {
-        "title": "Mail"
+        "title": "✉️ Envoyer Mail"
       },
       "middleware": {
-        "title": "Middleware"
+        "title": "🚥 Middleware"
       },
       "migration": {
-        "title": "Migration"
+        "title": "📑 Migration"
       },
       "orm": {
-        "title": "Barry ORM"
+        "title": "ORM Barry"
       },
       "packaging": {
         "title": "Packaging"
       },
       "policier": {
-        "title": "Policier"
+        "title": "🔐 Policier JWT Auth"
       },
       "query-builder": {
-        "title": "SQL Builder"
+        "title": "🏗 SQL Builder"
       },
       "http-request": {
-        "title": "HTTP Request"
+        "title": "🚀 HTTP Request"
       },
       "http-response": {
-        "title": "HTTP Response"
+        "title": "🛰 HTTP Response"
       },
       "routing": {
-        "title": "Routing"
+        "title": "🚦 Routing"
       },
       "seeding": {
         "title": "Seeding"
       },
+      "service": {
+        "title": "🏢 Approche service"
+      },
       "http-session": {
-        "title": "HTTP Session"
+        "title": "🎬 HTTP Session"
       },
       "storage": {
-        "title": "Storage"
+        "title": "💿 Stockage de fichier"
       },
       "structure": {
-        "title": "Structure"
-      },
-      "tintin": {
-        "title": "Tintin Template"
+        "title": "⚙️ App Structure"
       },
       "tutorial": {
-        "title": "Tutoriel"
+        "title": "🖼 Avec un tutoriel"
       },
       "http-upload": {
-        "title": "Upload File"
+        "title": "🛫 Envoie de fichier"
+      },
+      "validation": {
+        "title": "🚧 Validation de donnée"
       },
       "views": {
-        "title": "Vues"
+        "title": "🖼 Utiliser les vues"
       },
       "what-new": {
         "title": "what-new"

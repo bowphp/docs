@@ -1,6 +1,6 @@
 ---
 id: middleware
-title: Middleware
+title: 🚥 Middleware
 ---
 
 - [Introduction](#introduction)

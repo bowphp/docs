@@ -10,8 +10,8 @@
     "Guide": [
       "routing",
       "controleur",
-      "middleware",
       "views",
+      "middleware",
       "storage",
       "mail",
       "auth",
@@ -26,14 +26,17 @@
     ],
     "Http": [
       "http-request",
-      "csrf-protection",
       "http-response",
+      "csrf-protection",
       "http-session"
     ],
     "Misc": [
       "package",
       "frontend",
-      "policier"
+      "policier",
+      "service",
+      "helpers",
+      "console"
     ]
   }
 }

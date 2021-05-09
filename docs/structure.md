@@ -1,13 +1,13 @@
 ---
 id: structure
-title: Structure
+title: ⚙️ App Structure
 ---
 
 - [Structure globale](#structure-globale)
 - [Le dossier app](#le-dossier-app)
 - [Le dossier frontend](#le-dossier-frontend)
-- [Les dossier `migration` et `seeders`](#les-dossier-migration-et-seeders)
-- [Le dossier var](#le-dossier-var)
+- [Les dossier `migrations` et `seeders`](#les-dossier-migrations-et-seeders)
+- [Le dossier `var`](#le-dossier-var)
 
 ## Structure globale
 
@@ -38,6 +38,7 @@ Ici vous retrouverez les dossiers suivants:
 - __Models__: Dossier dans lequel sera sauvegardé les modèles de l'application.
 - __Validations__: Dossier dans lequel sera sauvegardé les validations de l'application.
 - __Exceptions__: Dossier dans lequel sera sauvegardé les exceptions personnalisés de l'application.
+- __Services__: Dossier dans lequel sera sauvegardé les services générés par Bow Console.
 
 Vous trouverez aussi les fichiers suivants:
 
@@ -53,16 +54,16 @@ C'est là que vous allez insérer tous les fichiers qui sont utilisé dans les v
 
 > Consultez la section [webpack.mix.js](./frontend)
 
-## Les dossier `migration` et `seeders`
+## Les dossier `migrations` et `seeders`
 
-- __migration__: Regroupe tout les fichiers de migration de la base de donnée. Il existe un fichier nommé `.registers` qui ne doit en aucun cas être supprimer, c'est la mémoire en effet du système de migration de bow
+- __migrations__: Regroupe tout les fichiers de migration de la base de donnée.
 - __seeders__: Regroupe tout les fichiers permettant d'entrer des données de test dans votre base de données.
 
-## Le dossier var
+## Le dossier `var`
 
 Ici, Bow va stocker les fichiers de log et le cache de votre application. Vous y retrouverez les dossiers suivant:
 
-- __app__: Dossier dans lequel l'application sauvegarde les fichiers téléchargé de l'application
+- __storage__: Dossier dans lequel l'application sauvegarde les fichiers téléchargé de l'application
 - __logs__: Dossier dans lequel est sauvegardé les logs de l'application.
 - __session__: Dossier dans lequel est sauvegardé les fichiers de session de l'application.
 - __cache__: Dossier dans lequel l'application sauvegarde les caches de l'application

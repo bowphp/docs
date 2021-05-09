@@ -1,6 +1,6 @@
 ---
 id: tutorial
-title: Tutoriel
+title: 🖼 Avec un tutoriel
 ---
 
 - [Introduction](#introduction)

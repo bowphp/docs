@@ -38,7 +38,7 @@ class Sponsors extends React.Component {
           </div>
           <Block layout="fourColumn" background="#b6b6b6">{sponsors}</Block>
           <div className="showcaseSection">
-            <p>Devez vous aussi <b>Sponsor</b> ?</p>
+            <p>Devenez aussi <b>Sponsor</b> ?</p>
             <a href="mailto:papac@bowphp.com" className="button">
               Ajouter votre entreprise
             </a>

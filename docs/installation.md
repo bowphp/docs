@@ -1,6 +1,6 @@
 ---
 id: installation
-title: Installation
+title: 🚀 Installation
 ---
 
 - [Prérequis](#prérequis)
@@ -14,6 +14,7 @@ title: Installation
 - [Configuration Serveur Web](#configuration-serveur-web)
   - [Apache](#apache)
   - [Nginx](#nginx)
+  - [Déployé sur un server mutualisé](#déployé-sur-un-server-mutualisé)
 
 ## Prérequis
 
@@ -30,7 +31,7 @@ Pour créer une nouvelle application Bow, veuillez d'abord vous assurer que votr
 
 ## Créer un projet
 
-Bow utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Donc, avant d'utiliser Bow, il vous faut d'abord installer Composer sur votre machine.
+Bow Framework utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Donc, avant d'utiliser Bow, il vous faut d'abord installer Composer sur votre machine.
 
 ### Via Composer create-project
 
@@ -100,12 +101,41 @@ location / {
 }
 ```
 
+### Déployé sur un server mutualisé
+
+Pour deployer Bow Framework sur un serveur mutualisé. Il faut déplacer le fichier `index.php` et `.htaccess` à la racine du projet.
+Et assuré le bien appelé les fichiers du fichier `index.php` ensuite vous pouvez copier le code qui suit dans le fichier htaccess.
+
+```c
+Options -indexes
+<IfModule mod_rewrite.c>
+  <IfModule mod_negotiation.c>
+    Options -MultiViews
+  </IfModule>
+
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^ index.php [L]
+</IfModule>
+
+<Files ".env.*|server.php|bow|app/**|vendor/**|postman/*|var/**|seeders/*|templates/**|tests/**|migrations/**">
+  Order Allow,Deny
+  Deny from all
+</Files>
+```
+
+> Il est en ce sens recommandé d'appelé vos fichiers d'assets avec la méthode `app_assets` et modifier votre `.env.json` la valeur de `APP_ASSET_PREFIX` en `/public` et bow fait le reste 😅
+
 Vous pouvez continuer vers ces sections pour démarrer votre développement.
 
-- [Plus de contrôleur](./controller.md)
 - [Ajouter des routes à votre application](./routing.md)
-- [Manipuler les sessions](./session.md)
+- [Plus de contrôleur](./controller.md)
 - [Comment ajouter des données dans une Base de donnée ?](./database.md)
+- [Manipuler les sessions](./session.md)
 - [Consulter aussi le système de stockage](./storage.md)
 
 > N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
