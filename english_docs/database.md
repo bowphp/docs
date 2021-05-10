@@ -1,6 +1,6 @@
 ---
 id: database
-title: Démarrage
+title: 🎯 Démarrage
 ---
 
 - [Introduction](#introduction)
@@ -30,7 +30,7 @@ Actuellement, Bow prend en charge deux bases de données:
 
 ## Configuration
 
-La configuration de la base donnée de votre application se localise dans le fihcier `config/db.php`. Dans ce fichier, vous pouvez définir tous les connections de votre base de donnée et un exemple en plus pour tous les supports de base de donnée est defini dans ce fichier.
+La configuration de la base donnée de votre application se localise dans le fihcier `config/database.php`. Dans ce fichier, vous pouvez définir tous les connections de votre base de donnée et un exemple en plus pour tous les supports de base de donnée est defini dans ce fichier.
 
 ## SQLite Configuration
 
@@ -45,7 +45,7 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 
 ## Connexion à plusieur Base de donnée
 
-Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode static de `connexion` sur la classe [`Bow\Database\Database`](https://bowphp.com/api/master/Bow/Database/Database.html). Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/db.php`:
+Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode static de `connexion` sur la classe [Bow\Database\Database::class](https://bowphp.com/api/master/Bow/Database/Database.html). Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/database.php`:
 
 ```php
 use Bow\Database\Database;
@@ -98,10 +98,10 @@ use Bow\Database\Database;
 $pets = Database::select('select * from `pets`');
 ```
 
-Via helper `select`:
+Via helper `db_select`:
 
 ```php
-$pets = select('select * from `pets`');
+$pets = db_select('select * from `pets`');
 ```
 
 ### Sélection conditionnel
@@ -114,13 +114,13 @@ use Bow\Database\Database;
 $pet = Database::select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
-Via helper `select`:
+Via helper `db_select`:
 
 ```php
-$pet = select('select * from `pets` where id = :id', ['id' => 1]);
+$pet = db_select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
-Notez que la valeur retournée par la méthode `select` est un `array` ou `null` s'il y a aucune informations.
+Notez que la valeur retournée par la méthode `db_select` est un `array` ou `null` s'il y a aucune informations.
 Dans le cas ou c'est un `array` le contenu est de type `stClass` (plus d'information sur [stClass](http://php.net/manual/fr/language.types.object.php)).
 
 ### Execution de requête Insert
@@ -141,7 +141,7 @@ $pet = [
 $inserted = Database::insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
-Via helper `insert`:
+Via helper `db_insert`:
 
 ```php
 $pet = [
@@ -150,7 +150,7 @@ $pet = [
   'color' => 'White'
 ];
 
-$inserted = insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
+$inserted = db_insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
 Notez que la valeur retournée par la méthode `insert` est un `int` ou `number` qui est le nombre d'insertion.
@@ -182,10 +182,10 @@ $inserted = Database::insert(
 );
 ```
 
-Via helper `insert`:
+Via helper `db_insert`:
 
 ```php
-$updated = insert(
+$updated = db_insert(
   'insert into `pets` (id, name, color) values (:id, :name, :color);',
   $pets
 );
@@ -193,7 +193,7 @@ $updated = insert(
 
 ### Execution de requête Update
 
-Pour executer une requête brute de type `UPDATE` nous devrez utiliser la méthode `Database::update` ou le helper `update`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour executer une requête brute de type `UPDATE` nous devrez utiliser la méthode `Database::update` ou le helper `db_update`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'un requête de mettre à jour d'information dans table `pets`:
 
@@ -212,7 +212,7 @@ $updated = Database::update(
 );
 ```
 
-Via le helper `update`:
+Via le helper `db_update`:
 
 ```php
 $pet = [
@@ -221,7 +221,7 @@ $pet = [
   'color' => 'Yellow'
 ];
 
-$updated = update(
+$updated = db_update(
   'update `pets` set id = :id, name = :name, color = :color where id = :id',
   $pet
 );
@@ -229,7 +229,7 @@ $updated = update(
 
 ### Execution de requête Delete
 
-Pour executer une requête brute de type `DELETE` nous devrez utiliser la méthode `Database::delete` ou le helper `delete`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour executer une requête brute de type `DELETE` nous devrez utiliser la méthode `Database::delete` ou le helper `db_delete`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'un requête pour inserer une information dans table `pets`:
 
@@ -242,10 +242,10 @@ $deleted = Database::delete(
 );
 ```
 
-Via le helper `delete`:
+Via le helper `db_delete`:
 
 ```php
-$deleted = delete(
+$deleted = db_delete(
   'delete from `pets` where id = :id',
   ['id' => 2]
 );
@@ -253,7 +253,7 @@ $deleted = delete(
 
 ### Execution de requête
 
-Pour exécuter une requête brute autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`. Il y a une méthode faite pour `Database::statement` ou le helper `statement`.
+Pour exécuter une requête brute autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`. Il y a une méthode faite pour `Database::statement` ou le helper `db_statement`.
 
 ```php
 use Bow\Database\Database;
@@ -261,10 +261,10 @@ use Bow\Database\Database;
 Database::statement('alter table `pets` add `owner` varchar(80) default null;');
 ```
 
-Via le helper `statement`:
+Via le helper `db_statement`:
 
 ```php
-statement('alter table `pets` add `owner` varchar(80) default null;');
+db_statement('alter table `pets` add `owner` varchar(80) default null;');
 ```
 
 ## Database Transactions

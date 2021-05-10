@@ -1,6 +1,6 @@
 ---
 id: query-builder
-title: SQL Builder
+title: 🏗 SQL Builder
 ---
 
 - [Introduction](#introduction)

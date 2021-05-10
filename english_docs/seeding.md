@@ -1,11 +1,12 @@
 ---
 id: seeding
-title: Seeding
+title: 💉 Seeding
 ---
 
 - [Introduction](#introduction)
 - [Ajouter un seeder](#ajouter-un-seeder)
 - [Lancer le seeding](#lancer-le-seeding)
+- [Helper](#helper)
 
 ## Introduction
 
@@ -57,6 +58,16 @@ Vous avez la possibilité de lancer tout les seeding avec la commande `seed:all`
 ```bash
 php bow seed:all
 ```
+
+## Helper
+
+Souvent vous sera tente de faire des seedins lorsque vous testez votre application. Le helper `db_seed`, très pratique vous permettra de faire des seeding en plein test par exemlpe
+
+```php
+db_seed("user", $overrides = ["name" => "Franck"]);
+```
+
+Avec `$overrides` vous pouvez modifier des valeurs du seeding.
 
 ## Il manque quelque chose ?
 

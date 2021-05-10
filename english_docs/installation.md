@@ -1,23 +1,25 @@
 ---
 id: installation
-title: Installation
+title: 🚀 Installation
 ---
 
 - [Prérequis](#prérequis)
 - [Créer un projet](#créer-un-projet)
-  - [Via Composer create-project](#via-composer-create-project)
-- [Démarrer votre projet](#démarrer-votre-projet)
-- [Configuration](#configuration)
+  - [Via Composer](#via-composer)
+- [🚀 Démarrer votre projet](#-démarrer-votre-projet)
+- [⚙️ Configuration](#️-configuration)
   - [Dossier Public](#dossier-public)
   - [Fichiers de configuration](#fichiers-de-configuration)
   - [Permissions sur les dossiers](#permissions-sur-les-dossiers)
 - [Configuration Serveur Web](#configuration-serveur-web)
   - [Apache](#apache)
   - [Nginx](#nginx)
+  - [Déployé sur un server mutualisé](#déployé-sur-un-server-mutualisé)
+- [Il manque quelque chose ?](#il-manque-quelque-chose-)
 
 ## Prérequis
 
-Pour créer une nouvelle application Bow, veuillez d'abord vous assurez que votre ordinateur remplit les conditions suivantes:
+Pour créer une nouvelle application Bow, veuillez d'abord vous assurer que votre ordinateur remplit les conditions suivantes:
 
 - PHP >= 7.1
 - OpenSSL PHP Extension
@@ -26,24 +28,24 @@ Pour créer une nouvelle application Bow, veuillez d'abord vous assurez que votr
 - XML PHP Extension
 - JSON PHP Extension
 
-> Si vous êtes sous Windows et que vous utilisez un server web tel que [Laragon](https://laragon.org/), ces dépendances sont déjà satisfaites.
+> Si vous êtes sous Windows et que vous utilisez un serveur web tel que [Laragon](https://laragon.org/), ces dépendances sont déjà satisfaites.
 
 ## Créer un projet
 
-Bow utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Donc, avant d'utiliser Bow, il vous faut d'abord installer Composer sur votre machine.
+Bow Framework utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Donc, avant d'utiliser Bow, il vous faut d'abord installer Composer sur votre machine.
 
-### Via Composer create-project
+### Via Composer
 
 ```bash
 composer create-project --prefer-dist bowphp/app nom-du-projet
 ```
 
-> Nous vous conseillons d'installer `composer` de façon globale sur votre machine. Pour ce faire référez-vous à la [documentation](https://getcomposer.org/download) d'installation de composer.
+> Nous vous conseillons d'installer `composer` de façon globale sur votre machine. Pour ce faire, référez-vous à la [documentation](https://getcomposer.org/download) d'installation de composer.
 > Si vous n'êtes pas familier à `composer`, nous vous invitons à parcourir la documentation.
 
 <script id="asciicast-s8HpeoaUwnxEZ7OOPRxxXE52z" src="https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z.js" data-speed="2"  data-rows="20" async></script>
 
-## Démarrer votre projet
+## 🚀 Démarrer votre projet
 
 Rendez vous à la racine de votre projet et démarrez le serveur:
 
@@ -56,11 +58,13 @@ Ouvrez votre navigateur et tapez `http://localhost:8000`.
 
 > `5000` est le port par défaut quand le port n'est pas spécifié avec la commande `php bow run:server`.
 
-## Configuration
+## ⚙️ Configuration
 
 ### Dossier Public
 
-Après l'installation de Bow, vous devez configurer le `document root` de votre serveur pour qu'il pointe vers le dossier `public`. Le fichier `index.php` qui se trouve dans le dossier public sert de point d'entrée pour toutes les requêtes HTTP (c'est le **front contrôleur**).
+Après l'installation de Bow Framework, vous devez configurer le `document root` de votre serveur pour qu'il pointe vers le dossier `public`.
+
+Le fichier `index.php` qui se trouve dans le dossier public sert de point d'entrée pour toutes les requêtes HTTP (c'est le **Front Contrôleur**).
 
 ### Fichiers de configuration
 
@@ -68,14 +72,14 @@ Tous les fichiers de configurations de Bow Framework sont stockés dans le dossi
 
 ### Permissions sur les dossiers
 
-Après l'installation de Bow, vous aurez besoin de configurer quelques permissions. Les dossiers contenu dans le dossier `storage` doivent avoir les permissions d'écriture sur le serveur web.
+Après l'installation de Bow, vous aurez besoin de configurer quelques permissions. Les dossiers contenu dans le dossier `var` doivent avoir les permissions d'écriture sur le serveur web.
 
 ## Configuration Serveur Web
 
 ### Apache
 
 Bow inclut un fichier `public/.htaccess` qui est utilisé pour faire de la ré-écriture d'URLs sur le front contrôleur. Avant d'utiliser Bow avec Apache, assurez-vous que le module `mod_rewrite` est activé pour que le serveur
-prennent en compte les instructions du fichier `.htaccess`.
+prenne en compte les instructions du fichier `.htaccess`.
 
 Si le fichier `.htaccess` par défaut dans Bow ne fonctionne pas avec votre installation d'Apache, essayez cette alternative:
 
@@ -90,7 +94,7 @@ RewriteRule ^ index.php [L]
 
 ### Nginx
 
-Si vous utilisez Nginx, les directives suivantes dans votre configuration redirigerons les requêtes vers le front contrôleur:
+Si vous utilisez Nginx, les directives suivantes dans votre configuration redirigeront les requêtes vers le front contrôleur:
 
 ```nginx
 location / {
@@ -98,13 +102,42 @@ location / {
 }
 ```
 
-Vous pouvez continuez vers ces sections pour démarrer votre développement.
+### Déployé sur un server mutualisé
 
-- [Contrôleur](./controller.md)
-- [Routing](./routing.md)
-- [Session](./session.md)
-- [Base de donnée](./database.md)
-- [Storage](./storage.md)
+Pour deployer Bow Framework sur un serveur mutualisé. Il faut déplacer le fichier `index.php` et `.htaccess` à la racine du projet.
+Et assuré le bien appelé les fichiers du fichier `index.php` ensuite vous pouvez copier le code qui suit dans le fichier htaccess.
+
+```c
+Options -indexes
+<IfModule mod_rewrite.c>
+  <IfModule mod_negotiation.c>
+    Options -MultiViews
+  </IfModule>
+
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^ index.php [L]
+</IfModule>
+
+<Files ".env.*|server.php|bow|app/**|vendor/**|postman/*|var/**|seeders/*|templates/**|tests/**|migrations/**">
+  Order Allow,Deny
+  Deny from all
+</Files>
+```
+
+> Il est en ce sens recommandé d'appelé vos fichiers d'assets avec la méthode `app_assets` et modifier votre `.env.json` la valeur de `APP_ASSET_PREFIX` en `/public` et bow fait le reste 😅
+
+Vous pouvez continuer vers ces sections pour démarrer votre développement.
+
+- [Ajouter des routes à votre application](./routing.md)
+- [Plus de contrôleur](./controller.md)
+- [Comment ajouter des données dans une Base de donnée ?](./database.md)
+- [Manipuler les sessions](./session.md)
+- [Consulter aussi le système de stockage](./storage.md)
 
 ## Il manque quelque chose ?
 

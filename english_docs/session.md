@@ -1,6 +1,6 @@
 ---
 id: http-session
-title: HTTP Session
+title: 🎬 HTTP Session
 ---
 
 - [Introduction](#introduction)

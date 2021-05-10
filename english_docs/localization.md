@@ -1,6 +1,6 @@
 ---
 id: i18n
-title: i18n
+title: 🎎 i18n
 ---
 
 - [Introduction](#introduction)

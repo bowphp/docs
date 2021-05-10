@@ -1,12 +1,13 @@
 ---
 id: csrf-protection
-title: CSRF Protection
+title: 🙅🏽‍♂️ CSRF Protection
 ---
 
 - [Introduction](#introduction)
   - [Jetons CSRF & JavaScript](#jetons-csrf--javascript)
 - [X-CSRF-TOKEN](#x-csrf-token)
 - [X-XSRF-TOKEN](#x-xsrf-token)
+- [Il manque quelque chose ?](#il-manque-quelque-chose-)
 
 ## Introduction
 

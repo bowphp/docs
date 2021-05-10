@@ -1,6 +1,6 @@
 ---
 id: mail
-title: Mail
+title: ✉️ Envoie de Mail
 ---
 
 - [Introduction](#introduction)
@@ -29,24 +29,29 @@ title: Mail
 Envoyer des emails dans une application est monnaie courante. Bow Framework intègre un système d'envoi d'email facile à utiliser. Vous pouvez utiliser ce système à travers plusieurs pilotes communement appelés drivers:
 
 - **SMTP** - Envoie direct via un serveur SMTP
+- **SES** - Vous pouvez aussi utiliser [SES](https://aws.amazon.com/fr/ses/)
 - **MAIL** - Le système utilisera le fonction `email` natif de PHP
 
 ## Configuration
 
 Vous trouverez la configuration dans le fichier `config/mail.php` qui est rélativement simple, les options sont toutes commentés.
 
+Installez les packages supplémentaire
+
+- ses "aws/aws-sdk-php"
+
 ## Utilisation
 
-Pour utiliser le service, vous devez appeler la classe [`Bow\Mail\Mail::class`](https://bowphp.com/api/master/Bow/Mail). Il y a deux méthode statique pour l'envoie de mail `send` et `raw`.
+Pour utiliser le service, vous devez appeler la classe [`Bow\Mail\Mail::class`](https://bowphp.com/api/master/Bow/Mail). Il y a deux méthode statique pour l'envoie de mail `email` et `raw_email`.
 
 ### La méthode send
 
-**send** permet d'envoyer des emails en se basant sur une [vue](http://bowphp.com/docs/views) dans l'application.
+**email** permet d'envoyer des emails en se basant sur une [vue](./views) dans l'application.
 
 #### Prototype send
 
 ```php
-send($view, array $data, callable $callable)
+email($view, array $data, callable $callable)
 ```
 
 | Paramètre | Type |
@@ -61,13 +66,15 @@ Exemple d'utilisation:
 
 Considérons la vue `email-view.tintin.php` qui contient les informations suivantes:
 
-```twig
+```jinja
 Bonjour {{ $name }},
 
-Nous vous informons que vous compte viens d'être créditer de 100.000 F.
+Nous vous informons que vous compte viens d'être créditer de 100.000.000 F.
 
 Cordialement,
 ```
+
+Ecrivons maintenant le code qui envoie le mail:
 
 ```php
 use Bow\Mail\Mail;
@@ -151,13 +158,13 @@ $message->addCc(string $mail, string $name = null)
 ##### `addReplyTo`, ajout l'entête Reply-To
 
 ```php
-$message->addReplyTo($mail, $name = null)
+$message->addReplyTo(string $mail, $name = null)
 ```
 
 ##### `addReturnPath`, ajout l'entête Return-Path
 
 ```php
-$message->addReturnPath($mail, $name = null)
+$message->addReturnPath(string $mail, $name = null)
 ```
 
 ### La méthode raw
@@ -167,7 +174,7 @@ $message->addReturnPath($mail, $name = null)
 #### Prototype raw
 
 ```php
-raw($to, $subject, $message, array $headers = [])
+raw_email($to, $subject, $message, array $headers = [])
 ```
 
 | Paramètre | Type |

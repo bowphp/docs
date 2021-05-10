@@ -1,6 +1,6 @@
 ---
 id: migration
-title: Migration
+title: 📑 Migration
 ---
 
 - [Introduction](#introduction)
@@ -227,12 +227,29 @@ Bien entendu, le générateur de schéma contient divers types de colonnes que v
 | Commande | Description |
 |----------|------|
 | $table->addIncrement('id') | Incrémentation automatique de la colonne équivalente à INTEGER (clé primaire). |
+| $table->addBigIncrement('id') | Incrémentation automatique de la colonne équivalente à BIGINT (clé primaire). |
+| $table->addMediumIncrement('id') | Incrémentation automatique de la colonne équivalente à MEDIUMINT (clé primaire). |
 | $table->addString('name', $attr = []) | Colonne équivalente à VARCGAR. |
 | $table->addInteger('price', $attr = []) | Colonne équivalente à INTEGER. |
 | $table->addBigInteger('price', $attr = []) | Colonne équivalente à BIGINT. |
 | $table->addDouble('price', $attr = []) | Colonne équivalente à DOUBLE. |
 | $table->addTinyInteger('status', $attr = []) | Colonne équivalente à TINYINT |
-| $table->addBoolean('verified') | Colonne équivalente à BOOLEAN |
+| $table->addMediumInteger('status', $attr = []) | Colonne équivalente à MEDIUMINT |
+| $table->addBoolean('column') | Colonne équivalente à BOOLEAN |
+| $table->addFloat('column') | Colonne équivalente à FLOAT |
+| $table->addFloatPrimary('column') | Colonne équivalente à FLOAT (clé primaire) |
+| $table->addDouble('column') | Colonne équivalente à DOUBLE |
+| $table->addDoublePrimary('column') | Colonne équivalente à DOUBLE (clé primaire) |
+| $table->addUuid('uuid') | Colonne équivalente à UUID |
+| $table->addBinary('uuid') | Colonne équivalente à BINARY |
+| $table->addIpAddress('uuid') | Colonne équivalente à IP |
+| $table->addMacAddress('uuid') | Colonne équivalente à MAC |
+| $table->addDatetime('date_column') | Colonne équivalente à DATETIME |
+| $table->addDate('date_column') | Colonne équivalente à DATE |
+| $table->addTime('date_column') | Colonne équivalente à TIME |
+| $table->addYear('date_column') | Colonne équivalente à YEAR |
+| $table->addTimestamp('date_column') | Colonne équivalente à TIMESTAMP |
+| $table->addTimestamps() | Ajout les colonnes `updated_at` et `created_at` en TIMESTAMP |
 
 ## Il manque quelque chose ?
 

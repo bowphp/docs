@@ -1,6 +1,6 @@
 ---
 id: middleware
-title: Middleware
+title: 🚥 Middleware
 ---
 
 - [Introduction](#introduction)
@@ -29,7 +29,7 @@ La seule condition stricte est qu'un middleware doit renvoyer une value autre de
 
 Pour ajouter un middleware il faut utiliser la commande `add:middleware` de `php bow`:
 
-```sh
+```bash
 php bow add:middleware IpMiddleware
 ```
 

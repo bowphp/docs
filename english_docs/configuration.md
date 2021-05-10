@@ -1,6 +1,6 @@
 ---
 id: configuration
-title: Configuration
+title: 👨🏽‍🔧 App Configuration
 ---
 
 - [Introduction](#introduction)
@@ -8,7 +8,8 @@ title: Configuration
   - [Explication de la notation à point](#explication-de-la-notation-à-point)
   - [Fichier .env.json](#fichier-envjson)
   - [Récupération des informations](#récupération-des-informations)
-- [Les helpers](#les-helpers)
+- [Helpers](#helpers)
+- [Il manque quelque chose ?](#il-manque-quelque-chose-)
 
 ## Introduction
 
@@ -87,7 +88,7 @@ Dans le cas où la variable n'est pas définie `app_env` retournera `null`, ou b
 'database' => app_env('MYSQL_DATABASE', 'localhost'),
 ```
 
-## Les helpers
+## Helpers
 
 Bow inclut une variété de fonctions PHP "d'assistance" globales. Beaucoup de ces fonctions sont utilisées par le Framework lui-même; Cependant, vous êtes libre de les utiliser dans vos propres applications si vous les trouvez pratiques.
 
