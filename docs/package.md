@@ -1,12 +1,13 @@
 ---
-id: packaging
-title: Packaging
+id: package
+title: 📦 Bow Package
 ---
 
 - [Introduction](#introduction)
 - [Création de plugin](#création-de-plugin)
   - [Exemple de création](#exemple-de-création)
   - [Testons notre package](#testons-notre-package)
+- [Il manque quelque chose ?](#il-manque-quelque-chose-)
 
 ## Introduction
 

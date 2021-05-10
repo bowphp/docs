@@ -56,8 +56,8 @@
       "orm": {
         "title": "🧩 ORM Barry"
       },
-      "packaging": {
-        "title": "Packaging"
+      "package": {
+        "title": "📦 Bow Package"
       },
       "policier": {
         "title": "🔐 Policier JWT Auth"
@@ -101,8 +101,8 @@
       "views": {
         "title": "🎨 Utiliser les vues"
       },
-      "what-new": {
-        "title": "what-new"
+      "prologs": {
+        "title": "Prologs"
       }
     },
     "links": {

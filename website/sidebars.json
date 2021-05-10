@@ -31,12 +31,12 @@
       "http-session"
     ],
     "Misc": [
-      "package",
       "frontend",
       "policier",
       "service",
       "helpers",
-      "console"
+      "console",
+      "package"
     ]
   }
 }
