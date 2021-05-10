@@ -186,10 +186,15 @@ a {
 }
 
 .fixedHeaderContainer {
-  border-bottom: 1px solid #eee;
-  box-shadow: 1px 1px 3px rgba(24, 24, 24, 0.4);
+  /* border-bottom: 1px solid #eee;
+  box-shadow: 1px 1px 3px rgba(24, 24, 24, 0.4); */
 }
 
 blockquote {
-  border-radius: 10px;
+  /* border-radius: 10px; */
+  box-shadow: 0 20px 30px -16px rgba(9, 9, 16, 0.2) !important;
+  background-color: #fff;
+  /* border: none */
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
