@@ -101,7 +101,7 @@ const siteConfig = {
   twitter: true,
   twitterUsername: "franck_dakia",
 
-  // editUrl: "https://github.com/bowphp/docs/edit/4.0/docs",
+  editUrl: "https://github.com/bowphp/docs/edit/4.0/docs/",
   enableUpdateTime: true,
 
   // You may provide arbitrary config keys to be used as needed by your
