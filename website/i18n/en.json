@@ -15,7 +15,7 @@
         "title": "👨🏽‍🔧 App Configuration"
       },
       "console": {
-        "title": "Bow Console"
+        "title": "👨🏾‍💻 Bow Console"
       },
       "container": {
         "title": "Capsule"
@@ -30,7 +30,7 @@
         "title": "🙅🏽‍♂️ CSRF Protection"
       },
       "database": {
-        "title": "🗂 Démarrage la base de donnée"
+        "title": "🎯 Démarrage"
       },
       "frontend": {
         "title": "📯 Front-End"
@@ -54,7 +54,7 @@
         "title": "📑 Migration"
       },
       "orm": {
-        "title": "ORM Barry"
+        "title": "🧩 ORM Barry"
       },
       "packaging": {
         "title": "Packaging"
@@ -69,13 +69,13 @@
         "title": "🚀 HTTP Request"
       },
       "http-response": {
-        "title": "🛰 HTTP Response"
+        "title": "📦 HTTP Response"
       },
       "routing": {
         "title": "🚦 Routing"
       },
       "seeding": {
-        "title": "Seeding"
+        "title": "💉 Seeding"
       },
       "service": {
         "title": "🏢 Approche service"

@@ -31,4 +31,6 @@ Merci d'avoir envisagé de contribuer à Bow Framework! Le guide de contribution
 
 **S'il vous plaît, s'il y a un bogue sur le projet s'il vous plaît contactez-moi par courriel ou laissez-moi un message sur [slack](https://bowphp.slack.com) ou [rejoignez-nous sur slack](https://join.slack.com/t/bowphp/shared_invite/enQtNzMxOTQ0MTM2ODM5LTQ3MWQ3Mzc1NDFiNDYxMTAyNzBkNDJlMTgwNDJjM2QyMzA2YTk4NDYyN2NiMzM0YTZmNjU1YjBhNmJjZThiM2Q)**
 
-> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
+## Il manque quelque chose ?
+
+Si vous rencontrez des problèmes avec la documentation ou si vous avez des suggestions pour améliorer la documentation ou le projet en général, veuillez déposer une issue pour nous, ou envoyer un tweet mentionnant le compte Twitter @BowFramework ou sur directement sur le [github](https://github.com/bowphp/docs/issues).

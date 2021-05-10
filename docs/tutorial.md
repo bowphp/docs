@@ -11,6 +11,7 @@ title: 👩🏿‍🏫 Avec un tutoriel
   - [Routing](#routing)
 - [La section Nouvelles](#la-section-nouvelles)
   - [Mise en place de votre modèle](#mise-en-place-de-votre-modèle)
+- [Il manque quelque chose ?](#il-manque-quelque-chose-)
 
 ## Introduction
 
@@ -204,3 +205,7 @@ Ouvrez le répertoire `app/Models`, vous verrez un fichier `User.php` c'est une 
 ```bash
 php bow add:model Actuality
 ```
+
+## Il manque quelque chose ?
+
+Si vous rencontrez des problèmes avec la documentation ou si vous avez des suggestions pour améliorer la documentation ou le projet en général, veuillez déposer une issue pour nous, ou envoyer un tweet mentionnant le compte Twitter @BowFramework ou sur directement sur le [github](https://github.com/bowphp/docs/issues).

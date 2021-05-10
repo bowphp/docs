@@ -61,17 +61,18 @@ const siteConfig = {
   */
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
-  copyright: `Copyright © ${new Date().getFullYear()} <a href="https://github.com/papac">Franck DAKIA</a>`,
+  copyright: `Copyright © ${new Date().getFullYear()} développé avec 💚 par <a href="https://github.com/papac">Franck DAKIA</a>`,
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
-    theme: "monokai-sublime",
+    theme: "github",
     // railscasts
     // monokai-sublime
     // mono-blue
     // androidstudio
     // atom-one-dark
     // dracula
+    // github
   },
 
   // version "4.1.x"

@@ -7,6 +7,7 @@ title: 🙅🏽‍♂️ CSRF Protection
   - [Jetons CSRF & JavaScript](#jetons-csrf--javascript)
 - [X-CSRF-TOKEN](#x-csrf-token)
 - [X-XSRF-TOKEN](#x-xsrf-token)
+- [Il manque quelque chose ?](#il-manque-quelque-chose-)
 
 ## Introduction
 
@@ -55,4 +56,6 @@ Bow stock le jéton CSRF actuel dans un cookie `XSRF-TOKEN` inclus dans chaque r
 
 Ce cookie est principalement envoyé par commodité, car certains Frameworks et bibliothèques JavaScript, comme Angular et Axios, placent automatiquement sa valeur dans l'en-tête X-XSRF-TOKEN.
 
-> N'hésitez pas à donner votre avis sur la qualité de la documentation ou proposez des correctifs.
+## Il manque quelque chose ?
+
+Si vous rencontrez des problèmes avec la documentation ou si vous avez des suggestions pour améliorer la documentation ou le projet en général, veuillez déposer une issue pour nous, ou envoyer un tweet mentionnant le compte Twitter @BowFramework ou sur directement sur le [github](https://github.com/bowphp/docs/issues).
