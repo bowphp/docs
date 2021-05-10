@@ -5,9 +5,9 @@ title: 🚀 Installation
 
 - [Prérequis](#prérequis)
 - [Créer un projet](#créer-un-projet)
-  - [Via Composer create-project](#via-composer-create-project)
-- [Démarrer votre projet](#démarrer-votre-projet)
-- [Configuration](#configuration)
+  - [Via Composer](#via-composer)
+- [🚀 Démarrer votre projet](#-démarrer-votre-projet)
+- [⚙️ Configuration](#️-configuration)
   - [Dossier Public](#dossier-public)
   - [Fichiers de configuration](#fichiers-de-configuration)
   - [Permissions sur les dossiers](#permissions-sur-les-dossiers)
@@ -34,7 +34,7 @@ Pour créer une nouvelle application Bow, veuillez d'abord vous assurer que votr
 
 Bow Framework utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Donc, avant d'utiliser Bow, il vous faut d'abord installer Composer sur votre machine.
 
-### Via Composer create-project
+### Via Composer
 
 ```bash
 composer create-project --prefer-dist bowphp/app nom-du-projet
@@ -45,7 +45,7 @@ composer create-project --prefer-dist bowphp/app nom-du-projet
 
 <script id="asciicast-s8HpeoaUwnxEZ7OOPRxxXE52z" src="https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z.js" data-speed="2"  data-rows="20" async></script>
 
-## Démarrer votre projet
+## 🚀 Démarrer votre projet
 
 Rendez vous à la racine de votre projet et démarrez le serveur:
 
@@ -58,7 +58,7 @@ Ouvrez votre navigateur et tapez `http://localhost:8000`.
 
 > `5000` est le port par défaut quand le port n'est pas spécifié avec la commande `php bow run:server`.
 
-## Configuration
+## ⚙️ Configuration
 
 ### Dossier Public
 

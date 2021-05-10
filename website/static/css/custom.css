@@ -52,6 +52,8 @@ body {
 
 p {
   text-rendering: optimizeLegibility;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .toc .toggleNav ul li.navListItemActive a::after {
@@ -195,6 +197,6 @@ blockquote {
   box-shadow: 0 20px 30px -16px rgba(9, 9, 16, 0.2) !important;
   background-color: #fff;
   /* border: none */
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
