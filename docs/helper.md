@@ -3,7 +3,51 @@ id: helpers
 title: 🪒 Application Helpers
 ---
 
-# Introduction
+- [Introduction](#introduction)
+- [Helper de gestion HTTP](#helper-de-gestion-http)
+- [Base de donnée](#base-de-donnée)
+- [Sécurité](#sécurité)
+- [Gestion d'évènement](#gestion-dévènement)
+- [Système de storage](#système-de-storage)
+- [helper Application](#helper-application)
+- [Chaine de carractère](#chaine-de-carractère)
+- [Email](#email)
+- [Autre](#autre)
+- [Utilisation](#utilisation)
+  - [app](#app)
+  - [config](#config)
+  - [response](#response)
+  - [request](#request)
+  - [json](#json)
+  - [download](#download)
+  - [set_status_code](#set_status_code)
+  - [view](#view)
+  - [session](#session)
+  - [cookie](#cookie)
+  - [create_csrf_token](#create_csrf_token)
+  - [csrf_token](#csrf_token)
+  - [csrf_field](#csrf_field)
+  - [method_field](#method_field)
+  - [generate_token_csrf](#generate_token_csrf)
+  - [verify_csrf](#verify_csrf)
+  - [csrf_time_is_expired](#csrf_time_is_expired)
+  - [sanitize](#sanitize)
+  - [secure](#secure)
+  - [set_header](#set_header)
+  - [get_header](#get_header)
+  - [redirect](#redirect)
+  - [redirect_back](#redirect_back)
+  - [send](#send)
+  - [curl](#curl)
+  - [url](#url)
+  - [flash](#flash)
+  - [validator](#validator)
+  - [route](#route)
+  - [old](#old)
+  - [client_locale](#client_locale)
+- [Il manque quelque chose ?](#il-manque-quelque-chose-)
+
+## Introduction
 
 Les helpers sont des fonctions racourris chargé dans l'application qui permet de faire rapidement certaine action. Voici la liste des helpers qui existe dans l'application Bow Framework. Voici les helpers dispnoble dans l'application.
 
