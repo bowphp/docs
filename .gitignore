@@ -2,5 +2,8 @@ website/node_modules
 website/build
 website/package-lock.json
 website/yarn.lock
+api/build
+api/cache
+doctum.phar
 .idea
 .vscode

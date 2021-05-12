@@ -13,6 +13,14 @@ npm install
 npm run start
 ```
 
+Install the API docs generator
+
+```bash
+cd api
+curl -O https://doctum.long-term.support/releases/latest/doctum.phar
+```
+
+
 Edit the content of `documentation/docs` for update documentation and save.
 
 ## Contributing
