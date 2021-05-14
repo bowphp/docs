@@ -44,11 +44,11 @@ class Footer extends React.Component {
           </div>
           <div>
             <h5>Communautés</h5>
-            <a href="https://discord.gg/yhnQhJ4" target="_blank">
-              Galsen Dev
-            </a>
             <a href="https://codedivoire.slack.com" target="_blank">
               CodeDivoire
+            </a>
+            <a href="https://discord.gg/u8aAaCnyGn" target="_blank">
+              Galsen Dev
             </a>
             <a href="https://discord.gg/yhnQhJ4" target="_blank">
               Code Learning Club
