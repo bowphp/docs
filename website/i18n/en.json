@@ -147,7 +147,7 @@
         "title": "✉️ Envoie de Mail"
       },
       "middleware": {
-        "title": "🚥 Middleware"
+        "title": "🚥 Middlewares"
       },
       "migration": {
         "title": "📑 Migration"
@@ -202,207 +202,10 @@
       },
       "prologs": {
         "title": "Prologs"
-      },
-      "version-1.0.1/version-1.0.1-auth": {
-        "title": "👮🏽 Authentification"
-      },
-      "version-1.0.1/version-1.0.1-concept": {
-        "title": "👨🏽‍💻 Concept et Architecture"
-      },
-      "version-1.0.1/version-1.0.1-configuration": {
-        "title": "👨🏽‍🔧 App Configuration"
-      },
-      "version-1.0.1/version-1.0.1-console": {
-        "title": "👨🏾‍💻 Bow Console"
-      },
-      "version-1.0.1/version-1.0.1-container": {
-        "title": "Capsule"
-      },
-      "version-1.0.1/version-1.0.1-contribution": {
-        "title": "👩🏽‍🍳 Guide de Contribution"
-      },
-      "version-1.0.1/version-1.0.1-controleur": {
-        "title": "👨🏽‍✈️ Contrôleurs"
-      },
-      "version-1.0.1/version-1.0.1-csrf-protection": {
-        "title": "🙅🏽‍♂️ CSRF Protection"
-      },
-      "version-1.0.1/version-1.0.1-database": {
-        "title": "🎯 Démarrage"
-      },
-      "version-1.0.1/en/version-1.0.1-auth": {
-        "title": "👮🏽 Authentification"
-      },
-      "version-1.0.1/en/version-1.0.1-concept": {
-        "title": "👨🏽‍💻 Concept et Architecture"
-      },
-      "version-1.0.1/en/version-1.0.1-configuration": {
-        "title": "👨🏽‍🔧 App Configuration"
-      },
-      "version-1.0.1/en/version-1.0.1-console": {
-        "title": "👨🏾‍💻 Bow Console"
-      },
-      "version-1.0.1/en/version-1.0.1-container": {
-        "title": "Capsule"
-      },
-      "version-1.0.1/en/version-1.0.1-contribution": {
-        "title": "👩🏽‍🍳 Guide de Contribution"
-      },
-      "version-1.0.1/en/version-1.0.1-controleur": {
-        "title": "👨🏽‍✈️ Contrôleurs"
-      },
-      "version-1.0.1/en/version-1.0.1-csrf-protection": {
-        "title": "🙅🏽‍♂️ CSRF Protection"
-      },
-      "version-1.0.1/en/version-1.0.1-database": {
-        "title": "🎯 Démarrage"
-      },
-      "version-1.0.1/en/version-1.0.1-frontend": {
-        "title": "📯 Front-End"
-      },
-      "version-1.0.1/en/version-1.0.1-helpers": {
-        "title": "🪒 Application Helpers"
-      },
-      "version-1.0.1/en/version-1.0.1-installation": {
-        "title": "🚀 Installation"
-      },
-      "version-1.0.1/en/version-1.0.1-i18n": {
-        "title": "🎎 i18n"
-      },
-      "version-1.0.1/en/version-1.0.1-mail": {
-        "title": "✉️ Envoie de Mail"
-      },
-      "version-1.0.1/en/version-1.0.1-middleware": {
-        "title": "🚥 Middleware"
-      },
-      "version-1.0.1/en/version-1.0.1-migration": {
-        "title": "📑 Migration"
-      },
-      "version-1.0.1/en/version-1.0.1-orm": {
-        "title": "🧩 ORM Barry"
-      },
-      "version-1.0.1/en/version-1.0.1-packaging": {
-        "title": "Packaging"
-      },
-      "version-1.0.1/en/version-1.0.1-policier": {
-        "title": "🔐 Policier JWT Auth"
-      },
-      "version-1.0.1/en/version-1.0.1-query-builder": {
-        "title": "🏗 SQL Builder"
-      },
-      "version-1.0.1/en/version-1.0.1-http-request": {
-        "title": "🚀 HTTP Request"
-      },
-      "version-1.0.1/en/version-1.0.1-http-response": {
-        "title": "📦 HTTP Response"
-      },
-      "version-1.0.1/en/version-1.0.1-routing": {
-        "title": "🚦 Routing"
-      },
-      "version-1.0.1/en/version-1.0.1-seeding": {
-        "title": "💉 Seeding"
-      },
-      "version-1.0.1/en/version-1.0.1-service": {
-        "title": "🏢 Approche service"
-      },
-      "version-1.0.1/en/version-1.0.1-http-session": {
-        "title": "🎬 HTTP Session"
-      },
-      "version-1.0.1/en/version-1.0.1-storage": {
-        "title": "💿 Stockage de fichier"
-      },
-      "version-1.0.1/en/version-1.0.1-structure": {
-        "title": "⚙️ App Structure"
-      },
-      "version-1.0.1/en/version-1.0.1-tutorial": {
-        "title": "👩🏿‍🏫 Avec un tutoriel"
-      },
-      "version-1.0.1/en/version-1.0.1-http-upload": {
-        "title": "🛫 Envoie de fichier"
-      },
-      "version-1.0.1/en/version-1.0.1-validation": {
-        "title": "🚧 Validation de donnée"
-      },
-      "version-1.0.1/en/version-1.0.1-views": {
-        "title": "🎨 Utiliser les vues"
-      },
-      "version-1.0.1/en/version-1.0.1-prologs": {
-        "title": "Prologs"
-      },
-      "version-1.0.1/version-1.0.1-frontend": {
-        "title": "📯 Front-End"
-      },
-      "version-1.0.1/version-1.0.1-helpers": {
-        "title": "🪒 Application Helpers"
-      },
-      "version-1.0.1/version-1.0.1-installation": {
-        "title": "🚀 Installation"
-      },
-      "version-1.0.1/version-1.0.1-i18n": {
-        "title": "🎎 i18n"
-      },
-      "version-1.0.1/version-1.0.1-mail": {
-        "title": "✉️ Envoie de Mail"
-      },
-      "version-1.0.1/version-1.0.1-middleware": {
-        "title": "🚥 Middleware"
-      },
-      "version-1.0.1/version-1.0.1-migration": {
-        "title": "📑 Migration"
-      },
-      "version-1.0.1/version-1.0.1-orm": {
-        "title": "🧩 ORM Barry"
-      },
-      "version-1.0.1/version-1.0.1-package": {
-        "title": "📦 Bow Package"
-      },
-      "version-1.0.1/version-1.0.1-policier": {
-        "title": "🔐 Policier JWT Auth"
-      },
-      "version-1.0.1/version-1.0.1-query-builder": {
-        "title": "🏗 SQL Builder"
-      },
-      "version-1.0.1/version-1.0.1-http-request": {
-        "title": "🚀 HTTP Request"
-      },
-      "version-1.0.1/version-1.0.1-http-response": {
-        "title": "📦 HTTP Response"
-      },
-      "version-1.0.1/version-1.0.1-routing": {
-        "title": "🚦 Routing"
-      },
-      "version-1.0.1/version-1.0.1-seeding": {
-        "title": "💉 Seeding"
-      },
-      "version-1.0.1/version-1.0.1-service": {
-        "title": "🏢 Approche service"
-      },
-      "version-1.0.1/version-1.0.1-http-session": {
-        "title": "🎬 HTTP Session"
-      },
-      "version-1.0.1/version-1.0.1-storage": {
-        "title": "💿 Stockage de fichier"
-      },
-      "version-1.0.1/version-1.0.1-structure": {
-        "title": "⚙️ App Structure"
-      },
-      "version-1.0.1/version-1.0.1-tutorial": {
-        "title": "👩🏿‍🏫 Avec un tutoriel"
-      },
-      "version-1.0.1/version-1.0.1-http-upload": {
-        "title": "🛫 Envoie de fichier"
-      },
-      "version-1.0.1/version-1.0.1-validation": {
-        "title": "🚧 Validation de donnée"
-      },
-      "version-1.0.1/version-1.0.1-views": {
-        "title": "🎨 Utiliser les vues"
-      },
-      "version-1.0.1/version-1.0.1-prologs": {
-        "title": "Prologs"
       }
     },
     "links": {
+      "Documentation": "Documentation",
       "Sponsors": "Sponsors",
       "API": "API",
       "Github": "Github",
@@ -413,6 +216,7 @@
       "Guide": "Guide",
       "Base de donnée": "Base de donnée",
       "Http": "Http",
+      "Sécurités": "Sécurités",
       "Misc": "Misc"
     }
   },

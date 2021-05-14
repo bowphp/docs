@@ -14,7 +14,6 @@
       "middleware",
       "storage",
       "mail",
-      "auth",
       "i18n"
     ],
     "Base de donnée": [
@@ -27,12 +26,15 @@
     "Http": [
       "http-request",
       "http-response",
-      "csrf-protection",
       "http-session"
+    ],
+    "Sécurités": [
+      "auth",
+      "policier",
+      "csrf-protection"
     ],
     "Misc": [
       "frontend",
-      "policier",
       "service",
       "helpers",
       "console",
