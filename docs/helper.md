@@ -77,7 +77,7 @@ Les helpers sont des fonctions racourris chargé dans l'application qui permet d
 
 ## Chaine de carractère
 
-[str_slug](#str_slug), [str_is_mail](#str_is_mail), [str_is_domain](#str_is_domain), [str_is_slug](#str_is_slug), [str_is_alpha](#str_is_alpha), [str_is_lower](#str_is_lower), [str_is_upper](#str_is_upper), [str_is_alpha_num](#str_is_alpha_num), [str_shuffle_words](#str_shuffle_words), [str_wordify](#str_wordify), [str_plurial](#str_plurial), [str_camel](#str_camel), [str_snake](#str_snake), [str_contains](#str_contains), [str_capitalize](#str_capitalize), [str_random](#str_random), [str_force_in_utf8](#str_force_in_utf8), [e](#e)
+[str_slug](#str_slug), [str_is_mail](#str_is_mail), [str_is_domain](#str_is_domain), [str_is_slug](#str_is_slug), [str_is_alpha](#str_is_alpha), [str_is_lower](#str_is_lower), [str_is_upper](#str_is_upper), [str_is_alpha_num](#str_is_alpha_num), [str_shuffle_words](#str_shuffle_words), [str_wordify](#str_wordify), [str_plurial](#str_plurial), [str_camel](#str_camel), [str_snake](#str_snake), [str_contains](#str_contains), [str_capitalize](#str_capitalize), [str_random](#str_random), [str_force_in_utf8](#str_force_in_utf8), [e](#e), [str_fix_utf8](#str_fix_utf8)
 
 ## Email
 
