@@ -19,8 +19,7 @@ $versions = GitVersionCollection::create($dir)
     ->add("master", "Dev Branch");
 
 return new Doctum($iterator, [
-    'theme'                => 'symfony',
-    // 'versions'             => $versions,
+    'versions'             => "master",
     'title'                => 'Bow Framework',
     'language'             => 'en', // Could be 'fr'
     'build_dir'            => __DIR__ . '/build/%version%',

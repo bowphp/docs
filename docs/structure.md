@@ -36,6 +36,7 @@ Ici vous retrouverez les dossiers suivants:
 - __Configurations__: Dossier dans lequel sera sauvegardé les Configuration personnalisés de l'application.
 - __Controllers__: Dossier dans lequel sera sauvegardé les contrôleurs de l'application.
 - __Middlewares__: Dossier dans lequel sera sauvegardé les middlewares de l'application.
+- __Events__: Dossier dans lequel sera sauvegardé les events générés par Bow Console.
 - __Models__: Dossier dans lequel sera sauvegardé les modèles de l'application.
 - __Validations__: Dossier dans lequel sera sauvegardé les validations de l'application.
 - __Exceptions__: Dossier dans lequel sera sauvegardé les exceptions personnalisés de l'application.
@@ -75,7 +76,7 @@ Ici, Bow va stocker les fichiers de log et le cache de votre application. Vous y
 Ici, vous allez stocker vos fichiers de test unity. Et par soucie de bien faire nous avons:
 
 - __Http__: Vos sauvegarder vos fichiers de test Http seront ici
-- __view__: Vos fichiers de test Unity seront ici
+- __Unity__: Vos fichiers de test Unity seront ici
 
 ## Il manque quelque chose ?
 

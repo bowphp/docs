@@ -14,7 +14,8 @@
       "middleware",
       "storage",
       "mail",
-      "i18n"
+      "i18n",
+      "testing"
     ],
     "Base de donnée": [
       "database",
