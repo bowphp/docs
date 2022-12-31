@@ -4,6 +4,7 @@ website/package-lock.json
 website/yarn.lock
 api/build
 api/cache
+build/
 doctum.phar
 .idea
 .vscode
