@@ -28,7 +28,7 @@ module.exports = {
   projectName: "bowphp.com",
   i18n: {
     defaultLocale: 'fr',
-    locales: ['fr', 'en'],
+    locales: ['fr'],
   },
   scripts: [
     "https://www.googletagmanager.com/gtag/js?id=UA-97409420-1",
