@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "Canary 🚧",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Démarrage": {
+    "message": "Démarrage",
+    "description": "The label for category Démarrage in sidebar docs"
+  },
+  "sidebar.docs.category.Guide": {
+    "message": "Guide",
+    "description": "The label for category Guide in sidebar docs"
+  },
+  "sidebar.docs.category.Base de donnée": {
+    "message": "Base de donnée",
+    "description": "The label for category Base de donnée in sidebar docs"
+  },
+  "sidebar.docs.category.Http": {
+    "message": "Http",
+    "description": "The label for category Http in sidebar docs"
+  },
+  "sidebar.docs.category.Sécurités": {
+    "message": "Security",
+    "description": "Security"
+  },
+  "sidebar.docs.category.Misc": {
+    "message": "Misc",
+    "description": "Misc"
+  }
+}

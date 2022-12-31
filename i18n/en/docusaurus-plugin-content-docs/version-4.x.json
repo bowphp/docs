@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "4.x",
+    "description": "Version 4.x"
+  },
+  "sidebar.docs.category.Démarrage": {
+    "message": "Getting started",
+    "description": "Getting started"
+  },
+  "sidebar.docs.category.Guide": {
+    "message": "Guide",
+    "description": "Guide"
+  },
+  "sidebar.docs.category.Base de donnée": {
+    "message": "Database",
+    "description": "The bow framework Database"
+  },
+  "sidebar.docs.category.Http": {
+    "message": "Http",
+    "description": "Http"
+  },
+  "sidebar.docs.category.Sécurités": {
+    "message": "Security",
+    "description": "Security"
+  },
+  "sidebar.docs.category.Misc": {
+    "message": "Misc",
+    "description": "Misc"
+  }
+}
