@@ -16,9 +16,9 @@ $iterator = Finder::create()
 
 $versions = GitVersionCollection::create($directory)
     ->addFromTags('v4.4.*')
-    ->add('4.0', '4.0 branch')
-    ->add('5.0', '4.0 branch')
-    ->add("master", "Dev Branch");
+    ->add('4.0', '4.0')
+    ->add('5.0', '5.0')
+    ->add("master", "Master");
 
 return new Doctum($iterator, [
     'versions'             => $versions,
