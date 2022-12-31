@@ -227,7 +227,7 @@ module.exports = {
           position: 'left'
         },
         {
-          href: "https://bowphp.com/api/master",
+          href: "api/master",
           label: "API",
           position: "left"
         },
