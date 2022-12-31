@@ -1,6 +1,6 @@
 ---
 id: contribution
-title: 👩🏽‍🍳 Guide de Contribution
+title: "👩🏽‍🍳 Guide de Contribution"
 ---
 
 - [Introduction](#introduction)

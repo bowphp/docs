@@ -1,6 +1,6 @@
 ---
 id: auth
-title: 👮🏽 Authentification
+title: "👮🏽 Authentification"
 ---
 
 ## Introduction

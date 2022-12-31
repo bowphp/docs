@@ -1,0 +1,21 @@
+{
+  "unversionedId": "http-upload",
+  "id": "version-4.x/http-upload",
+  "title": "🛫 Envoie de fichier",
+  "description": "- Traiter les fichiers envoyés",
+  "source": "@site/versioned_docs/version-4.x/upload.md",
+  "sourceDirName": ".",
+  "slug": "/http-upload",
+  "permalink": "/docs/4.x/http-upload",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/upload.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "http-upload",
+    "title": "🛫 Envoie de fichier"
+  }
+}

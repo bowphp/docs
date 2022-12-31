@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/helpers",
+  "id": "version-4.x/en/helpers",
+  "title": "🪒 Application Helpers",
+  "description": "Les helpers sont des fonctions racourris chargé dans l'application qui permet de faire rapidement certaine action. Voici la liste des helpers qui existe dans l'application Bow Framework. Voici les helpers dispnoble dans l'application.",
+  "source": "@site/versioned_docs/version-4.x/en/helper.md",
+  "sourceDirName": "en",
+  "slug": "/en/helpers",
+  "permalink": "/docs/4.x/en/helpers",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/helper.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "helpers",
+    "title": "🪒 Application Helpers"
+  }
+}

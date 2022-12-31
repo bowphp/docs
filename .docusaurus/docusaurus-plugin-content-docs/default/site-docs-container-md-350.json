@@ -1,0 +1,21 @@
+{
+  "unversionedId": "container",
+  "id": "container",
+  "title": "Capsule",
+  "description": "Il manque quelque chose ?",
+  "source": "@site/docs/container.md",
+  "sourceDirName": ".",
+  "slug": "/container",
+  "permalink": "/docs/container",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/container.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "container",
+    "title": "Capsule"
+  }
+}

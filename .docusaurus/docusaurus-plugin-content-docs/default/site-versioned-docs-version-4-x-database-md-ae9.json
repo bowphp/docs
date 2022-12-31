@@ -1,0 +1,30 @@
+{
+  "unversionedId": "database",
+  "id": "version-4.x/database",
+  "title": "🎯 Démarrage",
+  "description": "- Introduction",
+  "source": "@site/versioned_docs/version-4.x/database.md",
+  "sourceDirName": ".",
+  "slug": "/database",
+  "permalink": "/docs/4.x/database",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/database.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "database",
+    "title": "🎯 Démarrage"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "🛫 Testez votre application",
+    "permalink": "/docs/4.x/testing"
+  },
+  "next": {
+    "title": "🏗 SQL Builder",
+    "permalink": "/docs/4.x/query-builder"
+  }
+}

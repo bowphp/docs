@@ -1,6 +1,6 @@
 ---
 id: controleur
-title: 👨🏽‍✈️ Contrôleurs
+title: "👨🏽‍✈️ Contrôleurs"
 ---
 
 - [Introduction](#introduction)

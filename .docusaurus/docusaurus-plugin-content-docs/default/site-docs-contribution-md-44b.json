@@ -1,0 +1,30 @@
+{
+  "unversionedId": "contribution",
+  "id": "contribution",
+  "title": "👩🏽‍🍳 Guide de Contribution",
+  "description": "- Introduction",
+  "source": "@site/../docs/contribution.md",
+  "sourceDirName": ".",
+  "slug": "/contribution",
+  "permalink": "/docs/contribution",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/contribution.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "contribution",
+    "title": "👩🏽‍🍳 Guide de Contribution"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "👩🏿‍🏫 Avec un tutoriel",
+    "permalink": "/docs/tutorial"
+  },
+  "next": {
+    "title": "🚦 Routing",
+    "permalink": "/docs/routing"
+  }
+}

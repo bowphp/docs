@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/seeding",
+  "id": "en/seeding",
+  "title": "💉 Seeding",
+  "description": "- Introduction",
+  "source": "@site/docs/en/seeding.md",
+  "sourceDirName": "en",
+  "slug": "/en/seeding",
+  "permalink": "/docs/en/seeding",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/seeding.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "seeding",
+    "title": "💉 Seeding"
+  }
+}

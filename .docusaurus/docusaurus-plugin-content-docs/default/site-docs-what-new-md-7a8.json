@@ -1,0 +1,21 @@
+{
+  "unversionedId": "prologs",
+  "id": "prologs",
+  "title": "Prologs",
+  "description": "Il manque quelque chose ?",
+  "source": "@site/../docs/what-new.md",
+  "sourceDirName": ".",
+  "slug": "/prologs",
+  "permalink": "/docs/prologs",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/what-new.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "prologs",
+    "title": "Prologs"
+  }
+}

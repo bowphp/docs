@@ -1,6 +1,6 @@
 ---
 id: tutorial
-title: 👩🏿‍🏫 Avec un tutoriel
+title: "👩🏿‍🏫 Avec un tutoriel"
 ---
 
 - [Introduction](#introduction)

@@ -1,6 +1,6 @@
 ---
 id: seeding
-title: 💉 Seeding
+title: "💉 Seeding"
 ---
 
 - [Introduction](#introduction)

@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/query-builder",
+  "id": "en/query-builder",
+  "title": "🏗 SQL Builder",
+  "description": "- Introduction",
+  "source": "@site/docs/en/query-builder.md",
+  "sourceDirName": "en",
+  "slug": "/en/query-builder",
+  "permalink": "/docs/en/query-builder",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/query-builder.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "query-builder",
+    "title": "🏗 SQL Builder"
+  }
+}

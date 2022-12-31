@@ -1,0 +1,30 @@
+{
+  "unversionedId": "frontend",
+  "id": "frontend",
+  "title": "📯 Front-End",
+  "description": "- Introduction",
+  "source": "@site/../docs/frontend.md",
+  "sourceDirName": ".",
+  "slug": "/frontend",
+  "permalink": "/docs/frontend",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/frontend.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "frontend",
+    "title": "📯 Front-End"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "🙅🏽‍♂️ CSRF Protection",
+    "permalink": "/docs/csrf-protection"
+  },
+  "next": {
+    "title": "🏢 Approche service",
+    "permalink": "/docs/service"
+  }
+}

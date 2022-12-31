@@ -1,0 +1,30 @@
+{
+  "unversionedId": "orm",
+  "id": "version-4.x/orm",
+  "title": "🧩 ORM Barry",
+  "description": "BARRY ORM",
+  "source": "@site/versioned_docs/version-4.x/orm.md",
+  "sourceDirName": ".",
+  "slug": "/orm",
+  "permalink": "/docs/4.x/orm",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/orm.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "orm",
+    "title": "🧩 ORM Barry"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "🏗 SQL Builder",
+    "permalink": "/docs/4.x/query-builder"
+  },
+  "next": {
+    "title": "📑 Migration",
+    "permalink": "/docs/4.x/migration"
+  }
+}

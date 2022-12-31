@@ -1,6 +1,6 @@
 ---
 id: validation
-title: 🚧 Validation de donnée
+title: "🚧 Validation de donnée"
 ---
 
 

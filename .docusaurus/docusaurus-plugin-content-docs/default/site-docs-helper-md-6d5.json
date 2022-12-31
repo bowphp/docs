@@ -1,0 +1,30 @@
+{
+  "unversionedId": "helpers",
+  "id": "helpers",
+  "title": "🪒 Application Helpers",
+  "description": "- Introduction",
+  "source": "@site/../docs/helper.md",
+  "sourceDirName": ".",
+  "slug": "/helpers",
+  "permalink": "/docs/helpers",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/helper.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "helpers",
+    "title": "🪒 Application Helpers"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "🏢 Approche service",
+    "permalink": "/docs/service"
+  },
+  "next": {
+    "title": "👨🏾‍💻 Bow Console",
+    "permalink": "/docs/console"
+  }
+}

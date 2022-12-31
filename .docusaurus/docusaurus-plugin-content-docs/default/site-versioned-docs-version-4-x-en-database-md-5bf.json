@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/database",
+  "id": "version-4.x/en/database",
+  "title": "🎯 Démarrage",
+  "description": "- Introduction",
+  "source": "@site/versioned_docs/version-4.x/en/database.md",
+  "sourceDirName": "en",
+  "slug": "/en/database",
+  "permalink": "/docs/4.x/en/database",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/database.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "database",
+    "title": "🎯 Démarrage"
+  }
+}

@@ -1,0 +1,640 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Canary 🚧",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "installation",
+          "docs": [
+            {
+              "id": "auth",
+              "path": "/docs/auth",
+              "sidebar": "docs"
+            },
+            {
+              "id": "concept",
+              "path": "/docs/concept"
+            },
+            {
+              "id": "configuration",
+              "path": "/docs/configuration",
+              "sidebar": "docs"
+            },
+            {
+              "id": "console",
+              "path": "/docs/console",
+              "sidebar": "docs"
+            },
+            {
+              "id": "container",
+              "path": "/docs/container"
+            },
+            {
+              "id": "contribution",
+              "path": "/docs/contribution",
+              "sidebar": "docs"
+            },
+            {
+              "id": "controleur",
+              "path": "/docs/controleur",
+              "sidebar": "docs"
+            },
+            {
+              "id": "csrf-protection",
+              "path": "/docs/csrf-protection",
+              "sidebar": "docs"
+            },
+            {
+              "id": "database",
+              "path": "/docs/database",
+              "sidebar": "docs"
+            },
+            {
+              "id": "en/auth",
+              "path": "/docs/en/auth"
+            },
+            {
+              "id": "en/concept",
+              "path": "/docs/en/concept"
+            },
+            {
+              "id": "en/configuration",
+              "path": "/docs/en/configuration"
+            },
+            {
+              "id": "en/console",
+              "path": "/docs/en/console"
+            },
+            {
+              "id": "en/container",
+              "path": "/docs/en/container"
+            },
+            {
+              "id": "en/contribution",
+              "path": "/docs/en/contribution"
+            },
+            {
+              "id": "en/controleur",
+              "path": "/docs/en/controleur"
+            },
+            {
+              "id": "en/csrf-protection",
+              "path": "/docs/en/csrf-protection"
+            },
+            {
+              "id": "en/database",
+              "path": "/docs/en/database"
+            },
+            {
+              "id": "en/frontend",
+              "path": "/docs/en/frontend"
+            },
+            {
+              "id": "en/helpers",
+              "path": "/docs/en/helpers"
+            },
+            {
+              "id": "en/http-request",
+              "path": "/docs/en/http-request"
+            },
+            {
+              "id": "en/http-response",
+              "path": "/docs/en/http-response"
+            },
+            {
+              "id": "en/http-session",
+              "path": "/docs/en/http-session"
+            },
+            {
+              "id": "en/http-upload",
+              "path": "/docs/en/http-upload"
+            },
+            {
+              "id": "en/i18n",
+              "path": "/docs/en/i18n"
+            },
+            {
+              "id": "en/installation",
+              "path": "/docs/en/installation"
+            },
+            {
+              "id": "en/mail",
+              "path": "/docs/en/mail"
+            },
+            {
+              "id": "en/middleware",
+              "path": "/docs/en/middleware"
+            },
+            {
+              "id": "en/migration",
+              "path": "/docs/en/migration"
+            },
+            {
+              "id": "en/orm",
+              "path": "/docs/en/orm"
+            },
+            {
+              "id": "en/packaging",
+              "path": "/docs/en/packaging"
+            },
+            {
+              "id": "en/policier",
+              "path": "/docs/en/policier"
+            },
+            {
+              "id": "en/prologs",
+              "path": "/docs/en/prologs"
+            },
+            {
+              "id": "en/query-builder",
+              "path": "/docs/en/query-builder"
+            },
+            {
+              "id": "en/routing",
+              "path": "/docs/en/routing"
+            },
+            {
+              "id": "en/seeding",
+              "path": "/docs/en/seeding"
+            },
+            {
+              "id": "en/service",
+              "path": "/docs/en/service"
+            },
+            {
+              "id": "en/storage",
+              "path": "/docs/en/storage"
+            },
+            {
+              "id": "en/structure",
+              "path": "/docs/en/structure"
+            },
+            {
+              "id": "en/tutorial",
+              "path": "/docs/en/tutorial"
+            },
+            {
+              "id": "en/validation",
+              "path": "/docs/en/validation"
+            },
+            {
+              "id": "en/views",
+              "path": "/docs/en/views"
+            },
+            {
+              "id": "frontend",
+              "path": "/docs/frontend",
+              "sidebar": "docs"
+            },
+            {
+              "id": "helpers",
+              "path": "/docs/helpers",
+              "sidebar": "docs"
+            },
+            {
+              "id": "http-request",
+              "path": "/docs/http-request",
+              "sidebar": "docs"
+            },
+            {
+              "id": "http-response",
+              "path": "/docs/http-response",
+              "sidebar": "docs"
+            },
+            {
+              "id": "http-session",
+              "path": "/docs/http-session",
+              "sidebar": "docs"
+            },
+            {
+              "id": "http-upload",
+              "path": "/docs/http-upload"
+            },
+            {
+              "id": "i18n",
+              "path": "/docs/i18n",
+              "sidebar": "docs"
+            },
+            {
+              "id": "installation",
+              "path": "/docs/installation",
+              "sidebar": "docs"
+            },
+            {
+              "id": "mail",
+              "path": "/docs/mail",
+              "sidebar": "docs"
+            },
+            {
+              "id": "middleware",
+              "path": "/docs/middleware",
+              "sidebar": "docs"
+            },
+            {
+              "id": "migration",
+              "path": "/docs/migration",
+              "sidebar": "docs"
+            },
+            {
+              "id": "orm",
+              "path": "/docs/orm",
+              "sidebar": "docs"
+            },
+            {
+              "id": "package",
+              "path": "/docs/package",
+              "sidebar": "docs"
+            },
+            {
+              "id": "policier",
+              "path": "/docs/policier",
+              "sidebar": "docs"
+            },
+            {
+              "id": "prologs",
+              "path": "/docs/prologs"
+            },
+            {
+              "id": "query-builder",
+              "path": "/docs/query-builder",
+              "sidebar": "docs"
+            },
+            {
+              "id": "routing",
+              "path": "/docs/routing",
+              "sidebar": "docs"
+            },
+            {
+              "id": "seeding",
+              "path": "/docs/seeding",
+              "sidebar": "docs"
+            },
+            {
+              "id": "service",
+              "path": "/docs/service",
+              "sidebar": "docs"
+            },
+            {
+              "id": "storage",
+              "path": "/docs/storage",
+              "sidebar": "docs"
+            },
+            {
+              "id": "structure",
+              "path": "/docs/structure",
+              "sidebar": "docs"
+            },
+            {
+              "id": "testing",
+              "path": "/docs/testing",
+              "sidebar": "docs"
+            },
+            {
+              "id": "tutorial",
+              "path": "/docs/tutorial",
+              "sidebar": "docs"
+            },
+            {
+              "id": "validation",
+              "path": "/docs/validation"
+            },
+            {
+              "id": "views",
+              "path": "/docs/views",
+              "sidebar": "docs"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "docs": {
+              "link": {
+                "path": "/docs/installation",
+                "label": "installation"
+              }
+            }
+          }
+        },
+        {
+          "name": "4.x",
+          "label": "4.x",
+          "isLast": false,
+          "path": "/docs/4.x",
+          "mainDocId": "installation",
+          "docs": [
+            {
+              "id": "auth",
+              "path": "/docs/4.x/auth",
+              "sidebar": "docs"
+            },
+            {
+              "id": "concept",
+              "path": "/docs/4.x/concept"
+            },
+            {
+              "id": "configuration",
+              "path": "/docs/4.x/configuration",
+              "sidebar": "docs"
+            },
+            {
+              "id": "console",
+              "path": "/docs/4.x/console",
+              "sidebar": "docs"
+            },
+            {
+              "id": "container",
+              "path": "/docs/4.x/container"
+            },
+            {
+              "id": "contribution",
+              "path": "/docs/4.x/contribution",
+              "sidebar": "docs"
+            },
+            {
+              "id": "controleur",
+              "path": "/docs/4.x/controleur",
+              "sidebar": "docs"
+            },
+            {
+              "id": "csrf-protection",
+              "path": "/docs/4.x/csrf-protection",
+              "sidebar": "docs"
+            },
+            {
+              "id": "database",
+              "path": "/docs/4.x/database",
+              "sidebar": "docs"
+            },
+            {
+              "id": "en/auth",
+              "path": "/docs/4.x/en/auth"
+            },
+            {
+              "id": "en/concept",
+              "path": "/docs/4.x/en/concept"
+            },
+            {
+              "id": "en/configuration",
+              "path": "/docs/4.x/en/configuration"
+            },
+            {
+              "id": "en/console",
+              "path": "/docs/4.x/en/console"
+            },
+            {
+              "id": "en/container",
+              "path": "/docs/4.x/en/container"
+            },
+            {
+              "id": "en/contribution",
+              "path": "/docs/4.x/en/contribution"
+            },
+            {
+              "id": "en/controleur",
+              "path": "/docs/4.x/en/controleur"
+            },
+            {
+              "id": "en/csrf-protection",
+              "path": "/docs/4.x/en/csrf-protection"
+            },
+            {
+              "id": "en/database",
+              "path": "/docs/4.x/en/database"
+            },
+            {
+              "id": "en/frontend",
+              "path": "/docs/4.x/en/frontend"
+            },
+            {
+              "id": "en/helpers",
+              "path": "/docs/4.x/en/helpers"
+            },
+            {
+              "id": "en/http-request",
+              "path": "/docs/4.x/en/http-request"
+            },
+            {
+              "id": "en/http-response",
+              "path": "/docs/4.x/en/http-response"
+            },
+            {
+              "id": "en/http-session",
+              "path": "/docs/4.x/en/http-session"
+            },
+            {
+              "id": "en/http-upload",
+              "path": "/docs/4.x/en/http-upload"
+            },
+            {
+              "id": "en/i18n",
+              "path": "/docs/4.x/en/i18n"
+            },
+            {
+              "id": "en/installation",
+              "path": "/docs/4.x/en/installation"
+            },
+            {
+              "id": "en/mail",
+              "path": "/docs/4.x/en/mail"
+            },
+            {
+              "id": "en/middleware",
+              "path": "/docs/4.x/en/middleware"
+            },
+            {
+              "id": "en/migration",
+              "path": "/docs/4.x/en/migration"
+            },
+            {
+              "id": "en/orm",
+              "path": "/docs/4.x/en/orm"
+            },
+            {
+              "id": "en/packaging",
+              "path": "/docs/4.x/en/packaging"
+            },
+            {
+              "id": "en/policier",
+              "path": "/docs/4.x/en/policier"
+            },
+            {
+              "id": "en/prologs",
+              "path": "/docs/4.x/en/prologs"
+            },
+            {
+              "id": "en/query-builder",
+              "path": "/docs/4.x/en/query-builder"
+            },
+            {
+              "id": "en/routing",
+              "path": "/docs/4.x/en/routing"
+            },
+            {
+              "id": "en/seeding",
+              "path": "/docs/4.x/en/seeding"
+            },
+            {
+              "id": "en/service",
+              "path": "/docs/4.x/en/service"
+            },
+            {
+              "id": "en/storage",
+              "path": "/docs/4.x/en/storage"
+            },
+            {
+              "id": "en/structure",
+              "path": "/docs/4.x/en/structure"
+            },
+            {
+              "id": "en/tutorial",
+              "path": "/docs/4.x/en/tutorial"
+            },
+            {
+              "id": "en/validation",
+              "path": "/docs/4.x/en/validation"
+            },
+            {
+              "id": "en/views",
+              "path": "/docs/4.x/en/views"
+            },
+            {
+              "id": "frontend",
+              "path": "/docs/4.x/frontend",
+              "sidebar": "docs"
+            },
+            {
+              "id": "helpers",
+              "path": "/docs/4.x/helpers",
+              "sidebar": "docs"
+            },
+            {
+              "id": "http-request",
+              "path": "/docs/4.x/http-request",
+              "sidebar": "docs"
+            },
+            {
+              "id": "http-response",
+              "path": "/docs/4.x/http-response",
+              "sidebar": "docs"
+            },
+            {
+              "id": "http-session",
+              "path": "/docs/4.x/http-session",
+              "sidebar": "docs"
+            },
+            {
+              "id": "http-upload",
+              "path": "/docs/4.x/http-upload"
+            },
+            {
+              "id": "i18n",
+              "path": "/docs/4.x/i18n",
+              "sidebar": "docs"
+            },
+            {
+              "id": "installation",
+              "path": "/docs/4.x/installation",
+              "sidebar": "docs"
+            },
+            {
+              "id": "mail",
+              "path": "/docs/4.x/mail",
+              "sidebar": "docs"
+            },
+            {
+              "id": "middleware",
+              "path": "/docs/4.x/middleware",
+              "sidebar": "docs"
+            },
+            {
+              "id": "migration",
+              "path": "/docs/4.x/migration",
+              "sidebar": "docs"
+            },
+            {
+              "id": "orm",
+              "path": "/docs/4.x/orm",
+              "sidebar": "docs"
+            },
+            {
+              "id": "package",
+              "path": "/docs/4.x/package",
+              "sidebar": "docs"
+            },
+            {
+              "id": "policier",
+              "path": "/docs/4.x/policier",
+              "sidebar": "docs"
+            },
+            {
+              "id": "prologs",
+              "path": "/docs/4.x/prologs"
+            },
+            {
+              "id": "query-builder",
+              "path": "/docs/4.x/query-builder",
+              "sidebar": "docs"
+            },
+            {
+              "id": "routing",
+              "path": "/docs/4.x/routing",
+              "sidebar": "docs"
+            },
+            {
+              "id": "seeding",
+              "path": "/docs/4.x/seeding",
+              "sidebar": "docs"
+            },
+            {
+              "id": "service",
+              "path": "/docs/4.x/service",
+              "sidebar": "docs"
+            },
+            {
+              "id": "storage",
+              "path": "/docs/4.x/storage",
+              "sidebar": "docs"
+            },
+            {
+              "id": "structure",
+              "path": "/docs/4.x/structure",
+              "sidebar": "docs"
+            },
+            {
+              "id": "testing",
+              "path": "/docs/4.x/testing",
+              "sidebar": "docs"
+            },
+            {
+              "id": "tutorial",
+              "path": "/docs/4.x/tutorial",
+              "sidebar": "docs"
+            },
+            {
+              "id": "validation",
+              "path": "/docs/4.x/validation"
+            },
+            {
+              "id": "views",
+              "path": "/docs/4.x/views",
+              "sidebar": "docs"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "docs": {
+              "link": {
+                "path": "/docs/4.x/installation",
+                "label": "installation"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

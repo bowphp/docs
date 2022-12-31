@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/service",
+  "id": "en/service",
+  "title": "🏢 Approche service",
+  "description": "Il manque quelque chose ?",
+  "source": "@site/../docs/en/service.md",
+  "sourceDirName": "en",
+  "slug": "/en/service",
+  "permalink": "/docs/en/service",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/en/service.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "service",
+    "title": "🏢 Approche service"
+  }
+}

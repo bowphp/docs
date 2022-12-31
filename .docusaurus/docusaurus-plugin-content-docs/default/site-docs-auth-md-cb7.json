@@ -1,0 +1,30 @@
+{
+  "unversionedId": "auth",
+  "id": "auth",
+  "title": "👮🏽 Authentification",
+  "description": "Introduction",
+  "source": "@site/docs/auth.md",
+  "sourceDirName": ".",
+  "slug": "/auth",
+  "permalink": "/docs/auth",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/auth.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "auth",
+    "title": "👮🏽 Authentification"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "🎬 HTTP Session",
+    "permalink": "/docs/http-session"
+  },
+  "next": {
+    "title": "🔐 Policier JWT Auth",
+    "permalink": "/docs/policier"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "unversionedId": "http-response",
+  "id": "http-response",
+  "title": "📦 HTTP Response",
+  "description": "- Introduction",
+  "source": "@site/../docs/responses.md",
+  "sourceDirName": ".",
+  "slug": "/http-response",
+  "permalink": "/docs/http-response",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/responses.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "http-response",
+    "title": "📦 HTTP Response"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "🚀 HTTP Request",
+    "permalink": "/docs/http-request"
+  },
+  "next": {
+    "title": "🎬 HTTP Session",
+    "permalink": "/docs/http-session"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/http-upload",
+  "id": "en/http-upload",
+  "title": "🛫 Envoie de fichier",
+  "description": "Souvent les requêtes sont associés à des fichiers envoyés par l'utilisateur, vous pouvez traiter ces fichiers sur Bow\\Http\\Request les méthodes file et le helper du même nom.",
+  "source": "@site/docs/en/upload.md",
+  "sourceDirName": "en",
+  "slug": "/en/http-upload",
+  "permalink": "/docs/en/http-upload",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/upload.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "http-upload",
+    "title": "🛫 Envoie de fichier"
+  }
+}

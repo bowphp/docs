@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/http-request",
+  "id": "en/http-request",
+  "title": "🚀 HTTP Request",
+  "description": "- Introduction",
+  "source": "@site/../docs/en/requests.md",
+  "sourceDirName": "en",
+  "slug": "/en/http-request",
+  "permalink": "/docs/en/http-request",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/en/requests.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "http-request",
+    "title": "🚀 HTTP Request"
+  }
+}

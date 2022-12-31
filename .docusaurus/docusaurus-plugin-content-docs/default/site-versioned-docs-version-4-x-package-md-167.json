@@ -1,0 +1,26 @@
+{
+  "unversionedId": "package",
+  "id": "version-4.x/package",
+  "title": "📦 Bow Package",
+  "description": "- Introduction",
+  "source": "@site/versioned_docs/version-4.x/package.md",
+  "sourceDirName": ".",
+  "slug": "/package",
+  "permalink": "/docs/4.x/package",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/package.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "package",
+    "title": "📦 Bow Package"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "👨🏾‍💻 Bow Console",
+    "permalink": "/docs/4.x/console"
+  }
+}

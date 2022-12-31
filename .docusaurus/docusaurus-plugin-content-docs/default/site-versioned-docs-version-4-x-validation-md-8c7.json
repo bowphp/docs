@@ -1,0 +1,21 @@
+{
+  "unversionedId": "validation",
+  "id": "version-4.x/validation",
+  "title": "🚧 Validation de donnée",
+  "description": "Il manque quelque chose ?",
+  "source": "@site/versioned_docs/version-4.x/validation.md",
+  "sourceDirName": ".",
+  "slug": "/validation",
+  "permalink": "/docs/4.x/validation",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/validation.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "validation",
+    "title": "🚧 Validation de donnée"
+  }
+}

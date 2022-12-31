@@ -1,6 +1,6 @@
 ---
 id: policier
-title: 🔐 Policier JWT Auth
+title: "🔐 Policier JWT Auth"
 ---
 
 - [Installation](#installation)

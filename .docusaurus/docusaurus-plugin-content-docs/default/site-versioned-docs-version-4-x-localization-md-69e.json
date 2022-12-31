@@ -1,0 +1,30 @@
+{
+  "unversionedId": "i18n",
+  "id": "version-4.x/i18n",
+  "title": "🎎 i18n",
+  "description": "- Introduction",
+  "source": "@site/versioned_docs/version-4.x/localization.md",
+  "sourceDirName": ".",
+  "slug": "/i18n",
+  "permalink": "/docs/4.x/i18n",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/localization.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "i18n",
+    "title": "🎎 i18n"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "✉️ Envoie de Mail",
+    "permalink": "/docs/4.x/mail"
+  },
+  "next": {
+    "title": "🛫 Testez votre application",
+    "permalink": "/docs/4.x/testing"
+  }
+}

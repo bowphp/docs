@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/structure",
+  "id": "en/structure",
+  "title": "⚙️ App Structure",
+  "description": "- Structure globale",
+  "source": "@site/../docs/en/structure.md",
+  "sourceDirName": "en",
+  "slug": "/en/structure",
+  "permalink": "/docs/en/structure",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/en/structure.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "structure",
+    "title": "⚙️ App Structure"
+  }
+}

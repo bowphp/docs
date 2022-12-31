@@ -1,0 +1,30 @@
+{
+  "unversionedId": "routing",
+  "id": "version-4.x/routing",
+  "title": "🚦 Routing",
+  "description": "- Introduction",
+  "source": "@site/versioned_docs/version-4.x/routing.md",
+  "sourceDirName": ".",
+  "slug": "/routing",
+  "permalink": "/docs/4.x/routing",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/routing.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "routing",
+    "title": "🚦 Routing"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "👩🏽‍🍳 Guide de Contribution",
+    "permalink": "/docs/4.x/contribution"
+  },
+  "next": {
+    "title": "👨🏽‍✈️ Contrôleurs",
+    "permalink": "/docs/4.x/controleur"
+  }
+}

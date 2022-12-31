@@ -1,0 +1,30 @@
+{
+  "unversionedId": "migration",
+  "id": "migration",
+  "title": "📑 Migration",
+  "description": "- Introduction",
+  "source": "@site/../docs/migration.md",
+  "sourceDirName": ".",
+  "slug": "/migration",
+  "permalink": "/docs/migration",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/migration.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "migration",
+    "title": "📑 Migration"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "🧩 ORM Barry",
+    "permalink": "/docs/orm"
+  },
+  "next": {
+    "title": "💉 Seeding",
+    "permalink": "/docs/seeding"
+  }
+}

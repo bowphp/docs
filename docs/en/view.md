@@ -1,6 +1,6 @@
 ---
 id: views
-title: 🎨 Utiliser les vues
+title: "🎨 Utiliser les vues"
 ---
 
 - [Introduction](#introduction)

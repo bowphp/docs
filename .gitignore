@@ -7,3 +7,4 @@ api/cache
 doctum.phar
 .idea
 .vscode
+node_modules

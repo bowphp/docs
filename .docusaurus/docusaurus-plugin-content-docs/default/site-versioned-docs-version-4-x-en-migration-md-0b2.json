@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/migration",
+  "id": "version-4.x/en/migration",
+  "title": "📑 Migration",
+  "description": "- Introduction",
+  "source": "@site/versioned_docs/version-4.x/en/migration.md",
+  "sourceDirName": "en",
+  "slug": "/en/migration",
+  "permalink": "/docs/4.x/en/migration",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/migration.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "migration",
+    "title": "📑 Migration"
+  }
+}

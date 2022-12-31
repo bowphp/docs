@@ -1,11 +1,11 @@
 ---
 id: orm
-title: 🧩 ORM Barry
+title: "🧩 ORM Barry"
 ---
 
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/bowphp/arts/master/barry.jpg" width="150px">
-  <br>BARRY ORM
+  <img src="https://raw.githubusercontent.com/bowphp/arts/master/barry.jpg" width="150px"/>
+  <br/><span>BARRY ORM</span>
 </h1>
 
 <p align="center">BARRY c'est l'ORM (<strong>Object Relation Mapping</strong>) intégré dans Bow Framework.</p>

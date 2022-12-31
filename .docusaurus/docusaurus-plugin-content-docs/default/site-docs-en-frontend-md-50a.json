@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/frontend",
+  "id": "en/frontend",
+  "title": "📯 Front-End",
+  "description": "- Introduction",
+  "source": "@site/docs/en/frontend.md",
+  "sourceDirName": "en",
+  "slug": "/en/frontend",
+  "permalink": "/docs/en/frontend",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/frontend.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "frontend",
+    "title": "📯 Front-End"
+  }
+}

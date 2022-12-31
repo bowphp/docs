@@ -1,0 +1,3728 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "label": "Canary 🚧",
+          "banner": null,
+          "badge": true,
+          "noIndex": false,
+          "className": "docs-version-current",
+          "path": "/docs",
+          "tagsPath": "/docs/tags",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/home/papac/engineering/bowphp/docs/sidebars.json",
+          "contentPath": "/home/papac/engineering/bowphp/docs/docs",
+          "contentPathLocalized": "/home/papac/engineering/bowphp/docs/i18n/en/docusaurus-plugin-content-docs/current",
+          "docs": [
+            {
+              "unversionedId": "auth",
+              "id": "auth",
+              "title": "👮🏽 Authentification",
+              "description": "Introduction",
+              "source": "@site/docs/auth.md",
+              "sourceDirName": ".",
+              "slug": "/auth",
+              "permalink": "/docs/auth",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/auth.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "auth",
+                "title": "👮🏽 Authentification"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🎬 HTTP Session",
+                "permalink": "/docs/http-session"
+              },
+              "next": {
+                "title": "🔐 Policier JWT Auth",
+                "permalink": "/docs/policier"
+              }
+            },
+            {
+              "unversionedId": "concept",
+              "id": "concept",
+              "title": "👨🏽‍💻 Concept et Architecture",
+              "description": "Bow Framework",
+              "source": "@site/docs/concept.md",
+              "sourceDirName": ".",
+              "slug": "/concept",
+              "permalink": "/docs/concept",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/concept.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "concept",
+                "title": "👨🏽‍💻 Concept et Architecture"
+              }
+            },
+            {
+              "unversionedId": "configuration",
+              "id": "configuration",
+              "title": "👨🏽‍🔧 App Configuration",
+              "description": "- Introduction",
+              "source": "@site/docs/configuration.md",
+              "sourceDirName": ".",
+              "slug": "/configuration",
+              "permalink": "/docs/configuration",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/configuration.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "configuration",
+                "title": "👨🏽‍🔧 App Configuration"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🚀 Installation",
+                "permalink": "/docs/installation"
+              },
+              "next": {
+                "title": "⚙️ App Structure",
+                "permalink": "/docs/structure"
+              }
+            },
+            {
+              "unversionedId": "console",
+              "id": "console",
+              "title": "👨🏾‍💻 Bow Console",
+              "description": "COMMAND:",
+              "source": "@site/docs/console.md",
+              "sourceDirName": ".",
+              "slug": "/console",
+              "permalink": "/docs/console",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/console.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "console",
+                "title": "👨🏾‍💻 Bow Console"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🪒 Application Helpers",
+                "permalink": "/docs/helpers"
+              },
+              "next": {
+                "title": "📦 Bow Package",
+                "permalink": "/docs/package"
+              }
+            },
+            {
+              "unversionedId": "container",
+              "id": "container",
+              "title": "Capsule",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/docs/container.md",
+              "sourceDirName": ".",
+              "slug": "/container",
+              "permalink": "/docs/container",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/container.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "container",
+                "title": "Capsule"
+              }
+            },
+            {
+              "unversionedId": "contribution",
+              "id": "contribution",
+              "title": "👩🏽‍🍳 Guide de Contribution",
+              "description": "- Introduction",
+              "source": "@site/docs/contribution.md",
+              "sourceDirName": ".",
+              "slug": "/contribution",
+              "permalink": "/docs/contribution",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/contribution.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "contribution",
+                "title": "👩🏽‍🍳 Guide de Contribution"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👩🏿‍🏫 Avec un tutoriel",
+                "permalink": "/docs/tutorial"
+              },
+              "next": {
+                "title": "🚦 Routing",
+                "permalink": "/docs/routing"
+              }
+            },
+            {
+              "unversionedId": "controleur",
+              "id": "controleur",
+              "title": "👨🏽‍✈️ Contrôleurs",
+              "description": "- Introduction",
+              "source": "@site/docs/controller.md",
+              "sourceDirName": ".",
+              "slug": "/controleur",
+              "permalink": "/docs/controleur",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/controller.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "controleur",
+                "title": "👨🏽‍✈️ Contrôleurs"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🚦 Routing",
+                "permalink": "/docs/routing"
+              },
+              "next": {
+                "title": "🎨 Utiliser les vues",
+                "permalink": "/docs/views"
+              }
+            },
+            {
+              "unversionedId": "csrf-protection",
+              "id": "csrf-protection",
+              "title": "🙅🏽‍♂️ CSRF Protection",
+              "description": "- Introduction",
+              "source": "@site/docs/csrf.md",
+              "sourceDirName": ".",
+              "slug": "/csrf-protection",
+              "permalink": "/docs/csrf-protection",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/csrf.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "csrf-protection",
+                "title": "🙅🏽‍♂️ CSRF Protection"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🔐 Policier JWT Auth",
+                "permalink": "/docs/policier"
+              },
+              "next": {
+                "title": "📯 Front-End",
+                "permalink": "/docs/frontend"
+              }
+            },
+            {
+              "unversionedId": "database",
+              "id": "database",
+              "title": "🎯 Démarrage",
+              "description": "- Introduction",
+              "source": "@site/docs/database.md",
+              "sourceDirName": ".",
+              "slug": "/database",
+              "permalink": "/docs/database",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/database.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "database",
+                "title": "🎯 Démarrage"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🛫 Testez votre application",
+                "permalink": "/docs/testing"
+              },
+              "next": {
+                "title": "🏗 SQL Builder",
+                "permalink": "/docs/query-builder"
+              }
+            },
+            {
+              "unversionedId": "en/auth",
+              "id": "en/auth",
+              "title": "👮🏽 Authentification",
+              "description": "Introduction",
+              "source": "@site/docs/en/auth.md",
+              "sourceDirName": "en",
+              "slug": "/en/auth",
+              "permalink": "/docs/en/auth",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/auth.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "auth",
+                "title": "👮🏽 Authentification"
+              }
+            },
+            {
+              "unversionedId": "en/concept",
+              "id": "en/concept",
+              "title": "👨🏽‍💻 Concept et Architecture",
+              "description": "Bow Framework",
+              "source": "@site/docs/en/concept.md",
+              "sourceDirName": "en",
+              "slug": "/en/concept",
+              "permalink": "/docs/en/concept",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/concept.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "concept",
+                "title": "👨🏽‍💻 Concept et Architecture"
+              }
+            },
+            {
+              "unversionedId": "en/configuration",
+              "id": "en/configuration",
+              "title": "👨🏽‍🔧 App Configuration",
+              "description": "- Introduction",
+              "source": "@site/docs/en/configuration.md",
+              "sourceDirName": "en",
+              "slug": "/en/configuration",
+              "permalink": "/docs/en/configuration",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/configuration.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "configuration",
+                "title": "👨🏽‍🔧 App Configuration"
+              }
+            },
+            {
+              "unversionedId": "en/console",
+              "id": "en/console",
+              "title": "👨🏾‍💻 Bow Console",
+              "description": "COMMAND:",
+              "source": "@site/docs/en/console.md",
+              "sourceDirName": "en",
+              "slug": "/en/console",
+              "permalink": "/docs/en/console",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/console.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "console",
+                "title": "👨🏾‍💻 Bow Console"
+              }
+            },
+            {
+              "unversionedId": "en/container",
+              "id": "en/container",
+              "title": "Capsule",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/docs/en/container.md",
+              "sourceDirName": "en",
+              "slug": "/en/container",
+              "permalink": "/docs/en/container",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/container.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "container",
+                "title": "Capsule"
+              }
+            },
+            {
+              "unversionedId": "en/contribution",
+              "id": "en/contribution",
+              "title": "👩🏽‍🍳 Guide de Contribution",
+              "description": "- Introduction",
+              "source": "@site/docs/en/contribution.md",
+              "sourceDirName": "en",
+              "slug": "/en/contribution",
+              "permalink": "/docs/en/contribution",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/contribution.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "contribution",
+                "title": "👩🏽‍🍳 Guide de Contribution"
+              }
+            },
+            {
+              "unversionedId": "en/controleur",
+              "id": "en/controleur",
+              "title": "👨🏽‍✈️ Contrôleurs",
+              "description": "- Introduction",
+              "source": "@site/docs/en/controller.md",
+              "sourceDirName": "en",
+              "slug": "/en/controleur",
+              "permalink": "/docs/en/controleur",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/controller.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "controleur",
+                "title": "👨🏽‍✈️ Contrôleurs"
+              }
+            },
+            {
+              "unversionedId": "en/csrf-protection",
+              "id": "en/csrf-protection",
+              "title": "🙅🏽‍♂️ CSRF Protection",
+              "description": "- Introduction",
+              "source": "@site/docs/en/csrf.md",
+              "sourceDirName": "en",
+              "slug": "/en/csrf-protection",
+              "permalink": "/docs/en/csrf-protection",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/csrf.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "csrf-protection",
+                "title": "🙅🏽‍♂️ CSRF Protection"
+              }
+            },
+            {
+              "unversionedId": "en/database",
+              "id": "en/database",
+              "title": "🎯 Démarrage",
+              "description": "- Introduction",
+              "source": "@site/docs/en/database.md",
+              "sourceDirName": "en",
+              "slug": "/en/database",
+              "permalink": "/docs/en/database",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/database.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "database",
+                "title": "🎯 Démarrage"
+              }
+            },
+            {
+              "unversionedId": "en/frontend",
+              "id": "en/frontend",
+              "title": "📯 Front-End",
+              "description": "- Introduction",
+              "source": "@site/docs/en/frontend.md",
+              "sourceDirName": "en",
+              "slug": "/en/frontend",
+              "permalink": "/docs/en/frontend",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/frontend.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "frontend",
+                "title": "📯 Front-End"
+              }
+            },
+            {
+              "unversionedId": "en/helpers",
+              "id": "en/helpers",
+              "title": "🪒 Application Helpers",
+              "description": "Les helpers sont des fonctions racourris chargé dans l'application qui permet de faire rapidement certaine action. Voici la liste des helpers qui existe dans l'application Bow Framework. Voici les helpers dispnoble dans l'application.",
+              "source": "@site/docs/en/helper.md",
+              "sourceDirName": "en",
+              "slug": "/en/helpers",
+              "permalink": "/docs/en/helpers",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/helper.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "helpers",
+                "title": "🪒 Application Helpers"
+              }
+            },
+            {
+              "unversionedId": "en/http-request",
+              "id": "en/http-request",
+              "title": "🚀 HTTP Request",
+              "description": "- Introduction",
+              "source": "@site/docs/en/requests.md",
+              "sourceDirName": "en",
+              "slug": "/en/http-request",
+              "permalink": "/docs/en/http-request",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/requests.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-request",
+                "title": "🚀 HTTP Request"
+              }
+            },
+            {
+              "unversionedId": "en/http-response",
+              "id": "en/http-response",
+              "title": "📦 HTTP Response",
+              "description": "- Introduction",
+              "source": "@site/docs/en/responses.md",
+              "sourceDirName": "en",
+              "slug": "/en/http-response",
+              "permalink": "/docs/en/http-response",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/responses.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-response",
+                "title": "📦 HTTP Response"
+              }
+            },
+            {
+              "unversionedId": "en/http-session",
+              "id": "en/http-session",
+              "title": "🎬 HTTP Session",
+              "description": "- Introduction",
+              "source": "@site/docs/en/session.md",
+              "sourceDirName": "en",
+              "slug": "/en/http-session",
+              "permalink": "/docs/en/http-session",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/session.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-session",
+                "title": "🎬 HTTP Session"
+              }
+            },
+            {
+              "unversionedId": "en/http-upload",
+              "id": "en/http-upload",
+              "title": "🛫 Envoie de fichier",
+              "description": "Souvent les requêtes sont associés à des fichiers envoyés par l'utilisateur, vous pouvez traiter ces fichiers sur Bow\\Http\\Request les méthodes file et le helper du même nom.",
+              "source": "@site/docs/en/upload.md",
+              "sourceDirName": "en",
+              "slug": "/en/http-upload",
+              "permalink": "/docs/en/http-upload",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/upload.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-upload",
+                "title": "🛫 Envoie de fichier"
+              }
+            },
+            {
+              "unversionedId": "en/i18n",
+              "id": "en/i18n",
+              "title": "🎎 i18n",
+              "description": "- Introduction",
+              "source": "@site/docs/en/localization.md",
+              "sourceDirName": "en",
+              "slug": "/en/i18n",
+              "permalink": "/docs/en/i18n",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/localization.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "i18n",
+                "title": "🎎 i18n"
+              }
+            },
+            {
+              "unversionedId": "en/installation",
+              "id": "en/installation",
+              "title": "🚀 Installation",
+              "description": "- Prérequis",
+              "source": "@site/docs/en/installation.md",
+              "sourceDirName": "en",
+              "slug": "/en/installation",
+              "permalink": "/docs/en/installation",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/installation.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "installation",
+                "title": "🚀 Installation"
+              }
+            },
+            {
+              "unversionedId": "en/mail",
+              "id": "en/mail",
+              "title": "✉️ Envoie de Mail",
+              "description": "- Introduction",
+              "source": "@site/docs/en/mail.md",
+              "sourceDirName": "en",
+              "slug": "/en/mail",
+              "permalink": "/docs/en/mail",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/mail.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "mail",
+                "title": "✉️ Envoie de Mail"
+              }
+            },
+            {
+              "unversionedId": "en/middleware",
+              "id": "en/middleware",
+              "title": "🚥 Middleware",
+              "description": "- Introduction",
+              "source": "@site/docs/en/middleware.md",
+              "sourceDirName": "en",
+              "slug": "/en/middleware",
+              "permalink": "/docs/en/middleware",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/middleware.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "middleware",
+                "title": "🚥 Middleware"
+              }
+            },
+            {
+              "unversionedId": "en/migration",
+              "id": "en/migration",
+              "title": "📑 Migration",
+              "description": "- Introduction",
+              "source": "@site/docs/en/migration.md",
+              "sourceDirName": "en",
+              "slug": "/en/migration",
+              "permalink": "/docs/en/migration",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/migration.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "migration",
+                "title": "📑 Migration"
+              }
+            },
+            {
+              "unversionedId": "en/orm",
+              "id": "en/orm",
+              "title": "🧩 ORM Barry",
+              "description": "BARRY ORM",
+              "source": "@site/docs/en/orm.md",
+              "sourceDirName": "en",
+              "slug": "/en/orm",
+              "permalink": "/docs/en/orm",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/orm.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "orm",
+                "title": "🧩 ORM Barry"
+              }
+            },
+            {
+              "unversionedId": "en/packaging",
+              "id": "en/packaging",
+              "title": "Packaging",
+              "description": "- Introduction",
+              "source": "@site/docs/en/package.md",
+              "sourceDirName": "en",
+              "slug": "/en/packaging",
+              "permalink": "/docs/en/packaging",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/package.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "packaging",
+                "title": "Packaging"
+              }
+            },
+            {
+              "unversionedId": "en/policier",
+              "id": "en/policier",
+              "title": "🔐 Policier JWT Auth",
+              "description": "- Installation",
+              "source": "@site/docs/en/policier.md",
+              "sourceDirName": "en",
+              "slug": "/en/policier",
+              "permalink": "/docs/en/policier",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/policier.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "policier",
+                "title": "🔐 Policier JWT Auth"
+              }
+            },
+            {
+              "unversionedId": "en/prologs",
+              "id": "en/prologs",
+              "title": "Prologs",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/docs/en/what-new.md",
+              "sourceDirName": "en",
+              "slug": "/en/prologs",
+              "permalink": "/docs/en/prologs",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/what-new.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "prologs",
+                "title": "Prologs"
+              }
+            },
+            {
+              "unversionedId": "en/query-builder",
+              "id": "en/query-builder",
+              "title": "🏗 SQL Builder",
+              "description": "- Introduction",
+              "source": "@site/docs/en/query-builder.md",
+              "sourceDirName": "en",
+              "slug": "/en/query-builder",
+              "permalink": "/docs/en/query-builder",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/query-builder.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "query-builder",
+                "title": "🏗 SQL Builder"
+              }
+            },
+            {
+              "unversionedId": "en/routing",
+              "id": "en/routing",
+              "title": "🚦 Routing",
+              "description": "- Introduction",
+              "source": "@site/docs/en/routing.md",
+              "sourceDirName": "en",
+              "slug": "/en/routing",
+              "permalink": "/docs/en/routing",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/routing.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "routing",
+                "title": "🚦 Routing"
+              }
+            },
+            {
+              "unversionedId": "en/seeding",
+              "id": "en/seeding",
+              "title": "💉 Seeding",
+              "description": "- Introduction",
+              "source": "@site/docs/en/seeding.md",
+              "sourceDirName": "en",
+              "slug": "/en/seeding",
+              "permalink": "/docs/en/seeding",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/seeding.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "seeding",
+                "title": "💉 Seeding"
+              }
+            },
+            {
+              "unversionedId": "en/service",
+              "id": "en/service",
+              "title": "🏢 Approche service",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/docs/en/service.md",
+              "sourceDirName": "en",
+              "slug": "/en/service",
+              "permalink": "/docs/en/service",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/service.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "service",
+                "title": "🏢 Approche service"
+              }
+            },
+            {
+              "unversionedId": "en/storage",
+              "id": "en/storage",
+              "title": "💿 Stockage de fichier",
+              "description": "- Introduction",
+              "source": "@site/docs/en/storage.md",
+              "sourceDirName": "en",
+              "slug": "/en/storage",
+              "permalink": "/docs/en/storage",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/storage.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "storage",
+                "title": "💿 Stockage de fichier"
+              }
+            },
+            {
+              "unversionedId": "en/structure",
+              "id": "en/structure",
+              "title": "⚙️ App Structure",
+              "description": "- Structure globale",
+              "source": "@site/docs/en/structure.md",
+              "sourceDirName": "en",
+              "slug": "/en/structure",
+              "permalink": "/docs/en/structure",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/structure.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "structure",
+                "title": "⚙️ App Structure"
+              }
+            },
+            {
+              "unversionedId": "en/tutorial",
+              "id": "en/tutorial",
+              "title": "👩🏿‍🏫 Avec un tutoriel",
+              "description": "- Introduction",
+              "source": "@site/docs/en/tutorial.md",
+              "sourceDirName": "en",
+              "slug": "/en/tutorial",
+              "permalink": "/docs/en/tutorial",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/tutorial.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "tutorial",
+                "title": "👩🏿‍🏫 Avec un tutoriel"
+              }
+            },
+            {
+              "unversionedId": "en/validation",
+              "id": "en/validation",
+              "title": "🚧 Validation de donnée",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/docs/en/validation.md",
+              "sourceDirName": "en",
+              "slug": "/en/validation",
+              "permalink": "/docs/en/validation",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/validation.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "validation",
+                "title": "🚧 Validation de donnée"
+              }
+            },
+            {
+              "unversionedId": "en/views",
+              "id": "en/views",
+              "title": "🎨 Utiliser les vues",
+              "description": "- Introduction",
+              "source": "@site/docs/en/view.md",
+              "sourceDirName": "en",
+              "slug": "/en/views",
+              "permalink": "/docs/en/views",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/view.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "views",
+                "title": "🎨 Utiliser les vues"
+              }
+            },
+            {
+              "unversionedId": "frontend",
+              "id": "frontend",
+              "title": "📯 Front-End",
+              "description": "- Introduction",
+              "source": "@site/docs/frontend.md",
+              "sourceDirName": ".",
+              "slug": "/frontend",
+              "permalink": "/docs/frontend",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/frontend.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "frontend",
+                "title": "📯 Front-End"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🙅🏽‍♂️ CSRF Protection",
+                "permalink": "/docs/csrf-protection"
+              },
+              "next": {
+                "title": "🏢 Approche service",
+                "permalink": "/docs/service"
+              }
+            },
+            {
+              "unversionedId": "helpers",
+              "id": "helpers",
+              "title": "🪒 Application Helpers",
+              "description": "- Introduction",
+              "source": "@site/docs/helper.md",
+              "sourceDirName": ".",
+              "slug": "/helpers",
+              "permalink": "/docs/helpers",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/helper.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "helpers",
+                "title": "🪒 Application Helpers"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🏢 Approche service",
+                "permalink": "/docs/service"
+              },
+              "next": {
+                "title": "👨🏾‍💻 Bow Console",
+                "permalink": "/docs/console"
+              }
+            },
+            {
+              "unversionedId": "http-request",
+              "id": "http-request",
+              "title": "🚀 HTTP Request",
+              "description": "- Introduction",
+              "source": "@site/docs/requests.md",
+              "sourceDirName": ".",
+              "slug": "/http-request",
+              "permalink": "/docs/http-request",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/requests.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-request",
+                "title": "🚀 HTTP Request"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "💉 Seeding",
+                "permalink": "/docs/seeding"
+              },
+              "next": {
+                "title": "📦 HTTP Response",
+                "permalink": "/docs/http-response"
+              }
+            },
+            {
+              "unversionedId": "http-response",
+              "id": "http-response",
+              "title": "📦 HTTP Response",
+              "description": "- Introduction",
+              "source": "@site/docs/responses.md",
+              "sourceDirName": ".",
+              "slug": "/http-response",
+              "permalink": "/docs/http-response",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/responses.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-response",
+                "title": "📦 HTTP Response"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🚀 HTTP Request",
+                "permalink": "/docs/http-request"
+              },
+              "next": {
+                "title": "🎬 HTTP Session",
+                "permalink": "/docs/http-session"
+              }
+            },
+            {
+              "unversionedId": "http-session",
+              "id": "http-session",
+              "title": "🎬 HTTP Session",
+              "description": "- Introduction",
+              "source": "@site/docs/session.md",
+              "sourceDirName": ".",
+              "slug": "/http-session",
+              "permalink": "/docs/http-session",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/session.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-session",
+                "title": "🎬 HTTP Session"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "📦 HTTP Response",
+                "permalink": "/docs/http-response"
+              },
+              "next": {
+                "title": "👮🏽 Authentification",
+                "permalink": "/docs/auth"
+              }
+            },
+            {
+              "unversionedId": "http-upload",
+              "id": "http-upload",
+              "title": "🛫 Envoie de fichier",
+              "description": "- Traiter les fichiers envoyés",
+              "source": "@site/docs/upload.md",
+              "sourceDirName": ".",
+              "slug": "/http-upload",
+              "permalink": "/docs/http-upload",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/upload.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-upload",
+                "title": "🛫 Envoie de fichier"
+              }
+            },
+            {
+              "unversionedId": "i18n",
+              "id": "i18n",
+              "title": "🎎 i18n",
+              "description": "- Introduction",
+              "source": "@site/docs/localization.md",
+              "sourceDirName": ".",
+              "slug": "/i18n",
+              "permalink": "/docs/i18n",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/localization.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "i18n",
+                "title": "🎎 i18n"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "✉️ Envoie de Mail",
+                "permalink": "/docs/mail"
+              },
+              "next": {
+                "title": "🛫 Testez votre application",
+                "permalink": "/docs/testing"
+              }
+            },
+            {
+              "unversionedId": "installation",
+              "id": "installation",
+              "title": "🚀 Installation",
+              "description": "- Prérequis",
+              "source": "@site/docs/installation.md",
+              "sourceDirName": ".",
+              "slug": "/installation",
+              "permalink": "/docs/installation",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/installation.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "installation",
+                "title": "🚀 Installation"
+              },
+              "sidebar": "docs",
+              "next": {
+                "title": "👨🏽‍🔧 App Configuration",
+                "permalink": "/docs/configuration"
+              }
+            },
+            {
+              "unversionedId": "mail",
+              "id": "mail",
+              "title": "✉️ Envoie de Mail",
+              "description": "- Introduction",
+              "source": "@site/docs/mail.md",
+              "sourceDirName": ".",
+              "slug": "/mail",
+              "permalink": "/docs/mail",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/mail.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "mail",
+                "title": "✉️ Envoie de Mail"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "💿 Stockage de fichier",
+                "permalink": "/docs/storage"
+              },
+              "next": {
+                "title": "🎎 i18n",
+                "permalink": "/docs/i18n"
+              }
+            },
+            {
+              "unversionedId": "middleware",
+              "id": "middleware",
+              "title": "🚥 Middlewares",
+              "description": "- Introduction",
+              "source": "@site/docs/middleware.md",
+              "sourceDirName": ".",
+              "slug": "/middleware",
+              "permalink": "/docs/middleware",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/middleware.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "middleware",
+                "title": "🚥 Middlewares"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🎨 Utiliser les vues",
+                "permalink": "/docs/views"
+              },
+              "next": {
+                "title": "💿 Stockage de fichier",
+                "permalink": "/docs/storage"
+              }
+            },
+            {
+              "unversionedId": "migration",
+              "id": "migration",
+              "title": "📑 Migration",
+              "description": "- Introduction",
+              "source": "@site/docs/migration.md",
+              "sourceDirName": ".",
+              "slug": "/migration",
+              "permalink": "/docs/migration",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/migration.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "migration",
+                "title": "📑 Migration"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🧩 ORM Barry",
+                "permalink": "/docs/orm"
+              },
+              "next": {
+                "title": "💉 Seeding",
+                "permalink": "/docs/seeding"
+              }
+            },
+            {
+              "unversionedId": "orm",
+              "id": "orm",
+              "title": "🧩 ORM Barry",
+              "description": "BARRY ORM",
+              "source": "@site/docs/orm.md",
+              "sourceDirName": ".",
+              "slug": "/orm",
+              "permalink": "/docs/orm",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/orm.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "orm",
+                "title": "🧩 ORM Barry"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🏗 SQL Builder",
+                "permalink": "/docs/query-builder"
+              },
+              "next": {
+                "title": "📑 Migration",
+                "permalink": "/docs/migration"
+              }
+            },
+            {
+              "unversionedId": "package",
+              "id": "package",
+              "title": "📦 Bow Package",
+              "description": "- Introduction",
+              "source": "@site/docs/package.md",
+              "sourceDirName": ".",
+              "slug": "/package",
+              "permalink": "/docs/package",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/package.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "package",
+                "title": "📦 Bow Package"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👨🏾‍💻 Bow Console",
+                "permalink": "/docs/console"
+              }
+            },
+            {
+              "unversionedId": "policier",
+              "id": "policier",
+              "title": "🔐 Policier JWT Auth",
+              "description": "- Installation",
+              "source": "@site/docs/policier.md",
+              "sourceDirName": ".",
+              "slug": "/policier",
+              "permalink": "/docs/policier",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/policier.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "policier",
+                "title": "🔐 Policier JWT Auth"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👮🏽 Authentification",
+                "permalink": "/docs/auth"
+              },
+              "next": {
+                "title": "🙅🏽‍♂️ CSRF Protection",
+                "permalink": "/docs/csrf-protection"
+              }
+            },
+            {
+              "unversionedId": "prologs",
+              "id": "prologs",
+              "title": "Prologs",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/docs/what-new.md",
+              "sourceDirName": ".",
+              "slug": "/prologs",
+              "permalink": "/docs/prologs",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/what-new.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "prologs",
+                "title": "Prologs"
+              }
+            },
+            {
+              "unversionedId": "query-builder",
+              "id": "query-builder",
+              "title": "🏗 SQL Builder",
+              "description": "- Introduction",
+              "source": "@site/docs/query-builder.md",
+              "sourceDirName": ".",
+              "slug": "/query-builder",
+              "permalink": "/docs/query-builder",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/query-builder.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "query-builder",
+                "title": "🏗 SQL Builder"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🎯 Démarrage",
+                "permalink": "/docs/database"
+              },
+              "next": {
+                "title": "🧩 ORM Barry",
+                "permalink": "/docs/orm"
+              }
+            },
+            {
+              "unversionedId": "routing",
+              "id": "routing",
+              "title": "🚦 Routing",
+              "description": "- Introduction",
+              "source": "@site/docs/routing.md",
+              "sourceDirName": ".",
+              "slug": "/routing",
+              "permalink": "/docs/routing",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/routing.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "routing",
+                "title": "🚦 Routing"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👩🏽‍🍳 Guide de Contribution",
+                "permalink": "/docs/contribution"
+              },
+              "next": {
+                "title": "👨🏽‍✈️ Contrôleurs",
+                "permalink": "/docs/controleur"
+              }
+            },
+            {
+              "unversionedId": "seeding",
+              "id": "seeding",
+              "title": "💉 Seeding",
+              "description": "- Introduction",
+              "source": "@site/docs/seeding.md",
+              "sourceDirName": ".",
+              "slug": "/seeding",
+              "permalink": "/docs/seeding",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/seeding.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "seeding",
+                "title": "💉 Seeding"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "📑 Migration",
+                "permalink": "/docs/migration"
+              },
+              "next": {
+                "title": "🚀 HTTP Request",
+                "permalink": "/docs/http-request"
+              }
+            },
+            {
+              "unversionedId": "service",
+              "id": "service",
+              "title": "🏢 Approche service",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/docs/service.md",
+              "sourceDirName": ".",
+              "slug": "/service",
+              "permalink": "/docs/service",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/service.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "service",
+                "title": "🏢 Approche service"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "📯 Front-End",
+                "permalink": "/docs/frontend"
+              },
+              "next": {
+                "title": "🪒 Application Helpers",
+                "permalink": "/docs/helpers"
+              }
+            },
+            {
+              "unversionedId": "storage",
+              "id": "storage",
+              "title": "💿 Stockage de fichier",
+              "description": "- Introduction",
+              "source": "@site/docs/storage.md",
+              "sourceDirName": ".",
+              "slug": "/storage",
+              "permalink": "/docs/storage",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/storage.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "storage",
+                "title": "💿 Stockage de fichier"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🚥 Middlewares",
+                "permalink": "/docs/middleware"
+              },
+              "next": {
+                "title": "✉️ Envoie de Mail",
+                "permalink": "/docs/mail"
+              }
+            },
+            {
+              "unversionedId": "structure",
+              "id": "structure",
+              "title": "⚙️ App Structure",
+              "description": "- Structure globale",
+              "source": "@site/docs/structure.md",
+              "sourceDirName": ".",
+              "slug": "/structure",
+              "permalink": "/docs/structure",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/structure.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "structure",
+                "title": "⚙️ App Structure"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👨🏽‍🔧 App Configuration",
+                "permalink": "/docs/configuration"
+              },
+              "next": {
+                "title": "👩🏿‍🏫 Avec un tutoriel",
+                "permalink": "/docs/tutorial"
+              }
+            },
+            {
+              "unversionedId": "testing",
+              "id": "testing",
+              "title": "🛫 Testez votre application",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/docs/testing.md",
+              "sourceDirName": ".",
+              "slug": "/testing",
+              "permalink": "/docs/testing",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/testing.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "testing",
+                "title": "🛫 Testez votre application"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🎎 i18n",
+                "permalink": "/docs/i18n"
+              },
+              "next": {
+                "title": "🎯 Démarrage",
+                "permalink": "/docs/database"
+              }
+            },
+            {
+              "unversionedId": "tutorial",
+              "id": "tutorial",
+              "title": "👩🏿‍🏫 Avec un tutoriel",
+              "description": "- Introduction",
+              "source": "@site/docs/tutorial.md",
+              "sourceDirName": ".",
+              "slug": "/tutorial",
+              "permalink": "/docs/tutorial",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/tutorial.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "tutorial",
+                "title": "👩🏿‍🏫 Avec un tutoriel"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "⚙️ App Structure",
+                "permalink": "/docs/structure"
+              },
+              "next": {
+                "title": "👩🏽‍🍳 Guide de Contribution",
+                "permalink": "/docs/contribution"
+              }
+            },
+            {
+              "unversionedId": "validation",
+              "id": "validation",
+              "title": "🚧 Validation de donnée",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/docs/validation.md",
+              "sourceDirName": ".",
+              "slug": "/validation",
+              "permalink": "/docs/validation",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/validation.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "validation",
+                "title": "🚧 Validation de donnée"
+              }
+            },
+            {
+              "unversionedId": "views",
+              "id": "views",
+              "title": "🎨 Utiliser les vues",
+              "description": "- Introduction",
+              "source": "@site/docs/view.md",
+              "sourceDirName": ".",
+              "slug": "/views",
+              "permalink": "/docs/views",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/view.md",
+              "tags": [],
+              "version": "current",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "views",
+                "title": "🎨 Utiliser les vues"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👨🏽‍✈️ Contrôleurs",
+                "permalink": "/docs/controleur"
+              },
+              "next": {
+                "title": "🚥 Middlewares",
+                "permalink": "/docs/middleware"
+              }
+            }
+          ],
+          "drafts": [],
+          "sidebars": {
+            "docs": [
+              {
+                "type": "category",
+                "label": "Démarrage",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "installation"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "configuration"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "structure"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "tutorial"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "contribution"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Guide",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "routing"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "controleur"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "views"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "middleware"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "storage"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "mail"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "i18n"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "testing"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Base de donnée",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "database"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "query-builder"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "orm"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "migration"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "seeding"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Http",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "http-request"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "http-response"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "http-session"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Sécurités",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "auth"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "policier"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "csrf-protection"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Misc",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "frontend"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "service"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "helpers"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "console"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "package"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              }
+            ]
+          }
+        },
+        {
+          "versionName": "4.x",
+          "label": "4.x",
+          "banner": "unmaintained",
+          "badge": true,
+          "noIndex": false,
+          "className": "docs-version-4.x",
+          "path": "/docs/4.x",
+          "tagsPath": "/docs/4.x/tags",
+          "isLast": false,
+          "sidebarFilePath": "/home/papac/engineering/bowphp/docs/versioned_sidebars/version-4.x-sidebars.json",
+          "contentPath": "/home/papac/engineering/bowphp/docs/versioned_docs/version-4.x",
+          "contentPathLocalized": "/home/papac/engineering/bowphp/docs/i18n/en/docusaurus-plugin-content-docs/version-4.x",
+          "docs": [
+            {
+              "unversionedId": "auth",
+              "id": "version-4.x/auth",
+              "title": "👮🏽 Authentification",
+              "description": "Introduction",
+              "source": "@site/versioned_docs/version-4.x/auth.md",
+              "sourceDirName": ".",
+              "slug": "/auth",
+              "permalink": "/docs/4.x/auth",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/auth.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "auth",
+                "title": "👮🏽 Authentification"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🎬 HTTP Session",
+                "permalink": "/docs/4.x/http-session"
+              },
+              "next": {
+                "title": "🔐 Policier JWT Auth",
+                "permalink": "/docs/4.x/policier"
+              }
+            },
+            {
+              "unversionedId": "concept",
+              "id": "version-4.x/concept",
+              "title": "👨🏽‍💻 Concept et Architecture",
+              "description": "Bow Framework",
+              "source": "@site/versioned_docs/version-4.x/concept.md",
+              "sourceDirName": ".",
+              "slug": "/concept",
+              "permalink": "/docs/4.x/concept",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/concept.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "concept",
+                "title": "👨🏽‍💻 Concept et Architecture"
+              }
+            },
+            {
+              "unversionedId": "configuration",
+              "id": "version-4.x/configuration",
+              "title": "👨🏽‍🔧 App Configuration",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/configuration.md",
+              "sourceDirName": ".",
+              "slug": "/configuration",
+              "permalink": "/docs/4.x/configuration",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/configuration.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "configuration",
+                "title": "👨🏽‍🔧 App Configuration"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🚀 Installation",
+                "permalink": "/docs/4.x/installation"
+              },
+              "next": {
+                "title": "⚙️ App Structure",
+                "permalink": "/docs/4.x/structure"
+              }
+            },
+            {
+              "unversionedId": "console",
+              "id": "version-4.x/console",
+              "title": "👨🏾‍💻 Bow Console",
+              "description": "COMMAND:",
+              "source": "@site/versioned_docs/version-4.x/console.md",
+              "sourceDirName": ".",
+              "slug": "/console",
+              "permalink": "/docs/4.x/console",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/console.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "console",
+                "title": "👨🏾‍💻 Bow Console"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🪒 Application Helpers",
+                "permalink": "/docs/4.x/helpers"
+              },
+              "next": {
+                "title": "📦 Bow Package",
+                "permalink": "/docs/4.x/package"
+              }
+            },
+            {
+              "unversionedId": "container",
+              "id": "version-4.x/container",
+              "title": "Capsule",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/versioned_docs/version-4.x/container.md",
+              "sourceDirName": ".",
+              "slug": "/container",
+              "permalink": "/docs/4.x/container",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/container.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "container",
+                "title": "Capsule"
+              }
+            },
+            {
+              "unversionedId": "contribution",
+              "id": "version-4.x/contribution",
+              "title": "👩🏽‍🍳 Guide de Contribution",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/contribution.md",
+              "sourceDirName": ".",
+              "slug": "/contribution",
+              "permalink": "/docs/4.x/contribution",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/contribution.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "contribution",
+                "title": "👩🏽‍🍳 Guide de Contribution"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👩🏿‍🏫 Avec un tutoriel",
+                "permalink": "/docs/4.x/tutorial"
+              },
+              "next": {
+                "title": "🚦 Routing",
+                "permalink": "/docs/4.x/routing"
+              }
+            },
+            {
+              "unversionedId": "controleur",
+              "id": "version-4.x/controleur",
+              "title": "👨🏽‍✈️ Contrôleurs",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/controller.md",
+              "sourceDirName": ".",
+              "slug": "/controleur",
+              "permalink": "/docs/4.x/controleur",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/controller.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "controleur",
+                "title": "👨🏽‍✈️ Contrôleurs"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🚦 Routing",
+                "permalink": "/docs/4.x/routing"
+              },
+              "next": {
+                "title": "🎨 Utiliser les vues",
+                "permalink": "/docs/4.x/views"
+              }
+            },
+            {
+              "unversionedId": "csrf-protection",
+              "id": "version-4.x/csrf-protection",
+              "title": "🙅🏽‍♂️ CSRF Protection",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/csrf.md",
+              "sourceDirName": ".",
+              "slug": "/csrf-protection",
+              "permalink": "/docs/4.x/csrf-protection",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/csrf.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "csrf-protection",
+                "title": "🙅🏽‍♂️ CSRF Protection"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🔐 Policier JWT Auth",
+                "permalink": "/docs/4.x/policier"
+              },
+              "next": {
+                "title": "📯 Front-End",
+                "permalink": "/docs/4.x/frontend"
+              }
+            },
+            {
+              "unversionedId": "database",
+              "id": "version-4.x/database",
+              "title": "🎯 Démarrage",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/database.md",
+              "sourceDirName": ".",
+              "slug": "/database",
+              "permalink": "/docs/4.x/database",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/database.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "database",
+                "title": "🎯 Démarrage"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🛫 Testez votre application",
+                "permalink": "/docs/4.x/testing"
+              },
+              "next": {
+                "title": "🏗 SQL Builder",
+                "permalink": "/docs/4.x/query-builder"
+              }
+            },
+            {
+              "unversionedId": "en/auth",
+              "id": "version-4.x/en/auth",
+              "title": "👮🏽 Authentification",
+              "description": "Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/auth.md",
+              "sourceDirName": "en",
+              "slug": "/en/auth",
+              "permalink": "/docs/4.x/en/auth",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/auth.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "auth",
+                "title": "👮🏽 Authentification"
+              }
+            },
+            {
+              "unversionedId": "en/concept",
+              "id": "version-4.x/en/concept",
+              "title": "👨🏽‍💻 Concept et Architecture",
+              "description": "Bow Framework",
+              "source": "@site/versioned_docs/version-4.x/en/concept.md",
+              "sourceDirName": "en",
+              "slug": "/en/concept",
+              "permalink": "/docs/4.x/en/concept",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/concept.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "concept",
+                "title": "👨🏽‍💻 Concept et Architecture"
+              }
+            },
+            {
+              "unversionedId": "en/configuration",
+              "id": "version-4.x/en/configuration",
+              "title": "👨🏽‍🔧 App Configuration",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/configuration.md",
+              "sourceDirName": "en",
+              "slug": "/en/configuration",
+              "permalink": "/docs/4.x/en/configuration",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/configuration.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "configuration",
+                "title": "👨🏽‍🔧 App Configuration"
+              }
+            },
+            {
+              "unversionedId": "en/console",
+              "id": "version-4.x/en/console",
+              "title": "👨🏾‍💻 Bow Console",
+              "description": "COMMAND:",
+              "source": "@site/versioned_docs/version-4.x/en/console.md",
+              "sourceDirName": "en",
+              "slug": "/en/console",
+              "permalink": "/docs/4.x/en/console",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/console.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "console",
+                "title": "👨🏾‍💻 Bow Console"
+              }
+            },
+            {
+              "unversionedId": "en/container",
+              "id": "version-4.x/en/container",
+              "title": "Capsule",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/versioned_docs/version-4.x/en/container.md",
+              "sourceDirName": "en",
+              "slug": "/en/container",
+              "permalink": "/docs/4.x/en/container",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/container.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "container",
+                "title": "Capsule"
+              }
+            },
+            {
+              "unversionedId": "en/contribution",
+              "id": "version-4.x/en/contribution",
+              "title": "👩🏽‍🍳 Guide de Contribution",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/contribution.md",
+              "sourceDirName": "en",
+              "slug": "/en/contribution",
+              "permalink": "/docs/4.x/en/contribution",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/contribution.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "contribution",
+                "title": "👩🏽‍🍳 Guide de Contribution"
+              }
+            },
+            {
+              "unversionedId": "en/controleur",
+              "id": "version-4.x/en/controleur",
+              "title": "👨🏽‍✈️ Contrôleurs",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/controller.md",
+              "sourceDirName": "en",
+              "slug": "/en/controleur",
+              "permalink": "/docs/4.x/en/controleur",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/controller.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "controleur",
+                "title": "👨🏽‍✈️ Contrôleurs"
+              }
+            },
+            {
+              "unversionedId": "en/csrf-protection",
+              "id": "version-4.x/en/csrf-protection",
+              "title": "🙅🏽‍♂️ CSRF Protection",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/csrf.md",
+              "sourceDirName": "en",
+              "slug": "/en/csrf-protection",
+              "permalink": "/docs/4.x/en/csrf-protection",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/csrf.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "csrf-protection",
+                "title": "🙅🏽‍♂️ CSRF Protection"
+              }
+            },
+            {
+              "unversionedId": "en/database",
+              "id": "version-4.x/en/database",
+              "title": "🎯 Démarrage",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/database.md",
+              "sourceDirName": "en",
+              "slug": "/en/database",
+              "permalink": "/docs/4.x/en/database",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/database.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "database",
+                "title": "🎯 Démarrage"
+              }
+            },
+            {
+              "unversionedId": "en/frontend",
+              "id": "version-4.x/en/frontend",
+              "title": "📯 Front-End",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/frontend.md",
+              "sourceDirName": "en",
+              "slug": "/en/frontend",
+              "permalink": "/docs/4.x/en/frontend",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/frontend.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "frontend",
+                "title": "📯 Front-End"
+              }
+            },
+            {
+              "unversionedId": "en/helpers",
+              "id": "version-4.x/en/helpers",
+              "title": "🪒 Application Helpers",
+              "description": "Les helpers sont des fonctions racourris chargé dans l'application qui permet de faire rapidement certaine action. Voici la liste des helpers qui existe dans l'application Bow Framework. Voici les helpers dispnoble dans l'application.",
+              "source": "@site/versioned_docs/version-4.x/en/helper.md",
+              "sourceDirName": "en",
+              "slug": "/en/helpers",
+              "permalink": "/docs/4.x/en/helpers",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/helper.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "helpers",
+                "title": "🪒 Application Helpers"
+              }
+            },
+            {
+              "unversionedId": "en/http-request",
+              "id": "version-4.x/en/http-request",
+              "title": "🚀 HTTP Request",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/requests.md",
+              "sourceDirName": "en",
+              "slug": "/en/http-request",
+              "permalink": "/docs/4.x/en/http-request",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/requests.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-request",
+                "title": "🚀 HTTP Request"
+              }
+            },
+            {
+              "unversionedId": "en/http-response",
+              "id": "version-4.x/en/http-response",
+              "title": "📦 HTTP Response",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/responses.md",
+              "sourceDirName": "en",
+              "slug": "/en/http-response",
+              "permalink": "/docs/4.x/en/http-response",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/responses.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-response",
+                "title": "📦 HTTP Response"
+              }
+            },
+            {
+              "unversionedId": "en/http-session",
+              "id": "version-4.x/en/http-session",
+              "title": "🎬 HTTP Session",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/session.md",
+              "sourceDirName": "en",
+              "slug": "/en/http-session",
+              "permalink": "/docs/4.x/en/http-session",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/session.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-session",
+                "title": "🎬 HTTP Session"
+              }
+            },
+            {
+              "unversionedId": "en/http-upload",
+              "id": "version-4.x/en/http-upload",
+              "title": "🛫 Envoie de fichier",
+              "description": "Souvent les requêtes sont associés à des fichiers envoyés par l'utilisateur, vous pouvez traiter ces fichiers sur Bow\\Http\\Request les méthodes file et le helper du même nom.",
+              "source": "@site/versioned_docs/version-4.x/en/upload.md",
+              "sourceDirName": "en",
+              "slug": "/en/http-upload",
+              "permalink": "/docs/4.x/en/http-upload",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/upload.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-upload",
+                "title": "🛫 Envoie de fichier"
+              }
+            },
+            {
+              "unversionedId": "en/i18n",
+              "id": "version-4.x/en/i18n",
+              "title": "🎎 i18n",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/localization.md",
+              "sourceDirName": "en",
+              "slug": "/en/i18n",
+              "permalink": "/docs/4.x/en/i18n",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/localization.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "i18n",
+                "title": "🎎 i18n"
+              }
+            },
+            {
+              "unversionedId": "en/installation",
+              "id": "version-4.x/en/installation",
+              "title": "🚀 Installation",
+              "description": "- Prérequis",
+              "source": "@site/versioned_docs/version-4.x/en/installation.md",
+              "sourceDirName": "en",
+              "slug": "/en/installation",
+              "permalink": "/docs/4.x/en/installation",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/installation.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "installation",
+                "title": "🚀 Installation"
+              }
+            },
+            {
+              "unversionedId": "en/mail",
+              "id": "version-4.x/en/mail",
+              "title": "✉️ Envoie de Mail",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/mail.md",
+              "sourceDirName": "en",
+              "slug": "/en/mail",
+              "permalink": "/docs/4.x/en/mail",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/mail.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "mail",
+                "title": "✉️ Envoie de Mail"
+              }
+            },
+            {
+              "unversionedId": "en/middleware",
+              "id": "version-4.x/en/middleware",
+              "title": "🚥 Middleware",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/middleware.md",
+              "sourceDirName": "en",
+              "slug": "/en/middleware",
+              "permalink": "/docs/4.x/en/middleware",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/middleware.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "middleware",
+                "title": "🚥 Middleware"
+              }
+            },
+            {
+              "unversionedId": "en/migration",
+              "id": "version-4.x/en/migration",
+              "title": "📑 Migration",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/migration.md",
+              "sourceDirName": "en",
+              "slug": "/en/migration",
+              "permalink": "/docs/4.x/en/migration",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/migration.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "migration",
+                "title": "📑 Migration"
+              }
+            },
+            {
+              "unversionedId": "en/orm",
+              "id": "version-4.x/en/orm",
+              "title": "🧩 ORM Barry",
+              "description": "BARRY ORM",
+              "source": "@site/versioned_docs/version-4.x/en/orm.md",
+              "sourceDirName": "en",
+              "slug": "/en/orm",
+              "permalink": "/docs/4.x/en/orm",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/orm.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "orm",
+                "title": "🧩 ORM Barry"
+              }
+            },
+            {
+              "unversionedId": "en/packaging",
+              "id": "version-4.x/en/packaging",
+              "title": "Packaging",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/package.md",
+              "sourceDirName": "en",
+              "slug": "/en/packaging",
+              "permalink": "/docs/4.x/en/packaging",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/package.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "packaging",
+                "title": "Packaging"
+              }
+            },
+            {
+              "unversionedId": "en/policier",
+              "id": "version-4.x/en/policier",
+              "title": "🔐 Policier JWT Auth",
+              "description": "- Installation",
+              "source": "@site/versioned_docs/version-4.x/en/policier.md",
+              "sourceDirName": "en",
+              "slug": "/en/policier",
+              "permalink": "/docs/4.x/en/policier",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/policier.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "policier",
+                "title": "🔐 Policier JWT Auth"
+              }
+            },
+            {
+              "unversionedId": "en/prologs",
+              "id": "version-4.x/en/prologs",
+              "title": "Prologs",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/versioned_docs/version-4.x/en/what-new.md",
+              "sourceDirName": "en",
+              "slug": "/en/prologs",
+              "permalink": "/docs/4.x/en/prologs",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/what-new.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "prologs",
+                "title": "Prologs"
+              }
+            },
+            {
+              "unversionedId": "en/query-builder",
+              "id": "version-4.x/en/query-builder",
+              "title": "🏗 SQL Builder",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/query-builder.md",
+              "sourceDirName": "en",
+              "slug": "/en/query-builder",
+              "permalink": "/docs/4.x/en/query-builder",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/query-builder.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "query-builder",
+                "title": "🏗 SQL Builder"
+              }
+            },
+            {
+              "unversionedId": "en/routing",
+              "id": "version-4.x/en/routing",
+              "title": "🚦 Routing",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/routing.md",
+              "sourceDirName": "en",
+              "slug": "/en/routing",
+              "permalink": "/docs/4.x/en/routing",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/routing.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "routing",
+                "title": "🚦 Routing"
+              }
+            },
+            {
+              "unversionedId": "en/seeding",
+              "id": "version-4.x/en/seeding",
+              "title": "💉 Seeding",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/seeding.md",
+              "sourceDirName": "en",
+              "slug": "/en/seeding",
+              "permalink": "/docs/4.x/en/seeding",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/seeding.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "seeding",
+                "title": "💉 Seeding"
+              }
+            },
+            {
+              "unversionedId": "en/service",
+              "id": "version-4.x/en/service",
+              "title": "🏢 Approche service",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/versioned_docs/version-4.x/en/service.md",
+              "sourceDirName": "en",
+              "slug": "/en/service",
+              "permalink": "/docs/4.x/en/service",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/service.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "service",
+                "title": "🏢 Approche service"
+              }
+            },
+            {
+              "unversionedId": "en/storage",
+              "id": "version-4.x/en/storage",
+              "title": "💿 Stockage de fichier",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/storage.md",
+              "sourceDirName": "en",
+              "slug": "/en/storage",
+              "permalink": "/docs/4.x/en/storage",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/storage.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "storage",
+                "title": "💿 Stockage de fichier"
+              }
+            },
+            {
+              "unversionedId": "en/structure",
+              "id": "version-4.x/en/structure",
+              "title": "⚙️ App Structure",
+              "description": "- Structure globale",
+              "source": "@site/versioned_docs/version-4.x/en/structure.md",
+              "sourceDirName": "en",
+              "slug": "/en/structure",
+              "permalink": "/docs/4.x/en/structure",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/structure.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "structure",
+                "title": "⚙️ App Structure"
+              }
+            },
+            {
+              "unversionedId": "en/tutorial",
+              "id": "version-4.x/en/tutorial",
+              "title": "👩🏿‍🏫 Avec un tutoriel",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/tutorial.md",
+              "sourceDirName": "en",
+              "slug": "/en/tutorial",
+              "permalink": "/docs/4.x/en/tutorial",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/tutorial.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "tutorial",
+                "title": "👩🏿‍🏫 Avec un tutoriel"
+              }
+            },
+            {
+              "unversionedId": "en/validation",
+              "id": "version-4.x/en/validation",
+              "title": "🚧 Validation de donnée",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/versioned_docs/version-4.x/en/validation.md",
+              "sourceDirName": "en",
+              "slug": "/en/validation",
+              "permalink": "/docs/4.x/en/validation",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/validation.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "validation",
+                "title": "🚧 Validation de donnée"
+              }
+            },
+            {
+              "unversionedId": "en/views",
+              "id": "version-4.x/en/views",
+              "title": "🎨 Utiliser les vues",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/en/view.md",
+              "sourceDirName": "en",
+              "slug": "/en/views",
+              "permalink": "/docs/4.x/en/views",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/view.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "views",
+                "title": "🎨 Utiliser les vues"
+              }
+            },
+            {
+              "unversionedId": "frontend",
+              "id": "version-4.x/frontend",
+              "title": "📯 Front-End",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/frontend.md",
+              "sourceDirName": ".",
+              "slug": "/frontend",
+              "permalink": "/docs/4.x/frontend",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/frontend.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "frontend",
+                "title": "📯 Front-End"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🙅🏽‍♂️ CSRF Protection",
+                "permalink": "/docs/4.x/csrf-protection"
+              },
+              "next": {
+                "title": "🏢 Approche service",
+                "permalink": "/docs/4.x/service"
+              }
+            },
+            {
+              "unversionedId": "helpers",
+              "id": "version-4.x/helpers",
+              "title": "🪒 Application Helpers",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/helper.md",
+              "sourceDirName": ".",
+              "slug": "/helpers",
+              "permalink": "/docs/4.x/helpers",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/helper.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "helpers",
+                "title": "🪒 Application Helpers"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🏢 Approche service",
+                "permalink": "/docs/4.x/service"
+              },
+              "next": {
+                "title": "👨🏾‍💻 Bow Console",
+                "permalink": "/docs/4.x/console"
+              }
+            },
+            {
+              "unversionedId": "http-request",
+              "id": "version-4.x/http-request",
+              "title": "🚀 HTTP Request",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/requests.md",
+              "sourceDirName": ".",
+              "slug": "/http-request",
+              "permalink": "/docs/4.x/http-request",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/requests.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-request",
+                "title": "🚀 HTTP Request"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "💉 Seeding",
+                "permalink": "/docs/4.x/seeding"
+              },
+              "next": {
+                "title": "📦 HTTP Response",
+                "permalink": "/docs/4.x/http-response"
+              }
+            },
+            {
+              "unversionedId": "http-response",
+              "id": "version-4.x/http-response",
+              "title": "📦 HTTP Response",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/responses.md",
+              "sourceDirName": ".",
+              "slug": "/http-response",
+              "permalink": "/docs/4.x/http-response",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/responses.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-response",
+                "title": "📦 HTTP Response"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🚀 HTTP Request",
+                "permalink": "/docs/4.x/http-request"
+              },
+              "next": {
+                "title": "🎬 HTTP Session",
+                "permalink": "/docs/4.x/http-session"
+              }
+            },
+            {
+              "unversionedId": "http-session",
+              "id": "version-4.x/http-session",
+              "title": "🎬 HTTP Session",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/session.md",
+              "sourceDirName": ".",
+              "slug": "/http-session",
+              "permalink": "/docs/4.x/http-session",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/session.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-session",
+                "title": "🎬 HTTP Session"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "📦 HTTP Response",
+                "permalink": "/docs/4.x/http-response"
+              },
+              "next": {
+                "title": "👮🏽 Authentification",
+                "permalink": "/docs/4.x/auth"
+              }
+            },
+            {
+              "unversionedId": "http-upload",
+              "id": "version-4.x/http-upload",
+              "title": "🛫 Envoie de fichier",
+              "description": "- Traiter les fichiers envoyés",
+              "source": "@site/versioned_docs/version-4.x/upload.md",
+              "sourceDirName": ".",
+              "slug": "/http-upload",
+              "permalink": "/docs/4.x/http-upload",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/upload.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "http-upload",
+                "title": "🛫 Envoie de fichier"
+              }
+            },
+            {
+              "unversionedId": "i18n",
+              "id": "version-4.x/i18n",
+              "title": "🎎 i18n",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/localization.md",
+              "sourceDirName": ".",
+              "slug": "/i18n",
+              "permalink": "/docs/4.x/i18n",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/localization.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "i18n",
+                "title": "🎎 i18n"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "✉️ Envoie de Mail",
+                "permalink": "/docs/4.x/mail"
+              },
+              "next": {
+                "title": "🛫 Testez votre application",
+                "permalink": "/docs/4.x/testing"
+              }
+            },
+            {
+              "unversionedId": "installation",
+              "id": "version-4.x/installation",
+              "title": "🚀 Installation",
+              "description": "- Prérequis",
+              "source": "@site/versioned_docs/version-4.x/installation.md",
+              "sourceDirName": ".",
+              "slug": "/installation",
+              "permalink": "/docs/4.x/installation",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/installation.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "installation",
+                "title": "🚀 Installation"
+              },
+              "sidebar": "docs",
+              "next": {
+                "title": "👨🏽‍🔧 App Configuration",
+                "permalink": "/docs/4.x/configuration"
+              }
+            },
+            {
+              "unversionedId": "mail",
+              "id": "version-4.x/mail",
+              "title": "✉️ Envoie de Mail",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/mail.md",
+              "sourceDirName": ".",
+              "slug": "/mail",
+              "permalink": "/docs/4.x/mail",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/mail.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "mail",
+                "title": "✉️ Envoie de Mail"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "💿 Stockage de fichier",
+                "permalink": "/docs/4.x/storage"
+              },
+              "next": {
+                "title": "🎎 i18n",
+                "permalink": "/docs/4.x/i18n"
+              }
+            },
+            {
+              "unversionedId": "middleware",
+              "id": "version-4.x/middleware",
+              "title": "🚥 Middlewares",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/middleware.md",
+              "sourceDirName": ".",
+              "slug": "/middleware",
+              "permalink": "/docs/4.x/middleware",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/middleware.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "middleware",
+                "title": "🚥 Middlewares"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🎨 Utiliser les vues",
+                "permalink": "/docs/4.x/views"
+              },
+              "next": {
+                "title": "💿 Stockage de fichier",
+                "permalink": "/docs/4.x/storage"
+              }
+            },
+            {
+              "unversionedId": "migration",
+              "id": "version-4.x/migration",
+              "title": "📑 Migration",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/migration.md",
+              "sourceDirName": ".",
+              "slug": "/migration",
+              "permalink": "/docs/4.x/migration",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/migration.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "migration",
+                "title": "📑 Migration"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🧩 ORM Barry",
+                "permalink": "/docs/4.x/orm"
+              },
+              "next": {
+                "title": "💉 Seeding",
+                "permalink": "/docs/4.x/seeding"
+              }
+            },
+            {
+              "unversionedId": "orm",
+              "id": "version-4.x/orm",
+              "title": "🧩 ORM Barry",
+              "description": "BARRY ORM",
+              "source": "@site/versioned_docs/version-4.x/orm.md",
+              "sourceDirName": ".",
+              "slug": "/orm",
+              "permalink": "/docs/4.x/orm",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/orm.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "orm",
+                "title": "🧩 ORM Barry"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🏗 SQL Builder",
+                "permalink": "/docs/4.x/query-builder"
+              },
+              "next": {
+                "title": "📑 Migration",
+                "permalink": "/docs/4.x/migration"
+              }
+            },
+            {
+              "unversionedId": "package",
+              "id": "version-4.x/package",
+              "title": "📦 Bow Package",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/package.md",
+              "sourceDirName": ".",
+              "slug": "/package",
+              "permalink": "/docs/4.x/package",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/package.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "package",
+                "title": "📦 Bow Package"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👨🏾‍💻 Bow Console",
+                "permalink": "/docs/4.x/console"
+              }
+            },
+            {
+              "unversionedId": "policier",
+              "id": "version-4.x/policier",
+              "title": "🔐 Policier JWT Auth",
+              "description": "- Installation",
+              "source": "@site/versioned_docs/version-4.x/policier.md",
+              "sourceDirName": ".",
+              "slug": "/policier",
+              "permalink": "/docs/4.x/policier",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/policier.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "policier",
+                "title": "🔐 Policier JWT Auth"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👮🏽 Authentification",
+                "permalink": "/docs/4.x/auth"
+              },
+              "next": {
+                "title": "🙅🏽‍♂️ CSRF Protection",
+                "permalink": "/docs/4.x/csrf-protection"
+              }
+            },
+            {
+              "unversionedId": "prologs",
+              "id": "version-4.x/prologs",
+              "title": "Prologs",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/versioned_docs/version-4.x/what-new.md",
+              "sourceDirName": ".",
+              "slug": "/prologs",
+              "permalink": "/docs/4.x/prologs",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/what-new.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "prologs",
+                "title": "Prologs"
+              }
+            },
+            {
+              "unversionedId": "query-builder",
+              "id": "version-4.x/query-builder",
+              "title": "🏗 SQL Builder",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/query-builder.md",
+              "sourceDirName": ".",
+              "slug": "/query-builder",
+              "permalink": "/docs/4.x/query-builder",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/query-builder.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "query-builder",
+                "title": "🏗 SQL Builder"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🎯 Démarrage",
+                "permalink": "/docs/4.x/database"
+              },
+              "next": {
+                "title": "🧩 ORM Barry",
+                "permalink": "/docs/4.x/orm"
+              }
+            },
+            {
+              "unversionedId": "routing",
+              "id": "version-4.x/routing",
+              "title": "🚦 Routing",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/routing.md",
+              "sourceDirName": ".",
+              "slug": "/routing",
+              "permalink": "/docs/4.x/routing",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/routing.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "routing",
+                "title": "🚦 Routing"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👩🏽‍🍳 Guide de Contribution",
+                "permalink": "/docs/4.x/contribution"
+              },
+              "next": {
+                "title": "👨🏽‍✈️ Contrôleurs",
+                "permalink": "/docs/4.x/controleur"
+              }
+            },
+            {
+              "unversionedId": "seeding",
+              "id": "version-4.x/seeding",
+              "title": "💉 Seeding",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/seeding.md",
+              "sourceDirName": ".",
+              "slug": "/seeding",
+              "permalink": "/docs/4.x/seeding",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/seeding.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "seeding",
+                "title": "💉 Seeding"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "📑 Migration",
+                "permalink": "/docs/4.x/migration"
+              },
+              "next": {
+                "title": "🚀 HTTP Request",
+                "permalink": "/docs/4.x/http-request"
+              }
+            },
+            {
+              "unversionedId": "service",
+              "id": "version-4.x/service",
+              "title": "🏢 Approche service",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/versioned_docs/version-4.x/service.md",
+              "sourceDirName": ".",
+              "slug": "/service",
+              "permalink": "/docs/4.x/service",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/service.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "service",
+                "title": "🏢 Approche service"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "📯 Front-End",
+                "permalink": "/docs/4.x/frontend"
+              },
+              "next": {
+                "title": "🪒 Application Helpers",
+                "permalink": "/docs/4.x/helpers"
+              }
+            },
+            {
+              "unversionedId": "storage",
+              "id": "version-4.x/storage",
+              "title": "💿 Stockage de fichier",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/storage.md",
+              "sourceDirName": ".",
+              "slug": "/storage",
+              "permalink": "/docs/4.x/storage",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/storage.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "storage",
+                "title": "💿 Stockage de fichier"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🚥 Middlewares",
+                "permalink": "/docs/4.x/middleware"
+              },
+              "next": {
+                "title": "✉️ Envoie de Mail",
+                "permalink": "/docs/4.x/mail"
+              }
+            },
+            {
+              "unversionedId": "structure",
+              "id": "version-4.x/structure",
+              "title": "⚙️ App Structure",
+              "description": "- Structure globale",
+              "source": "@site/versioned_docs/version-4.x/structure.md",
+              "sourceDirName": ".",
+              "slug": "/structure",
+              "permalink": "/docs/4.x/structure",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/structure.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "structure",
+                "title": "⚙️ App Structure"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👨🏽‍🔧 App Configuration",
+                "permalink": "/docs/4.x/configuration"
+              },
+              "next": {
+                "title": "👩🏿‍🏫 Avec un tutoriel",
+                "permalink": "/docs/4.x/tutorial"
+              }
+            },
+            {
+              "unversionedId": "testing",
+              "id": "version-4.x/testing",
+              "title": "🛫 Testez votre application",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/versioned_docs/version-4.x/testing.md",
+              "sourceDirName": ".",
+              "slug": "/testing",
+              "permalink": "/docs/4.x/testing",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/testing.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "testing",
+                "title": "🛫 Testez votre application"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "🎎 i18n",
+                "permalink": "/docs/4.x/i18n"
+              },
+              "next": {
+                "title": "🎯 Démarrage",
+                "permalink": "/docs/4.x/database"
+              }
+            },
+            {
+              "unversionedId": "tutorial",
+              "id": "version-4.x/tutorial",
+              "title": "👩🏿‍🏫 Avec un tutoriel",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/tutorial.md",
+              "sourceDirName": ".",
+              "slug": "/tutorial",
+              "permalink": "/docs/4.x/tutorial",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/tutorial.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "tutorial",
+                "title": "👩🏿‍🏫 Avec un tutoriel"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "⚙️ App Structure",
+                "permalink": "/docs/4.x/structure"
+              },
+              "next": {
+                "title": "👩🏽‍🍳 Guide de Contribution",
+                "permalink": "/docs/4.x/contribution"
+              }
+            },
+            {
+              "unversionedId": "validation",
+              "id": "version-4.x/validation",
+              "title": "🚧 Validation de donnée",
+              "description": "Il manque quelque chose ?",
+              "source": "@site/versioned_docs/version-4.x/validation.md",
+              "sourceDirName": ".",
+              "slug": "/validation",
+              "permalink": "/docs/4.x/validation",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/validation.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "validation",
+                "title": "🚧 Validation de donnée"
+              }
+            },
+            {
+              "unversionedId": "views",
+              "id": "version-4.x/views",
+              "title": "🎨 Utiliser les vues",
+              "description": "- Introduction",
+              "source": "@site/versioned_docs/version-4.x/view.md",
+              "sourceDirName": ".",
+              "slug": "/views",
+              "permalink": "/docs/4.x/views",
+              "draft": false,
+              "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/view.md",
+              "tags": [],
+              "version": "4.x",
+              "lastUpdatedBy": "Author",
+              "lastUpdatedAt": 1539502055,
+              "formattedLastUpdatedAt": "Oct 14, 2018",
+              "frontMatter": {
+                "id": "views",
+                "title": "🎨 Utiliser les vues"
+              },
+              "sidebar": "docs",
+              "previous": {
+                "title": "👨🏽‍✈️ Contrôleurs",
+                "permalink": "/docs/4.x/controleur"
+              },
+              "next": {
+                "title": "🚥 Middlewares",
+                "permalink": "/docs/4.x/middleware"
+              }
+            }
+          ],
+          "drafts": [],
+          "sidebars": {
+            "docs": [
+              {
+                "type": "category",
+                "label": "Démarrage",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "installation"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "configuration"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "structure"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "tutorial"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "contribution"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Guide",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "routing"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "controleur"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "views"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "middleware"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "storage"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "mail"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "i18n"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "testing"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Base de donnée",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "database"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "query-builder"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "orm"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "migration"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "seeding"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Http",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "http-request"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "http-response"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "http-session"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Sécurités",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "auth"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "policier"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "csrf-protection"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              },
+              {
+                "type": "category",
+                "label": "Misc",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "frontend"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "service"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "helpers"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "console"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "package"
+                  }
+                ],
+                "collapsed": true,
+                "collapsible": true
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "docusaurus-plugin-content-blog": {
+    "default": {
+      "blogSidebarTitle": "Recent posts",
+      "blogPosts": [],
+      "blogListPaginated": [],
+      "blogTags": {},
+      "blogTagsListPath": "/blog/tags",
+      "blogTagsPaginated": []
+    }
+  },
+  "docusaurus-plugin-content-pages": {
+    "default": [
+      {
+        "type": "jsx",
+        "permalink": "/",
+        "source": "@site/src/pages/index.js"
+      },
+      {
+        "type": "jsx",
+        "permalink": "/index.old",
+        "source": "@site/src/pages/index.old.js"
+      }
+    ]
+  },
+  "docusaurus-plugin-google-analytics": {},
+  "docusaurus-plugin-debug": {},
+  "docusaurus-theme-classic": {},
+  "docusaurus-bootstrap-plugin": {},
+  "docusaurus-mdx-fallback-plugin": {}
+}

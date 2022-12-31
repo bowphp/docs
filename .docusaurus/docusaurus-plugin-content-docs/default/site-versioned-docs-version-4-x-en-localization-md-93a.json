@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/i18n",
+  "id": "version-4.x/en/i18n",
+  "title": "🎎 i18n",
+  "description": "- Introduction",
+  "source": "@site/versioned_docs/version-4.x/en/localization.md",
+  "sourceDirName": "en",
+  "slug": "/en/i18n",
+  "permalink": "/docs/4.x/en/i18n",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/localization.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "i18n",
+    "title": "🎎 i18n"
+  }
+}

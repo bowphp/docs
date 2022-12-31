@@ -1,0 +1,26 @@
+{
+  "unversionedId": "installation",
+  "id": "version-4.x/installation",
+  "title": "🚀 Installation",
+  "description": "- Prérequis",
+  "source": "@site/versioned_docs/version-4.x/installation.md",
+  "sourceDirName": ".",
+  "slug": "/installation",
+  "permalink": "/docs/4.x/installation",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/installation.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "installation",
+    "title": "🚀 Installation"
+  },
+  "sidebar": "docs",
+  "next": {
+    "title": "👨🏽‍🔧 App Configuration",
+    "permalink": "/docs/4.x/configuration"
+  }
+}

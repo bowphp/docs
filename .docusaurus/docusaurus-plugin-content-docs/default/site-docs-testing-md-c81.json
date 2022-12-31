@@ -1,0 +1,30 @@
+{
+  "unversionedId": "testing",
+  "id": "testing",
+  "title": "🛫 Testez votre application",
+  "description": "Il manque quelque chose ?",
+  "source": "@site/../docs/testing.md",
+  "sourceDirName": ".",
+  "slug": "/testing",
+  "permalink": "/docs/testing",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/testing.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "testing",
+    "title": "🛫 Testez votre application"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "🎎 i18n",
+    "permalink": "/docs/i18n"
+  },
+  "next": {
+    "title": "🎯 Démarrage",
+    "permalink": "/docs/database"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/orm",
+  "id": "version-4.x/en/orm",
+  "title": "🧩 ORM Barry",
+  "description": "BARRY ORM",
+  "source": "@site/versioned_docs/version-4.x/en/orm.md",
+  "sourceDirName": "en",
+  "slug": "/en/orm",
+  "permalink": "/docs/4.x/en/orm",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/orm.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "orm",
+    "title": "🧩 ORM Barry"
+  }
+}

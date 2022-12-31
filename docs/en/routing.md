@@ -1,6 +1,6 @@
 ---
 id: routing
-title: 🚦 Routing
+title: "🚦 Routing"
 ---
 
 - [Introduction](#introduction)

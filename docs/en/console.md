@@ -1,6 +1,6 @@
 ---
 id: console
-title: 👨🏾‍💻 Bow Console
+title: "👨🏾‍💻 Bow Console"
 ---
 
 COMMAND:

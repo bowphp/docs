@@ -1,0 +1,30 @@
+{
+  "unversionedId": "http-session",
+  "id": "http-session",
+  "title": "🎬 HTTP Session",
+  "description": "- Introduction",
+  "source": "@site/../docs/session.md",
+  "sourceDirName": ".",
+  "slug": "/http-session",
+  "permalink": "/docs/http-session",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/session.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "http-session",
+    "title": "🎬 HTTP Session"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "📦 HTTP Response",
+    "permalink": "/docs/http-response"
+  },
+  "next": {
+    "title": "👮🏽 Authentification",
+    "permalink": "/docs/auth"
+  }
+}

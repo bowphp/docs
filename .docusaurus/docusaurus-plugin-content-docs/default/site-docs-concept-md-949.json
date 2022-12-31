@@ -1,0 +1,21 @@
+{
+  "unversionedId": "concept",
+  "id": "concept",
+  "title": "👨🏽‍💻 Concept et Architecture",
+  "description": "Bow Framework",
+  "source": "@site/docs/concept.md",
+  "sourceDirName": ".",
+  "slug": "/concept",
+  "permalink": "/docs/concept",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/concept.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "concept",
+    "title": "👨🏽‍💻 Concept et Architecture"
+  }
+}

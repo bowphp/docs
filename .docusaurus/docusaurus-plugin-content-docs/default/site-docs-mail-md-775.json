@@ -1,0 +1,30 @@
+{
+  "unversionedId": "mail",
+  "id": "mail",
+  "title": "✉️ Envoie de Mail",
+  "description": "- Introduction",
+  "source": "@site/docs/mail.md",
+  "sourceDirName": ".",
+  "slug": "/mail",
+  "permalink": "/docs/mail",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/mail.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "mail",
+    "title": "✉️ Envoie de Mail"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "💿 Stockage de fichier",
+    "permalink": "/docs/storage"
+  },
+  "next": {
+    "title": "🎎 i18n",
+    "permalink": "/docs/i18n"
+  }
+}

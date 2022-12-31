@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/csrf-protection",
+  "id": "version-4.x/en/csrf-protection",
+  "title": "🙅🏽‍♂️ CSRF Protection",
+  "description": "- Introduction",
+  "source": "@site/versioned_docs/version-4.x/en/csrf.md",
+  "sourceDirName": "en",
+  "slug": "/en/csrf-protection",
+  "permalink": "/docs/4.x/en/csrf-protection",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/csrf.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "csrf-protection",
+    "title": "🙅🏽‍♂️ CSRF Protection"
+  }
+}

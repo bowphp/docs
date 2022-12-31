@@ -1,6 +1,6 @@
 ---
 id: configuration
-title: 👨🏽‍🔧 App Configuration
+title: "👨🏽‍🔧 App Configuration"
 ---
 
 - [Introduction](#introduction)

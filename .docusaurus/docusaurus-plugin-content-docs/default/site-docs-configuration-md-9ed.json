@@ -1,0 +1,30 @@
+{
+  "unversionedId": "configuration",
+  "id": "configuration",
+  "title": "👨🏽‍🔧 App Configuration",
+  "description": "- Introduction",
+  "source": "@site/docs/configuration.md",
+  "sourceDirName": ".",
+  "slug": "/configuration",
+  "permalink": "/docs/configuration",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/configuration.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "configuration",
+    "title": "👨🏽‍🔧 App Configuration"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "🚀 Installation",
+    "permalink": "/docs/installation"
+  },
+  "next": {
+    "title": "⚙️ App Structure",
+    "permalink": "/docs/structure"
+  }
+}

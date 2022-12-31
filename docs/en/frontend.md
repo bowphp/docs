@@ -1,6 +1,6 @@
 ---
 id: frontend
-title: 📯 Front-End
+title: "📯 Front-End"
 ---
 
 - [Introduction](#introduction)

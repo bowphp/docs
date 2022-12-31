@@ -1,0 +1,30 @@
+{
+  "unversionedId": "views",
+  "id": "views",
+  "title": "🎨 Utiliser les vues",
+  "description": "- Introduction",
+  "source": "@site/../docs/view.md",
+  "sourceDirName": ".",
+  "slug": "/views",
+  "permalink": "/docs/views",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/4.0/docs/../docs/view.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "views",
+    "title": "🎨 Utiliser les vues"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "👨🏽‍✈️ Contrôleurs",
+    "permalink": "/docs/controleur"
+  },
+  "next": {
+    "title": "🚥 Middlewares",
+    "permalink": "/docs/middleware"
+  }
+}

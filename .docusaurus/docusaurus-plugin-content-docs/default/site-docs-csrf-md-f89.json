@@ -1,0 +1,30 @@
+{
+  "unversionedId": "csrf-protection",
+  "id": "csrf-protection",
+  "title": "🙅🏽‍♂️ CSRF Protection",
+  "description": "- Introduction",
+  "source": "@site/docs/csrf.md",
+  "sourceDirName": ".",
+  "slug": "/csrf-protection",
+  "permalink": "/docs/csrf-protection",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/csrf.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "csrf-protection",
+    "title": "🙅🏽‍♂️ CSRF Protection"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "🔐 Policier JWT Auth",
+    "permalink": "/docs/policier"
+  },
+  "next": {
+    "title": "📯 Front-End",
+    "permalink": "/docs/frontend"
+  }
+}

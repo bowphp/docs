@@ -1,6 +1,6 @@
 ---
 id: installation
-title: 🚀 Installation
+title: "🚀 Installation"
 ---
 
 - [Prérequis](#prérequis)
@@ -18,6 +18,12 @@ title: 🚀 Installation
 - [Il manque quelque chose ?](#il-manque-quelque-chose-)
 
 ## Prérequis
+
+:::tip
+
+The presets: [['classic', {...}]] shorthand works as well.
+
+:::
 
 Pour créer une nouvelle application Bow, veuillez d'abord vous assurer que votre ordinateur remplit les conditions suivantes:
 

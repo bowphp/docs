@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/storage",
+  "id": "version-4.x/en/storage",
+  "title": "💿 Stockage de fichier",
+  "description": "- Introduction",
+  "source": "@site/versioned_docs/version-4.x/en/storage.md",
+  "sourceDirName": "en",
+  "slug": "/en/storage",
+  "permalink": "/docs/4.x/en/storage",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/storage.md",
+  "tags": [],
+  "version": "4.x",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "storage",
+    "title": "💿 Stockage de fichier"
+  }
+}

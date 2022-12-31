@@ -1,0 +1,21 @@
+{
+  "unversionedId": "en/packaging",
+  "id": "en/packaging",
+  "title": "Packaging",
+  "description": "- Introduction",
+  "source": "@site/docs/en/package.md",
+  "sourceDirName": "en",
+  "slug": "/en/packaging",
+  "permalink": "/docs/en/packaging",
+  "draft": false,
+  "editUrl": "https://github.com/bowphp/docs/edit/main/website/docs/en/package.md",
+  "tags": [],
+  "version": "current",
+  "lastUpdatedBy": "Author",
+  "lastUpdatedAt": 1539502055,
+  "formattedLastUpdatedAt": "Oct 14, 2018",
+  "frontMatter": {
+    "id": "packaging",
+    "title": "Packaging"
+  }
+}
