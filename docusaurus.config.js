@@ -206,12 +206,17 @@ module.exports = {
         {
           to: "docs/installation",
           label: "Docs",
-          position: "right"
+          position: "left"
         },
         {
           href: "https://bowphp.com/api/master",
           label: "API",
-          position: "right"
+          position: "left"
+        },
+        {
+          type: 'docsVersionDropdown',
+          position: 'left',
+          dropdownActiveClassDisabled: true,
         },
         {
           href: "https://join.slack.com/t/bowphp/shared_invite/zt-9c90n2iv-Rx1zdUG0YRAnDULhgELD0g",
@@ -222,11 +227,6 @@ module.exports = {
           href: "https://t.me/+nDyat6uKlqI5ZjFk",
           label: "Telegram",
           position: "right"
-        },
-        {
-          type: 'docsVersionDropdown',
-          position: 'right',
-          dropdownActiveClassDisabled: true,
         },
         {
           href: "https://github.com/bowphp",

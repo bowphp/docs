@@ -6,7 +6,6 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 const TeamFeatures = () => {
   const {siteConfig} = useDocusaurusContext();
 
-
   if ((siteConfig.customFields.users || []).length === 0) {
     return null;
   }
@@ -23,7 +22,7 @@ const TeamFeatures = () => {
 
   return (
     <section className={styles.features}>
-      <div className="container">
+      <div className="container text--center">
         <div className="row">
           <div className="col">
             <h2 style={{color: "#181818"}}>CEUX QUI UTILISENT BOW FRAMEWORK?</h2>
@@ -35,7 +34,7 @@ const TeamFeatures = () => {
         </div>
         <div className="row">
           {siteConfig.customFields.users.map((user, index) => (
-            <div className={clsx('col')} key={index}>
+            <div className={clsx('col', styles.teamPadding)} key={index}>
               <div className="text--center">
                 <a href={user.infoLink} key={user.infoLink}>
                   <img src={user.image} alt={user.caption} title={user.caption} />
