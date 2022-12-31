@@ -25,7 +25,7 @@ const TeamFeatures = () => {
       <div className="container text--center">
         <div className="row">
           <div className="col">
-            <h2 style={{color: "#181818"}}>CEUX QUI UTILISENT BOW FRAMEWORK?</h2>
+            <h2>CEUX QUI UTILISENT BOW FRAMEWORK?</h2>
             <p>
               Ce projet est utilisé par toutes ces personnes influentes dans les
               communautés technologiques de Côte d'ivoire et dans reste du Monde.
