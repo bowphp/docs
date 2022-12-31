@@ -1,0 +1,62 @@
+{
+  "link.title. ": {
+    "message": " ",
+    "description": " "
+  },
+  "link.title.Documentation": {
+    "message": "Documentation",
+    "description": "Documentation"
+  },
+  "link.title.Communautés": {
+    "message": "Communautés",
+    "description": "Communautés"
+  },
+  "link.title.En plus": {
+    "message": "En plus",
+    "description": "En plus"
+  },
+  "link.item.label.Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement.": {
+    "message": "Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement.",
+    "description": "Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement."
+  },
+  "link.item.label.Commencer Bow Framework": {
+    "message": "Commencez Bow Framework",
+    "description": "Commencez Bow Framework"
+  },
+  "link.item.label.Voulez-vous contribuer ?": {
+    "message": "Voulez-vous contribuer ?",
+    "description": "Voulez-vous contribuer ?"
+  },
+  "link.item.label.API Reference": {
+    "message": "API Reference",
+    "description": "API Reference"
+  },
+  "link.item.label.Code D'ivoire": {
+    "message": "Code D'ivoire",
+    "description": "Code D'ivoire"
+  },
+  "link.item.label.Galsen Dev": {
+    "message": "Galsen Dev",
+    "description": "Galsen Dev"
+  },
+  "link.item.label.Code Learning Club": {
+    "message": "Code Learning Club",
+    "description": "Code Learning Club"
+  },
+  "link.item.label.Twitter": {
+    "message": "Twitter",
+    "description": "Twitter"
+  },
+  "link.item.label.Slack": {
+    "message": "Slack",
+    "description": "Slack"
+  },
+  "link.item.label.Github": {
+    "message": "Github",
+    "description": "Github"
+  },
+  "copyright": {
+    "message": "Copyright © 2022 développé avec 💚 par <a href=\"https://github.com/papac\">Franck DAKIA</a>",
+    "description": "Copyright © 2022 développé avec 💚 par <a href=\"https://github.com/papac\">Franck DAKIA</a>"
+  }
+}

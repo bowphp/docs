@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "4.x",
+    "description": "Version 4.x"
+  },
+  "sidebar.docs.category.Démarrage": {
+    "message": "Démarrage",
+    "description": "Démarrage"
+  },
+  "sidebar.docs.category.Guide": {
+    "message": "Guide",
+    "description": "Guide"
+  },
+  "sidebar.docs.category.Base de donnée": {
+    "message": "Base de donnée",
+    "description": "Base de donnée"
+  },
+  "sidebar.docs.category.Http": {
+    "message": "Http",
+    "description": "Http"
+  },
+  "sidebar.docs.category.Sécurités": {
+    "message": "Sécurités",
+    "description": "Sécurités"
+  },
+  "sidebar.docs.category.Misc": {
+    "message": "Misc",
+    "description": "Misc"
+  }
+}

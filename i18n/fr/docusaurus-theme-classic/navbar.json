@@ -1,0 +1,22 @@
+{
+  "title": {
+    "message": "Bow Framework",
+    "description": "Bow Framework"
+  },
+  "item.label.Docs": {
+    "message": "Docs",
+    "description": "Docs"
+  },
+  "item.label.API": {
+    "message": "API",
+    "description": "API"
+  },
+  "item.label.Slack": {
+    "message": "Slack",
+    "description": "Slack"
+  },
+  "item.label.Telegram": {
+    "message": "Telegram",
+    "description": "Telegram"
+  }
+}

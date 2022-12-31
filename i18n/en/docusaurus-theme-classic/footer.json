@@ -1,0 +1,62 @@
+{
+  "link.title. ": {
+    "message": " ",
+    "description": "The title of the footer links column with title=  in the footer"
+  },
+  "link.title.Documentation": {
+    "message": "Documentation",
+    "description": "Documentation"
+  },
+  "link.title.Communautés": {
+    "message": "Communauty",
+    "description": "Communauty"
+  },
+  "link.title.En plus": {
+    "message": "More",
+    "description": "More"
+  },
+  "link.item.label.Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement.": {
+    "message": "Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement.",
+    "description": "The label of footer link with label=Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement. linking to #"
+  },
+  "link.item.label.Commencer Bow Framework": {
+    "message": "Start with Bow Framework",
+    "description": "Start with Bow Framework"
+  },
+  "link.item.label.Voulez-vous contribuer ?": {
+    "message": "Contribute ?",
+    "description": "Do you want to contribute"
+  },
+  "link.item.label.API Reference": {
+    "message": "API Reference",
+    "description": "API Reference"
+  },
+  "link.item.label.Code D'ivoire": {
+    "message": "Code D'ivoire",
+    "description": "Code D'ivoire"
+  },
+  "link.item.label.Galsen Dev": {
+    "message": "Galsen Dev",
+    "description": "Galsen Dev"
+  },
+  "link.item.label.Code Learning Club": {
+    "message": "Code Learning Club",
+    "description": "Code Learning Club"
+  },
+  "link.item.label.Twitter": {
+    "message": "Twitter",
+    "description": "Twitter"
+  },
+  "link.item.label.Slack": {
+    "message": "Slack",
+    "description": "Slack"
+  },
+  "link.item.label.Github": {
+    "message": "Github",
+    "description": "Github"
+  },
+  "copyright": {
+    "message": "Copyright © 2022 développé avec 💚 par <a href=\"https://github.com/papac\">Franck DAKIA</a>",
+    "description": "The footer copyright"
+  }
+}

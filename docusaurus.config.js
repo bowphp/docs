@@ -26,6 +26,10 @@ module.exports = {
   baseUrl,
   organizationName: "bowphp",
   projectName: "bowphp.com",
+  i18n: {
+    defaultLocale: 'fr',
+    locales: ['fr', 'en'],
+  },
   scripts: [
     "https://www.googletagmanager.com/gtag/js?id=UA-97409420-1",
     "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js",
@@ -157,7 +161,7 @@ module.exports = {
             // We want users to submit doc updates to the upstream/next version!
             // Otherwise we risk losing the update on the next release.
             const nextVersionDocsDirPath = 'docs';
-            return `https://github.com/bowphp/docs/edit/main/website/${nextVersionDocsDirPath}/${docPath}`;
+            return `https://github.com/bowphp/docs/edit/main/${nextVersionDocsDirPath}/${docPath}`;
           },
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
@@ -196,6 +200,7 @@ module.exports = {
   ],
   plugins: [],
   themeConfig: {
+    metadata: [{name: 'keywords', content: 'php, bowphp, bow framework, tintin, routing, i18n, request, http'}],
     navbar: {
       hideOnScroll: true,
       title: "Bow Framework",
@@ -209,6 +214,11 @@ module.exports = {
           position: "left"
         },
         {
+          to: 'blog',
+          label: 'Blog',
+          position: 'left'
+        },
+        {
           href: "https://bowphp.com/api/master",
           label: "API",
           position: "left"
@@ -217,6 +227,10 @@ module.exports = {
           type: 'docsVersionDropdown',
           position: 'left',
           dropdownActiveClassDisabled: true,
+        },
+        {
+          type: 'localeDropdown',
+          position: 'right',
         },
         {
           href: "https://join.slack.com/t/bowphp/shared_invite/zt-9c90n2iv-Rx1zdUG0YRAnDULhgELD0g",
@@ -233,7 +247,7 @@ module.exports = {
           className: "header-github-link",
           "aria-label": "GitHub repository",
           position: "right"
-        },
+        }
       ]
     },
     docs: {
@@ -325,6 +339,15 @@ module.exports = {
         // }
       ],
       copyright: "Copyright © " + (new Date).getFullYear() + " développé avec 💚 par <a href=\"https://github.com/papac\">Franck DAKIA</a>",
+    },
+    mermaid: {
+      theme: {
+        light: 'neutral',
+        dark: 'forest'
+      },
     }
   },
+  themes: [
+    '@docusaurus/theme-mermaid'
+  ]
 }

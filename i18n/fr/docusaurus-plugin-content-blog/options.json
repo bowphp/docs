@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "Blog",
+    "description": "Le blog de bow framework"
+  },
+  "description": {
+    "message": "Blog",
+    "description": "Le blog de bow framework"
+  },
+  "sidebar.title": {
+    "message": "Poste recent",
+    "description": "Poste recent"
+  }
+}

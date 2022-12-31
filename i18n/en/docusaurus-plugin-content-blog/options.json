@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "Blog",
+    "description": "The bow framework blog"
+  },
+  "description": {
+    "message": "Blog",
+    "description": "The bow framework blog"
+  },
+  "sidebar.title": {
+    "message": "Recent posts",
+    "description": "How to install bow framework for the first time"
+  }
+}
