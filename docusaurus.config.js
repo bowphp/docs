@@ -200,8 +200,9 @@ module.exports = {
             "static/css/custom.css"
           ]
         },
-        googleAnalytics: {
-          trackingID: "UA-97409420-1"
+        gtag: {
+          trackingID: "G-309894919",
+          anonymizeIP: true,
         }
       }
     ]
