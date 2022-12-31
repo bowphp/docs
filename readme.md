@@ -7,8 +7,8 @@ The Bow Framework documentation web site is [here](https://bowphp.com)
 Install the documentation localy and contrib on.
 
 ```bash
-git clone https://github.com/bowphp/docs documentation
-cd documentation/website
+git clone https://github.com/bowphp/docs docs
+cd docs
 npm install
 npm run start
 ```
