@@ -8,3 +8,4 @@ doctum.phar
 .idea
 .vscode
 node_modules
+.docusaurus
