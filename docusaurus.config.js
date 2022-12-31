@@ -227,7 +227,7 @@ module.exports = {
           position: 'left'
         },
         {
-          href: "api/master",
+          to: "api/master",
           label: "API",
           position: "left"
         },
