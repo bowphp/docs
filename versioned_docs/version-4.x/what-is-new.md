@@ -1,6 +1,6 @@
 ---
 id: what-is-new
-title: Ce qui est nouveau
+title: "🆕 Ce qui est nouveau"
 ---
 
 ## Il manque quelque chose ?
