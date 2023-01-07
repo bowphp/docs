@@ -9,21 +9,28 @@ import styles from './index.module.css';
 import TeamFeatures from '../components/TeamFeatures';
 
 function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
+
   return (
     <header className={clsx('', styles.heroBanner)}>
       <div className="container">
-        <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <p className="hero__subtitle" style={{fontSize: 15, borderLeft: "5px solid red", display: "inline-block", paddingLeft: 3}}>
-          Bow Framework a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement et est apprécié par <strong>+2500</strong> Développeur(se)s
-        </p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/tutorial">
-            Tutoriel - 5min ⏱️
-          </Link>
+        <div className="row">
+          <div className="col">
+            <h1 className="hero__title">{siteConfig.title}</h1>
+            <p className="hero__subtitle">{siteConfig.tagline}</p>
+            <p 
+              className="hero__subtitle"
+              style={{fontSize: 15, borderLeft: "5px solid red", display: "inline-block", paddingLeft: 3}}
+              dangerouslySetInnerHTML={{__html: siteConfig.customFields.landingText}}
+            ></p>
+            <div className={styles.buttons}>
+              <Link
+                className="button button--secondary button--lg"
+                to={siteConfig.customFields.startTutorial}>
+                Tutoriel - 5min ⏱️
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </header>
