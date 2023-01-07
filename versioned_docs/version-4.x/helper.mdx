@@ -107,7 +107,7 @@ config("mail")
 
 ### response
 
-Permet d'avoir accès à une instance de `\Bow\Http\Response::class`.Elle doit être utilisée impérativement dans un controlleur. Avoir plus d'information sur les méthodes possible [ici](./responses.md)
+Permet d'avoir accès à une instance de `\Bow\Http\Response::class`.Elle doit être utilisée impérativement dans un controlleur. Avoir plus d'information sur les méthodes possible [ici](./responses)
 
 ```php
 return response($content = "hello papac", $code = 200);
@@ -115,7 +115,7 @@ return response($content = "hello papac", $code = 200);
 
 ### request
 
-Permet d'avoir accès à une instance de `\Bow\Http\Request::class`. Elle doit être utilisée impérativement dans un controlleur. Avoir plus d'information sur les méthodes possible [ici](./requests.md)
+Permet d'avoir accès à une instance de `\Bow\Http\Request::class`. Elle doit être utilisée impérativement dans un controlleur. Avoir plus d'information sur les méthodes possible [ici](./requests)
 
 ```php
 $name = request()->get("name");

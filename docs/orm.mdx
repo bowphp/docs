@@ -118,7 +118,7 @@ class Todo extends Model
 
 ## Récupérer les données
 
-Une fois que vous avez créé un modèle et sa table de base de données associée, vous êtes prêt à commencer à récupérer les données de votre base de données. Considérez chaque modèle BARRY comme un puissant [générateur de requêtes](./query-builder.md) vous permettant d'interroger couramment la table de base de données associée au modèle.
+Une fois que vous avez créé un modèle et sa table de base de données associée, vous êtes prêt à commencer à récupérer les données de votre base de données. Considérez chaque modèle BARRY comme un puissant [générateur de requêtes](./query-builder) vous permettant d'interroger couramment la table de base de données associée au modèle.
 
 Par exemple:
 
@@ -146,7 +146,7 @@ $todo = Todo::findBy('id', 1);
 
 ## Ajout de contraintes supplémentaires
 
-La méthode BARRY `all` retournera tous les résultats dans le tableau du modèle. Étant donné que chaque modèle BARRY sert de [générateur de requêtes](./query-builder.md), vous pouvez également ajouter des contraintes aux requêtes, puis utiliser la méthode get pour récupérer les résultats:
+La méthode BARRY `all` retournera tous les résultats dans le tableau du modèle. Étant donné que chaque modèle BARRY sert de [générateur de requêtes](./query-builder), vous pouvez également ajouter des contraintes aux requêtes, puis utiliser la méthode get pour récupérer les résultats:
 
 ```php
 $flights = App\Models\Todo::where('status', 'done')
@@ -157,7 +157,7 @@ $flights = App\Models\Todo::where('status', 'done')
 
 ## Récupération d'agrégats
 
-Vous pouvez également utiliser les méthodes `count`, `sum`, `max` et d'autres méthodes d'agrégation fournies par le [générateur de requêtes](./query-builder.md). Ces méthodes renvoient la valeur scalaire appropriée au lieu d'une instance de modèle complète:
+Vous pouvez également utiliser les méthodes `count`, `sum`, `max` et d'autres méthodes d'agrégation fournies par le [générateur de requêtes](./query-builder). Ces méthodes renvoient la valeur scalaire appropriée au lieu d'une instance de modèle complète:
 
 ```php
 use App\Models\Todo;
