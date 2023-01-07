@@ -9,7 +9,7 @@
     ],
     "Guide": [
       "routing",
-      "controleur",
+      "controller",
       "views",
       "middleware",
       "storage",
