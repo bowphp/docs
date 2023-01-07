@@ -58,7 +58,7 @@ $command = new Bow\Console\Command(__DIR__);
 $command->setControllerDirectory(__DIR__.'/app/Bus/Controllers');
 ```
 
-> Visitez ce [lien](./structure.md) pour plus d'information sur la personnalisation de la structure de l'application.
+> Visitez ce [lien](./structure) pour plus d'information sur la personnalisation de la structure de l'application.
 
 ## Contrôleur basic
 
@@ -119,11 +119,11 @@ php bow add:controller Photo/AdminController
 
 > Remarquez bien le nom du dossier c'est en camel case. Le framework crééra le namespace approprié pour la classe `AdminController` et qui sera `namepsace App\Controllers\Photo;`. Vous trouverez le controller dans un dossier `app/Controllers/Photo/AdminController`.
 
-Plus d'information sur le [routing](./routing.md).
+Plus d'information sur le [routing](./routing).
 
 ### Contrôleur et Middleware
 
-Les middlewares peuvent être assigner à la route du contrôleur dans vos fichiers de route. Les middleware sont stockés dans le dossier `app\Middlewares`. Pour plus d'information sur les middlewares, visitez ce [lien](./middleware.md).
+Les middlewares peuvent être assigner à la route du contrôleur dans vos fichiers de route. Les middleware sont stockés dans le dossier `app\Middlewares`. Pour plus d'information sur les middlewares, visitez ce [lien](./middleware).
 
 Exemple:
 
@@ -231,7 +231,7 @@ class PetController extends Controller
 
 ### Utilisons notre contrôleur REST
 
-Pour utiliser le contrôleur Rest vous avez juste à utiliser le méthode `rest` sur la variable globale `$app` dans vos fichiers de [routing](./routing.md).
+Pour utiliser le contrôleur Rest vous avez juste à utiliser le méthode `rest` sur la variable globale `$app` dans vos fichiers de [routing](./routing).
 
 #### Prototype de la méthode `rest`
 
