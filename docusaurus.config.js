@@ -192,7 +192,13 @@ module.exports = {
           },
         },
         blog: {
-          path: "blog"
+          blogTitle: 'Bowphp blog!',
+          blogDescription: 'Trouver les astuces et conseils sur bowphp',
+          postsPerPage: 'ALL',
+          showReadingTime: true,
+          routeBasePath: 'blog',
+          path: "blog",
+          postsPerPage: 10,
         },
         theme: {
           customCss: [
