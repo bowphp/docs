@@ -10,16 +10,6 @@ const TeamFeatures = () => {
     return null;
   }
 
-  const teams = siteConfig.customFields.users.map((user, index) => (
-    <div className={clsx('col')} key={index}>
-      <div className="text--center">
-        <a href={user.infoLink} key={user.infoLink}>
-          <img src={user.image} alt={user.caption} title={user.caption} />
-        </a>
-      </div>
-    </div>
-  ));
-
   return (
     <section className={styles.features}>
       <div className="container text--center">
@@ -34,11 +24,14 @@ const TeamFeatures = () => {
         </div>
         <div className="row">
           {siteConfig.customFields.users.map((user, index) => (
-            <div className={clsx('col', styles.teamPadding)} key={index}>
-              <div className="text--center">
-                <a href={user.infoLink} key={user.infoLink}>
-                  <img src={user.image} alt={user.caption} title={user.caption} />
-                </a>
+            <div className={clsx('col margin--sm', styles.teamPadding)} key={index}>
+              <div className={clsx("card", styles.showcaseUser)}>
+                <div className="text--center">
+                  <a href={user.infoLink} key={user.infoLink}>
+                    <img src={user.image} alt={user.caption} title={user.caption} />
+                  </a>
+                  <p>{user.caption}</p>
+                </div>
               </div>
             </div>
           ))}
