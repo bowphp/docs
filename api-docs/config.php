@@ -16,8 +16,8 @@ $iterator = Finder::create()
 
 $versions = GitVersionCollection::create($directory)
     ->addFromTags('v4.4.*')
-    ->add('4.0', '4.x')
-    ->add('5.0', '5.x')
+    ->add('4.x', '4.x')
+    ->add('5.x', '5.x')
     ->add("master", "Bowphp Dev");
 
 return new Doctum($iterator, [
