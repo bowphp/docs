@@ -1,6 +1,6 @@
 ---
-id: prologs
-title: Prologs
+id: what-is-new
+title: Ce qui est nouveau
 ---
 
 ## Il manque quelque chose ?

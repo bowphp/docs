@@ -1,6 +1,7 @@
 {
   "docs": {
     "Démarrage": [
+      "what-is-new",
       "installation",
       "configuration",
       "structure",
