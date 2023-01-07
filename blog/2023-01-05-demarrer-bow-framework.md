@@ -31,7 +31,7 @@ L'ensemble du tutoriel est divisé en plusieurs partie, chacune expliquant une p
 
 ## Des pages statiques
 
-Remarque: Ce tutoriel suppose que vous avez installé le [framework](./installation.md) dans votre environnement de développement.
+Remarque: Ce tutoriel suppose que vous avez installé le [framework](/installation.md) dans votre environnement de développement.
 
 ### Exeminons le code par defaut dans le framework
 
@@ -185,7 +185,7 @@ Pour rappel, Bow Framework lit ses règles de routage de haut en bas et achemine
 
 Lorsqu'une requête arrive, Bow Framework recherche la première correspondance et appelle le contrôleur et la méthode appropriés, éventuellement avec des arguments.
 
-> Vous trouverez plus d'informations sur le routage dans la [documentation](./routing.md) de routage URI.
+> Vous trouverez plus d'informations sur le routage dans la [documentation](/routing.md) de routage URI.
 
 ## La section Nouvelles
 
