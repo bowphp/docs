@@ -1,5 +1,5 @@
 ---
-id: controleur
+id: controller
 title: "👨🏽‍✈️ Contrôleurs"
 ---
 

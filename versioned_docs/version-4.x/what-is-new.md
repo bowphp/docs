@@ -1,8 +1,7 @@
 ---
-id: validation
-title: "🚧 Validation de donnée"
+id: what-is-new
+title: Ce qui est nouveau
 ---
-
 
 ## Il manque quelque chose ?
 
