@@ -3,6 +3,8 @@ id: configuration
 title: "👨🏽‍🔧 App Configuration"
 ---
 
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
 - [Introduction](#introduction)
 - [Configuration](#configuration)
   - [Explication de la notation à point](#explication-de-la-notation-à-point)
@@ -79,21 +81,19 @@ Votre fichier `.env.json` ne doit pas sous contrôle de version, parce que chaqu
 Toutes les variables répertoriées dans le fichier `.env.json` seront chargées lorsque votre application recevra une requête. Cependant, vous pouvez utiliser le helper `app_env` pour récupérer les valeurs de ces variables dans les fichiers de configuration. En fait, si vous examinez les fichiers de configuration de Bow, vous remarquerez plusieurs des options utilisant déjà cet helper:
 
 ```php
-'database' => app_env('MYSQL_DATABASE'),
+'database' => app_env('DB_HOSTNAME'),
 ```
 
 Dans le cas où la variable n'est pas définie `app_env` retournera `null`, ou bien vous pouvez passer un deuxième paramètre à `app_env` qui sera la valeur par défaut si la valeur n'est pas trouvé.
 
 ```php
-'database' => app_env('MYSQL_DATABASE', 'localhost'),
+'database' => app_env('DB_HOSTNAME', 'localhost'),
 ```
 
 ## Helpers
 
 Bow inclut une variété de fonctions PHP "d'assistance" globales. Beaucoup de ces fonctions sont utilisées par le Framework lui-même; Cependant, vous êtes libre de les utiliser dans vos propres applications si vous les trouvez pratiques.
 
-Notez que dans le fichier `config/helper.php` il y a aussi des helpers, mais cela ne sont pas utiliser dans le Framework. Vous pouvez définir aussi vos helpers dans ce fichier.
+Notez que dans le fichier `config/helpers.php` il y a aussi des helpers, mais cela ne sont pas utiliser dans le Framework. Vous pouvez définir aussi vos helpers dans ce fichier.
 
-## Il manque quelque chose ?
-
-Si vous rencontrez des problèmes avec la documentation ou si vous avez des suggestions pour améliorer la documentation ou le projet en général, veuillez déposer une issue pour nous, ou envoyer un tweet mentionnant le compte Twitter @BowFramework ou sur directement sur le [github](https://github.com/bowphp/docs/issues).
+<SuggestionFeature />

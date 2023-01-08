@@ -359,7 +359,7 @@ module.exports = {
           items: [
             {
               label: "Twitter",
-              to: "https://twitter.com/franck_dakia",
+              to: "https://twitter.com/papacdev",
             },
             {
               label: "Slack",
@@ -376,7 +376,7 @@ module.exports = {
         //   items: [
         //     {
         //       label: "Terms",
-        //       to: "https://twitter.com/franck_dakia"
+        //       to: "https://twitter.com/papacdev"
         //     },
         //     {
         //       label: "Licence",
