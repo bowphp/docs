@@ -3,6 +3,8 @@ id: installation
 title: "🚀 Installation"
 ---
 
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
 - [Prérequis](#prérequis)
 - [Créer un projet](#créer-un-projet)
   - [Via Composer](#via-composer)
@@ -50,7 +52,7 @@ composer create-project --prefer-dist bowphp/app nom-du-projet
 Rendez vous à la racine de votre projet et démarrez le serveur:
 
 ```bash
-cd mon-projet
+cd nom-du-projet
 php bow run:server --port=8000 --host=0.0.0.0
 ```
 
@@ -139,6 +141,4 @@ Vous pouvez continuer vers ces sections pour démarrer votre développement.
 - [Manipuler les sessions](./session)
 - [Consulter aussi le système de stockage](./storage)
 
-## Il manque quelque chose ?
-
-Si vous rencontrez des problèmes avec la documentation ou si vous avez des suggestions pour améliorer la documentation ou le projet en général, veuillez déposer une issue pour nous, ou envoyer un tweet mentionnant le compte Twitter @BowFramework ou sur directement sur le [github](https://github.com/bowphp/docs/issues).
+<SuggestionFeature />
