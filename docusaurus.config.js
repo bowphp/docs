@@ -52,7 +52,7 @@ module.exports = {
       {
         caption: "Abou KONE",
         description:
-          "Frontend Architect, CTO @akilTech. Magician @codedivoire.",
+          "Engineering Manager. CTO @akiltech. Magician @codedivoire.",
         image: "https://avatars1.githubusercontent.com/u/582061?s=460&v=4",
         infoLink: "https://github.com/devakone",
         pinned: true,
@@ -60,7 +60,7 @@ module.exports = {
       {
         caption: "Franck DAKIA",
         description:
-          "Web and Mobile Developer, DevOps Lover, Trainer and Coach in Web Development. Creator of Bow Framework",
+          "Software engineer. Working on <a href='https://github.com/bowphp'>Bow Framework</a> and <a href='https://codelearningclub.com'>Code Learning Club</a>. Passionate about software development and DevOps lover ❤️",
         image: "https://avatars1.githubusercontent.com/u/9353811?s=460&v=4",
         infoLink: "https://github.com/papac",
         pinned: true,
@@ -74,19 +74,19 @@ module.exports = {
         pinned: true,
       },
       {
+        caption: "Salomon DION",
+        description:
+          "Artificial Intelligence Enthusiast; Afro Optimist; Data Junkie",
+        image: "https://avatars3.githubusercontent.com/u/25983025?s=460&v=4",
+        infoLink: "https://github.com/detygon",
+        pinned: true,
+      },
+      {
         caption: "François KOBON",
         description:
           "#Coder. #Builder. #Hacker - Free & Open Source Software enthusiast (#ilovefs, #FOSS) - Innovation and Social Transformation - Ivorian - Jesus's Lovers",
         image: "https://avatars1.githubusercontent.com/u/10742869?s=460&v=4",
         infoLink: "https://github.com/fkobon",
-        pinned: true,
-      },
-      {
-        caption: "Salomon DION",
-        description:
-          "Aspiring Cloud Engineer with strong interest in software development and data science and I’m a member of the core development team.",
-        image: "https://avatars3.githubusercontent.com/u/25983025?s=460&v=4",
-        infoLink: "https://github.com/detygon",
         pinned: true,
       },
     ],
@@ -397,8 +397,8 @@ module.exports = {
       },
     },
     prism: {
-      additionalLanguages: ['php'],
-    }
+      additionalLanguages: ["php"],
+    },
   },
   themes: ["@docusaurus/theme-mermaid"],
 };
