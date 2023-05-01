@@ -12,29 +12,29 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        php: [8.2]
+        php-version: [8.2]
         os: [ubuntu-latest]
+    name: build ${{ matrix.php-version }} / ${{ matrix.node-version }} on ${{ matrix.operating-system }}
+  
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php }}
-        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, mysql, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
-        coverage: none
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - name: Deploy to Server
-      uses: appleboy/ssh-action@v0.1.10
+      - uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          host: ${{ secrets.BOWPHP_WEBSITE_REMOTE_HOST }}
-          username: ${{ secrets.BOWPHP_WEBSITE_REMOTE_USER }}
-          password: ${{ secrets.BOWPHP_WEBSITE_REMOTE_PASSWORD }}
-          port: 22
-          script: |
-            ls
+          php-version: ${{ matrix.php-version }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, mysql, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+          coverage: none
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build --if-present
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v0.1.10
+          with:
+            host: ${{ secrets.BOWPHP_WEBSITE_REMOTE_HOST }}
+            username: ${{ secrets.BOWPHP_WEBSITE_REMOTE_USER }}
+            password: ${{ secrets.BOWPHP_WEBSITE_REMOTE_PASSWORD }}
+            script: whoami
