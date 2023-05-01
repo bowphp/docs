@@ -32,10 +32,10 @@ jobs:
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@main
       env:
-          SSH_PRIVATE_KEY: ${{ secrets.BOWPHP_WEBSITE_SSH_PRIVATE_KEY }}
-          ARGS: "-rlgoDzvc -i --delete"
-          SOURCE: "dist/"
-          REMOTE_HOST: ${{ secrets.BOWPHP_WEBSITE_REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.BOWPHP_WEBSITE_REMOTE_USER }}
-          TARGET: ${{ secrets.BOWPHP_WEBSITE_REMOTE_TARGET }}
-          EXCLUDE: "/dist/, /node_modules/"
+        SSH_PRIVATE_KEY: ${{ secrets.BOWPHP_WEBSITE_SSH_PRIVATE_KEY }}
+        ARGS: "-rlgoDzvc -i --delete"
+        SOURCE: "build/"
+        REMOTE_HOST: ${{ secrets.BOWPHP_WEBSITE_REMOTE_HOST }}
+        REMOTE_USER: ${{ secrets.BOWPHP_WEBSITE_REMOTE_USER }}
+        TARGET: ${{ secrets.BOWPHP_WEBSITE_REMOTE_TARGET }}
+        EXCLUDE: "/build/, /build/"
