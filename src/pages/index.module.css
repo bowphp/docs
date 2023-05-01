@@ -19,5 +19,11 @@
 .buttons {
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: center;
+}
+
+.headline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

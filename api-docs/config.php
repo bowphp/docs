@@ -15,15 +15,14 @@ $iterator = Finder::create()
     ->in($directory);
 
 $versions = GitVersionCollection::create($directory)
-    ->addFromTags('v4.4.*')
+    ->add('3.x', '3.x')
     ->add('4.x', '4.x')
     ->add('5.x', '5.x')
-    ->add("master", "Bowphp Dev");
+    ->add("master", "dev");
 
 return new Doctum($iterator, [
     'versions'             => $versions,
     'title'                => 'Bow Framework',
-    'language'             => 'fr', // Could be 'fr'
     'build_dir'            => __DIR__ . '/../build/api/%version%',
     'cache_dir'            => sys_get_temp_dir() . '/bow_api_buid_cache/api/%version%',
     'source_dir'           => dirname($directory) . '/',
