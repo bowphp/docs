@@ -25,35 +25,18 @@ function HomepageHeader() {
               className="hero__subtitle"
               style={{
                 fontSize: 15,
-                borderLeft: "10px solid #452c2c",
-                display: "inline-block",
-                paddingLeft: 10,
+                display: "inline-block"
               }}
               dangerouslySetInnerHTML={{
                 __html: siteConfig.customFields.landingText,
               }}
             ></p>
-            <div className={styles.buttons}>
-              <Link
-                className="button button--secondary button--lg"
-                to={siteConfig.customFields.startTutorial}
-              >
-                Tutoriel - 5min ⏱️
-              </Link>
-            </div>
-          </div>
-          <div className="col" style={{ textAlign: "left" }}>
-            <CodeBlock
-              language="php"
-              title="routes/app.php"
-              showLineNumbers
+            <Link
+              className="button button--secondary button--sm"
+              to={siteConfig.customFields.startTutorial}
             >
-              {`<?php
-
-use App\Controllers\WelcomeController;
-
-$app->get('/', WelcomeController::class)->name('app.index');`}
-            </CodeBlock>
+              Tutoriel - 5min 
+            </Link>
           </div>
         </div>
       </div>
