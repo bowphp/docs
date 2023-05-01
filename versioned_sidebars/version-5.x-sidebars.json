@@ -1,0 +1,45 @@
+{
+  "docs": {
+    "Démarrage": [
+      "what-is-new",
+      "installation",
+      "configuration",
+      "structure",
+      "contribution"
+    ],
+    "Guide": [
+      "routing",
+      "controller",
+      "views",
+      "middleware",
+      "storage",
+      "mail",
+      "i18n",
+      "testing"
+    ],
+    "Base de donnée": [
+      "database",
+      "query-builder",
+      "orm",
+      "migration",
+      "seeding"
+    ],
+    "Http": [
+      "http-request",
+      "http-response",
+      "http-session"
+    ],
+    "Sécurités": [
+      "auth",
+      "policier",
+      "csrf-protection"
+    ],
+    "Misc": [
+      "frontend",
+      "service",
+      "helpers",
+      "console",
+      "package"
+    ]
+  }
+}
