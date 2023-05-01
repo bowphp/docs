@@ -14,7 +14,7 @@ jobs:
         node-version: [18.x]
         php-version: [8.2]
         os: [ubuntu-latest]
-    name: build ${{ matrix.php-version }} / ${{ matrix.node-version }} on ${{ matrix.operating-system }}
+    name: build php-${{ matrix.php-version }} / node-${{ matrix.node-version }} on ${{ matrix.os }}
   
     steps:
       - uses: actions/checkout@v3
@@ -33,8 +33,11 @@ jobs:
       - run: npm run build --if-present
       - name: Deploy to Server
         uses: appleboy/ssh-action@v0.1.10
-          with:
-            host: ${{ secrets.BOWPHP_WEBSITE_REMOTE_HOST }}
-            username: ${{ secrets.BOWPHP_WEBSITE_REMOTE_USER }}
-            password: ${{ secrets.BOWPHP_WEBSITE_REMOTE_PASSWORD }}
-            script: whoami
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          host: ${{ secrets.BOWPHP_WEBSITE_REMOTE_HOST }}
+          username: ${{ secrets.BOWPHP_WEBSITE_REMOTE_USER }}
+          password: ${{ secrets.BOWPHP_WEBSITE_REMOTE_PASSWORD }}
+          script_stop: true
+          script: |
+            ls -al
