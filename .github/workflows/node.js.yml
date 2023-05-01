@@ -14,7 +14,7 @@ jobs:
         node-version: [18.x]
         php-version: [8.2]
         os: [ubuntu-latest]
-    name: build ${{ matrix.php-version }} / ${{ matrix.node-version }} on ${{ matrix.operating-system }}
+    name: build php-${{ matrix.php-version }} / node-${{ matrix.node-version }} on ${{ matrix.operating-system }}
   
     steps:
       - uses: actions/checkout@v3
@@ -31,10 +31,14 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build --if-present
+
+  deploy:
+    steps:
       - name: Deploy to Server
         uses: appleboy/ssh-action@v0.1.10
-          with:
-            host: ${{ secrets.BOWPHP_WEBSITE_REMOTE_HOST }}
-            username: ${{ secrets.BOWPHP_WEBSITE_REMOTE_USER }}
-            password: ${{ secrets.BOWPHP_WEBSITE_REMOTE_PASSWORD }}
-            script: whoami
+        with:
+          host: ${{ secrets.BOWPHP_WEBSITE_REMOTE_HOST }}
+          username: ${{ secrets.BOWPHP_WEBSITE_REMOTE_USER }}
+          password: ${{ secrets.BOWPHP_WEBSITE_REMOTE_PASSWORD }}
+          script: |
+            ls -al
