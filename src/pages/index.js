@@ -52,10 +52,8 @@ export default function Home() {
       description={siteConfig.tagline}>
       <HomepageHeader />
       <SponsorsFeatures />
-      <main>
-        <HomepageFeatures />
-        <TeamFeatures />
-      </main>
+      <HomepageFeatures />
+      <TeamFeatures />
     </Layout>
   );
 }
