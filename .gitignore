@@ -12,3 +12,4 @@ bow_api_buid_cache
 .vscode
 node_modules
 .docusaurus
+.DS_Store
