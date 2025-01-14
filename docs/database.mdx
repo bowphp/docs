@@ -40,7 +40,7 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 
 ```json
 {
-  "DB_DEFAULT": "mysql",
+  "DB_DEFAULT": "sqlite",
   "SQLITE_DATABASE": "/absolute/path/to/database.sqlite",
 }
 ```
@@ -52,13 +52,13 @@ Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque conne
 ```php
 use Bow\Database\Database;
 
-$users = Database::connection('mysql')->select(...);
+$users = Database::connection('sqlite')->select(...);
 ```
 
 Ou via le helper `db`:
 
 ```php
-$users = db('mysql')->select(...);
+$users = db('sqlite')->select(...);
 ```
 
 Une fois la configuration changé, elle est directement appliquer sur la connexion des modèles. [Cliquer ici](./orm) pour plus d'information sur les models.
@@ -359,15 +359,15 @@ create table `pets` (
 Pour faire une jointure dans Bow Framework c'est très simple en fait. Pour ce faire on utilise la méthode `join`.
 
 ```php
-$results = table('pets')->join('autors', 'authors.id', 'pets.author_id')->get();
+$results = db_table('pets')->join('autors', 'authors.id', 'pets.author_id')->get();
 ```
 
 Souvant il est intéressant d'ajouter des contraintes dans la réquête normalement avec la clause `WHERE`.
 
 ```php
-$results = table('pets')
+$results = db_table('pets')
   ->join('authors', 'authors.id', 'pets.author_id')
-  ->whereColumn('pets.author_id', 1)->get();
+  ->whereRaw('pets.author_id', 1)->get();
 ```
 
 Normalement vous pouvez ajouter plusieur jointure dans l'appel de méthode.
@@ -384,10 +384,10 @@ create table `author` (
 Notre requête sera maintenant:
 
 ```php
-$results = table('authors')
+$results = db_table('authors')
   ->join('authors', 'authors.id', 'pets.author_id')
   ->join('countries', 'countries.id', 'pets.country_id')
-  ->whereColumn('pets.author_id', 1)->get();
+  ->whereRaw('pets.author_id', 1)->get();
 ```
 
 <SuggestionFeature />
