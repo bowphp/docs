@@ -42,82 +42,6 @@ de votre application.
 
 ## Mappage d'URL
 
-### Avec le méthode `route`
-
-C'est méthode permet de faire un mappage rélativement simple.
-
-```php
-$app->route([
-  'path' => '/',
-  'method' => "GET",
-  'handler' => 'handler'
-]);
-```
-
-#### Liste des options
-
-| Paramètre | Type | Description |
-|----------|------|------|
-| path | `String` | Le parten d'url à matcher |
-| method | `String`, `Array` | méthode Http |
-| handler | `String`, `Array` | L'action à lancer |
-| middleware | `String`, `Array` | Middleware |
-| where  | `String`, `Array` | Contrainte appliqué sur l'URL |
-| name | `String`, `Array` | Le nom de la route |
-
-`method` correspond au verbe `http` à associer à la route, soit `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`.
-
-- Avec une clourse
-
-```php
-$app->route([
-  'path' => '/',
-  'method' => "GET",
-  'handler' => function () {
-    return "Hello, bow";
-  }
-]);
-```
-
-- Avec le nom d'un controlleur.
-
-```php
-$app->route([
-  'path' => '/',
-  'method' => "GET",
-  'handler' => 'HomeController::action'
-]);
-```
-
-> Plus d'information sur les controlleurs [ici](./controllers)
-
-- Avec le nom d'un controlleur et un middelware.
-
-```php
-$app->route([
-  'path' => '/',
-  'method' => "GET",
-  'handler' => 'HomeController::show',
-  'middleware' => ['auth']
-]);
-```
-
-> Plus d'information sur les middlewares [ici](./middleware)
-
-- Avec le nom d'un controlleur, un middelware et une restriction.
-
-```php
-$app->route([
-  'path' => '/:name',
-  'method' => "GET",
-  'handler' => 'HomeController::show',
-  'middleware' => ['auth'],
-  'where' => ['name' => '[a-z]+']
-]);
-```
-
-> Plus d'information sur les restrictions [ici](#ajouter-des-criteres-des-restrictions-sur-les-urls)
-
 ### En utilisant les verbes HTTP comme méthode
 
 Prototype des méthodes du routing.
@@ -200,8 +124,7 @@ La mise en place du routage se faire donc via les méthodes suivants:
 Cette méthode permet de maper une URL à une requête de type `GET`.
 
 ```php
-$app->get('/', function ()
-{
+$app->get('/', function () {
   return 'hello world';
 });
 ```
@@ -211,8 +134,7 @@ $app->get('/', function ()
 Cette méthode permet de maper une URL à une requête de type `POST`
 
 ```php
-$app->post('/', function ()
-{
+$app->post('/', function () {
   return 'data posted';
 });
 ```
@@ -222,8 +144,7 @@ $app->post('/', function ()
 Cette méthode permet de maper une URL à une requête de type `PUT`.
 
 ```php
-$app->put('/', function ()
-{
+$app->put('/', function () {
   // Code ici
 });
 ```
@@ -233,8 +154,7 @@ $app->put('/', function ()
 Cette méthode permet de maper une URL à une requête de type `DELETE`.
 
 ```php
-$app->delete('/', function ()
-{
+$app->delete('/', function () {
   // Code ici
 });
 ```
@@ -244,8 +164,7 @@ $app->delete('/', function ()
 Cette méthode permet de maper une URL à une requête de type `PATCH`.
 
 ```php
-$app->patch('/', function ()
-{
+$app->patch('/', function () {
   // Code ici
 });
 ```
@@ -255,8 +174,7 @@ $app->patch('/', function ()
 Cette méthode permet de maper une URL à une requête de type `OPTIONS`.
 
 ```php
-$app->options('/', function ()
-{
+$app->options('/', function () {
   // Code ici
 });
 ```
@@ -292,8 +210,7 @@ $app->match(verbes, url, action);
 | action | `String`, `Array`, `Closure` | L'action à lancer |
 
 ```php
-$app->match(['GET', 'POST'], '/users', function ()
-{
+$app->match(['GET', 'POST'], '/users', function () {
   // Code ici
 });
 ```
@@ -303,8 +220,7 @@ Vous pourrez avoir un code qui faire ceci.
 ```php
 use Bow\Http\Request;
 
-$app->match(['GET', 'POST'], '/users', function (Request $request)
-{
+$app->match(['GET', 'POST'], '/users', function (Request $request) {
   if ($request->isPost()) {
     // code
   } else {
@@ -331,8 +247,7 @@ $app->any(url, action);
 | action   | `String`, `Array` | Closure - L'action à lancer |
 
 ```php
-$app->any('/', function ()
-{
+$app->any('/', function () {
   // Code ici
 });
 ```
@@ -342,18 +257,15 @@ $app->any('/', function ()
 Souvent vous serez amener à grouper vos routes et effectuer un branchement simple pour bien orienté votre logique. Les URLs peuvent souvents se répéter comme ceci:
 
 ```php
-$app->get('users', function ()
-{
+$app->get('users', function () {
   // Code ici
 });
 
-$app->get('users/:id', function ($id)
-{
+$app->get('users/:id', function ($id) {
   // Code ici
 });
 
-$app->get('users/:id/delete', function ($id)
-{
+$app->get('users/:id/delete', function ($id) {
   // Code ici
 });
 ```
@@ -374,24 +286,96 @@ $app->prefix(url, action);
 Donc pour réorganiser le code précédent, il faudra faire comme suit:
 
 ```php
-$app->prefix('/users', function () use ($app)
-{
-  $app->get('/', function ()
-  {
+$app->prefix('/users', function () use ($app) {
+  $app->get('/', function () {
    // Code ici
   });
-  $app->get('/:id', function ($id)
-  {
+  $app->get('/:id', function ($id) {
    // Code ici
   });
-  $app->get('/:id/delete', function ($id)
-  {
+  $app->get('/:id/delete', function ($id) {
    // Code ici
   });
 });
 ```
 
 > Notez qu'actuellement le préfixage ne peut pas être imbriquer.
+
+### Avec le méthode `route`
+
+C'est méthode permet de faire un mappage rélativement simple.
+
+```php
+$app->route([
+  'path' => '/',
+  'method' => "GET",
+  'handler' => 'handler'
+]);
+```
+
+#### Liste des options
+
+| Paramètre | Type | Description |
+|----------|------|------|
+| path | `String` | Le parten d'url à matcher |
+| method | `String`, `Array` | méthode Http |
+| handler | `String`, `Array` | L'action à lancer |
+| middleware | `String`, `Array` | Middleware |
+| where  | `String`, `Array` | Contrainte appliqué sur l'URL |
+| name | `String`, `Array` | Le nom de la route |
+
+`method` correspond au verbe `http` à associer à la route, soit `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`.
+
+- Avec une clourse
+
+```php
+$app->route([
+  'path' => '/',
+  'method' => "GET",
+  'handler' => function () {
+    return "Hello, bow";
+  }
+]);
+```
+
+- Avec le nom d'un controlleur.
+
+```php
+$app->route([
+  'path' => '/',
+  'method' => "GET",
+  'handler' => 'HomeController::action'
+]);
+```
+
+> Plus d'information sur les controlleurs [ici](./controllers)
+
+- Avec le nom d'un controlleur et un middelware.
+
+```php
+$app->route([
+  'path' => '/',
+  'method' => "GET",
+  'handler' => 'HomeController::show',
+  'middleware' => ['auth']
+]);
+```
+
+> Plus d'information sur les middlewares [ici](./middleware)
+
+- Avec le nom d'un controlleur, un middelware et une restriction.
+
+```php
+$app->route([
+  'path' => '/:name',
+  'method' => "GET",
+  'handler' => 'HomeController::show',
+  'middleware' => ['auth'],
+  'where' => ['name' => '[a-z]+']
+]);
+```
+
+> Plus d'information sur les restrictions [ici](#ajouter-des-criteres-des-restrictions-sur-les-urls)
 
 ## Personnalisation
 
