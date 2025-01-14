@@ -5,7 +5,7 @@ use Doctum\RemoteRepository\GitHubRemoteRepository;
 use Doctum\Version\GitVersionCollection;
 use Symfony\Component\Finder\Finder;
 
-$directory = sys_get_temp_dir() . '/framework/src';
+$directory = __DIR__.'/framework/src';
 
 $iterator = Finder::create()
     ->files()
@@ -24,7 +24,7 @@ return new Doctum($iterator, [
     'versions'             => $versions,
     'title'                => 'Bow Framework',
     'build_dir'            => __DIR__ . '/../build/api/%version%',
-    'cache_dir'            => sys_get_temp_dir() . '/bow_api_buid_cache/api/%version%',
+    'cache_dir'            => __DIR__.'/bow_api_buid_cache/api/%version%',
     'source_dir'           => dirname($directory) . '/',
     'remote_repository'    => new GitHubRemoteRepository('bowphp/framework', dirname($directory)),
     'default_opened_level' => 2,

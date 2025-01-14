@@ -6,6 +6,8 @@ api/build
 api/cache
 build/
 doctum.phar
+framework
+bow_api_buid_cache
 .idea
 .vscode
 node_modules
