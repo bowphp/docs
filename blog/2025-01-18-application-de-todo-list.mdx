@@ -1,0 +1,228 @@
+---
+title: "Créer une application de To Do List avec BowPHP"
+description: "Créer une application de To Do List avec BowPHP"
+slug: creer-une-application-de-to-do-list-avec-bowphp
+authors: papac
+tags: [bowphp, php, framework,]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+Créer une application de To Do List avec BowPHP, un framework PHP léger, est une excellente idée. Voici un plan détaillé pour y parvenir :
+
+<!--truncate-->
+
+### **Étape 1 : Installation de BowPHP**
+
+1. **Installer BowPHP** :
+
+Assurez-vous que Composer est installé sur votre machine, puis utilisez la commande suivante pour installer BowPHP :
+
+```bash
+composer create-project bowphp/app todolist
+```
+Cela créera une nouvelle application BowPHP nommée `todolist`.
+
+2. **Configurer votre application** :
+
+- Modifiez le fichier `.env.json` pour configurer la connexion à la base de données (par exemple MySQL).
+
+```json title=".env.json"
+{
+    "DB_DEFAULT": "mysql",
+    "DB_HOSTNAME": "127.0.0.1",
+    "DB_USERNAME": "username",
+    "DB_PASSWORD": "password",
+    "DB_DBNAME": "todolist_db",
+    "DB_PORT": 3306
+}
+```
+
+### **Étape 2 : Configurer la base de données**
+
+1. **Créer la base de données** :
+
+Exécutez cette commande MySQL pour créer une base de données :
+
+```sql
+CREATE DATABASE todolist_db;
+```
+
+2. **Créer une table pour les tâches** :
+
+Pour ajouter une nous table, vous pouvez le faire avec la commande suivante:
+
+```bash
+php bow add:migration create-tasks-table
+```
+
+Vous allez avoir un nouveau fichier dans le dossier `database/migrations`.
+
+```php title="database/migrations/Version1000000000CreateTasksTable.php"
+
+use Bow\Database\Migration\Migration;
+use Bow\Database\Migration\SQLGenerator as Table;
+
+class Version1000000000CreateTasksTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $this->create('tasks', function (Table $table) {
+            $table->addPrimary('id');
+            $table->addString('title');
+            $table->addBoolean('completed', ['default' => false]);
+            $table->addTimestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function rollback()
+    {
+        $this->dropIfExists('tasks');
+    }
+}
+```
+
+Ensuite, exécutez la migration :
+
+```bash
+php bow migrate
+```
+
+### **Étape 3 : Créer le modèle et le contrôleur**
+
+1. **Créer un modèle `Task`** :
+
+Ajouter un modèle de base de donnée
+
+```bash
+php bow add:model Task
+```
+
+Vous verrez le fichier `app/Models/Task.php` dans votre projet.
+
+```php title="app/Models/Task.php"
+namespace App\Models;
+
+use Bow\Database\Barry\Model;
+
+class Task extends Model
+{
+    //
+}
+```
+
+2. **Créer un contrôleur `TaskController`** :
+
+```php
+namespace App\Controllers;
+
+use App\Models\Task;
+
+class TaskController
+{
+    public function index()
+    {
+        $tasks = Task::all();
+
+        return view('tasks.index', compact('tasks'));
+    }
+
+    public function store(Request $request)
+    {
+        Task::create(['title' => $request->get('title')]);
+
+        return redirect('/');
+    }
+
+    public function update(int $id)
+    {
+        $task = Task::find($id);
+        $task->update(['completed' => ! $task->completed]);
+
+        return redirect('/');
+    }
+
+    public function destroy(Request $request, int $id)
+    {
+        Task::where("id", $id)->delete();
+
+        return redirect('/');
+    }
+}
+```
+
+### **Étape 4 : Configurer les routes**
+
+Dans le fichier `routes/app.php`, ajoutez les routes suivantes :
+
+```php
+use App\Controllers\TaskController;
+
+$app->get('/', [TaskController::class, 'index']);
+$app->post('/tasks', [TaskController::class, 'store']);
+$app->put('/tasks/{id}', [TaskController::class, 'update']);
+$app->delete('/tasks/{id}', [TaskController::class, 'destroy']);
+```
+
+### **Étape 5 : Créer les vues**
+
+Créer le fichier de template `templates/tasks.tintin.php` et ajoutez-y le contenu suivant.
+
+```php
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+</head>
+<body>
+    <h1>Todo List</h1>
+
+    <form method="POST" action="/tasks">
+        <input type="text" name="title" placeholder="New Task" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        #foreach ($tasks as $task)
+            <li>
+                <form method="POST" action="/tasks/<?= $task->id ?>">
+                    <input type="hidden" name="_method" value="PUT">
+                    <button type="submit">
+                        {{ $task->completed ? '✅' : '⬜' }}
+                    </button>
+                </form>
+                {{{ $task->title }}} ?>
+                <form method="POST" action="/tasks/<?= $task->id ?>">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit">❌</button>
+                </form>
+            </li>
+        #endforeach
+    </ul>
+</body>
+</html>
+```
+
+### **Étape 6 : Lancer l'application**
+
+Démarrez le serveur BowPHP :
+
+```bash
+php bow run:server
+```
+
+Accédez à votre application sur `http://localhost:5000`.
+
+<SuggestionFeature />

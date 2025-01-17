@@ -22,10 +22,10 @@ const TeamFeatures = () => {
             </p>
           </div>
         </div>
-        <div className="row">
+        <div className="row padding-horiz--md">
           {siteConfig.customFields.users.map((user, index) => (
-            <div className={clsx('col margin--sm', styles.teamPadding)} key={index}>
-              <div className={clsx("card", styles.showcaseUser)}>
+            <div className={clsx('col margin--lg', styles.teamPadding)} style={{ borderRadius: 200 }} key={index}>
+              <div className={clsx("", styles.showcaseUser)} style={{ boxShadow: 'none' }}>
                 <div className="text--center">
                   <a href={user.infoLink} key={user.infoLink}>
                     <img src={user.image} alt={user.caption} title={user.caption} />

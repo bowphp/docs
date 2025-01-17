@@ -25,7 +25,7 @@ Nous acceptons les contributions via Pull Request sur [GitHub](https://github.co
 - Fork le projet
 - Créez une branche avec un nom descriptif de vos modifications
 - Utilisez des messages de commits descriptifs
-- Ajoutez des test unitaires
+- Ajoutez des tests unitaires
 - Documentez vos modifications - Assurez vous que la documentation est mise à jour selon vos modifications
 - Un pull request par fonctionnalité - Si vous voulez faire plus d'une chose, faites plusieurs pull requests
 - Mettez à jour la version - Nous suivons le schema SemVer
@@ -34,11 +34,12 @@ Nous acceptons les contributions via Pull Request sur [GitHub](https://github.co
 
 Pour faciliter la maintenance du dépôt, Bow utilise un format pour les messages de commits.
 
-- `change` pour ajouter un changement sur un functionnement
-- `fix` pour fixer une bug
+- `refactor` pour ajouter un changement sur un fonctionnement
+- `fix` pour fixer un bug
 - `feat` pour ajouter une nouvelle fonctionnalité
+- `test` pour ajouter ou mise à jour un test unitaire
 
-Veuillez vous référer à l'exemple suivant:
+Veuillez vous référer à l'exemple suivant :
 
 ```sh
 git commit
@@ -52,7 +53,7 @@ change(module_name): your commit message
 Description
 ```
 
-Si la modification affecte une section:
+Si la modification affecte une section :
 
 ```bash
 git commit -m "change(session): rename init variable"

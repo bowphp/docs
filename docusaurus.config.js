@@ -1,3 +1,6 @@
+const darkCodeTheme = require('prism-react-renderer/themes/vsDark');
+const versions = require("./versions.json");
+
 const isDev = process.env.NODE_ENV === 'development';
 
 const isDeployPreview =
@@ -12,18 +15,15 @@ const isBuildFast = !!process.env.BUILD_FAST;
 
 const baseUrl = process.env.BASE_URL ?? '/';
 
-const versions = require("./versions.json");
-
 function getNextVersionName() {
   return 'Canary';
 }
 
 module.exports = {
+  baseUrl,
   title: "Bow Framework",
   tagline: "Simplify Your Web Development",
   url: "https://bowphp.com",
-  organizationName: "Capap",
-  baseUrl,
   organizationName: "bowphp",
   projectName: "bowphp.com",
   i18n: {
@@ -39,12 +39,12 @@ module.exports = {
     },
     "static/js/script.js",
   ],
-  favicon: "img/bow.jpg",
+  favicon: "img/bow.png",
   markdown: {
     mermaid: true,
   },
   customFields: {
-    startTutorial: "/blog/demarrer-bow-framework",
+    startTutorial: "/blog/creer-une-application-de-to-do-list-avec-bowphp",
     landingText:
       "Bow Framework a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement et est apprécié par <strong>+2500</strong> Développeur(se)s",
     apiUrl: "https://bowphp.com/api/master",
@@ -52,7 +52,7 @@ module.exports = {
       {
         caption: "Abou KONE",
         description:
-          "Engineering Manager. CTO @akiltech. Magician @codedivoire.",
+          "Engineering Manager. CTO @akiltech.",
         image: "https://avatars1.githubusercontent.com/u/582061?s=460&v=4",
         infoLink: "https://github.com/devakone",
         pinned: true,
@@ -60,7 +60,7 @@ module.exports = {
       {
         caption: "Franck DAKIA",
         description:
-          "Software engineer. Working on <a href='https://github.com/bowphp'>Bow Framework</a> and <a href='https://codelearningclub.com'>Code Learning Club</a>. Passionate about software development and DevOps lover ❤️",
+          "Principal Maintainer, Working on <a href='https://github.com/bowphp'>Bow Framework</a> and <a href='https://codelearningclub.com'>Code Learning Club</a>. Passionate about software development and DevOps lover ❤️",
         image: "https://avatars1.githubusercontent.com/u/9353811?s=460&v=4",
         infoLink: "https://github.com/papac",
         pinned: true,
@@ -113,6 +113,13 @@ module.exports = {
         image: "/img/logoetudesk.png",
         infoLink: "https://www.etudesk.com",
       },
+      {
+        caption: "Papac&Co",
+        description:
+          "Nous vous aidons dans la réalisation de votre projet digital.",
+        image: "/img/papacandco.png",
+        infoLink: "mailto:papacservices@gmail.com",
+      },
       // {
       //   caption: "Gelsen Dev",
       //   description: "La communauté des développeurs sénégalais.",
@@ -164,7 +171,7 @@ module.exports = {
     ],
     defaultVersionShown: "4.x",
     repoUrl: "https://github.com/bowphp/app",
-    numberOfFollowers: 3500,
+    numberOfFollowers: 5500,
   },
   onBrokenLinks: "log",
   onBrokenMarkdownLinks: "log",
@@ -175,7 +182,6 @@ module.exports = {
         docs: {
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
-          editUrl: "https://github.com/bowphp/docs/edit/4.0/docs/",
           path: "docs",
           sidebarPath: "sidebars.json",
           editUrl: ({ locale, docPath }) => {
@@ -183,12 +189,10 @@ module.exports = {
               return `https://crowdin.com/project/bowphp/${locale}`;
             }
             // We want users to submit doc updates to the upstream/next version!
-            // Otherwise we risk losing the update on the next release.
+            // Otherwise, we risk losing the update on the next release.
             const nextVersionDocsDirPath = "docs";
             return `https://github.com/bowphp/docs/edit/main/${nextVersionDocsDirPath}/${docPath}`;
           },
-          showLastUpdateAuthor: true,
-          showLastUpdateTime: true,
           rehypePlugins: [],
           disableVersioning: false,
           lastVersion:
@@ -208,9 +212,8 @@ module.exports = {
           },
         },
         blog: {
-          blogTitle: "Bowphp blog!",
+          blogTitle: "Blog",
           blogDescription: "Trouver les astuces et conseils sur bowphp",
-          postsPerPage: "ALL",
           showReadingTime: true,
           routeBasePath: "blog",
           path: "blog",
@@ -222,6 +225,18 @@ module.exports = {
         gtag: {
           trackingID: "G-309894919",
           anonymizeIP: true,
+        },
+        sitemap: {
+          lastmod: 'date',
+          changefreq: 'weekly',
+          priority: 0.5,
+          ignorePatterns: ['/tags/**'],
+          filename: 'sitemap.xml',
+          createSitemapItems: async (params) => {
+            const {defaultCreateSitemapItems, ...rest} = params;
+            const items = await defaultCreateSitemapItems(rest);
+            return items.filter((item) => !item.url.includes('/page/'));
+          },
         },
       },
     ],
@@ -236,6 +251,7 @@ module.exports = {
         indexPages: false,
         language: "fr",
         maxSearchResults: 10,
+        style: 'none',
       },
     ],
   ],
@@ -251,12 +267,12 @@ module.exports = {
       hideOnScroll: true,
       title: "Bow Framework",
       logo: {
-        src: "img/bow.jpg",
+        src: "img/bow.png",
       },
       items: [
         {
           to: "docs/installation",
-          label: "Docs",
+          label: "Documentation",
           position: "left",
         },
         {
@@ -279,12 +295,7 @@ module.exports = {
           position: "right",
         },
         {
-          href: "https://join.slack.com/t/bowphp/shared_invite/zt-9c90n2iv-Rx1zdUG0YRAnDULhgELD0g",
-          label: "Slack",
-          position: "right",
-        },
-        {
-          href: "https://t.me/+nDyat6uKlqI5ZjFk",
+          href: "https://t.me/+PiAXH-w9qLUyOTU0",
           label: "Telegram",
           position: "right",
         },
@@ -303,8 +314,8 @@ module.exports = {
       },
     },
     colorMode: {
-      defaultMode: "light",
-      disableSwitch: false,
+      defaultMode: "dark",
+      disableSwitch: true,
       respectPrefersColorScheme: true,
     },
     footer: {
@@ -358,37 +369,21 @@ module.exports = {
           title: "En plus",
           items: [
             {
-              label: "Twitter",
-              to: "https://twitter.com/papacdev",
-            },
-            {
-              label: "Slack",
-              to: "https://join.slack.com/t/bowphp/shared_invite/zt-9c90n2iv-Rx1zdUG0YRAnDULhgELD0g",
+              label: "X",
+              to: "https://x.com/papacdev",
             },
             {
               label: "Github",
               to: "https://github.com/bowphp",
             },
+            {
+              label: "Telegram",
+              to: "https://t.me/+PiAXH-w9qLUyOTU0",
+            },
           ],
         },
-        // {
-        //   title: "Légal",
-        //   items: [
-        //     {
-        //       label: "Terms",
-        //       to: "https://twitter.com/papacdev"
-        //     },
-        //     {
-        //       label: "Licence",
-        //       to: "https://join.slack.com/t/bowphp/shared_invite/zt-9c90n2iv-Rx1zdUG0YRAnDULhgELD0g"
-        //     }
-        //   ]
-        // }
       ],
-      copyright:
-        "Copyright © " +
-        new Date().getFullYear() +
-        ' développé avec 💚 par <a href="https://github.com/papac">Franck DAKIA</a>',
+      copyright: `Copyright © ${new Date().getFullYear()} développé avec 💚 par <a href="https://github.com/papac">Franck DAKIA</a>`,
     },
     mermaid: {
       theme: {
@@ -397,7 +392,8 @@ module.exports = {
       },
     },
     prism: {
-      additionalLanguages: ["php"],
+      darkTheme: darkCodeTheme,
+      additionalLanguages: ["php", "javascript", "css", "typescript"],
     },
   },
   themes: ["@docusaurus/theme-mermaid"],

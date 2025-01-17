@@ -10,13 +10,13 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 # Soauth
 
-Package d'authentification via les reseaux sociaux pour Bow Framework.
+Package d'authentification via les réseaux sociaux pour Bow Framework.
 
 ## À propos
 
 Ce package utilise le package [`thephpleague/oauth2-client`](https://github.com/thephpleague/oauth2-client) pour faire un wrapper.
 
-Actuellement, il supporte le fournisseur suivant:
+Actuellement, il supporte le fournisseur suivant :
 
 - Facebook
 - Gitlab
@@ -37,17 +37,17 @@ composer require bowphp/soauth
 
 Après l'installation Dans votre fichier `.env.json`, vous devez définir les informations d'accès au fournisseur comme suit:
 
-#### Pour facebook:
+#### Pour facebook
 
 Vous pouvez créer la nouvelle application facebook à l’adresse [https://developers.facebook.com/fr](https://developers.facebook.com/fr).
 
 ```bash
-FACEBACK_CLIENT_ID=client_id
-FACEBACK_CLIENT_SECRET=client_secret
-FACEBACK_REDIRECT_URI=redirect_uri
+FACEBOOK_CLIENT_ID=client_id
+FACEBOOK_CLIENT_SECRET=client_secret
+FACEBOOK_REDIRECT_URI=redirect_uri
 ```
 
-#### Pour gitlab:
+#### Pour gitlab :
 
 ```bash
 GITLAB_CLIENT_ID=client_id
@@ -55,7 +55,7 @@ GITLAB_CLIENT_SECRET=client_secret
 GITLAB_REDIRECT_URI=redirect_uri
 ```
 
-#### Pour github:
+#### Pour github :
 
 ```bash
 GITHUB_CLIENT_ID=client_id
@@ -74,7 +74,7 @@ return [
 ];
 ```
 
-Nous considérons le contrôleur suivant:
+Nous considérons le contrôleur suivant :
 
 ```php
 <?php

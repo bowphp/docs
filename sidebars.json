@@ -32,13 +32,14 @@
     "Sécurités": [
       "auth",
       "policier",
-      "csrf-protection"
+      "csrf"
     ],
     "Misc": [
       "frontend",
       "service",
       "helpers",
       "console",
+      "cqrs",
       "package"
     ]
   }
