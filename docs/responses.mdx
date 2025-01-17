@@ -14,14 +14,14 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
   - [Modification du code d'erreur](#modification-du-code-derreur)
   - [Ajouter une entête HTTP](#ajouter-une-entête-http)
 - [Envoyer un JSON](#envoyer-un-json)
-  - [Protototype de la méthode `json`](#protototype-de-la-méthode-json)
-  - [Exemple d'envoye de JSON](#exemple-denvoye-de-json)
+  - [Prototype de la méthode `json`](#protototype-de-la-méthode-json)
+  - [Exemple d'envoyé de JSON](#exemple-denvoye-de-json)
 - [Envoyer une réponse depuis les vues](#envoyer-une-réponse-depuis-les-vues)
-  - [Protototype de la méthode `render`](#protototype-de-la-méthode-render)
-  - [Exemple d'envoye de vue](#exemple-denvoye-de-vue)
+  - [Prototype de la méthode `render`](#protototype-de-la-méthode-render)
+  - [Exemple d'envoyé de vue](#exemple-denvoye-de-vue)
   - [Télécharger un fichier](#télécharger-un-fichier)
-  - [Protototype de la méthode `download`](#protototype-de-la-méthode-download)
-  - [Exemple de télécharge](#exemple-de-télécharge)
+  - [Prototype de la méthode `download`](#protototype-de-la-méthode-download)
+  - [Exemple de télécharger](#exemple-de-télécharge)
 - [Redirection](#redirection)
   - [Redirection avec `to`](#redirection-avec-to)
     - [Prototype de `to`](#prototype-de-to)
@@ -124,7 +124,7 @@ $response->withHeaders([
 
 Dans les applications REST (Api REST/RESTFUL) les informations sont généralement retournés en JSON. Pour envoyer un information JSON au client, vous pouvez utiliser le help `json` ou la méthode `json` sur l'instance de `Bow\Http\Response`.
 
-### Protototype de la méthode `json`
+### Prototype de la méthode `json`
 
 ```php
 $response->json($data, $code, $headers);
@@ -136,9 +136,9 @@ $response->json($data, $code, $headers);
 | $code  | **Int** | Le code du status HTTP |
 | $headers  | **Array** | Les entêtes à ajouter sur le réponse |
 
-### Exemple d'envoye de JSON
+### Exemple d'envoyé de JSON
 
-Exemple:
+Exemple :
 
 ```php
 $data = ['message' => 'Hello, World'];
@@ -148,7 +148,7 @@ return $response->json($data, $code = 200, [
 ]);
 ```
 
-Avec le HELPER:
+Avec le HELPER :
 
 ```php
 $data = ['message' => 'Hello, World'];
@@ -162,9 +162,9 @@ Ici, Bow ajout directement l'entête HTTP `Content-Type` à `application/json`, 
 
 ## Envoyer une réponse depuis les vues
 
-Souvent vous pouvez utiliser un instance de `Bow\Http\Response` pour faire le rendu de [vue](./views) via la méthode `render`.
+Souvent, vous pouvez utiliser une instance de `Bow\Http\Response` pour faire le rendu de [vue](./views) via la méthode `render`.
 
-### Protototype de la méthode `render`
+### Prototype de la méthode `render`
 
 ```php
 $response->render($name, $data, $code, $headers);
@@ -172,14 +172,14 @@ $response->render($name, $data, $code, $headers);
 
 | Paramètre | Type | Description |
 |----------|------|
-| $name  | **String** - Le nom d'une vue à rendre |
-| $data  | **Array** - Les données à envoyer à la vue |
-| $code  | **Int** - Le code du status HTTP |
-| $headers  | **Array** - Les entêtes à ajouter à la réponse |
+| $name | **String** - Le nom d'une vue à rendre |
+| $data | **Array** - Les données à envoyer à la vue |
+| $code | **Int** - Le code du status HTTP |
+| $headers | **Array** - Les entêtes à ajouter à la réponse |
 
 ### Exemple d'envoye de vue
 
-Exemple:
+Exemple :
 
 ```php
 $users = User::where('id', '!=', 2)->get();
@@ -191,9 +191,9 @@ return $response->render('users', ['users' => $users], 200, [
 
 ### Télécharger un fichier
 
-Souvent vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore vous allez faire des applications où il faut s'authentifier avant de télécharge des fichiers du type dropbox. Bow offre un API simple via la classe [`Bow\Http\Response`](https://bowphp.com/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la méthode `download`.
+Souvent, vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore, vous allez faire des applications avec lesquelles il faut s'authentifier avant de télécharger des fichiers du type dropbox. Bow offre un API simple via la classe [`Bow\Http\Response`](https://bowphp.com/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la méthode `download`.
 
-### Protototype de la méthode `download`
+### Prototype de la méthode `download`
 
 ```php
 $response->download($file, $filename = null, $headers, $disposition = 'attachment');
@@ -208,9 +208,9 @@ $response->download($file, $filename = null, $headers, $disposition = 'attachmen
 
 Plus d'information sur l'entête [`Content-Disposition`](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers/Content-Disposition).
 
-### Exemple de télécharge
+### Exemple de télécharger
 
-Exemple:
+Exemple :
 
 ```php
 $file = '/path/to/file.png';
@@ -220,7 +220,7 @@ return $response->download($file, 'image.png');
 
 ## Redirection
 
-Vous serez certainement amener à faire des redirections vers d'autres ressources et cela en réalité constitue une réponse HTTP. Les méthodes `to` et `back` (qui comme son nom l'indique permet de faire une revenir sur en arrière) de la classe [`Bow\Http\Redirect`](https://bowphp.com/api/master/Bow/Http/Redirect.html).
+Vous serez certainement amené à faire des redirections vers d'autres ressources, et cela, en réalité constitue une réponse HTTP. Les méthodes `to` et `back` (qui comme son nom l'indique permet de faire une revenir sûr en arrière) de la classe [`Bow\Http\Redirect`](https://bowphp.com/api/master/Bow/Http/Redirect.html).
 
 ### Redirection avec `to`
 
@@ -260,7 +260,7 @@ return redirect()->back();
 
 ### Redirection avec des informations
 
-Vous pouvez aussi faire la redirection avec les informations envoyés par l'utilisateur et ceci avec la méthode `withInput`, `withFlash` comme ceci:
+Vous pouvez aussi faire la redirection avec les informations envoyée par l'utilisateur et ceci avec la méthode `withInput`, `withFlash` comme ceci :
 
 ```php
  return redirect()->back()->withInput();
@@ -274,6 +274,6 @@ Avec un message flash
  return redirect()->back()->withFlash('success', 'Papac');
 ```
 
-Notez que vous pouvez donner une tableau de valeur à `withInput` qui sera une collection d'information à envoyer à utilisateur.
+Notez que vous pouvez donner un tableau de valeur à `withInput` qui sera une collection d'information à envoyer à utilisateur.
 
 <SuggestionFeature />

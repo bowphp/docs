@@ -288,9 +288,7 @@ module.exports = {
         },
         {
           href: "https://t.me/+PiAXH-w9qLUyOTU0",
-          //label: "Telegram",
-          className: "header-telegram-link",
-          "aria-label": "Telegram",
+          label: "Telegram",
           position: "right",
         },
         {
