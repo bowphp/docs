@@ -227,33 +227,25 @@ module.exports = {
           anonymizeIP: true,
         },
         sitemap: {
-          lastmod: 'date',
           changefreq: 'weekly',
           priority: 0.5,
           ignorePatterns: ['/tags/**'],
-          filename: 'sitemap.xml',
-          createSitemapItems: async (params) => {
-            const {defaultCreateSitemapItems, ...rest} = params;
-            const items = await defaultCreateSitemapItems(rest);
-            return items.filter((item) => !item.url.includes('/page/'));
-          },
+          filename: 'sitemap.xml'
         },
       },
     ],
   ],
   plugins: [
-    [
-      require.resolve("@cmfcmf/docusaurus-search-local"),
-      {
-        indexDocs: true,
-        indexDocSidebarParentCategories: 0,
-        indexBlog: true,
-        indexPages: false,
-        language: "fr",
-        maxSearchResults: 10,
-        style: 'none',
-      },
-    ],
+    // [
+    //   require.resolve("@cmfcmf/docusaurus-search-local"),
+    //   {
+    //     indexDocs: true,
+    //     indexDocSidebarParentCategories: 0,
+    //     indexBlog: true,
+    //     indexPages: false,
+    //     maxSearchResults: 10
+    //   },
+    // ],
   ],
   themeConfig: {
     metadata: [
@@ -296,7 +288,9 @@ module.exports = {
         },
         {
           href: "https://t.me/+PiAXH-w9qLUyOTU0",
-          label: "Telegram",
+          //label: "Telegram",
+          className: "header-telegram-link",
+          "aria-label": "Telegram",
           position: "right",
         },
         {
