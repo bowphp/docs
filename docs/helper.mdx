@@ -12,7 +12,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 - [Gestion d'évènement](#gestion-dévènement)
 - [Système de storage](#système-de-storage)
 - [helper Application](#helper-application)
-- [Chaine de carractère](#chaine-de-carractère)
+- [Chaine de caractère](#chaine-de-carractère)
 - [Email](#email)
 - [Autre](#autre)
 - [Utilisation](#utilisation)
@@ -51,7 +51,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Les helpers sont des fonctions racourris chargé dans l'application qui permet de faire rapidement certaine action. Voici la liste des helpers qui existe dans l'application Bow Framework. Voici les helpers dispnoble dans l'application.
+Les helpers sont des fonctions raccourcies chargées dans l'application qui permet de faire rapidement certaine action. Voici la liste des helpers qui existe dans l'application Bow Framework. Voici les helpers dispnoble dans l'application.
 
 ## Helper de gestion HTTP
 
@@ -67,7 +67,7 @@ Les helpers sont des fonctions racourris chargé dans l'application qui permet d
 
 ## Gestion d'évènement
 
-[listen_event](#listen_event), [listen_event_once](#listen_event_once), [listen_transmisson_event](#listen_transmisson_event), [listen_transmisson_event](#listen_transmisson_event), [emitter](#emitter), [emit_event](#emit_event)
+[listen_event](#listen_event), [listen_event_once](#listen_event_once), [listen_transmission_event](#listen_transmisson_event), [listen__transmission_event](#listen_transmisson_event), [emitter](#emitter), [emit_event](#emit_event)
 
 ## Système de storage
 
@@ -77,7 +77,7 @@ Les helpers sont des fonctions racourris chargé dans l'application qui permet d
 
 [app_env](#app_env), [app_assets](#app_assets), [app_abort](#app_abort), [app_abort_if](#app_abort_if), [app_mode](#app_mode), [auth](#auth), [logger](#logger)
 
-## Chaine de carractère
+## Chaine de caractère
 
 [str_slug](#str_slug), [str_is_mail](#str_is_mail), [str_is_domain](#str_is_domain), [str_is_slug](#str_is_slug), [str_is_alpha](#str_is_alpha), [str_is_lower](#str_is_lower), [str_is_upper](#str_is_upper), [str_is_alpha_num](#str_is_alpha_num), [str_shuffle_words](#str_shuffle_words), [str_wordify](#str_wordify), [str_plurial](#str_plurial), [str_camel](#str_camel), [str_snake](#str_snake), [str_contains](#str_contains), [str_capitalize](#str_capitalize), [str_random](#str_random), [str_force_in_utf8](#str_force_in_utf8), [e](#e), [str_fix_utf8](#str_fix_utf8)
 
@@ -93,7 +93,7 @@ Les helpers sont des fonctions racourris chargé dans l'application qui permet d
 
 ### app
 
-Ce helper permet d'avoir accès au containeur de Bow Framework.
+Ce helper permet d'avoir accès au container de Bow Framework.
 
 ```php
 app("mail");
@@ -101,7 +101,7 @@ app("mail");
 
 ### config
 
-Permet d'avoir accès au configuration de Bow Framework.
+Permet d'avoir accès à la configuration de Bow Framework.
 
 ```php
 config("mail")
@@ -153,7 +153,7 @@ set_status_code(404);
 
 ### view
 
-Permet de complie une vue dans Bow Framework.
+Permet de compiler une vue dans Bow Framework.
 
 ```php
 return view("view.name", ["name" => "papac"], $code = 200);

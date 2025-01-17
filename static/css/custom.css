@@ -1,8 +1,23 @@
 @import 'react-medium-image-zoom/dist/styles.css';
 
 body {
-  font-size: 17px !important;
-  line-height: 1.6;
+  font-size: 16px !important;
+  line-height: 1.8;
+}
+
+.navbar {
+  box-shadow: none !important;
+  /*background-color: rgb(0 0 0 / 10%) !important;*/
+  background-color: #1b1b1d !important;
+  opacity: 1;
+}
+
+.theme-doc-sidebar-container {
+  border-right: unset !important;
+}
+
+.table-of-contents__left-border {
+  border-left: none !important;
 }
 
 .sponsors {
@@ -112,7 +127,7 @@ html[data-theme='dark'] {
 }
 
 .footer--dark {
-  --ifm-footer-background-color: #2b3137;
+  --ifm-footer-background-color: rgb(0 0 0 / 10%);
 }
 
 .unique-tabs .tabs__item {

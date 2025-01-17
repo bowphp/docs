@@ -13,11 +13,11 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Ce système permet d'étendre votre application, de gréffer des package externe dans une application Bow.
+Ce système permet d'étendre votre application, de gréffer des packages externe dans votre application Bow Framework.
 
 ## Création de plugin
 
-Si vous avez une application Bow, il vous suffit de faire la création via `php bow` et lancer la commande `add:configuration` ensuite vous donnez le nom de votre configuration:
+Si vous avez une application Bow, il vous suffit de faire la création via `php bow` et lancer la commande `add:configuration` ensuite, vous donnez le nom de votre configuration:
 
 ```bash
 php bow add:configuration PluginConfiguration
@@ -30,15 +30,15 @@ Le fichier `PluginConfiguration.php` sera créé dans le dossier `app/Configurat
 
 Dans l'initialisation des packages c'est la methode create qui ce lancera avant pour tous le autre packages qui seront defini au dessus dans votre configuration ensuite la methode run sera sera dans le meme orde.
 
-> N'Essayez pas de contacter un package ici si vous attendez qu'il soit dabort configurer.
+> N'Essayez pas de contacter un package ici si vous attendez qu'il soit d'abord configurer.
 
-Dans le fichier de configuration, Bow va injecté le [DIC](https://fr.wikipedia.org/wiki/Injection_de_d%C3%A9pendances) et sera accéssible via la proprété `$this->container`. Plus d'information sur le [DIC](./container) de Bow.
+Dans le fichier de configuration, Bow va injecter le [DIC](https://fr.wikipedia.org/wiki/Injection_de_d%C3%A9pendances) et sera accéssible via la propriété `$this->container`. Plus d'information sur le [DIC](./container) de Bow.
 
 ### Exemple de création
 
-Vous allons faire un plugin aui va vérifier un email, alors on crée la configuration avec le nom `EmailCheckerConfiguration`:
+Nous allons faire un plugin aui va vérifier un email, alors on crée la configuration avec le nom `EmailCheckerConfiguration`:
 
-> Notez que c'est un exemple pour vous montrez comment vous ici prendre, cet exemple dans un vrai projet aurai pu être traiter autrement.
+> Notez que c'est un exemple pour vous montrer comment vous y prendre, cet exemple dans un vrai projet aurait pu être traité autrement.
 
 ```bash
 php bow add:configuration EmailCheckerConfiguration
@@ -81,7 +81,7 @@ class EmailCheckController
 }
 ```
 
-Vous allons maintenant créer note configuration:
+Nous allons maintenant créer note configuration :
 
 ```php
 namespace App\Configurations;
@@ -109,7 +109,7 @@ Allons tester notre application Bow Framework avec la commande `php bow run:serv
 
 ### Testons notre package
 
-Pour cette exemple nous allons texter node code avec `curl`:
+Pour cet exemple, nous allons tester votre code avec `curl`:
 
 ```bash
 curl -X POST -d "email=exemple@exemple.com" http://localhost:5000/email/checker

@@ -8,17 +8,17 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 - [Introduction](#introduction)
 - [Configuration](#configuration)
 - [SQLite Configuration](#sqlite-configuration)
-- [Connexion à plusieur Base de donnée](#connexion-à-plusieur-base-de-donnée)
+- [Connexion à plusieurs Bases de donnée](#connexion-à-plusieur-base-de-donnée)
 - [Utilisation de requête SQL Brute](#utilisation-de-requête-sql-brute)
   - [Execution de requête Select](#execution-de-requête-select)
-  - [Sélection conditionnel](#sélection-conditionnel)
+  - [Sélection conditionnelle](#sélection-conditionnel)
   - [Execution de requête Insert](#execution-de-requête-insert)
     - [Insertion multiple](#insertion-multiple)
   - [Execution de requête Update](#execution-de-requête-update)
   - [Execution de requête Delete](#execution-de-requête-delete)
   - [Execution de requête](#execution-de-requête)
 - [Database Transactions](#database-transactions)
-  - [Utilisation manuel des transaction](#utilisation-manuel-des-transaction)
+  - [Utilisation manuelle de la transaction](#utilisation-manuel-des-transaction)
 - [Les jointures](#les-jointures)
 
 ## Introduction
@@ -32,7 +32,7 @@ Actuellement, Bow prend en charge deux bases de données:
 
 ## Configuration
 
-La configuration de la base donnée de votre application se localise dans le fihcier `config/database.php`. Dans ce fichier, vous pouvez définir tous les connections de votre base de donnée et un exemple en plus pour tous les supports de base de donnée est defini dans ce fichier.
+La configuration de la base donnée de votre application se localise dans le fichier `config/database.php`. Dans ce fichier, vous pouvez définir tous les connections de votre base de donnée et un exemple en plus pour tous les supports de base de donnée est defini dans ce fichier.
 
 ## SQLite Configuration
 
@@ -45,7 +45,7 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 }
 ```
 
-## Connexion à plusieur Base de donnée
+## Connexion à plusieurs Bases de donnée
 
 Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode static de `connexion` sur la classe [Bow\Database\Database::class](https://bowphp.com/api/master/Bow/Database/Database.html). Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/database.php`:
 
@@ -90,9 +90,9 @@ Alors notre table à comme colonne:
 
 ### Execution de requête Select
 
-Pour executer une requête brute de type `SELECT` nous devrez utiliser la méthode `Database::select` ou le helper `select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `SELECT` nous devrez utiliser la méthode `Database::select` ou le helper `select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
-Execution d'un requête pour optenir tous les informations de la table `pets`:
+Execution d'une requête pour obtenir toutes les informations de la table `pets`:
 
 ```php
 use Bow\Database\Database;
@@ -106,9 +106,9 @@ Via helper `db_select`:
 $pets = db_select('select * from `pets`');
 ```
 
-### Sélection conditionnel
+### Sélection conditionnelle
 
-Execution d'un requête pour optenir tous les informations de la table `pets` quand `id` égale à 1:
+Execution d'une requête pour obtenir toutes les informations de la table `pets` quand `id` égale à 1:
 
 ```php
 use Bow\Database\Database;
@@ -127,9 +127,9 @@ Dans le cas ou c'est un `array` le contenu est de type `stClass` (plus d'informa
 
 ### Execution de requête Insert
 
-Pour executer une requête brute de type `INSERT` nous devrez utiliser la méthode `Database::insert` ou le helper `insert`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `INSERT` nous devrez utiliser la méthode `Database::insert` ou le helper `insert`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
-Execution d'un requête pour inserer une information dans table `pets`:
+Execution d'une requête pour insérer une information dans la table `pets`:
 
 ```php
 use Bow\Database\Database;
@@ -159,7 +159,7 @@ Notez que la valeur retournée par la méthode `insert` est un `int` ou `number`
 
 #### Insertion multiple
 
-Vous avez aussi la possibilité d'inserer plusieurs enregistrements en même temps.
+Vous avez aussi la possibilité d'insérer plusieurs enregistrements en même temps.
 
 ```php
 use Bow\Database\Database;
@@ -195,9 +195,9 @@ $updated = db_insert(
 
 ### Execution de requête Update
 
-Pour executer une requête brute de type `UPDATE` nous devrez utiliser la méthode `Database::update` ou le helper `db_update`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `UPDATE` nous devrez utiliser la méthode `Database::update` ou le helper `db_update`. On considère toujours notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
-Execution d'un requête de mettre à jour d'information dans table `pets`:
+Execution d'une requête de mettre à jour d'information dans la table `pets`:
 
 ```php
 use Bow\Database\Database;
@@ -231,9 +231,9 @@ $updated = db_update(
 
 ### Execution de requête Delete
 
-Pour executer une requête brute de type `DELETE` nous devrez utiliser la méthode `Database::delete` ou le helper `db_delete`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `DELETE` nous devrez utiliser la méthode `Database::delete` ou le helper `db_delete`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
-Execution d'un requête pour inserer une information dans table `pets`:
+Execution d'une requête pour insérer une information dans la table `pets`:
 
 ```php
 use Bow\Database\Database;
@@ -295,10 +295,10 @@ db_transaction(function () {
 });
 ```
 
-### Utilisation manuel des transaction
+### Utilisation manuelle de la transaction
 
-Vous pouvez aussi utiliser manuelement le système de transaction.
-Pour démarrer la transaction avec la méthode:
+Vous pouvez aussi utiliser manuellement le système de transaction.
+Pour démarrer la transaction avec la méthode :
 
 ```php
 use Bow\Database\Database;
@@ -340,10 +340,10 @@ db_transaction_started();
 
 ## Les jointures
 
-Considérons les tables suivantes:
+Considérons les tables suivantes :
 
 ```sql
-create table `author` (
+create table `authors` (
   `id` int primary key,
   `name` varchar(200)
 );
@@ -359,10 +359,10 @@ create table `pets` (
 Pour faire une jointure dans Bow Framework c'est très simple en fait. Pour ce faire on utilise la méthode `join`.
 
 ```php
-$results = db_table('pets')->join('autors', 'authors.id', 'pets.author_id')->get();
+$results = db_table('pets')->join('authors', 'authors.id', 'pets.author_id')->get();
 ```
 
-Souvant il est intéressant d'ajouter des contraintes dans la réquête normalement avec la clause `WHERE`.
+Souvent, il est intéressant d'ajouter des contraintes dans la requête normalement avec la clause `WHERE`.
 
 ```php
 $results = db_table('pets')
@@ -370,18 +370,18 @@ $results = db_table('pets')
   ->whereRaw('pets.author_id', 1)->get();
 ```
 
-Normalement vous pouvez ajouter plusieur jointure dans l'appel de méthode.
-Pour l'exemple disons qu'il y a une autre table nommé `countries` qui est le pays du propriétaire et que la table `authors` est maintenant:
+Normalement, vous pouvez ajouter plusieurs jointures dans l'appel de méthode.
+Pour l'exemple disons qu'il y a une autre table nommée `countries` qui est le pays du propriétaire et que la table `authors` est maintenant :
 
 ```sql
-create table `author` (
+create table `authors` (
   `id` int primary key,
   `name` varchar(200),
   `country_id` int
 );
 ```
 
-Notre requête sera maintenant:
+Notre requête sera maintenant :
 
 ```php
 $results = db_table('authors')

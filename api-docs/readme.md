@@ -1,6 +1,6 @@
 ## Api docs buider
 
-Lance the following commande:
+Lance the following command:
 
 Git is required
 

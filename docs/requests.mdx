@@ -9,7 +9,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 - [Accéder à la requête](#accéder-à-la-requête)
 - [Recupération des données](#recupération-des-données)
   - [Via des Closures de route](#via-des-closures-de-route)
-  - [Via un controlleur](#via-un-controlleur)
+  - [Via un controller](#via-un-controlleur)
 - [Chemin de requête et méthode](#chemin-de-requête-et-méthode)
   - [Récupérer le chemin de requête](#récupérer-le-chemin-de-requête)
   - [Récupérer la méthode de requête](#récupérer-la-méthode-de-requête)
@@ -21,7 +21,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
   - [Déterminer le Port de client](#déterminer-le-port-de-client)
   - [Déterminer le protocol de client](#déterminer-le-protocol-de-client)
   - [Récupérer les entête-https](#récupérer-les-entête-https)
-  - [Récupérer le IP du server](#récupérer-le-ip-du-server)
+  - [Récupérer l'IP du serveur](#récupérer-le-ip-du-server)
   - [Récupérer le domaine Origin](#récupérer-le-domaine-origin)
   - [Récupérer le temps de la requête](#récupérer-le-temps-de-la-requête)
   - [Récupérer une instance de la session](#récupérer-une-instance-de-la-session)
@@ -46,8 +46,7 @@ En utilisant quelques méthodes simples, vous pouvez accéder à toutes les entr
 - Avec le helper `request`:
 
 ```php
-$app->get('/', function ()
-{
+$app->get('/', function () {
   $request = request();
 
   $name = $request->get('name');
@@ -60,13 +59,18 @@ $app->get('/', function ()
 ```php
 use Bow\Http\Request;
 
-$app->get('/', function (Request $request)
-{
+$app->get('/', function (Request $request) {
   return $request->get('name');
 });
 ```
 
-### Via un controlleur
+```jsx title="/src/components/HelloCodeTitle.js"
+function HelloCodeTitle(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+```
+
+### Via un controller
 
 Si votre méthode de contrôleur attend également une entrée d'un paramètre de route, vous devez répertorier les paramètres de votre route après vos autres dépendances. Par exemple, si votre route est défini comme suit:
 
@@ -88,10 +92,10 @@ class UserController extends Controller
   /**
    * Afficher le profil pour l'utilisateur donné
    *
-   * @param Request $reuest
+   * @param Request $request
    * @return mixed
    */
-  public function show(Request $reuest, $id)
+  public function show(Request $request, $id)
   {
     $user = User::where('id', $id)->first();
 
@@ -281,7 +285,7 @@ echo $hostname;
 
 ### Récupérer le temps de la requête
 
-Il est souvent intéressent de voir combien de temps à faire une requête. La méthode `time` nous permet de le faire et elle retourne un timestamp.
+Il est souvent intéressé de voir combien de temps à faire une requête. La méthode `time` nous permet de le faire et elle retourne un timestamp.
 
 ```php
 $time = $request->time();
@@ -291,7 +295,7 @@ echo $time;
 
 ### Récupérer une instance de la session
 
-Il est souvent intéressent de manipuler la session directement. La méthode `session` nous permet de le faire et elle retourne l'instance de la session.
+Il est souvent intéressé de manipuler la session directement. La méthode `session` nous permet de le faire et elle retourne l'instance de la session.
 
 ```php
 $session = $request->session();
@@ -299,16 +303,16 @@ $session = $request->session();
 var_dump($session);
 ```
 
-> Pour plus d'information sur la session visitez cette page [HTTP Session](./seeding)
+> Pour plus d'information sur la session, visitez cette page [HTTP Session](./session)
 
 ### Récupérer l'authentification courante
 
-Vous pouvez aussi avoir l'authenticiation en cours si vous avez utiliser le système d'authentification native de Bow Framework.
+Vous pouvez aussi avoir l'authentification en cours si vous avez utilisé le système d'authentification native de Bow Framework.
 
 ```php
 $user = $request->user();
 
-// Definir le guard
+// Définir le guard
 $user = $request->user('api');
 ```
 

@@ -18,25 +18,22 @@ function HomepageHeader() {
     <header className={clsx("", styles.heroBanner)}>
       <div className="container">
         <div className="row">
-          <div className="col">
+          <div className="col text--center">
+            <div className="text--center">
+              <img src={siteConfig.favicon} style={{ width: 250 }} alt={siteConfig.title} title={siteConfig.title}/>
+            </div>
             <h1 className="hero__title">{siteConfig.title}</h1>
             <p className="hero__subtitle">{siteConfig.tagline}</p>
             <p
               className="hero__subtitle"
               style={{
-                fontSize: 15,
+                fontSize: 20,
                 display: "inline-block"
               }}
               dangerouslySetInnerHTML={{
                 __html: siteConfig.customFields.landingText,
               }}
             ></p>
-            <Link
-              className="button button--secondary button--sm"
-              to={siteConfig.customFields.startTutorial}
-            >
-              Tutoriel - 5min 
-            </Link>
           </div>
         </div>
       </div>
@@ -50,7 +47,7 @@ export default function Home() {
     <Layout
       title={siteConfig.title}
       description={siteConfig.tagline}>
-      <HomepageHeader />
+      <HomepageHeader/>
       <SponsorsFeatures />
       <HomepageFeatures />
       <TeamFeatures />

@@ -15,7 +15,7 @@ export default function SponsorsFeatures() {
     <section className={styles.features}>
       <div className="container">
         <div className="row">
-          <div className={clsx('col')}>            
+          <div className={clsx('col ')}>
             <div className="sponsors">
               {siteConfig.customFields.sponsors.map((sponsor, idx) => (
                 <Feature key={idx} {...sponsor} />
