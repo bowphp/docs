@@ -114,7 +114,7 @@ $app->patch($url, $action);
 
 ## Les methods de mapping
 
-La mise en place du routage se faire donc via les méthodes suivants:
+La mise en place du routage se faire donc via les méthodes suivantes :
 
 ### Mapping avec `get`
 
@@ -178,7 +178,7 @@ $app->options('/', function () {
 
 > Les méthodes `DELELTE`, `PUT`, `PATCH` ne sont pas supporter par le navigateur.
 
-Les navigateurs ne supportent pas cette méthode. Alors dans votre formulaire d'envoie, il faudra créer un champs comme ceci:
+Les navigateurs ne supportent pas cette méthode. Alors dans votre formulaire d'envoyer, il faudra créer des champs comme ceci :
 
 ```html
 <input type="hidden" name="_method" value="DELETE">
@@ -251,7 +251,7 @@ $app->any('/', function () {
 
 ### Mapping avec `prefix`
 
-Souvent vous serez amener à grouper vos routes et effectuer un branchement simple pour bien orienté votre logique. Les URLs peuvent souvents se répéter comme ceci:
+Souvent, vous serez amener à grouper vos routes et effectuer un branchement simple pour bien orienter votre logique. Les URLs peuvent souvent se répéter comme ceci :
 
 ```php
 $app->get('users', function () {
@@ -267,7 +267,7 @@ $app->get('users/:id/delete', function ($id) {
 });
 ```
 
-Dans ce cas nous avons `users` qui se répété plusieurs fois. Comment bien organiser tout ça ? La réponse est le préfixage de route. Alors la méthodes `prefix` nous permet de grouper plusieur URLs.
+Dans ce cas nous avons `users` qui se répété plusieurs fois. Comment bien organiser tout ça ? La réponse est la préfixale de route. Alors la méthodes `prefix` nous permet de grouper plusieur URLs.
 
 Prototype de le méthode `prefix`.
 
