@@ -49,3 +49,5 @@ jobs:
             rm -rf bowphp.com/.git
             cp -rf bowphp-build/* bowphp.com
             ls -al bowphp.com
+            rm -rf bowphp-build
+            mkdir bowphp-build
