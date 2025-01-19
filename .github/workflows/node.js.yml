@@ -39,13 +39,12 @@ jobs:
           username: ${{ secrets.BOWPHP_WEBSITE_REMOTE_USER }}
           password: ${{ secrets.BOWPHP_WEBSITE_REMOTE_PASSWORD }}
       - name: Deploy to Server
-        uses: appleboy/ssh-action@v0.1.10
+        uses: appleboy/ssh-action@v1.2.0
         if: ${{ github.event_name == 'pull_request' }}
         with:
           host: ${{ secrets.BOWPHP_WEBSITE_REMOTE_HOST }}
           username: ${{ secrets.BOWPHP_WEBSITE_REMOTE_USER }}
           password: ${{ secrets.BOWPHP_WEBSITE_REMOTE_PASSWORD }}
-          script_stop: true
           script: |
             rm -rf bowphp.com/.git
             cp -rf bowphp-build/* bowphp.com
