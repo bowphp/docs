@@ -120,12 +120,6 @@ module.exports = {
         image: "/img/papacandco.png",
         infoLink: "mailto:papacservices@gmail.com",
       },
-      // {
-      //   caption: "Gelsen Dev",
-      //   description: "La communauté des développeurs sénégalais.",
-      //   image: "https://www.galsen.dev/_nuxt/img/galsen-dev.11b417e.webp",
-      //   infoLink: "https://www.galsen.dev/",
-      // },
     ],
     fans: [
       {
@@ -254,6 +248,9 @@ module.exports = {
         content:
           "php, bowphp, bow framework, tintin, routing, i18n, request, http",
       },
+      {
+        name: 'twitter:card', content: 'summary_large_image'
+      },
     ],
     navbar: {
       hideOnScroll: true,
@@ -379,7 +376,6 @@ module.exports = {
     },
     mermaid: {
       theme: {
-        light: "neutral",
         dark: "forest",
       },
     },
@@ -389,4 +385,26 @@ module.exports = {
     },
   },
   themes: ["@docusaurus/theme-mermaid"],
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preconnect',
+        href: 'https://bowphp.com',
+      },
+    },
+    {
+      tagName: 'script',
+      attributes: {
+        type: 'application/ld+json',
+      },
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org/',
+        '@type': 'Organization',
+        name: 'Bow Framework',
+        url: 'https://bowphp.com',
+        logo: 'https://bowphp.com/img/bow.png',
+      }),
+    },
+  ],
 };
