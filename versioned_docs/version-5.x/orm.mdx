@@ -6,7 +6,7 @@ title: "🧩 ORM Barry"
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/bowphp/arts/master/barry.jpg" width="150px"/>
+  <img src="https://raw.githubusercontent.com/bowphp/arts/master/barry.jpg" width="150px" alt="barry"/>
   <br/><span>BARRY ORM</span>
 </h1>
 
@@ -14,15 +14,15 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Un ORM c'est une façon de rélier les tables entre elles en utilisant des classes. Ici chaque enregistrement d'une table représentera un Objet qui peut être en rélation avec d'autre enregistrement. C'est ce qu'on appel en anglais **The Object Relation Mapping** et en français ben, Mappage de rélation en Objet :wink:.
+Un ORM c'est une façon de rélier les tables entre elles en utilisant des classes. Ici chaque enregistrement d'une table représentera un Objet qui peut être en rélation avec d'autre enregistrement. C'est ce qu'on appelle en anglais **The Object Relation Mapping** et en français bennn, Mappage de rélation en Objet :wink:.
 
-L'ORM BARRY inclus avec Bow Framework fournit une implémentation ActiveRecord belle et simple pour travailler avec votre base de données. Chaque table de base de données a un "modèle" correspondant qui est utilisé pour interagir avec cette table. Les modèles vous permettent de rechercher des données dans vos tables, ainsi que d'insérer de nouveaux enregistrements dans la table.
+L'ORM inclus avec Bow Framework fournit une implémentation ActiveRecord belle et simple pour travailler avec votre base de données. Chaque table de base de données a un "modèle" correspondant qui est utilisé pour interagir avec cette table. Les modèles vous permettent de rechercher des données dans vos tables, ainsi que d'insérer de nouveaux enregistrements dans la table.
 
-Dans tout bon Framework qui se respect, il y a un système de ORM et qui posséde un nom super mignon. Celui de Bow se nomme **BARRY**, n'est pas mignon ça :smile:.
+Dans tout bon Framework qui se respecte, il y a un système de ORM et qui possède un nom super mignon. Celui de Bow se nomme **BARRY**, n'est pas mignon ça :smile:.
 
 > Avant de commencer, assurez-vous de configurer une connexion à la base de données dans `config/database.php`.
 
-Avant de continuer veuillez ajouter une migration:
+Avant de continuer, veuillez ajouter une migration :
 
 ```bash
 php bow add:migration CreateTodoTable
@@ -36,8 +36,8 @@ public function up()
   $this->create("todos", function (SQLGenerator $table) {
     $table->addIncrement('id');
     $table->addString('title');
-    $table->addString('status', 0);
-    $table->addInteger('budget', 0);
+    $table->addInteger('status', ["default" => 1]);
+    $table->addInteger('budget', ["default" => 0]);
     $table->addTimestamps();
   });
 }
@@ -53,13 +53,13 @@ php bow migration:migrate
 
 ## Ajouter un model
 
-Pour ajouter un modêle il faut utiliser la ligne de commande `php bow` avec la commande `add:model` suivi du nom du model.
+Pour ajouter un modèle il faut utiliser la ligne de commande `php bow` avec la commande `add:model` suivi du nom du model.
 
 ```bash
 php bow add:model Todo
 ```
 
-Après création du modele, un fichier du meme nom sera créer, dans note cas `Todo.php`, à la racine du dossier `app/Models`.
+Après création du modèle, un fichier du meme nom sera créer, dans notre cas `Todo.php`, à la racine du dossier `app/Models`.
 
 Voici un aperçu du fichier:
 
@@ -152,7 +152,7 @@ La méthode BARRY `all` retournera tous les résultats dans le tableau du modèl
 
 ```php
 $flights = App\Models\Todo::where('status', 'done')
-            ->orderBy('titie', 'desc')
+            ->orderBy('title', 'desc')
             ->take(10)
             ->get();
 ```

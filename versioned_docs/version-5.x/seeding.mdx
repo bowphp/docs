@@ -12,17 +12,17 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le seeding est un mécanisme qui vous permettra d'hydrater votre base de donnée pour pouvoir l'utiliser dans votre développement. Le seeding dans Bow est associer à une table lors de la création.
+Le seeding est un mécanisme qui vous permettra d'hydrater votre base de donnée pour pouvoir l'utiliser dans votre développement. Le seeding dans Bow est associé à une table lors de la création.
 
 ## Ajouter un seeder
 
-Pour ajouter un seeder on passe par `php bow` avec la commande `add:seeder` ensuite le nom de la table.
+Pour ajouter un seeder, on passe par `php bow` avec la commande `add:seeder` ensuite le nom de la table.
 
 ```bash
 php bow add:seeder pets
 ```
 
-Un fichier `pets_seeder.php` sera créé dans le dossier `seeders`. En voici le contenu:
+Un fichier `pets_seeder.php` sera créé dans le dossier `seeders`. En voici le contenu :
 
 ```php
 /**
@@ -49,13 +49,13 @@ return $seeds;
 
 ## Lancer le seeding
 
-Pour lancer le seeding on utilise la commande `seed:table` suivi du nom de la table.
+Pour lancer le seeding, on utilise la commande `seed:table` suivie du nom de la table.
 
 ```bash
 php bow seed:table pets
 ```
 
-Vous avez la possibilité de lancer tout les seeding avec la commande `seed:all`. Cela fera le seeding de tout les fichiers dans `seeders`.
+Vous avez la possibilité de lancer tous les seeding avec la commande `seed:all`. Cela fera le seeding de tous les fichiers dans `seeders`.
 
 ```bash
 php bow seed:all
@@ -63,7 +63,7 @@ php bow seed:all
 
 ## Helper
 
-Souvent vous sera tente de faire des seedins lorsque vous testez votre application. Le helper `db_seed`, très pratique vous permettra de faire des seeding en plein test par exemlpe
+Souvent, vous sera tenté de faire des seeding lorsque vous testez votre application. Le helper `db_seed`, très pratique vous permettra de faire des seeding en plein test par exemple
 
 ```php
 db_seed("user", $overrides = ["name" => "Franck"]);

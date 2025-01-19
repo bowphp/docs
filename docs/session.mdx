@@ -1,6 +1,6 @@
 ---
 id: http-session
-title: "🎬 Gestion de session"
+title: "🎬 Session"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
@@ -25,10 +25,9 @@ Les applications HTTP étant sans état, les sessions offrent un moyen de stocke
 
 il existe deux manières principales de travailler avec les données de `session` dans Bow, le helper global de `session` et via une instance `Bow\Http\Request`.
 
-Premièrement, examinons l’accès à la session via une instance `Bow\Http\Request`, qui peut être indexée sur une méthode de contrôleur. N'oubliez pas que les dépendances des méthodes du contrôleur sont automatiquement injectées via le conteneur Bow:
+Premièrement, examinons l'accès à la session via une instance `Bow\Http\Request`, qui peut être indexée sur une méthode de contrôleur. N'oubliez pas que les dépendances des méthodes du contrôleur sont automatiquement injectées via le conteneur Bow:
 
 ```php
-
 namespace App\Controllers;
 
 use App\Controllers\Controller;
@@ -58,8 +57,7 @@ Lorsque vous récupérez un élément de la session, vous pouvez également tran
 ```php
 $value = $request->session()->get('key', 'default');
 
-$value = $request->session()->get('key', function ()
-{
+$value = $request->session()->get('key', function () {
   return 'default';
 });
 ```
@@ -69,8 +67,7 @@ $value = $request->session()->get('key', function ()
 Vous pouvez également utiliser la fonction PHP de `session` globale pour récupérer et stocker des données dans la session. Lorsque le helper `session` est appelé avec un seul argument de chaîne, il renvoie la valeur de cette clé de session. Lorsque l'assistant est appelé avec un tableau de paires clé/valeur, ces valeurs sont stockées dans la session:
 
 ```php
-$app->get('home', function ()
-{
+$app->get('home', function () {
   // Récupérer une donnée de la session
   $value = session('key');
 

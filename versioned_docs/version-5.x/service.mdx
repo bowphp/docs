@@ -1,8 +1,66 @@
 ---
 id: service
-title: "🏢 Approche service"
+title: "🏢 Approche Service"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Service
+
+Les services sont des classes simple qui vous voulez injectées dans vos Controllers, dans d'autre services que peuvent nous permettre de découpler les logiquees et donc optimisé votre code source.
+Vous pouvez aussi injectées des modèles dans vos services.
+
+## Utilisation
+
+Pour ajouter un service rien de plus simple que d'untilisé la commande suivante :
+
+```bash
+php bow add:service UserService
+```
+
+Un service `UserService` sera créé dans le dossier par default dans le dossier `app/Services`. Et nous allons ajouter la méthode suivante `fetchAllUsers` pour récupérer tout les utilisateurs enregistrés dans la base de donnée.
+
+```php title="app/Services/UserService"
+namesapce App\Services;
+
+use App\Models\User;
+
+class UserService
+{
+  public function fetchAllUsers()
+  {
+    return User::all();
+  }
+}
+```
+
+# Utilisation du service
+
+Pour utiliser le service nous allons l'inject là ou nous voulons l'utiliser, dans notre cas dans un controller.
+
+Lancer la commande suivante pour créer un nouveau controller
+
+```bash
+php bow add:controller UserController
+```
+
+Dans le controleur nous allons maintenant injecter le service:
+
+```php
+class UserController extends Controller
+{
+  public function __construct(
+    private UserService $userService 
+  ) {}
+
+  public function showIndex()
+  {
+    $users = $this->userService->fetchAllUsers();
+
+    // do something
+  }
+}
+
+```
 
 <SuggestionFeature />

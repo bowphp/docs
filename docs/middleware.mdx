@@ -15,8 +15,6 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 Les middlewares constituent un mécanisme pratique pour filtrer les requêtes HTTP entrant dans votre application. Par exemple vous pouvez faire un middleware pour vérifier si un utilisateur est connecté et ensuite faire une action en fonction. Vous pouvez exécuter du code avant et après votre application Bow pour manipuler les objets `Request` et `Response` comme bon vous semble.
 
-<script id="asciicast-bfTIiqg1ew9x1QRxeMTufxJJU" src="https://asciinema.org/a/bfTIiqg1ew9x1QRxeMTufxJJU.js" data-speed="2"  async></script>
-
 ## Comment ça marche
 
 Différents Frameworks utilisent le système de middleware différemment. Bow ajoute un middleware sous forme de file d'attente au dessus de votre application principale. Chaque nouvelle couche de middleware est ajouté la file de middleware existante. La structure de file se dilate vers l'extérieur au fure et à mesure que les couches intermédiaires supplémentaires sont ajoutées.
