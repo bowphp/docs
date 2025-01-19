@@ -17,7 +17,22 @@ Bow est un framework PHP, écrit par **[Franck DAKIA](http://github.com/papac)**
 
 L'objectif est de permettre aux débutants qui souhaitent travailler sur un plus large projet et comprendre le fonctionnement du **développement collaboratif** de s'y mettre avec aisance et faire de ce framework une référence dans la communauté PHP.
 
-**Faites-vous une idée en commençant par la [documentation](https://bowphp.com).**
+```mermaid
+graph TD
+    A[Requête HTTP] -->|Entrée utilisateur| B[Routeur]
+    B -->|Associe une route| C[Contrôleur]
+    C -->|Appelle la logique métier| D[Modèle]
+    D -->|Interaction| E[(Base de données)]
+    C -->|Retourne des données| F[Vue]
+    F -->|Génère la réponse HTML| G[Réponse HTTP]
+
+    subgraph Framework BowPHP
+        B
+        C
+        D
+        F
+    end
+```
 
 ## Contributing
 
