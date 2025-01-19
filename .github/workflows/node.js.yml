@@ -34,7 +34,7 @@ jobs:
         with:
           local: build
           recursive: true
-          remote: bowphp-build
+          remote: bowphp.com
           host: ${{ secrets.BOWPHP_WEBSITE_REMOTE_HOST }}
           username: ${{ secrets.BOWPHP_WEBSITE_REMOTE_USER }}
           password: ${{ secrets.BOWPHP_WEBSITE_REMOTE_PASSWORD }}
