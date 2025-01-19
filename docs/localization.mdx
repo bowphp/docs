@@ -38,8 +38,7 @@ Tous les fichiers de langue renvoient un tableau de chaînes à clé.
 
 Par exemple:
 
-```php
-// frontend/lang/en/messages.php
+```php title="frontend/lang/en/messages.php"
 return [
   'welcome' => 'Welcome to our application'
 ];
@@ -49,7 +48,7 @@ return [
 
 La langue par défaut de votre application est stockée dans le fichier de configuration `config/trans.php`. Bien entendu, vous pouvez modifier cette valeur pour répondre aux besoins de votre application. Vous pouvez également modifier la langue active au moment de l'exécution à l'aide de la méthode `setLocale` sur la classe [`Bow\Translate\Translator`](https://bowphp.com/api/master/Bow/Translate/Translator.html):
 
-```php
+```php title="routes/app.php"
 use Bow\Translate\Translator;
 
 $app->get('docs/:locale', function ($locale) {
@@ -60,7 +59,7 @@ $app->get('docs/:locale', function ($locale) {
 
 Vous pouvez configurer une `lang`, qui sera utilisée lorsque la langue active ne contient pas une chaîne de traduction donnée. Comme la langue par défaut, la langue de secours est également configurée dans le fichier de configuration `config/trans.php`:
 
-```php
+```php title="config/trans.php"
 'lang' => 'en',
 ```
 

@@ -64,9 +64,9 @@ email($view, array $data, callable $callable)
 
 `$callable` vous permet de construire le message et prend en paramètre une instance de [`Bow\Mail\Message`](https://bowphp.com/api/master/Bow/Mail/Message.html) qui permet d'ajouter le destinataire, l'objet, les pièces jointes, l'expéditeur.
 
-Exemple d'utilisation:
+Exemple d'utilisation :
 
-Considérons la vue `email-view.tintin.php` qui contient les informations suivantes:
+Considérons la vue `email-view.tintin.php` qui contient les informations suivantes :
 
 ```jinja
 Bonjour {{ $name }},
@@ -76,7 +76,7 @@ Nous vous informons que vous compte viens d'être créditer de 100.000.000 F.
 Cordialement,
 ```
 
-Ecrivons maintenant le code qui envoie le mail:
+Écrivons maintenant le code qui envoie le mail :
 
 ```php
 use Bow\Mail\Mail;

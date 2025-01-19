@@ -27,17 +27,20 @@
     "Http": [
       "http-request",
       "http-response",
-      "http-session"
+      "http-session",
+      "http-client"
     ],
     "Sécurités": [
       "auth",
       "policier",
-      "csrf-protection"
+      "soauth",
+      "csrf"
     ],
     "Misc": [
       "frontend",
       "service",
       "helpers",
+      "cqrs",
       "console",
       "package"
     ]

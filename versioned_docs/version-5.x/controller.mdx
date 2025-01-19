@@ -24,9 +24,9 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Les contrôleurs sont des moyens pour simplifier l'organisation de vos projet.
+Les contrôleurs sont des moyens pour simplifier l'organisation de votre projet.
 
-Au lieu de définir toute la logique de gestion des requête en tant que `closure` dans les fichiers de routage, vous pouvez organiser ce comportement à l'aide de classe de contrôleur. Les contrôleurs peuvent regrouper la logique de traitement des requêtes associée en une seule classe.
+Au lieu de définir toute la logique de gestion de la requête en tant que `closure` dans les fichiers de routage, vous pouvez organiser ce comportement à l'aide de classe de contrôleur. Les contrôleurs peuvent regrouper la logique de traitement des requêtes associée en une seule classe.
 
 Les contrôleurs sont stockés dans le répertoire `app/Controllers`.
 
@@ -34,11 +34,11 @@ Les contrôleurs sont stockés dans le répertoire `app/Controllers`.
 
 ## Configuration
 
-Vous avez la possibilité de modifier le `namespace` des contrôleurs et des middlewares. Pour ce faire ouvrez le fichier `app\Kernel.php`. La méthode `middlewares` permet à Bow de savoir quel est le bon `namespace` à ajouter sur le contrôleur lors de l'execution de la réquête ou lors de la génération de contrôleur ou de middleware par le lanceur de tache `php bow`.
+Vous avez la possibilité de modifier le `namespace` des contrôleurs et des middlewares. Pour ce faire, ouvrez le fichier `app\Kernel.php`. La méthode `middlewares` permet à Bow de savoir quel est le bon `namespace` à ajouter sur le contrôleur lors de l'execution de la réquête ou lors de la génération de contrôleur ou de middleware par le lanceur de tache `php bow`.
 
-Imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tout vos contrôleurs dans le `App\Bus\Controllers`. Alors comment faire ça ?
+Imaginez que vous avez une application pour la gestion des Bus d'une école et que vous voulez grouper tous vos contrôleurs dans le `App\Bus\Controllers`. Alors comment faire ça ?
 
-Voici le code que cela pourrait donnée:
+Voici le code que cela pourrait donner :
 
 ```php
 # Dans le fichier `app\Kernel.php`
@@ -51,7 +51,7 @@ public function namespaces()
 }
 ```
 
-Ensuite il faudra aussi changer un peu la configuration du lancer de tache:
+Ensuite, il faudra aussi changer un peu la configuration du lancer de tache:
 
 ```php
 # Dans le fichier `bow`
@@ -119,15 +119,15 @@ Vous pouvez générer un contrôleur en utilisant la commande `add:controller` d
 php bow add:controller Photo/AdminController
 ```
 
-> Remarquez bien le nom du dossier c'est en camel case. Le framework crééra le namespace approprié pour la classe `AdminController` et qui sera `namepsace App\Controllers\Photo;`. Vous trouverez le controller dans un dossier `app/Controllers/Photo/AdminController`.
+> Remarquez bien le nom du dossier, c'est en camel case. Le framework créera le namespace approprié pour la classe `AdminController` et qui sera `namepsace App\Controllers\Photo;`. Vous trouverez le controller dans un dossier `app/Controllers/Photo/AdminController`.
 
 Plus d'information sur le [routing](./routing).
 
 ### Contrôleur et Middleware
 
-Les middlewares peuvent être assigner à la route du contrôleur dans vos fichiers de route. Les middleware sont stockés dans le dossier `app\Middlewares`. Pour plus d'information sur les middlewares, visitez ce [lien](./middleware).
+Les middlewares peuvent être assigner à la route du contrôleur dans vos fichiers de route. Le middleware est stocké dans le dossier `app\Middlewares`. Pour plus d'information sur les middlewares, visitez ce [lien](./middleware).
 
-Exemple:
+Exemple :
 
 ```php
 $app->get('profile', 'UserController::show')->middleware('auth');
@@ -135,7 +135,7 @@ $app->get('profile', 'UserController::show')->middleware('auth');
 
 ## Contrôleur REST
 
-Les contrôleur REST sont un moyen simple pour mettre en place un API Rest. Cette approche, vous permet de vous concentrez sur votre logique et laisser le Framework géré le routage pour vous.
+Le contrôleur REST sont un moyen simple pour mettre en place un API Rest. Cette approche, vous permet de, vous concentrez sur votre logique et laisser le Framework gérer le routage pour vous.
 
 ### Définir un contrôleur rest
 
@@ -156,7 +156,7 @@ use App\Models\Pet;
 class PetController extends Controller
 {
   /**
-   * Point d'entré
+   * Point d'entrée
    *
    * @return void
    */
@@ -197,7 +197,7 @@ class PetController extends Controller
   }
 
   /**
-   * Mise à jour d'un ressource en utilisant paramètre du GET
+   * Mise à jour d'une ressource en utilisant paramètre du GET
    *
    * @param mixed $id
    * @return void
@@ -233,7 +233,7 @@ class PetController extends Controller
 
 ### Utilisons notre contrôleur REST
 
-Pour utiliser le contrôleur Rest vous avez juste à utiliser le méthode `rest` sur la variable globale `$app` dans vos fichiers de [routing](./routing).
+Pour utiliser le contrôleur Rest, vous avez juste à utiliser la méthode `rest` sur la variable globale `$app` dans vos fichiers de [routing](./routing).
 
 #### Prototype de la méthode `rest`
 
@@ -249,7 +249,7 @@ $app->rest(url, action, where = []);
 
 #### Utilisation simple
 
-Et ça donne ceci:
+Et ça donne ceci :
 
 ```php
 $app->rest('pets', 'PetController');
@@ -263,7 +263,7 @@ Avec une contrainte ça donne ceci:
 $app->rest('pets', 'PetController', ['id' => '\d+']);
 ```
 
-Ici la contrainte s'applique sur tous les méthodes. Mais, vous avez aussi la possibilité de restreindre les contraintes sur des méthodes comme ceci:
+Ici la contrainte s'applique sur toutes les méthodes. Mais, vous avez aussi la possibilité de restreindre les contraintes sur des méthodes comme ceci :
 
 ```php
 $app->rest('pets', 'PetController', [
@@ -274,7 +274,7 @@ $app->rest('pets', 'PetController', [
 
 #### Utilisation via un tableau comme action
 
-Dans le cas ou `action` est un `array` voici les clés/valeurs possible.
+Dans le cas ou `action` est un `array` voici les clés/valeurs possibles.
 
 ```php
 $action = [
@@ -291,7 +291,7 @@ La valeur de `ignores` sear une liste de méthode/url qui seront ignorées par l
 
 #### Url et Action
 
-En considerant la définition Rest suivant:
+En considered la définition Rest suivant:
 
 ```php
 $action = [

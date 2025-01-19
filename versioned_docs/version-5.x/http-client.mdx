@@ -1,20 +1,19 @@
 ---
-id: cqrs
-title: "🤠 CQRS"
+id: http-client
+title: "🙅🏽‍♂️ Http Client"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-**CQRS** (*ségrégation des responsabilités des requêtes de commande*).
-
+CQRS (ségrégation des responsabilités des requêtes de commande). C'est un modèle que j'ai entendu pour la première fois décrit par Greg Young.
 Au cœur se trouve l'idée selon laquelle vous pouvez utiliser un modèle différent pour mettre à jour les informations que celui que vous utilisez pour lire les informations.
-Dans certaines situations, cette séparation peut être utile, mais sachez que pour la plupart des systèmes, **CQRS** ajoute une complexité risquée.
+Dans certaines situations, cette séparation peut être utile, mais sachez que pour la plupart des systèmes, CQRS ajoute une complexité risquée.
 
 [Pour plus d'information](https://www.martinfowler.com/bliki/CQRS.html)
 
 ## Install
 
-Installez le package suivant: 
+Le package utilise php >= 8.1
 
 ```bash
 composer require bowphp/cqrs
@@ -22,7 +21,7 @@ composer require bowphp/cqrs
 
 ## Help
 
-Tout d'abord, créez l'exemple de commande:
+Tout d’abord, créez l’exemple de commande:
 
 ```php
 use Bow\CQRS\Command\CommandInterface;
