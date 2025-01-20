@@ -1,112 +1,262 @@
 ---
 id: http-client
-title: "🙅🏽‍♂️ Http Client"
+title: "🚀 Http Client"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-CQRS (ségrégation des responsabilités des requêtes de commande). C'est un modèle que j'ai entendu pour la première fois décrit par Greg Young.
-Au cœur se trouve l'idée selon laquelle vous pouvez utiliser un modèle différent pour mettre à jour les informations que celui que vous utilisez pour lire les informations.
-Dans certaines situations, cette séparation peut être utile, mais sachez que pour la plupart des systèmes, CQRS ajoute une complexité risquée.
+Le client HTTP de BowPHP est un composant puissant et flexible permettant de réaliser des requêtes HTTP vers des API ou des services distants. Il utilise la bibliothèque cURL pour offrir des fonctionnalités avancées tout en simplifiant leur utilisation.
 
-[Pour plus d'information](https://www.martinfowler.com/bliki/CQRS.html)
+## Fonctionnalités principales
 
-## Install
+1. Méthodes HTTP supportées : `GET`, `POST`, `PUT`, `DELETE`.
+2. Gestion des en-têtes personnalisés.
+3. Support des fichiers attachés pour les requêtes multipart/form-data.
+4. Encodage JSON natif des données.
+5. Définition d'une URL de base (`base_url`) pour simplifier la gestion des endpoints API.
+6. Gestion des erreurs avec des exceptions spécifiques.
 
-Le package utilise php >= 8.1
+## Utilisation
 
-```bash
-composer require bowphp/cqrs
-```
-
-## Help
-
-Tout d'abord, créez l'exemple de commande:
+Pour utilisater le client http rien de plus simple que de faire une nouvelle instance ou une injection dans un service ou un controller:
 
 ```php
-use Bow\CQRS\Command\CommandInterface;
-
-class CreateUserCommand implements CommandInterface
-{
-    public function __construct(
-        public string $username,
-        public string $email
-    ) {}
-}
+$client = new HttpClient();
 ```
 
-Créez le gestionnaire ici :
+:::info
+Le contructeur prends un paramètres $base_url qui est optionnel. Si le base url est define l'appel des endpoints devient plus simple
 
 ```php
-use Bow\CQRS\Command\CommandHandlerInterface;
-
-class CreateUserCommandHandler implements CommandHandlerInterface
-{
-    public function __construct(public UserService $userService) {}
-
-    public function process(CommandInterface $command): mixed
-    {
-        if ($this->userService->exists($command->email)) {
-            throw new UserServiceException(
-                "The user already exists"
-            );
-        }
-
-        return $this->userService->create([
-            "username" => $command->username,
-            "email" => $command->email
-        ]);
-    }
-}
+$client = new HttpClient('https://api.example.com');
 ```
+:::
 
-Ajouter une commande au registre dans `App\Configurations\ApplicationConfiguration::class`:
+> Dans le cas ou nous n'avez pas définit la base url à la création de l'instance, `setBaseUrl` nous permet de le faire.
+
+#### `get`
+
+Effectue une requête GET.
+
+- **Paramètres** :
+  - `$url` : Le chemin relatif ou l'URL complète.
+  - `$data` : Les paramètres de la requête (ajoutés à l'URL sous forme de chaîne de requête).
+- **Retourne** :
+  - Une instance de `Response` contenant les données de la réponse.
 
 ```php
-use Bow\CQRS\Registration as CQRSRegistration;
+$client = new HttpClient('https://api.example.com');
+$response = $client->get('/users', ['page' => 2]);
 
-public function run()
-{
-    CQRSRegistration::commands([
-        CreateUserCommand::class => CreateUserCommandHandler::class
-    ]);
-}
+echo $response->getContent();
 ```
 
-Exécuter la commande dans le contrôleur:
+#### `post`
+
+Effectue une requête POST.
+
+- **Paramètres** :
+  - `$url` : Le chemin relatif ou l'URL complète.
+  - `$data` : Les données à envoyer (JSON ou `application/x-www-form-urlencoded`).
+- **Retourne** :
+  - Une instance de `Response` contenant les données de la réponse.
 
 ```php
-namespace App\Controllers;
+$client = new HttpClient('https://api.example.com');
+$response = $client->acceptJson()->post('/users', [
+    'name' => 'John Doe',
+    'email' => 'john.doe@example.com'
+]);
 
-use App\Controllers\Controller;
-use App\Commands\CreateUserCommand;
-
-class UserController extends Controller
-{
-    public function __construct(private CommandBus $commandBus) {}
-
-    public function __invoke(Request $request)
-    {
-        $payload = $request->only(['username', 'email']);
-
-        $command = new CreateUserCommand(
-            $payload['username'],
-            $payload['email']
-        );
-
-        $result = $this->commandBus->execute($command);
-
-        return redirect()
-            ->back()
-            ->withFlash("message", "User created");
-    }
-}
+echo $response->getContent();
 ```
 
-Mettre un nouvel itinéraire :
+#### `put`
+
+Effectue une requête PUT.
+
+- **Paramètres** :
+  - `$url` : Le chemin relatif ou l'URL complète.
+  - `$data` : Les données à envoyer.
+- **Retourne** :
+  - Une instance de `Response` contenant les données de la réponse.
 
 ```php
-$app->post("/users/create", UserController::class);
+$client = new HttpClient('https://api.example.com');
+$response = $client->acceptJson()->put('/users', [
+    'name' => 'John Doe',
+    'email' => 'john.doe@example.com'
+]);
+
+echo $response->getContent();
 ```
+
+#### `delete`
+
+Effectue une requête DELETE.
+
+- **Paramètres** :
+  - `$url` : Le chemin relatif ou l'URL complète.
+  - `$data` : Les données à envoyer (si applicables).
+- **Retourne** :
+  - Une instance de `Response` contenant les données de la réponse.
+
+```php
+$client = new HttpClient('https://api.example.com');
+$response = $client->delete('/users/2');
+
+echo $response->getContent();
+```
+
+#### `addAttach`
+
+Attache un ou plusieurs fichiers à la requête.
+
+- **Paramètres** :
+  - `$attach` : Chemin(s) du ou des fichiers à envoyer.
+- **Retourne** :
+  - L'instance du client pour un chaînage fluide.
+
+```php
+$client = new HttpClient('https://api.example.com');
+$response = $client->addAttach('/path/to/file.txt')->post('/upload');
+
+echo $response->getContent();
+```
+
+### addHeaders
+
+Ajoute des en-têtes personnalisés à la requête.
+
+- **Paramètres** :
+  - `$headers` : Tableau associatif des en-têtes (ex. : `['Authorization' => 'Bearer token']`).
+- **Retourne** :
+  - L'instance du client pour un chaînage fluide.
+
+```php
+$client = new HttpClient('https://api.example.com');
+$response = $client->get('/users', ['page' => 2]);
+
+echo $response->getContent();
+```
+
+### setUserAgent
+
+Définit l'agent utilisateur pour la requête.
+
+- **Paramètres** :
+  - `$user_agent` : Chaîne représentant l'agent utilisateur.
+- **Retourne** :
+  - L'instance du client pour un chaînage fluide.
+
+```php
+$client = new HttpClient('https://api.example.com');
+$response = $client->get('/users', ['page' => 2]);
+
+echo $response->getContent();
+```
+
+### acceptJson
+
+Configure le client pour envoyer et accepter des données au format JSON.
+
+- **Retourne** :
+  - L'instance du client pour un chaînage fluide.
+
+```php
+$client = new HttpClient('https://api.example.com');
+$response = $client->get('/users', ['page' => 2]);
+
+echo $response->getContent();
+```
+
+## La classe `Response`
+
+La classe `Response` est utilisée pour manipuler la réponse. Elle encapsule les informations retournées par la requête, telles que le contenu de la réponse, les en-têtes HTTP, le code de statut, ainsi que des informations de performance. Voici une vue d'ensemble des fonctionnalités de cette classe.
+
+### Méthodes
+
+#### `getContent`
+
+```php
+public function getContent(): ?string
+```
+
+Cette méthode retourne le contenu de la réponse HTTP sous forme de chaîne de caractères. Si aucun contenu n'est disponible, elle retourne `null`.
+
+#### `toJson`
+
+```php
+public function toJson(?bool $associative = null): object|array
+```
+
+Cette méthode permet de décoder le contenu de la réponse (en supposant qu'il soit au format JSON) en un objet ou un tableau PHP. Le paramètre optionnel `$associative` permet de choisir si le résultat doit être un tableau associatif (`true`) ou un objet (`false`).
+
+#### `toArray`
+
+```php
+public function toArray(): array
+```
+
+C'est une méthode alias de `toJson(true)`, qui retourne le contenu JSON de la réponse sous forme de tableau associatif.
+
+#### `getHeaders`
+
+```php
+public function getHeaders(): array
+```
+
+Retourne les en-têtes HTTP de la réponse sous forme de tableau. Ce tableau contient des informations telles que le code de statut HTTP, le type de contenu, le temps d'exécution, etc.
+
+#### `getCode` / `statusCode`
+
+```php
+public function getCode(): ?int
+public function statusCode(): ?int
+```
+
+Ces méthodes retournent le code de statut HTTP de la réponse (par exemple, 200 pour une requête réussie, 404 pour une ressource introuvable). Si le code de statut n'est pas disponible, elles retournent `null`.
+
+#### `isSuccessful`
+
+```php
+public function isSuccessful(): bool
+```
+
+Cette méthode retourne `true` si le code de statut HTTP indique une réponse réussie (200 ou 201), sinon elle retourne `false`.
+
+#### `isFailed`
+
+```php
+public function isFailed(): bool
+```
+
+Cette méthode retourne `true` si le code de statut HTTP indique une erreur (tout code autre que 200 ou 201), sinon elle retourne `false`.
+
+#### Informations de performance
+
+Le client HTTP de Bow fournit également des méthodes pour obtenir des informations sur la performance de la requête HTTP.
+
+- **`getExecutionTime`** : Retourne le temps total d'exécution de la requête en secondes.
+- **`getConnexionTime`** : Retourne le temps nécessaire pour établir une connexion avec le serveur.
+- **`getUploadSize`** : Retourne la taille des données envoyées lors de la requête en octets.
+- **`getUploadSpeed`** : Retourne la vitesse de téléchargement des données envoyées.
+- **`getDownloadSize`** : Retourne la taille des données reçues lors de la requête en octets.
+- **`getDownloadSpeed`** : Retourne la vitesse de téléchargement des données reçues.
+
+Ces informations sont utiles pour analyser les performances des requêtes HTTP, en particulier dans des scénarios où la rapidité et l'efficacité sont essentielles.
+
+#### Gestion des erreurs
+
+- **`getErrorMessage`** : Retourne le message d'erreur, s'il y en a un. Si aucune erreur n'est présente, cette méthode retourne une chaîne vide.
+- **`getErrorNumber`** : Retourne le code d'erreur cURL, s'il y en a un.
+
+#### `getContentType`
+
+```php
+public function getContentType(): ?string
+```
+
+Cette méthode retourne le type de contenu retourné par la réponse (par exemple, `application/json`), ou `null` si ce type n'est pas disponible.
 
 <SuggestionFeature />
