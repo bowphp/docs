@@ -20,11 +20,12 @@ Installez le package suivant:
 composer require bowphp/cqrs
 ```
 
-## Help
+## Utilisation
 
-Tout d'abord, créez l'exemple de commande:
+Tout d'abord, créez l'exemple de commande qui implement l'interface `Bow\CQRS\Command\CommandInterface`. Pour cette exemple, nous allons créer notre commande de la dossier `app/Commands`.
+Cette commande sera chargé de la création d'un utilisateur:
 
-```php
+```php title="app/Commands/CreateUserCommand.php"
 use Bow\CQRS\Command\CommandInterface;
 
 class CreateUserCommand implements CommandInterface
@@ -36,75 +37,92 @@ class CreateUserCommand implements CommandInterface
 }
 ```
 
-Créez le gestionnaire ici :
+Ensuite, nous allons créer le handler qui va écouté et executé les instructions lorsque la commande `CreateUserCommand` est lancé. Cette classe doit implementer l'interface `Bow\CQRS\Command\CommandHandlerInterface` :
 
-```php
+```php {7} title="app/CommandHandlers/CreateUserCommandHandler.php"
 use Bow\CQRS\Command\CommandHandlerInterface;
 
 class CreateUserCommandHandler implements CommandHandlerInterface
 {
-    public function __construct(public UserService $userService) {}
+  public function __construct(public UserService $userService) {}
 
-    public function process(CommandInterface $command): mixed
-    {
-        if ($this->userService->exists($command->email)) {
-            throw new UserServiceException(
-                "The user already exists"
-            );
-        }
-
-        return $this->userService->create([
-            "username" => $command->username,
-            "email" => $command->email
-        ]);
+  public function process(CommandInterface $command): mixed
+  {
+    if ($this->userService->exists($command->email)) {
+      throw new UserServiceException(
+        "The user already exists"
+      );
     }
+
+    return $this->userService->create([
+      "username" => $command->username,
+      "email" => $command->email
+    ]);
+  }
 }
 ```
 
-Ajouter une commande au registre dans `App\Configurations\ApplicationConfiguration::class`:
+:::info
+C'est `process` qui va executer les instructions. Elle va recevoir l'instance de la commande qui a été créé
+:::
+
+## Registration
+
+Pour terminer, nous allons ajouter la commande au registre dans `App\Configurations\ApplicationConfiguration::class`:
 
 ```php title="app/Configurations/ApplicationConfiguration.php"
 use Bow\CQRS\Registration as CQRSRegistration;
 
 public function run()
 {
-    CQRSRegistration::commands([
-        CreateUserCommand::class => CreateUserCommandHandler::class
-    ]);
+  CQRSRegistration::commands([
+    CreateUserCommand::class => CreateUserCommandHandler::class
+  ]);
 }
 ```
 
-Exécuter la commande dans le contrôleur:
+:::note
+Ici nous disons que lorsque la commande `CreateUserCommand` est executé déclanche le handler `CreateUserCommandHandler`
+:::
 
-```php
+### Exécute la commande
+
+Exécuter la commande dans le contrôleur; donc pour l'exemple nous avons créé un controller `UserController`:
+
+```php {3,9,15-18,20} title="app/Controllers/UserController.php"
 namespace App\Controllers;
 
+use Bow\CQRS\Command\CommandBus;
 use App\Controllers\Controller;
 use App\Commands\CreateUserCommand;
 
 class UserController extends Controller
 {
-    public function __construct(private CommandBus $commandBus) {}
+  public function __construct(private CommandBus $commandBus) {}
 
-    public function __invoke(Request $request)
-    {
-        $payload = $request->only(['username', 'email']);
+  public function __invoke(Request $request)
+  {
+    $payload = $request->only(['username', 'email']);
 
-        $command = new CreateUserCommand(
-            $payload['username'],
-            $payload['email']
-        );
+    $command = new CreateUserCommand(
+      $payload['username'],
+      $payload['email']
+    );
 
-        $result = $this->commandBus->execute($command);
+    $result = $this->commandBus->execute($command);
 
-        return redirect()
-            ->back()
-            ->withFlash("message", "User created");
-    }
+    return redirect()
+      ->back()
+      ->withFlash("message", "User created");
+  }
 }
 ```
 
-Mettre un nouvel itinéraire :
+- Injection de `CommandBus` dans le controller
+- Nous créons une instance de `CreateUserCommand` après validation du formulaire
+- Nous lançons la methode sur la `$this->commandBus->execute` 
+
+#### Mettre un nouvel itinéraire :
 
 ```php
 $app->post("/users/create", UserController::class);
