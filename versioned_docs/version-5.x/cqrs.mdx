@@ -29,10 +29,10 @@ use Bow\CQRS\Command\CommandInterface;
 
 class CreateUserCommand implements CommandInterface
 {
-    public function __construct(
-        public string $username,
-        public string $email
-    ) {}
+  public function __construct(
+    public string $username,
+    public string $email
+  ) {}
 }
 ```
 
@@ -63,7 +63,7 @@ class CreateUserCommandHandler implements CommandHandlerInterface
 
 Ajouter une commande au registre dans `App\Configurations\ApplicationConfiguration::class`:
 
-```php
+```php title="app/Configurations/ApplicationConfiguration.php"
 use Bow\CQRS\Registration as CQRSRegistration;
 
 public function run()

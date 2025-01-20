@@ -34,7 +34,7 @@ composer require bowphp/policier
 
 Vous pouvez regarder toutes les options de configuration ici.
 
-```php
+```php title="config/policier.php"
 return [
   /**
    * Heure d'expiration du token
@@ -269,9 +269,9 @@ policier('validate', $token, $claims);
 
 Si vous utilisez [Bow Framework](https://github.com/bowphp/app), vous pouvez utiliser le plugin de configuration `Policier\Bow\PolicierConfiguration::class` et le middleware `Policier\Bow\PolicierMiddleware::class`.
 
-Relier la configuration sur `app\Kernel\Loader.php`:
+Relier la configuration sur `app\Kernel.php`:
 
-```php
+```php titl="app\Kernel.php"
 public function middlewares()
 {
   return [
