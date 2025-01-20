@@ -7,12 +7,12 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 # Service
 
-Les services sont des classes simple qui vous voulez injectées dans vos Controllers, dans d'autre services que peuvent nous permettre de découpler les logiquees et donc optimisé votre code source.
-Vous pouvez aussi injectées des modèles dans vos services.
+Les services sont des classes simples qui vous veulent injecter dans vos Controllers, dans d'autres services que peuvent nous permettre de découpler la logique et donc optimisé votre code source.
+Vous pouvez aussi injecter des modèles dans vos services.
 
 ## Utilisation
 
-Pour ajouter un service rien de plus simple que d'untilisé la commande suivante :
+Pour ajouter un service rien de plus simple que d'utilisé la commande suivante :
 
 ```bash
 php bow add:service UserService
@@ -36,7 +36,7 @@ class UserService
 
 ## Utilisation du service
 
-Pour utiliser le service nous allons l'inject là ou nous voulons l'utiliser, dans notre cas dans un controller.
+Pour utiliser le service, nous allons inject là ou nous voulons l'utiliser, dans notre cas dans un controller.
 
 Lancer la commande suivante pour créer un nouveau controller
 
@@ -44,7 +44,7 @@ Lancer la commande suivante pour créer un nouveau controller
 php bow add:controller UserController
 ```
 
-Dans le controleur nous allons maintenant injecter le service:
+Dans le controller, nous allons maintenant injecter le service :
 
 ```php
 class UserController extends Controller
