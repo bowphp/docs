@@ -6,9 +6,9 @@ title: "👨🏽‍💻 Concept et Architecture"
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 import BugReportFeature from "@site/src/components/Partials/BugReportFeature";
 
-## Comprendre le cycle de vie d’une requête dans BowPHP
+## Comprendre le cycle de vie d'une requête dans BowPHP
 
-BowPHP est un framework PHP léger, conçu pour offrir une structure claire et modulaire. Lorsqu’une requête arrive, elle suit un chemin bien défini appelé **cycle de vie d'une requête**. Ce cycle est organisé pour séparer les responsabilités, rendre le code facile à maintenir et améliorer les performances.
+BowPHP est un framework PHP léger, conçu pour offrir une structure claire et modulaire. Lorsqu'une requête arrive, elle suit un chemin bien défini appelé **cycle de vie d'une requête**. Ce cycle est organisé pour séparer les responsabilités, rendre le code facile à maintenir et améliorer les performances.
 
 ### Le cycle de vie d'une requête expliqué
 
@@ -25,7 +25,7 @@ Voici les étapes principales :
 5. **Routeur** :
   - Le routeur détecte la route correspondant à la requête (par exemple, `/users/42` ou `/api/login`).
   - Il associe cette route à un contrôleur et une méthode spécifique, définis directement dans le code des routes.
-  - Si des middlewares sont définis pour cette route, ils sont exécutés avant d’appeler le contrôleur.
+  - Si des middlewares sont définis pour cette route, ils sont exécutés avant d'appeler le contrôleur.
 6. **Middleware** : Les middlewares effectuent des traitements spécifiques, comme vérifier l'authentification ou valider les données.
 7. **Contrôleur** : Une fois la route validée, le contrôleur exécute la logique métier (par exemple, récupérer des données ou effectuer une action).
 8. **Modèle** : Si des données sont nécessaires, le modèle interagit avec la base de données pour les récupérer ou les mettre à jour.
@@ -37,11 +37,12 @@ Voici les étapes principales :
 Le routeur est un composant clé de BowPHP. Il agit comme une "boussole" qui oriente chaque requête vers le bon contrôleur et la bonne méthode.
 
 #### Détection de la route
-Le routeur examine l'URL de la requête et détermine quelle route correspond. Les routes sont définies dans des fichiers dédiés (souvent routes/web.php ou routes/api.php).
+
+Le routeur examine l'URL de la requête et détermine quelle route correspond. Les routes sont définies dans des fichiers dédiés.
 
 Exemple de définition de route :
 
-```php
+```php title="routes/app.php"
 $app->get('/users/{id}', 'UserController@show');
 $app->post('/api/login', 'AuthController@login');
 ```
@@ -62,7 +63,7 @@ Une fois la route détectée, le routeur :
 
 ### Une architecture modulaire
 
-BowPHP repose sur une architecture modulaire. Chaque module est indépendant, possédant sa propre configuration et remplit un rôle spécifique. Cela rend l’application facile à gérer et à étendre. Le routeur est un exemple de cette approche modulaire. Un autre exemple est le module Database, qui gère les connexions à la base de données.
+BowPHP repose sur une architecture modulaire. Chaque module est indépendant, possédant sa propre configuration et remplit un rôle spécifique. Cela rend l'application facile à gérer et à étendre. Le routeur est un exemple de cette approche modulaire. Un autre exemple est le module Database, qui gère les connexions à la base de données.
 
 #### Exemple : Le module Database
 
@@ -91,17 +92,19 @@ return [
 ```
 
 #### **Classe `Bow\Database\DatabaseConfiguration`**
-Cette classe est chargée de lire les paramètres du fichier `config/database.php` et d’établir une connexion à la base de données.
+
+Cette classe est chargée de lire les paramètres du fichier `config/database.php` et d'établir une connexion à la base de données.
 
 #### **Rôle du Kernel**
-Au démarrage, le Kernel charge le fichier `config/database.php` à l’aide de `DatabaseConfiguration` défini dans `app/Kernel.php` et initialise une connexion à la base de données, prête à être utilisée par d’autres composants.
+
+Au démarrage, le Kernel charge le fichier `config/database.php` à l'aide de `DatabaseConfiguration` défini dans `app/Kernel.php` et initialise une connexion à la base de données, prête à être utilisée par d'autres composants.
 
 ### Visualisation avec un diagramme
 
 Voici une représentation visuelle pour mieux comprendre le cycle de vie d'une requête et l'intégration modulaire (exemple avec **Database**) :
 Charge les configurations
 
-Voici un diagramme mis à jour, mettant en évidence le rôle du routeur et l’intégration modulaire (exemple avec Database)
+Voici un diagramme mis à jour, mettant en évidence le rôle du routeur et l'intégration modulaire (exemple avec Database)
 
 ```mermaid
 graph TB

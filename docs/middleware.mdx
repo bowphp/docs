@@ -35,11 +35,11 @@ php bow add:middleware IpMiddleware
 
 Notez que tout les middlewares sont sauvegardés par défaut dans le fichier `app/Middleware`.
 
-Alors, le middleware que nous venons d'ajouter, vérifira l'adresse IP du client et si son adresse est égale à `127.0.0.1` on dira que l'application est MODE DEV.
+Alors, le middleware que nous venons d'ajouter, vérifira l'adresse IP du client et si son adresse est égale à `127.0.0.1` on dira que l'application est mode dev.
 
 Mais d'abort, regardons le contenu du fichier `IpMiddleware`. C'est la méthode `process` qui permet de lancer le middleware et la callable permet de lancer le prochaine middleware.
 
-```php
+```php title="app/Middlewares/IpMiddleware.php"
 namespace App\Middlewares;
 
 use Bow\Http\Request;

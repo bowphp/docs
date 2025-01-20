@@ -39,10 +39,10 @@ $builder = Database::table('users');
 // => Instance \Bow\Database\QueryBuilder::class
 ```
 
-Vous pouvez aussi utiliser le helper `table`:
+Vous pouvez aussi utiliser le helper `db_table`:
 
 ```php
-$builder = table('users');
+$builder = db_table('users');
 ```
 
 Sur l'instance de la `QueryBuilder` de Bow, il y a plusieurs méthodes qui vont vous permettre de construire une requête SQL.
@@ -74,7 +74,7 @@ foreach ($users as $user) {
 ### Exemple avec `first`
 
 ```php
-$user = table('users')->first();
+$user = db_table('users')->first();
 
 // Vide
 is_null($user)
@@ -105,7 +105,7 @@ $users = db_table('users')->where('id', '!=', 1)->get();
 Vous pouvez enchainer la restriction en ajoutant un `or` dans votre requête. La méthode `orWhere` vous permet de faire cela:
 
 ```php
-$users = table('users')->where('id', 1)->orWhere('name', 'Papac')->get();
+$users = db_table('users')->where('id', 1)->orWhere('name', 'Papac')->get();
 ```
 
 Vous pouvez voir le result de la construction de la requête avec la méthode `toSql`.

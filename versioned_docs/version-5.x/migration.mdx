@@ -155,13 +155,15 @@ public function rollback()
 }
 ```
 
-> Avant de renommer une table, vous devez vérifier que toutes les contraintes de clé étrangère sur la table ont un nom explicite dans vos fichiers de migration au lieu de laisser Laravel attribuer un nom basé sur une convention. Sinon, le nom de la contrainte de clé étrangère fera référence à l'ancien nom de la table.
+> Avant de renommer une table, vous devez vérifier que toutes les contraintes de clé étrangère sur la table ont un nom explicite dans vos fichiers de migration au lieu de laisser BowPHP attribuer un nom basé sur une convention. Sinon, le nom de la contrainte de clé étrangère fera référence à l'ancien nom de la table.
 
 ## Créer des colonnes
 
 La méthode de `alter` sur `Bow\Database\Migration\Migration::class` peut être utilisée pour mettre à jour des tables existantes. Comme la méthode `create`, la méthode `alter` accepte deux arguments: le nom de la table et une clôture qui reçoit une instance de `\Bow\Database\Migration\SQLGenerator::class` que vous pouvez utiliser pour ajouter des colonnes à la table:
 
 ```php
+use Bow\Database\Migration\SQLGenerator;
+
 public function up()
 {
   $this->alter('users', function (SQLGenerator $table) {
