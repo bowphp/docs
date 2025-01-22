@@ -3,6 +3,21 @@ id: configuration
 title: "👨🏽‍🔧 Configuration"
 ---
 
+- [Introduction](#introduction)
+- [Configuration](#configuration)
+  - [Récupérer une valeur](#récupérer-une-valeur)
+  - [Modifier une valeur](#modifier-une-valeur)
+  - [Explication de la notation à point](#explication-de-la-notation-à-point)
+    - [Exemple](#exemple)
+- [Fichier `.env.json`](#fichier-envjson)
+  - [Pourquoi utiliser `.env.json` ?](#pourquoi-utiliser-envjson-)
+  - [Récupérer des informations depuis `.env.json`](#récupérer-des-informations-depuis-envjson)
+    - [Exemple simple](#exemple-simple)
+  - [Utilisation de valeurs imbriquées](#utilisation-de-valeurs-imbriquées)
+  - [Réutiliser des variables](#réutiliser-des-variables)
+- [Helpers](#helpers)
+  - [Personnalisation des helpers](#personnalisation-des-helpers)
+
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
@@ -111,7 +126,7 @@ echo app_env('WEBHOOK_GATEWAY.VISA');
 
 ### Réutiliser des variables
 
-Vous pouvez réutiliser une variable déjà définie dans le fichier `.env.json` :
+Vous pouvez réutiliser une variable déjà définie dans le fichier `.env.json` avec la syntax `${KEY}`:
 
 ```json
 {
@@ -122,6 +137,10 @@ Vous pouvez réutiliser une variable déjà définie dans le fichier `.env.json`
   }
 }
 ```
+
+:::note
+Ici ${APP_URL} défini la variable
+:::
 
 Cela permet de centraliser certaines valeurs pour plus de cohérence :
 

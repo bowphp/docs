@@ -3,23 +3,23 @@ id: i18n
 title: "🎎 i18n"
 ---
 
-import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
-
 - [Introduction](#introduction)
-  - [Configuration](#configuration)
-  - [Configuration de la locale](#configuration-de-la-locale)
+- [Configuration](#configuration)
+- [Configuration de la locale](#configuration-de-la-locale)
 - [Récupération de chaînes de traduction](#récupération-de-chaînes-de-traduction)
   - [Détermination de la locale actuelle](#détermination-de-la-locale-actuelle)
   - [Remplacement de paramètres dans les chaînes de traduction](#remplacement-de-paramètres-dans-les-chaînes-de-traduction)
 - [La pluralisation](#la-pluralisation)
 
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
 ## Introduction
 
 Dans toute application, il y a le besoin de rendre l'application multi-langue. Bow implement un système simple de traduction.
 
-<script id="asciicast-zxbid2giZdnaJjOhOkALKBC8G" src="https://asciinema.org/a/zxbid2giZdnaJjOhOkALKBC8G.js" data-rows="20" data-speed="2" async></script>
+[![asciicast](https://asciinema.org/a/zxbid2giZdnaJjOhOkALKBC8G.svg)](https://asciinema.org/a/zxbid2giZdnaJjOhOkALKBC8G)
 
-### Configuration
+## Configuration
 
 Pour utiliser le système de traduction. Il faut d'abord considérer la configuration qui se trouve dans le dossier `config/trans.php`, dans ce fichier, la langue par défaut, c'est le français, donc le `'lang' => 'fr'`.
 
@@ -44,7 +44,7 @@ return [
 ];
 ```
 
-### Configuration de la locale
+## Configuration de la locale
 
 La langue par défaut de votre application est stockée dans le fichier de configuration `config/trans.php`. Bien entendu, vous pouvez modifier cette valeur pour répondre aux besoins de votre application. Vous pouvez également modifier la langue active au moment de l'exécution à l'aide de la méthode `setLocale` sur la classe [`Bow\Translate\Translator`](https://bowphp.com/api/master/Bow/Translate/Translator.html):
 

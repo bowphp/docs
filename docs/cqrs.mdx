@@ -3,9 +3,22 @@ id: cqrs
 title: "🤠 CQRS"
 ---
 
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Utilisation des commandes (Command)](#utilisation-des-commandes-command)
+  - [Étape 1 : Créer une commande](#étape-1--créer-une-commande)
+  - [Étape 2 : Créer un handler pour la commande](#étape-2--créer-un-handler-pour-la-commande)
+  - [Étape 3 : Enregistrer la commande et son handler](#étape-3--enregistrer-la-commande-et-son-handler)
+  - [Étape 4 : Exécuter la commande dans un contrôleur](#étape-4--exécuter-la-commande-dans-un-contrôleur)
+- [Utilisation des requêtes (Query)](#utilisation-des-requêtes-query)
+  - [Étape 1 : Créer une requête](#étape-1--créer-une-requête)
+  - [Étape 2 : Créer un handler pour la requête](#étape-2--créer-un-handler-pour-la-requête)
+  - [Étape 3 : Enregistrer la requête et son handler](#étape-3--enregistrer-la-requête-et-son-handler)
+  - [Étape 4 : Exécuter la requête dans un contrôleur](#étape-4--exécuter-la-requête-dans-un-contrôleur)
+
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-# Guide pratique : CQRS avec Bow Framework
+## Introduction
 
 **CQRS** (*Command Query Responsibility Segregation*) est un modèle d'architecture qui sépare les responsabilités des commandes et des requêtes. L'idée principale est d'utiliser un modèle différent pour les opérations d'écriture (commandes) et de lecture (requêtes). Cette approche peut être utile dans des situations complexes, bien que pour la plupart des systèmes, **CQRS** puisse introduire une certaine complexité supplémentaire.
 

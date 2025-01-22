@@ -3,14 +3,27 @@ id: orm
 title: "🧩 ORM Barry"
 ---
 
+- [Introduction](#introduction)
+- [Ajouter un model](#ajouter-un-model)
+  - [Nom de Table](#nom-de-table)
+  - [Clés primaires](#clés-primaires)
+- [Récupérer les données](#récupérer-les-données)
+- [Ajout de contraintes supplémentaires](#ajout-de-contraintes-supplémentaires)
+- [Récupération d'agrégats](#récupération-dagrégats)
+- [Insertion et mise à jour de modèles](#insertion-et-mise-à-jour-de-modèles)
+  - [INSERT](#insert)
+  - [Insert via CREATE](#insert-via-create)
+  - [UPDATE](#update)
+- [Suppression de donnée](#suppression-de-donnée)
+
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 <h1 align="center">
   <img src="https://raw.githubusercontent.com/bowphp/arts/master/barry.jpg" width="150px" alt="barry"/>
-  <br/><span>BARRY ORM</span>
+  <br/><span>Barry ORM</span>
 </h1>
 
-<p align="center">BARRY c'est l'ORM (<strong>Object Relation Mapping</strong>) intégré dans Bow Framework.</p>
+<p align="center">Barry c'est l'ORM (<strong>Object Relation Mapping</strong>) intégré dans Bow Framework.</p>
 
 ## Introduction
 
@@ -94,7 +107,7 @@ class Todo extends Model
    *
    * @var string
    */
-  protected $table = 'tbl_todos';
+  protected $table = 'todos';
 }
 ```
 

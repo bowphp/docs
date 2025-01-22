@@ -6,7 +6,20 @@ title: "👨🏽‍💻 Concept et Architecture"
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 import BugReportFeature from "@site/src/components/Partials/BugReportFeature";
 
-## Comprendre le cycle de vie d'une requête dans BowPHP
+- [Introduction](#introduction)
+  - [Le cycle de vie d'une requête expliqué](#le-cycle-de-vie-dune-requête-expliqué)
+  - [Le rôle du routeur en détail](#le-rôle-du-routeur-en-détail)
+    - [Détection de la route](#détection-de-la-route)
+    - [Association au contrôleur](#association-au-contrôleur)
+  - [Une architecture modulaire](#une-architecture-modulaire)
+    - [Exemple : Le module Database](#exemple--le-module-database)
+    - [**Classe `Bow\Database\DatabaseConfiguration::class`**](#classe-bowdatabasedatabaseconfigurationclass)
+    - [**Rôle du Kernel**](#rôle-du-kernel)
+  - [Visualisation avec un diagramme](#visualisation-avec-un-diagramme)
+  - [Résumé des points importants](#résumé-des-points-importants)
+- [Merci aux contributeurs](#merci-aux-contributeurs)
+
+## Introduction
 
 BowPHP est un framework PHP léger, conçu pour offrir une structure claire et modulaire. Lorsqu'une requête arrive, elle suit un chemin bien défini appelé **cycle de vie d'une requête**. Ce cycle est organisé pour séparer les responsabilités, rendre le code facile à maintenir et améliorer les performances.
 
@@ -135,7 +148,7 @@ graph TB
 - **Kernel** : Orchestre le chargement des configurations depuis le dossier config et initialise les modules.
 - **Modularité** : Chaque composant (routeur, base de données, etc.) est indépendant, ce qui simplifie la gestion et améliore la maintenabilité.
 
-## Merci
+## Merci aux contributeurs
 
 Merci d'avoir envisagé de contribuer à Bow Framework ! Le guide de contribution se trouve dans la documentation.
 

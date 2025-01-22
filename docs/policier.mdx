@@ -3,8 +3,7 @@ id: policier
 title: "🔐 Policier JWT Auth"
 ---
 
-import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
-
+- [Introduction](#introduction)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Utilisation](#utilisation)
@@ -20,9 +19,13 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
   - [Personnalisation du Middleware](#personnalisation-du-middleware)
     - [Publier le middleware](#publier-le-middleware)
 
-## Installation
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
 
 Policier permet de valider la demande via [JWT](https://jwt.io)
+
+## Installation
 
 Pour installer la stratégie d'installation, vous devez utiliser `composer` (gestionnaire de paquets PHP) comme ceci.
 
@@ -92,7 +95,7 @@ return [
 
 ## Utilisation
 
-Policier est très simple d'utilisation et possède une API claire. La configuration retourne une singleton.
+Policier est très simple d'utilisation et possède une API claire. La configuration retourne un singleton.
 
 ```php
 use Policier\Policier;
@@ -313,10 +316,9 @@ Notez que vous pouvez créer un autre middleware qui étendra le middleware par 
 php bow add:middleware CustomPolicierMiddleware
 ```
 
-Et ensuite vous pouvez faire ceci:
+Et ensuite, vous pouvez faire ceci :
 
 ```php
-
 use Bow\Http\Request;
 use Policier\Bow\PolicierMiddleware;
 
@@ -373,7 +375,7 @@ class CustomPolicierMiddleware extends PolicierMiddleware
 
 #### Publier le middleware
 
-Pour publier le middleware personnalisé et écraser celui par defaut de Policier c'est très simple, il suffit seulement d'ajouter le middleware dans le fichier `app/Kernel/Loader.php` avec la clé `api`.
+Pour publier le middleware personnalisé et écraser celui par défaut de Policier c'est très simple, il suffit seulement d'ajouter le middleware dans le fichier `app/Kernel/Loader.php` avec la clé `api`.
 
 ```php
 public function middlewares()
