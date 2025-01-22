@@ -5,103 +5,83 @@ title: "🚦 Routing"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Introduction](#introduction)
-- [Mappage d'URL](#mappage-durl)
-  - [Avec le méthode `route`](#avec-le-méthode-route)
-    - [Liste des options](#liste-des-options)
-  - [En utilisant les verbes HTTP comme méthode](#en-utilisant-les-verbes-http-comme-méthode)
-  - [Liste des possibilités](#liste-des-possibilités)
-- [Les methods de mapping](#les-methods-de-mapping)
-  - [Mapping avec `get`](#mapping-avec-get)
-  - [Mapping avec `post`](#mapping-avec-post)
-  - [Mapping avec `put`](#mapping-avec-put)
-  - [Mapping avec `delete`](#mapping-avec-delete)
-  - [Mapping avec `patch`](#mapping-avec-patch)
-  - [Mapping avec `options`](#mapping-avec-options)
-- [Mapping multiple](#mapping-multiple)
-  - [Mapping avec `match`](#mapping-avec-match)
-  - [Mapping avec `any`](#mapping-avec-any)
-  - [Mapping avec `prefix`](#mapping-avec-prefix)
-- [Personnalisation](#personnalisation)
-  - [Capturer des variables dans l'URL](#capturer-des-variables-dans-lurl)
-  - [Ajouter des critères, des restrictions sur les URLs](#ajouter-des-critères-des-restrictions-sur-les-urls)
-  - [Donner un nom aux routes](#donner-un-nom-aux-routes)
-  - [Association de middleware](#association-de-middleware)
-    - [La composition d'action](#la-composition-daction)
-
 ## Introduction
 
-Le routing vous permet de mapper une URL sur un controlleur ou une action particulière.
-Le système de routing de Bow est greffé directement sur l'instance de l'application,
-donc sur la variable `$app` qui est une variable super global.
+Le routage est un élément essentiel dans le développement d'une application web. Il permet de relier une URL à une action spécifique dans le contrôleur de l'application. Dans BowPHP, le système de routage est directement intégré à l'instance de l'application, via la variable superglobale `$app`.
 
-Les routes de l'application sont dans le fichier `app.php` du dossier `routing`
-de votre application.
-
-<script id="asciicast-eFxk7E2J7ESjz1YYUIhgFSZq1" src="https://asciinema.org/a/eFxk7E2J7ESjz1YYUIhgFSZq1.js" data-speed="2" data-rows="20" async></script>
+Les routes de l'application se définissent dans le fichier `app.php`, qui se trouve dans le dossier `routes` de votre projet.
 
 ## Mappage d'URL
 
-### En utilisant les verbes HTTP comme méthode
+Le système de routage de BowPHP permet de faire correspondre une URL à un contrôleur ou une action. Cela se fait en associant une URL à une méthode HTTP (`GET`, `POST`, `PUT`, `DELETE`, etc.) et en définissant l'action à exécuter lorsqu'une requête correspond à cette route.
 
-Prototype des méthodes du routing.
+### Structure du Routage
+
+Le routage dans BowPHP s'écrit ainsi :
 
 ```php
 $app->[method](url, action);
 ```
 
-`method` correspond au verbe `http` à associer à la route, soit `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH` écrit en minuscule.
+- **`method`** : Le verbe HTTP (`GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`), toujours écrit en minuscule.
+- **`url`** : L'URL à matcher.
+- **`action`** : L'action à exécuter. Cela peut être une closure (fonction anonyme), un tableau de closures, ou le nom d'un contrôleur.
 
-| Paramètre | Type | Description |
-|----------|------|------|
-| url      | `String` | Le parten d'url a matcher |
-| action   | `String`, `Array` | Closure ou Callable |
+### Exemple de Routage
 
-- Avec une closure
+#### Avec une Closure :
 
 ```php
 $app->get('/', function () {
-  return 'hello world';
+    return 'Hello, World!';
 });
 ```
 
-> Une Closure est une fonction dite anonyme ([Plus d'information](http://php.net/manual/fr/class.closure.php) sur le sujet).
+> **Qu'est-ce qu'une closure ?**
+Une *closure* est une fonction anonyme qui peut être définie à la volée et utilisée dans le routage de BowPHP. Pour plus d'infos, consultez la [documentation sur les closures](http://php.net/manual/fr/class.closure.php).
 
-- Avec une collection de fonction dans un tableau:
+#### Avec un tableau de fonctions (callables) :
 
 ```php
 $callables = [];
 
 $callables[] = function () {
-  echo 'hello world';
-
-  return true;
+    echo 'Hello World';
+    return true; // Retourne true pour exécuter la fonction suivante
 };
 
 $callables[] = function () {
-  echo 'Bien merci';
+    echo 'Bien merci';
 };
 
 $app->get('/', $callables);
 ```
 
-> Notez que dans la première fonction il y a à la fin une instruction `return true`, cette instruction est indispensable si vous voulez lancer la prochaine fonction. Alors ce qui veut dire que si c'est aussi un `return false` la fonctione suivante ne sera pas exécutée.
+> **Attention** : La première fonction doit retourner `true` pour permettre à la suivante de s'exécuter. Si elle retourne `false`, l'exécution des fonctions suivantes s'arrêtera.
 
-- Avec le nom d'un controlleur
-
-```php
-$app->[method]('/', 'ClassController::action');
-```
-
-- Avec le nom d'un controlleur et un middelware
+#### Avec un contrôleur :
 
 ```php
-$app->[method]('/', ['middleware' => 'ip', 'controller' => 'ClassController::action']);
+$app->get('/', 'UserController::action');
 ```
 
-> `method` correspond au verbe `http` à associer à la route, soit `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH` écrit en minuscule.
+#### Avec un contrôleur et un middleware :
 
-### Liste des possibilités
+```php
+$app->get('/', ['middleware' => 'ip', 'controller' => 'UserController::action']);
+```
+
+#### Utilisation d'un contrôleur avec la méthode `__invoke` :
+
+Si le contrôleur implémente la méthode magique `__invoke`, vous pouvez l'utiliser directement comme une fonction :
+
+```php
+$app->get('/', UserController::class);
+```
+
+## Liste des Méthodes de Mappage
+
+Voici les principales méthodes de routage dans BowPHP :
 
 ```php
 $app->get($url, $action);
@@ -112,195 +92,216 @@ $app->option($url, $action);
 $app->patch($url, $action);
 ```
 
-## Les methods de mapping
+### Exemples de Routage avec différentes Méthodes HTTP
 
-La mise en place du routage se faire donc via les méthodes suivantes :
-
-### Mapping avec `get`
-
-Cette méthode permet de mapper une URL à une requête de type `GET`.
+- **`GET`** : Pour récupérer des données
 
 ```php
 $app->get('/', function () {
-  return 'hello world';
+    return 'Hello, World!';
 });
 ```
 
-### Mapping avec `post`
-
-Cette méthode permet de mapper une URL à une requête de type `POST`
+- **`POST`** : Pour envoyer des données au serveur
 
 ```php
 $app->post('/', function () {
-  return 'data posted';
+    return 'Data posted';
 });
 ```
 
-### Mapping avec `put`
-
-Cette méthode permet de mapper une URL à une requête de type `PUT`.
+- **`PUT`** : Pour mettre à jour des ressources existantes
 
 ```php
 $app->put('/', function () {
-  // Code ici
+    return 'Resource updated';
 });
 ```
 
-### Mapping avec `delete`
-
-Cette méthode permet de mapper une URL à une requête de type `DELETE`.
+- **`DELETE`** : Pour supprimer une ressource
 
 ```php
 $app->delete('/', function () {
-  // Code ici
+    return 'Resource deleted';
 });
 ```
 
-### Mapping avec `patch`
-
-Cette méthode permet de mapper une URL à une requête de type `PATCH`.
+- **`PATCH`** : Pour appliquer des modifications partielles à une ressource
 
 ```php
 $app->patch('/', function () {
-  // Code ici
+    return 'Partial update applied';
 });
 ```
 
-### Mapping avec `options`
-
-Cette méthode permet de mapper une URL à une requête de type `OPTIONS`.
+- **`OPTIONS`** : Pour récupérer les options disponibles pour une ressource
 
 ```php
 $app->options('/', function () {
-  // Code ici
+    return 'Options retrieved';
 });
 ```
 
-> Les méthodes `DELELTE`, `PUT`, `PATCH` ne sont pas supporter par le navigateur.
-
-Les navigateurs ne supportent pas cette méthode. Alors dans votre formulaire d'envoyer, il faudra créer des champs comme ceci :
+:::note
+**Note importante** : Les navigateurs ne supportent pas les méthodes `DELETE`, `PUT` et `PATCH` nativement. Pour contourner cette limitation, vous pouvez ajouter un champ caché dans vos formulaires HTML :
+:::
 
 ```html
 <input type="hidden" name="_method" value="DELETE">
 ```
 
-Ce qui aura pour but de permettre à Bow de comprendre votre requête et c'est valable pour PUT et PATCH.
+Ceci va permettre à BowPHP de comprendre que vous voulez contacter la route associée à la methode `DELETE`
 
-> Tout les méthodes définir ci-dessus retourne l'instance de `Bow\Router\Route::class`. (Plus d'information sur le [`Bow\Router\Route::class`](https://bowphp.com/api/master/Bow/Router/Route.html))
+## Mappage Multiple
 
-## Mapping multiple
+### `match`: Mappage avec plusieurs Méthodes HTTP
 
-### Mapping avec `match`
-
-Permet d'associer des méthodes `http` sur l'URL spécifié.
-
-Prototype de la méthode `match`.
-
-```php
-$app->match(verbes, url, action);
-```
-
-| Paramètre | Type | Description |
-|----------|------|------|
-| verbes | `Array` | La liste des méthodes `http` |
-| url    | `String` | L'URL de la route |
-| action | `String`, `Array`, `Closure` | L'action à lancer |
+Si vous souhaitez faire correspondre plusieurs méthodes HTTP (comme `GET` et `POST`) à une même URL, vous pouvez utiliser la méthode `match` :
 
 ```php
 $app->match(['GET', 'POST'], '/users', function () {
-  // Code ici
+    // Code ici
 });
 ```
 
-Vous pourrez avoir un code qui faire ceci.
+Vous pouvez également traiter les différents types de requêtes dans une seule action :
 
 ```php
 use Bow\Http\Request;
 
 $app->match(['GET', 'POST'], '/users', function (Request $request) {
-  if ($request->isPost()) {
-    // code
-  } else {
-    // code
-  }
+    if ($request->isPost()) {
+        // Traitement pour la requête POST
+    } else {
+        // Traitement pour la requête GET
+    }
 });
 ```
 
-> Plus d'information sur les [requêtes HTTP](./request).
+### `any`: Mappage avec n'importe quelle Méthode HTTP
 
-### Mapping avec `any`
-
-Permet d'associer tout les méthodes `http` sur l'URL spécifié.
-
-Prototype de la méthode `any`.
-
-```php
-$app->any(url, action);
-```
-
-| Paramètre | Type | Description |
-|----------|------|------|
-| url      | `String` | L'url de la route |
-| action   | `String`, `Array` | Closure - L'action à lancer |
+Si vous souhaitez que n'importe quelle méthode HTTP corresponde à une URL, vous pouvez utiliser `any` :
 
 ```php
 $app->any('/', function () {
-  // Code ici
+    // Code ici
 });
 ```
 
-### Mapping avec `prefix`
+## Groupes de Routes avec `prefix`
 
-Souvent, vous serez amener à grouper vos routes et effectuer un branchement simple pour bien orienter votre logique. Les URLs peuvent souvent se répéter comme ceci :
-
-```php
-$app->get('users', function () {
-  // Code ici
-});
-
-$app->get('users/:id', function ($id) {
-  // Code ici
-});
-
-$app->get('users/:id/delete', function ($id) {
-  // Code ici
-});
-```
-
-Dans ce cas nous avons `users` qui se répété plusieurs fois. Comment bien organiser tout ça ? La réponse est la préfixale de route. Alors la méthodes `prefix` nous permet de grouper plusieur URLs.
-
-Prototype de le méthode `prefix`.
-
-```php
-$app->prefix(url, action);
-```
-
-| Paramètre | Type | Description |
-|----------|------|------|
-| url      | `String` | l'URL à prefixer |
-| action   | `Closure` | Cette fonction prendra en paramètre l'instance de l'application |
-
-Donc pour réorganiser le code précédent, il faudra faire comme suit:
+Lorsque vous avez plusieurs routes qui partagent un préfixe similaire (par exemple, `/users`, `/users/:id`, `/users/:id/delete`), vous pouvez utiliser la méthode `prefix` pour organiser votre code de manière plus propre.
 
 ```php
 $app->prefix('/users', function () use ($app) {
-  $app->get('/', function () {
-   // Code ici
-  });
-  $app->get('/:id', function ($id) {
-   // Code ici
-  });
-  $app->get('/:id/delete', function ($id) {
-   // Code ici
-  });
+    $app->get('/', function () {
+        // Code pour récupérer tous les utilisateurs
+    });
+
+    $app->get('/:id', function ($id) {
+        // Code pour récupérer un utilisateur par ID
+    });
+
+    $app->get('/:id/delete', function ($id) {
+        // Code pour supprimer un utilisateur
+    });
 });
 ```
 
-> Notez qu'actuellement le préfix ne peut pas être imbriqué.
+:::danger
+**Note** : La méthode `prefix` ne peut pas être imbriquée dans d'autres groupes de routes.
+:::
 
-### Avec le méthode `route`
 
-C'est méthode permet de faire un mappage rélativement simple.
+## Personnalisation des Routes
+
+BowPHP permet de personnaliser vos routes de plusieurs façons, notamment :
+
+- Capturer des variables dans l'URL
+- Ajouter des critères de validation sur les variables capturées
+- Nommer les routes pour une gestion plus facile
+- Associer des middlewares à des routes spécifiques
+- Combiner différentes actions (middleware, contrôleur)
+
+### Capturer des Variables dans l'URL
+
+Pour capturer des variables dans l'URL, utilisez la notation `:variable_name`. Ces variables seront ensuite passées à l'action correspondante.
+
+```php
+$app->get('/:name', function ($name) {
+    return 'Bonjour ' . $name;
+});
+```
+
+### Ajouter des Critères de Validation sur les Variables
+
+Lorsque vous capturez des variables, vous pouvez les valider à l'aide de la méthode `where` pour garantir que les données sont bien conformes à une certaine règle.
+
+#### Exemple avec une seule variable :
+
+```php
+$app->get('/:name', function ($name) {
+    return 'Bonjour ' . $name;
+})->where('name', '[a-z]+');
+```
+
+#### Exemple avec plusieurs variables :
+
+```php
+$app->get('/:name/:lastname/:number', function ($name, $lastname, $number) {
+    return sprintf('Bonjour %s %s, votre numéro est %s', $name, $lastname, $number);
+})->where([
+    'name' => '[a-z]+',
+    'lastname' => '[a-z]+',
+    'number' => '\d+'
+]);
+```
+
+> **Note** : La méthode `where` permet de définir des règles de validation pour chaque variable capturée dans l'URL.
+
+### Nommer les Routes
+
+Pour faciliter la gestion des routes dans les grandes applications, vous pouvez leur attribuer des noms. Cela permet de référencer facilement une route dans votre code.
+
+```php
+$app->get('/:name', function ($name) {
+    return 'Bonjour ' . $name;
+})->name('greeting');
+```
+
+### Utilisation des Middlewares
+
+Un middleware est une fonction ou un ensemble de fonctions qui interviennent entre la requête et l'action à exécuter. Vous pouvez associer un ou plusieurs middlewares à une route.
+
+#### Exemple d'association de middleware :
+
+```php
+$app->get('/:name', ['middleware' => 'auth', function ($name) {
+    return 'Bonjour ' . $name;
+}]);
+
+// Ou avec la méthode `middleware()` :
+$app->get('/:name', function ($name) {
+    return 'Bonjour ' . $name;
+})->middleware('auth');
+```
+
+### Composition d'Actions
+
+BowPHP permet également de combiner un contrôleur et un middleware pour une route spécifique. Voici un exemple :
+
+```php
+$app->get('/:name', [
+    'middleware' => 'auth',
+    'controller' => 'UserController::show'
+]);
+```
+
+## Utilisation de la méthode `route`
+
+La méthode `route` dans BowPHP permet de définir une route de manière plus simple et flexible. Elle accepte un tableau de paramètres, ce qui vous permet de personnaliser la route de façon plus détaillée.
+
+### Prototype de la méthode `route`
 
 ```php
 $app->route([
@@ -310,32 +311,30 @@ $app->route([
 ]);
 ```
 
-#### Liste des options
+### Liste des options disponibles dans `route`
 
-| Paramètre | Type | Description |
-|----------|------|------|
-| path | `String` | Le parten d'url à matcher |
-| method | `String`, `Array` | méthode Http |
-| handler | `String`, `Array` | L'action à lancer |
-| middleware | `String`, `Array` | Middleware |
-| where  | `String`, `Array` | Contrainte appliqué sur l'URL |
-| name | `String`, `Array` | Le nom de la route |
+| Paramètre   | Type         | Description                                           |
+|-------------|--------------|-------------------------------------------------------|
+| `path`      | `String`     | Le chemin de l'URL à matcher                         |
+| `method`    | `String`, `Array` | Méthode HTTP (`GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`) |
+| `handler`   | `String`, `Array` | Action à exécuter (peut être une closure, un contrôleur, etc.) |
+| `middleware`| `String`, `Array` | Middleware(s) à appliquer avant d'exécuter l'action |
+| `where`     | `String`, `Array` | Contrainte(s) appliquée(s) sur les variables dans l'URL |
+| `name`      | `String`, `Array` | Nom de la route pour une gestion facile               |
 
-`method` correspond au verbe `http` à associer à la route, soit `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`.
-
-- Avec une closure
+### Exemple d'utilisation de `route` avec une closure
 
 ```php
 $app->route([
   'path' => '/',
   'method' => "GET",
   'handler' => function () {
-    return "Hello, bow";
+    return "Hello, Bow";
   }
 ]);
 ```
 
-- Avec le nom d'un controller.
+### Exemple d'utilisation de `route` avec un contrôleur
 
 ```php
 $app->route([
@@ -345,9 +344,9 @@ $app->route([
 ]);
 ```
 
-> Plus d'information sur les controllers [ici](./controllers)
+> **Note** : Pour plus d'informations sur les contrôleurs, consultez la section [Contrôleurs](./controllers).
 
-- Avec le nom d'un controller et un middleware.
+### Exemple d'utilisation de `route` avec un contrôleur et un middleware
 
 ```php
 $app->route([
@@ -358,9 +357,9 @@ $app->route([
 ]);
 ```
 
-> Plus d'information sur les middlewares [ici](./middleware)
+> **Note** : Pour en savoir plus sur les middlewares, consultez la section [Middleware](./middleware).
 
-- Avec le nom d'un controller, un middleware et une restriction.
+### Exemple d'utilisation de `route` avec un contrôleur, un middleware et une restriction
 
 ```php
 $app->route([
@@ -372,121 +371,6 @@ $app->route([
 ]);
 ```
 
-> Plus d'information sur les restrictions [ici](#ajouter-des-criteres-des-restrictions-sur-les-urls)
-
-## Personnalisation
-
-Le routing vous permet aussi de personnaliser vos URLs. Voici la liste des possibilités de personnalisation.
-
-- Capturer des variables dans l'URL
-- Ajouter des critères, des restrictions sur les URLs
-- Donner un nom aux routes
-- Association de middleware
-- La composition d'action
-
-Pour faire la personnalisation, il faut utiliser l'enchainement de méthode. Dans l'exemple qui suit nous allons utiliser la méthode `get`.
-
-### Capturer des variables dans l'URL
-
-Le routing vous permet de pouvoir capturer des variables dans URLs.
-Pour le faire, il faut impérativement utiliser la notation `:nom_variable`.
-Ensuite la variable capturée sera passée en paramètre à l'action (fonction à execute dans le cas où l'url est valide)
-Quel que soit le nombre de variables.
-
-```php
-$app->get('/:name', function ($name) {
-  return 'Bonjour ' . $name;
-});
-```
-
-### Ajouter des critères, des restrictions sur les URLs
-
-Parlant de capture de variable, sécurisé ces variables est primordial, alors le routing vous permet
-aussi d'ajouter des validateurs sur la variable. C'est la méthode `where` qui s'en occupe.
-
-Prototype de la méthode `where`.
-
-```php
-where(name, rule);
-// ou
-where(array rules);
-```
-
-| Paramètre | Type | Description |
-|----------|------|------|
-| name     | `String` | Le nom de la variable |
-| value    | `String` | Le critaire de validation |
-| rules    | `Array` | Tableau associatif dont la clé est la varibale à sécuriser et la valeur est le critaire de validation |
-
-```php
-$app->get('/:name', function ($name) {
-  return 'Bonjour ' . $name;
-})->where('name', '[a-z]+');
-
-// S'il y a plusieurs variables
-$callable = function ($name, $lastname, $number) {
-  return sprintf(
-    'Bonjour <b>%s %s</b>, votre numéro est %s.', $name, $lastname, $number
-  );
-};
-
-$app->get('/:name/:lastname/:number', $callable)
-  ->where([
-    'name' => '[a-z]+',
-    'lastname' => '[a-z]+',
-    'number' => '\d+'
-  ]);
-```
-
-> Notez que `where` est une méthode de l'instance [`Bow\Router\Route`](https://bowphp.com/api/master/Bow/Router/Route.html).
-
-### Donner un nom aux routes
-
-Quand vous être dans le développement d'un gros projet, les routes deviendront nombreuses
-et la gestion visuel pour le développeur deviendra difficile, alors Bow vous permet de donner des noms à vos routes et pour après les contacter plus facilement. La méthode `name` associate à une instance de route vous permet de faire ça.
-
-Prototype de la méthode `name`.
-
-```php
-name(name);
-```
-
-| Paramètre | Type | Description |
-|----------|------|------|
-| name  | `String` | Le nom de la route |
-
-```php
-$app->get('/:name', function (string $name) {
-  return 'Bonjour ' . $name;
-})->name('hello');
-```
-
-### Association de middleware
-
-Un middleware c'est un ou plusieurs actions qui ce placent entre la requête et l'action
-à exècuter. Tout les Frameworks modernes en sont dotés.
-
-Pour plus d'information sur le sujet, allez ce lien [middleware](#documentation-middlewares)
-
-```php
-$app->get('/:name', ['middleware' => 'ip', function (string $name)
-{
-  return 'Bonjour ' . $name;
-}]);
-
-// Ou
-$app->get('/:name', function (string $name) {
-  return 'Bonjour ' . $name;
-})->middleware('ip');
-```
-
-#### La composition d'action
-
-```php
-$app->get('/:name', [
-  'middleware' => 'ip',
-  'controller' => 'NameController::action'
-]);
-```
+Cette méthode est particulièrement utile lorsque vous avez besoin d'une syntaxe plus concise et que vous souhaitez avoir plus de contrôle sur les paramètres de votre route.
 
 <SuggestionFeature />

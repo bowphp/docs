@@ -1,8 +1,173 @@
 ---
 id: validation
-title: "🚧 Validation de donnée"
+title: "🛡️ Validation"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Validation des données
+
+## Introduction
+
+La validation des données est une partie cruciale de toute application web. BowPHP fournit un système de validation simple, élégant et puissant qui vous permet de valider facilement vos données entrantes.
+
+## Utilisation de base
+
+La façon la plus simple d'utiliser le validateur est via la fonction helper `validator()`. Voici un exemple simple:
+
+```php
+$data = [
+    "name" => "John Doe",
+    "email" => "john@example.com",
+    "age" => 25
+];
+
+$validation = validator($data, [
+    "name" => "required|min:3|max:50",
+    "email" => "required|email",
+    "age" => "required|int"
+]);
+
+if ($validation->fails()) {
+    // La validation a échoué
+    $errors = $validation->getMessages();
+    // Gérer les erreurs
+}
+```
+
+## Règles de validation disponibles
+
+### Règles de base
+
+| Règle | Description |
+|-------|-------------|
+| `required` | Le champ est obligatoire |
+| `required_if:field1,field2` | Le champ est obligatoire si les champs spécifiés existent |
+| `email` | Le champ doit être une adresse email valide |
+| `min:value` | La longueur minimale du champ |
+| `max:value` | La longueur maximale du champ |
+| `size:value` | La longueur exacte du champ |
+| `same:value` | Le champ doit être identique à la valeur spécifiée |
+
+### Règles de type
+
+| Règle | Description |
+|-------|-------------|
+| `alpha` | Uniquement des caractères alphabétiques |
+| `alphanum` | Uniquement des caractères alphanumériques |
+| `number` | Le champ doit être un nombre |
+| `int` | Le champ doit être un entier |
+| `float` | Le champ doit être un nombre décimal |
+
+### Règles de format
+
+| Règle | Description |
+|-------|-------------|
+| `date` | Format de date (YYYY-MM-DD) |
+| `datetime` | Format datetime (YYYY-MM-DD HH:MM:SS) |
+| `regex:pattern` | Le champ doit correspondre au pattern regex |
+| `lower` | Uniquement des lettres minuscules |
+| `upper` | Uniquement des lettres majuscules |
+
+### Règles de base de données
+
+| Règle | Description |
+|-------|-------------|
+| `unique:table,column` | La valeur doit être unique dans la table |
+| `exists:table,column` | La valeur doit exister dans la table |
+| `!exists:table,column` | La valeur ne doit pas exister dans la table |
+
+## Messages d'erreur personnalisés
+
+Vous pouvez personnaliser les messages d'erreur en passant un tableau de messages comme troisième argument:
+
+```php
+$validation = validator($data, [
+    "name" => "required|min:3",
+    "email" => "required|email"
+], [
+    "name" => [
+        "required" => "Le nom est obligatoire",
+        "min" => "Le nom doit contenir au moins 3 caractères"
+    ],
+    "email" => [
+        "required" => "L'email est obligatoire",
+        "email" => "L'email n'est pas valide"
+    ]
+]);
+```
+
+## Récupération des erreurs
+
+Le validateur fournit plusieurs méthodes pour récupérer les informations sur les erreurs:
+
+```php
+// Vérifie si la validation a échoué
+$validation->fails(); // bool
+
+// Récupère tous les messages d'erreur
+$validation->getMessages(); // array
+
+// Récupère le dernier message d'erreur
+$validation->getLastMessage(); // string
+
+// Récupère les champs qui ont échoué
+$validation->getCorruptedFields(); // array
+
+// Récupère les règles qui ont échoué
+$validation->getFailsRules(); // array
+```
+
+## Validation et exceptions
+
+Vous pouvez lancer une exception de validation avec la méthode `throwError()`:
+
+```php
+$validation = validator($data, $rules);
+
+if ($validation->fails()) {
+    $validation->throwError(); // Lance ValidationException
+}
+```
+
+L'exception contiendra les messages d'erreur et définira automatiquement le code de statut HTTP à 400.
+
+## Validation dans les contrôleurs
+
+Voici un exemple pratique d'utilisation du validateur dans un contrôleur:
+
+```php
+class UserController
+{
+    public function store()
+    {
+        $validation = validator(request()->all(), [
+            "name" => "required|min:3|max:50",
+            "email" => "required|email|unique:users,email",
+            "password" => "required|min:6"
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                "errors" => $validation->getMessages()
+            ], 400);
+        }
+
+        // Créer l'utilisateur
+        User::create(request()->all());
+
+        return response()->json([
+            "message" => "Utilisateur créé avec succès"
+        ]);
+    }
+}
+```
+
+## Bonnes pratiques
+
+1. **Validation précoce**: Validez les données le plus tôt possible dans le cycle de vie de la requête.
+2. **Messages clairs**: Utilisez des messages d'erreur descriptifs et compréhensibles.
+3. **Règles composées**: Combinez plusieurs règles pour une validation robuste.
+4. **Sécurité**: Utilisez toujours la validation côté serveur, même si vous avez une validation côté client.
 
 <SuggestionFeature />

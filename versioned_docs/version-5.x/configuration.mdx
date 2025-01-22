@@ -5,29 +5,25 @@ title: "👨🏽‍🔧 Configuration"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-  - [Explication de la notation à point](#explication-de-la-notation-à-point)
-  - [Fichier .env.json](#fichier-envjson)
-  - [Récupération des informations](#récupération-des-informations)
-- [Helpers](#helpers)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
-
 ## Introduction
 
-Tous les fichiers de configuration de Bow Framework sont stockés dans le dossier `config`. Chaque option est documentée, alors n'hésitez pas à parcourir les fichiers et à vous familiariser avec les options à votre disposition.
+Dans Bow Framework, tous les fichiers de configuration sont centralisés dans le dossier `config`. Chaque fichier est bien documenté, ce qui vous permet de comprendre facilement les options disponibles et de les adapter à vos besoins.
 
 ## Configuration
 
-Vous pouvez accéder et modifier la configuration avec le helper `config`. L'accès aux valeurs se fait via un système de [notation à point](#explication-de-la-notation-a-point) (Dot notation).
+Bow fournit un helper pratique nommé `config` pour accéder et modifier les options de configuration. Ce helper utilise un système de [notation à point](#explication-de-la-notation-a-point) qui simplifie la navigation dans les fichiers de configuration.
 
-Récupération d'une valeur:
+### Récupérer une valeur
+
+Voici comment récupérer une valeur d'un fichier de configuration :
 
 ```php
-echo config('app.public_path')
+echo config('app.public_path');
 ```
 
-Modification d'une valeur:
+### Modifier une valeur
+
+Vous pouvez aussi modifier une valeur directement dans le code :
 
 ```php
 config('view.engine', 'twig');
@@ -36,10 +32,11 @@ config('view.extension', '.twig');
 
 ### Explication de la notation à point
 
-Dans une notation à point, la partie avant le premier point représente le nom du fichier et toutes les valeurs suivantes
-représentent des clés ou valeurs du tableau de configuration.
+La notation à point permet d'accéder facilement aux valeurs dans les fichiers de configuration. Le premier segment de la notation correspond au nom du fichier, et les segments suivants accèdent aux clés ou sous-clés d'un tableau.
 
-Imaginez qu'on a un tableau défini comme suit et qui est dans un fichier dont le nom est `bow.php`:
+#### Exemple
+
+Supposons que vous avez un fichier `bow.php` avec le contenu suivant :
 
 ```php
 return [
@@ -54,46 +51,95 @@ return [
 ];
 ```
 
-Avec `config` nous allons voir comment avoir accès à ces valeurs.
+Avec `config`, vous pouvez accéder aux différentes valeurs :
 
 ```php
-config('bow.name'); // Bow
-config('bow'); // Retourne le tableau entier
-config('bow.skill.orm') // true
-config('bow.skill.preset.0') // reactjs
+config('bow.name'); // Retourne "Bow"
+config('bow'); // Retourne tout le tableau
+config('bow.skill.orm'); // Retourne true
+config('bow.skill.preset.0'); // Retourne "reactjs"
 ```
 
-> Remarquez qu'en premier c'est le nom du fichier qui contient la configuration, ici `bow.`
+> **Astuce :** Le premier segment de la notation correspond toujours au nom du fichier de configuration (dans cet exemple, `bow`).
 
-### Fichier .env.json
+## Fichier `.env.json`
 
-Il est souvent souhaitable d'avoir différentes valeurs de configuration selon l'environnement ou notre application est lancée. Par exemple, l'on
-peut vouloir activer des logs de débogage en développement mais pas en production.
+Pour adapter votre application à différents environnements (développement, production, etc.), Bow utilise un fichier de configuration spécifique : `.env.json`. Ce fichier contient des paramètres sensibles ou variables selon l'environnement, comme les clés d'API ou les paramètres de base de données.
 
-Pour cela Bow utilise le fichier `.env.json` fichier dans lequel sont définis les informations concernant la configuration de votre application au format JSON. C'est aussi l'endroit idéal pour définir les informations sensibles comme une clé d'accès à un service.
+### Pourquoi utiliser `.env.json` ?
 
-Votre fichier `.env.json` ne doit pas sous contrôle de version, parce que chaque développeur/serveur utilisant votre application peut nécessiter une configuration d'environnement différente. De plus cela constituerait aussi un risque de sécurité dans le cas où un intrus aurait accès à votre depot de code source, parce que toutes les informations d'identification sensibles seraient exposées.
+1. **Sécurité** : Ce fichier ne doit pas être versionné pour éviter d'exposer des informations sensibles.
+2. **Flexibilité** : Chaque développeur ou serveur peut avoir une configuration personnalisée.
 
-> Le fichier `.env.example.json` sert de base pour la création du fichier `.env.json`.
+Pour aider les nouveaux développeurs, vous pouvez créer un fichier de base : `.env.example.json`, qui servira de modèle pour configurer leur propre environnement.
 
-### Récupération des informations
+### Récupérer des informations depuis `.env.json`
 
-Toutes les variables répertoriées dans le fichier `.env.json` seront chargées lorsque votre application recevra une requête. Cependant, vous pouvez utiliser le helper `app_env` pour récupérer les valeurs de ces variables dans les fichiers de configuration. En fait, si vous examinez les fichiers de configuration de Bow, vous remarquerez plusieurs des options utilisant déjà cet helper:
+Toutes les variables définies dans `.env.json` sont automatiquement chargées lorsque l’application est exécutée. Pour y accéder dans vos fichiers de configuration, utilisez le helper `app_env`.
+
+#### Exemple simple
 
 ```php
 'database' => app_env('DB_HOSTNAME'),
 ```
 
-Dans le cas où la variable n'est pas définie `app_env` retournera `null`, ou bien vous pouvez passer un deuxième paramètre à `app_env` qui sera la valeur par défaut si la valeur n'est pas trouvé.
+Si la variable n’est pas définie, `app_env` retournera `null`. Vous pouvez également fournir une valeur par défaut :
 
 ```php
 'database' => app_env('DB_HOSTNAME', 'localhost'),
 ```
 
+### Utilisation de valeurs imbriquées
+
+Le fichier `.env.json` supporte des objets imbriqués. Voici un exemple :
+
+```json
+{
+  "WEBHOOK_GATEWAY": {
+    "VISA": "http://localhost:8080/execute-visa-webhook",
+    "MASTERCARD": "http://localhost:8080/execute-mastercard-webhook"
+  }
+}
+```
+
+Pour accéder à ces valeurs :
+
+```php
+echo app_env('WEBHOOK_GATEWAY.VISA');
+// Retourne : http://localhost:8080/execute-visa-webhook
+```
+
+### Réutiliser des variables
+
+Vous pouvez réutiliser une variable déjà définie dans le fichier `.env.json` avec la syntax `${KEY}`:
+
+```json
+{
+  "APP_URL": "http://localhost:8080",
+  "WEBHOOK_GATEWAY": {
+    "VISA": "${APP_URL}/execute-visa-webhook",
+    "MASTERCARD": "${APP_URL}/execute-mastercard-webhook"
+  }
+}
+```
+
+:::note
+Ici ${APP_URL} défini la variable
+:::
+
+Cela permet de centraliser certaines valeurs pour plus de cohérence :
+
+```php
+echo app_env('WEBHOOK_GATEWAY.VISA');
+// Retourne : http://localhost:8080/execute-visa-webhook
+```
+
 ## Helpers
 
-Bow inclut une variété de fonctions PHP "d'assistance" globales. Beaucoup de ces fonctions sont utilisées par le Framework lui-même; Cependant, vous êtes libre de les utiliser dans vos propres applications si vous les trouvez pratiques.
+Bow inclut de nombreuses fonctions PHP pratiques appelées "helpers". Ces fonctions sont utilisées par le framework pour simplifier les opérations courantes. Vous pouvez également les utiliser dans vos projets.
 
-Notez que dans le fichier `config/helpers.php` il y a aussi des helpers, mais cela ne sont pas utiliser dans le Framework. Vous pouvez définir aussi vos helpers dans ce fichier.
+### Personnalisation des helpers
+
+Dans le fichier `config/helpers.php`, vous trouverez des helpers supplémentaires qui ne sont pas directement intégrés au framework. Vous pouvez modifier ce fichier pour y ajouter vos propres fonctions personnalisées afin de répondre aux besoins spécifiques de votre application.
 
 <SuggestionFeature />

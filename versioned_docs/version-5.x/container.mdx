@@ -1,8 +1,244 @@
 ---
 id: container
-title: Capsule
+title: "🧰 Conteneur d'injection de dépendances"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Introduction
+
+### Qu'est-ce que l'Injection de Dépendances (DI) ?
+
+L'**injection de dépendances** est un concept qui permet de **fournir** les objets dont une classe a besoin plutôt que de les créer elle-même. Cela permet de rendre le code plus modulaire et plus facile à tester. Plutôt que d'instancier directement des objets dans une classe, vous les **injectez** via son constructeur ou une autre méthode.
+
+### Qu'est-ce que l'Inversion de Contrôle (IoC) ?
+
+L'**inversion de contrôle** est un principe qui consiste à **déléguer** la gestion des objets et de leurs dépendances à un autre composant appelé **conteneur**. Cela signifie que le conteneur crée et gère les objets nécessaires pour vous, au lieu que votre code les crée manuellement.
+
+Dans BowPHP, cette gestion est faite par un conteneur appelé **Capsule**.
+
+## Pourquoi utiliser un Conteneur DIC ?
+
+Le conteneur DIC de BowPHP vous permet de gérer facilement toutes les dépendances de votre application. Voici quelques avantages :
+
+1. **Facilite la gestion des objets** : Plus besoin de créer des objets partout dans votre code.
+2. **Modularité et réutilisabilité** : Votre code devient plus facile à maintenir et à tester.
+3. **Flexibilité** : Vous pouvez facilement changer la façon dont les objets sont créés et gérés.
+
+## Comment utiliser le Conteneur DIC dans BowPHP ?
+
+### 1. **Accéder au Conteneur**
+
+Le conteneur est l'endroit où toutes les dépendances sont stockées. Voici comment y accéder :
+
+#### Via un helper :
+```php
+$container = app();  // Retourne l'instance du conteneur
+```
+
+#### Via la classe `Capsule` :
+
+```php
+use Bow\Container\Capsule;
+$container = Capsule::getInstance();  // Accède au conteneur de façon plus explicite
+```
+
+Les deux méthodes vous permettent de travailler avec le même conteneur.
+
+### 2. **Enregistrer des Liaisons dans le Conteneur**
+
+Lorsque vous avez une classe ou un service que vous souhaitez utiliser dans plusieurs endroits de votre application, vous devez **enregistrer** cette classe dans le conteneur.
+
+#### Exemple de liaison simple :
+
+Vous voulez dire au conteneur : "Lorsque quelqu'un demandera un service, voici comment le créer" :
+
+```php
+use App\Services\Service;
+
+app()->bind('service', function() {
+    return new Service();  // Retourne une nouvelle instance du service
+});
+```
+
+#### Exemple de liaison d'une instance unique (singleton) :
+
+Dans certains cas, vous ne voulez créer qu'une seule instance d'une classe (par exemple, pour la configuration). Vous pouvez utiliser un **singleton** :
+
+```php
+app()->instance('config', new Config());  // Une seule instance de Config sera utilisée
+```
+
+#### Exemple de liaison d'une fabrique :
+
+Si vous voulez que le conteneur crée une nouvelle instance chaque fois qu'une dépendance est demandée, mais avec un contrôle spécifique sur la création, vous pouvez utiliser une **fabrique** :
+
+```php
+app()->factory('user', function() {
+    return new User();  // Crée une nouvelle instance de User à chaque fois
+});
+```
+
+### 3. **Résoudre des Dépendances**
+
+Une fois qu'un objet est enregistré dans le conteneur, vous pouvez facilement le récupérer (ou **le résoudre**) à tout moment dans votre application. Le conteneur crée et fournit l'objet pour vous.
+
+#### Résolution simple :
+
+```php
+$service = app()->make('service');  // Récupère l'objet enregistré sous la clé 'service'
+```
+
+#### Résolution avec paramètres :
+Si la classe que vous voulez récupérer a des **paramètres** (comme des arguments dans son constructeur), vous pouvez les fournir facilement :
+
+```php
+$service = app()->makeWith('service', ['param' => 'value']);  // Passe des paramètres à la classe
+```
+
+#### Via la fonction helper :
+```php
+$service = app(Service::class);  // Récupère l'objet directement en utilisant la classe
+```
+
+### 4. **Injection Automatique des Dépendances**
+
+Si une classe dépend d'une autre (par exemple, un service qui utilise un repository), le conteneur peut automatiquement créer les objets nécessaires et les injecter. Cela vous évite de devoir créer manuellement les objets.
+
+#### Exemple :
+
+Imaginons que vous ayez une classe `UserService` qui a besoin de `UserRepository` :
+
+```php
+class UserService
+{
+    private $repository;
+    
+    public function __construct(UserRepository $repository)
+    {
+        $this->repository = $repository;  // Le conteneur injecte UserRepository ici
+    }
+}
+```
+
+Le conteneur peut automatiquement **injecter** `UserRepository` lorsque vous demandez une instance de `UserService` :
+
+```php
+$userService = app(UserService::class);  // Le conteneur crée UserService et injecte UserRepository
+```
+
+### 5. **Liaisons de Types Simples et Complexes**
+
+#### Liaison simple
+
+Chaque fois que vous demandez l'objet, une **nouvelle instance** est créée :
+
+```php
+app()->bind('logger', function() {
+    return new Logger();  // Crée un nouvel objet Logger chaque fois
+});
+```
+
+#### Liaison singleton
+
+Une **seule instance** est utilisée à travers toute l'application :
+
+```php
+app()->instance('config', new Config());  // Utilise la même instance partout
+```
+
+#### Liaison fabrique
+
+Chaque demande génère **une nouvelle instance** :
+
+```php
+app()->factory('user', function() {
+    return new User();  // Crée une nouvelle instance à chaque fois
+});
+```
+
+### 6. **Vérification de l'Existence d'une Liaison**
+
+Avant de résoudre une dépendance, vous pouvez vérifier si le conteneur contient déjà l'objet demandé.
+
+#### Exemple :
+
+```php
+if (isset(app('service'))) {
+  // Le service existe dans le conteneur
+}
+```
+
+## Bonnes Pratiques à Suivre
+
+1. **Utilisez l'injection par constructeur** : Cela permet de déclarer clairement les dépendances d'une classe et est facile à tester.
+2. **Privilégiez les interfaces aux classes concrètes** : Utilisez des interfaces pour les dépendances afin de garder votre code flexible et facile à maintenir.
+3. **Limitez l'utilisation des singletons** : Les singletons sont utiles pour certaines situations, mais il est préférable de ne pas en abuser, car cela peut rendre le code difficile à tester.
+
+## Exemple Complet pour Débutants
+
+Voici un exemple complet pour comprendre comment tout cela fonctionne ensemble :
+
+### Définir une Interface
+
+Une interface définit ce que doit faire un service, mais pas comment il le fait :
+
+```php
+interface UserRepositoryInterface {
+    public function find($id);
+}
+```
+
+### Implémentation de l'Interface
+
+Une classe qui implémente cette interface fournit l'implémentation réelle :
+
+```php
+class UserRepository implements UserRepositoryInterface {
+    public function find($id) {
+        return "Utilisateur avec l'ID : " . $id;
+    }
+}
+```
+
+### Service Utilisant le Repository
+
+`UserService` a besoin de `UserRepository` pour fonctionner :
+
+```php
+class UserService {
+    private $repository;
+    
+    public function __construct(UserRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+    
+    public function getUser($id)
+    {
+        return $this->repository->find($id);
+    }
+}
+```
+
+### Enregistrement dans le Conteneur
+
+Enregistrez l'interface et l'implémentation dans le conteneur :
+
+```php
+app()->bind(UserRepositoryInterface::class, UserRepository::class);
+```
+
+### Utilisation dans le Code
+
+Le conteneur crée automatiquement le service et ses dépendances :
+
+```php
+$userService = app(UserService::class);
+
+echo $userService->getUser(1);  // Affiche : "Utilisateur avec l'ID : 1"
+```
+
+Le conteneur d'injection de dépendances de BowPHP rend votre code plus **modulaire**, **flexible**, et **testable**. En utilisant l'IoC, vous déléguez la gestion des objets et des dépendances à un conteneur, ce qui simplifie la création et l'utilisation des objets dans votre application. Grâce à ces principes, vous pouvez créer des applications plus propres, plus faciles à maintenir et plus robustes.
 
 <SuggestionFeature />

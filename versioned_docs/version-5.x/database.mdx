@@ -5,22 +5,6 @@ title: "🎯 Démarrage"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [SQLite Configuration](#sqlite-configuration)
-- [Connexion à plusieurs Bases de donnée](#connexion-à-plusieur-base-de-donnée)
-- [Utilisation de requête SQL Brute](#utilisation-de-requête-sql-brute)
-  - [Execution de requête Select](#execution-de-requête-select)
-  - [Sélection conditionnelle](#sélection-conditionnel)
-  - [Execution de requête Insert](#execution-de-requête-insert)
-    - [Insertion multiple](#insertion-multiple)
-  - [Execution de requête Update](#execution-de-requête-update)
-  - [Execution de requête Delete](#execution-de-requête-delete)
-  - [Execution de requête](#execution-de-requête)
-- [Database Transactions](#database-transactions)
-  - [Utilisation manuelle de la transaction](#utilisation-manuel-des-transaction)
-- [Les jointures](#les-jointures)
-
 ## Introduction
 
 Bow rend l'interaction avec les bases de données extrêmement simple sur deux backends de bases de données en utilisant le `SQL brut`, le générateur de requêtes courant et l'[ORM](./orm) Barry.
@@ -28,7 +12,7 @@ Bow rend l'interaction avec les bases de données extrêmement simple sur deux b
 Actuellement, Bow prend en charge deux bases de données:
 
 - MySQL
-- ProgreSQL
+- PostgreSQL
 - SQLite
 
 ## Configuration
@@ -42,7 +26,7 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 ```json
 {
   "DB_DEFAULT": "sqlite",
-  "SQLITE_DATABASE": "/absolute/path/to/database.sqlite",
+  "SQLITE_DATABASE": "/absolute/path/to/database.sqlite"
 }
 ```
 
@@ -83,15 +67,15 @@ Alors notre table à comme colonne:
 
 | Nom de la colonne | Description |
 | ----------------- | ----------- |
-| `id` | Ici la clé primaire |
+| `id`   | Ici la clé primaire |
 | `name` | Le nom du pet |
-| `color` | La couleur du pet |
+| `color`| La couleur du pet |
 
-> Pour information, un `pet` c'est un animal domestique
+> Pour information, un `pet` c'est un animal domestique 😅
 
 ### Execution de requête Select
 
-Pour exécuter une requête brute de type `SELECT` nous devrez utiliser la méthode `Database::select` ou le helper `select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `SELECT` nous devrez utiliser la méthode `Database::select` ou le helper `db_select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'une requête pour obtenir toutes les informations de la table `pets`:
 
@@ -123,12 +107,12 @@ Via helper `db_select`:
 $pet = db_select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
-Notez que la valeur retournée par la méthode `db_select` est un `array` ou `null` s'il y a aucune informations.
+Notez que la valeur retournée par la méthode `db_select` est un `array` ou `null` s'il n'y a aucune informations.
 Dans le cas ou c'est un `array` le contenu est de type `stClass` (plus d'information sur [stClass](http://php.net/manual/fr/language.types.object.php)).
 
 ### Execution de requête Insert
 
-Pour exécuter une requête brute de type `INSERT` nous devrez utiliser la méthode `Database::insert` ou le helper `insert`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `INSERT` nous devrez utiliser la méthode `Database::insert` ou le helper `db_insert`. On considère toujours notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'une requête pour insérer une information dans la table `pets`:
 
@@ -156,7 +140,7 @@ $pet = [
 $inserted = db_insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
-Notez que la valeur retournée par la méthode `insert` est un `int` ou `number` qui est le nombre d'insertion.
+Notez que la valeur retournée par la fonction `db_insert` est un `int` ou `number` qui est le nombre d'insertion.
 
 #### Insertion multiple
 
@@ -232,7 +216,7 @@ $updated = db_update(
 
 ### Execution de requête Delete
 
-Pour exécuter une requête brute de type `DELETE` nous devrez utiliser la méthode `Database::delete` ou le helper `db_delete`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `DELETE` nous devrez utiliser la méthode `Database::delete` ou le helper `db_delete`. On considère toujours notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'une requête pour insérer une information dans la table `pets`:
 
@@ -388,7 +372,12 @@ Notre requête sera maintenant :
 $results = db_table('authors')
   ->join('authors', 'authors.id', 'pets.author_id')
   ->join('countries', 'countries.id', 'pets.country_id')
-  ->whereRaw('pets.author_id', 1)->get();
+  ->whereRaw('pets.author_id', 1)
+  ->get();
 ```
+
+:::note
+Vous pouvez consulter l'API de la classe [Database](./api/5.x/Bow/Database/Database.html) pour plus d'information.
+:::
 
 <SuggestionFeature />

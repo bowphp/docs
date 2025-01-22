@@ -5,8 +5,7 @@ title: "🔐 Soauth"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Installation](#Installation)
-- []
+## Introduction
 
 Package d'authentification via les réseaux sociaux pour Bow Framework.
 Ce package utilise le package [`thephpleague/oauth2-client`](https://github.com/thephpleague/oauth2-client) pour faire un wrapper.
@@ -32,30 +31,36 @@ composer require bowphp/soauth
 
 Après l'installation Dans votre fichier `.env.json`, vous devez définir les informations d'accès au fournisseur comme suit:
 
-### Configuration facebook
+### Configuration Facebook
 
 Vous pouvez créer la nouvelle application facebook à l'adresse [https://developers.facebook.com/fr](https://developers.facebook.com/fr).
 
 ```bash
-FACEBOOK_CLIENT_ID=client_id
-FACEBOOK_CLIENT_SECRET=client_secret
-FACEBOOK_REDIRECT_URI=redirect_uri
+{
+  "FACEBOOK_CLIENT_ID": "client_id",
+  "FACEBOOK_CLIENT_SECRET": "client_secret",
+  "FACEBOOK_REDIRECT_URI": "redirect_uri"
+}
 ```
 
-### Configuration gitlab
+### Configuration Gitlab
 
 ```bash
-GITLAB_CLIENT_ID=client_id
-GITLAB_CLIENT_SECRET=client_secret
-GITLAB_REDIRECT_URI=redirect_uri
+{
+  "GITLAB_CLIENT_ID": "client_id",
+  "GITLAB_CLIENT_SECRET": "client_secret",
+  "GITLAB_REDIRECT_URI": "redirect_uri"
+}
 ```
 
-### Configuration github
+### Configuration GitHub
 
 ```bash
-GITHUB_CLIENT_ID=client_id
-GITHUB_CLIENT_SECRET=client_secret
-GITHUB_REDIRECT_URI=redirect_uri
+{
+  "GITHUB_CLIENT_ID": "client_id",
+  "GITHUB_CLIENT_SECRET": "client_secret",
+  "GITHUB_REDIRECT_URI": "redirect_uri"
+}
 ```
 
 > Ainsi de suite, la configuration des autres providers suivent la même approche.

@@ -6,7 +6,7 @@ title: "👨🏽‍💻 Concept et Architecture"
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 import BugReportFeature from "@site/src/components/Partials/BugReportFeature";
 
-## Comprendre le cycle de vie d'une requête dans BowPHP
+## Introduction
 
 BowPHP est un framework PHP léger, conçu pour offrir une structure claire et modulaire. Lorsqu'une requête arrive, elle suit un chemin bien défini appelé **cycle de vie d'une requête**. Ce cycle est organisé pour séparer les responsabilités, rendre le code facile à maintenir et améliorer les performances.
 
@@ -43,14 +43,14 @@ Le routeur examine l'URL de la requête et détermine quelle route correspond. L
 Exemple de définition de route :
 
 ```php title="routes/app.php"
-$app->get('/users/{id}', 'UserController@show');
-$app->post('/api/login', 'AuthController@login');
+$app->get('/users/{id}', ['UserController', 'show']);
+$app->post('/api/login', ['AuthController', 'login']);
 ```
 
 :::note
 Ici :
-La requête `GET /users/42` est associée à la méthode show du contrôleur UserController.
-La requête `POST /api/login` est associée à la méthode login du contrôleur AuthController.
+- La requête `GET /users/42` est associée à la méthode show du contrôleur UserController.
+- La requête `POST /api/login` est associée à la méthode login du contrôleur AuthController.
 :::
 
 #### Association au contrôleur
@@ -63,7 +63,7 @@ Une fois la route détectée, le routeur :
 
 ### Une architecture modulaire
 
-BowPHP repose sur une architecture modulaire. Chaque module est indépendant, possédant sa propre configuration et remplit un rôle spécifique. Cela rend l'application facile à gérer et à étendre. Le routeur est un exemple de cette approche modulaire. Un autre exemple est le module Database, qui gère les connexions à la base de données.
+BowPHP repose sur une architecture modulaire. Chaque module est indépendant, possédant sa propre configuration et remplit un rôle spécifique. Cela rend l'application facile à gérer et à étendre. Le routeur est un exemple de cette approche modulaire. Un autre exemple est le module database, qui gère les connexions à la base de données.
 
 #### Exemple : Le module Database
 
@@ -91,7 +91,7 @@ return [
 ];
 ```
 
-#### **Classe `Bow\Database\DatabaseConfiguration`**
+#### **Classe `Bow\Database\DatabaseConfiguration::class`**
 
 Cette classe est chargée de lire les paramètres du fichier `config/database.php` et d'établir une connexion à la base de données.
 
@@ -102,9 +102,6 @@ Au démarrage, le Kernel charge le fichier `config/database.php` à l'aide de `D
 ### Visualisation avec un diagramme
 
 Voici une représentation visuelle pour mieux comprendre le cycle de vie d'une requête et l'intégration modulaire (exemple avec **Database**) :
-Charge les configurations
-
-Voici un diagramme mis à jour, mettant en évidence le rôle du routeur et l'intégration modulaire (exemple avec Database)
 
 ```mermaid
 graph TB
@@ -135,7 +132,7 @@ graph TB
 - **Kernel** : Orchestre le chargement des configurations depuis le dossier config et initialise les modules.
 - **Modularité** : Chaque composant (routeur, base de données, etc.) est indépendant, ce qui simplifie la gestion et améliore la maintenabilité.
 
-## Contributing
+## Merci aux contributeurs
 
 Merci d'avoir envisagé de contribuer à Bow Framework ! Le guide de contribution se trouve dans la documentation.
 

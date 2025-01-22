@@ -5,12 +5,6 @@ title: "📦 Package"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Introduction](#introduction)
-- [Création de plugin](#création-de-plugin)
-  - [Exemple de création](#exemple-de-création)
-  - [Testons notre package](#testons-notre-package)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
-
 ## Introduction
 
 Ce système permet d'étendre votre application, de gréffer des packages externe dans votre application Bow Framework.
@@ -23,12 +17,12 @@ Si vous avez une application Bow, il vous suffit de faire la création via `php 
 php bow add:configuration PluginConfiguration
 ```
 
-Le fichier `PluginConfiguration.php` sera créé dans le dossier `app/Configuration` qui contient deux méthode `create` et `run`.
+Le fichier `PluginConfiguration.php` sera créé dans le dossier `app/Configurations` qui contient deux méthodes `create` et `run`.
 
 - `create` permet d'initialiser le package
 - `run` permet de lancer d'initialisation le package.
 
-Dans l'initialisation des packages c'est la methode create qui ce lancera avant pour tous le autre packages qui seront defini au dessus dans votre configuration ensuite la methode run sera sera dans le meme orde.
+Dans l'initialisation des packages, c'est la methode create qui ce lancera avant pour tous le autre packages qui seront définis au-dessus dans votre configuration ensuite la methode `run` sera dans le même ordre.
 
 > N'Essayez pas de contacter un package ici si vous attendez qu'il soit d'abord configurer.
 
@@ -44,15 +38,16 @@ Nous allons faire un plugin aui va vérifier un email, alors on crée la configu
 php bow add:configuration EmailCheckerConfiguration
 ```
 
-Dans le dossier `app` nous allons ajouter un dossier `Packages` dans ce dossier, nous allons encore ajouter le fichier `EmailCheckController.php`:
+Dans le dossier `app` nous allons ajouter un dossier `Packages` dans ce dossier, nous allons ensuite ajouter le fichier `EmailCheckController.php`:
 
-```php
+```php title="app/Packages/EmailCheckController.php"
 namespace App\Packages;
 
+use App\Controllers\Controller;
 use Bow\Http\Request;
 use Bow\Support\Str;
 
-class EmailCheckController
+class EmailCheckController extends Controller
 {
   /**
    * Check the email

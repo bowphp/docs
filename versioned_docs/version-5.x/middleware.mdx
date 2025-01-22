@@ -5,15 +5,11 @@ title: "🚥 Middlewares"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Introduction](#introduction)
-- [Comment ça marche](#comment-ça-marche)
-- [Ajouter un middleware](#ajouter-un-middleware)
-- [Enregistrement de middleware](#enregistrement-de-middleware)
-- [Utiliser le middleware](#utiliser-le-middleware)
-
 ## Introduction
 
 Les middlewares constituent un mécanisme pratique pour filtrer les requêtes HTTP entrant dans votre application. Par exemple vous pouvez faire un middleware pour vérifier si un utilisateur est connecté et ensuite faire une action en fonction. Vous pouvez exécuter du code avant et après votre application Bow pour manipuler les objets `Request` et `Response` comme bon vous semble.
+
+[![asciicast](https://asciinema.org/a/bfTIiqg1ew9x1QRxeMTufxJJU.svg)](https://asciinema.org/a/bfTIiqg1ew9x1QRxeMTufxJJU)
 
 ## Comment ça marche
 
@@ -23,7 +19,7 @@ Lorsque vous exécutez l'application Bow, les objets Request traversent la struc
 
 La seule condition stricte est qu'un middleware doit renvoyer une value autre de `null`. Chaque middleware devra appeler le middleware suivant et lui transmettre les objets `Request` comme arguments via la méthode `$next`.
 
-> Bow inclut plusieur middlewares par defaut comme le middleware `csrf` et `auth`.
+> Bow inclut plusieurs middlewares par défaut comme le middleware `csrf` et `auth`.
 
 ## Ajouter un middleware
 
@@ -33,11 +29,11 @@ Pour ajouter un middleware il faut utiliser la commande `add:middleware` de `php
 php bow add:middleware IpMiddleware
 ```
 
-Notez que tout les middlewares sont sauvegardés par défaut dans le fichier `app/Middleware`.
+Notez que tout les middlewares sont sauvegardés par défaut dans le fichier `app/Middlewares`.
 
-Alors, le middleware que nous venons d'ajouter, vérifira l'adresse IP du client et si son adresse est égale à `127.0.0.1` on dira que l'application est mode dev.
+Alors, le middleware que nous venons d'ajouter, vérifiera l'adresse IP du client et si son adresse est égale à `127.0.0.1` on dira que l'application est mode dev.
 
-Mais d'abort, regardons le contenu du fichier `IpMiddleware`. C'est la méthode `process` qui permet de lancer le middleware et la callable permet de lancer le prochaine middleware.
+Mais d'abord, regardons le contenu du fichier `IpMiddleware`. C'est la méthode `process` qui permet de lancer le middleware et la callable permet de lancer le prochaine middleware.
 
 ```php title="app/Middlewares/IpMiddleware.php"
 namespace App\Middlewares;
@@ -88,7 +84,7 @@ public function middlewares()
 }
 ```
 
-Il est aussi possible d'ajouter les middlwares de façon globle dans l'application. Et ceci se faire dans le fichier de `routes` avec la méthode `middleware` sur `$app` qui va nous retourné une instance de `\Bow\Router\Router::class` donc tout les routes qui sera definir avec cette instance héritérons des middlewares spécifiés.
+Il est aussi possible d'ajouter les middlewares de façon globe dans l'application. Et ceci se faire dans le fichier de `routes` avec la méthode `middleware` sur `$app` qui va nous retourné une instance de `\Bow\Router\Router::class` donc tout les routes qui sera definir avec cette instance héritérons des middlewares spécifiés.
 
 ```php
 $router = $app->middleware(\App\Middlewares\IpMiddleware::class);
@@ -104,7 +100,7 @@ $router->get('/', 'HomeController::index');
 
 ## Utiliser le middleware
 
-Après avoir définir un middleware dans le `app/Kernel.php`.
+Après avoir défini un middleware dans le `app/Kernel.php`.
 
 ```php
 $app->get('/', 'HomeController::index')->middleware('ip');

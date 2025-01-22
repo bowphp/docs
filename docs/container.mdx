@@ -55,6 +55,7 @@ Vous voulez dire au conteneur : "Lorsque quelqu'un demandera un service, voici c
 
 ```php
 use App\Services\Service;
+
 app()->bind('service', function() {
     return new Service();  // Retourne une nouvelle instance du service
 });
@@ -139,7 +140,9 @@ app()->bind('logger', function() {
 ```
 
 #### Liaison singleton
+
 Une **seule instance** est utilisée à travers toute l'application :
+
 ```php
 app()->instance('config', new Config());  // Utilise la même instance partout
 ```
