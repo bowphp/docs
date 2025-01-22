@@ -5,17 +5,7 @@ title: "📯 Front-End"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Introduction](#introduction)
-- [Utilisation](#utilisation)
-  - [Compilation simplement](#compilation-simplement)
-  - [Compilation et minification les fichiers sources](#compilation-et-minification-les-fichiers-sources)
-  - [Surveiller le changement de fichier et récompile en fonction](#surveiller-le-changement-de-fichier-et-récompile-en-fonction)
-  - [Pour lancer code sniffer](#pour-lancer-code-sniffer)
-- [Webpack.mix.js](#webpackmixjs)
-
-## Introduction
-
-Bow est preset (Préconfiguré) avec un environement Frontend, notamment avec [Reacjs](https://reactjs.org), [Vuejs](https://vuejs.org) et [Sass](https://sass-lang.com) base sur le package [laravel-mix](https://laravel-mix.com). Ce qui permet d'accélérer le développement d'application web.
+Bow est preset (Préconfiguré) avec un environment Frontend, notamment avec [Reacjs](https://reactjs.org), [Vuejs](https://vuejs.org) et [Sass](https://sass-lang.com) base sur le package [laravel-mix](https://laravel-mix.com). Ce qui permet d'accélérer le développement d'application web.
 
 ## Utilisation
 
@@ -23,7 +13,7 @@ Pour lancer la compilation, allez dans la racine de votre application et taper `
 
 ### Compilation simplement
 
-Lance la compilation des fichirs définient dans `webpack.mix.js`.
+Lance la compilation des fichiers définis dans `webpack.mix.js`.
 
 ```bash
 npm run dev
@@ -31,7 +21,7 @@ npm run dev
 
 ### Compilation et minification les fichiers sources
 
-Compile les sources définient dans `webpack.mix.js` et optimise les fichiers.
+Compile les sources définis dans `webpack.mix.js` et optimise les fichiers.
 
 ```bash
 npm run prod
@@ -39,7 +29,7 @@ npm run prod
 
 ### Surveiller le changement de fichier et récompile en fonction
 
-Ceci permet de surveiller le changement des fichiers définient dans webpack.mix.js et ensuite rélance la compilation.
+Ceci permet de surveiller le changement des fichiers définis dans webpack.mix.js et ensuite rélance la compilation.
 
 ```bash
 npm run watch
@@ -47,9 +37,9 @@ npm run watch
 
 ### Pour lancer code sniffer
 
-Code sniffer c'est un outil qui permet de formater le code, validé sa qualité et réorganisé votre code dans le standard de dévelopement (Ici me standard c'est le `psr-2`).
+Code sniffer c'est un outil qui permet de formater le code, validé sa qualité et réorganisé votre code dans le standard de développement (Ici me standard c'est le `psr-2`).
 
-Cette commande va aussi lancer `format` qui est simple outil de validation synthaxique pour PHP.
+Cette commande va aussi lancer `format` qui est simple outil de validation syntaxique pour PHP.
 
 ```bash
 npm run format
@@ -57,7 +47,7 @@ npm run format
 
 ## Webpack.mix.js
 
-`webpack.mix.js` est une fichier qui vous permet de définir les fichiers JavaScript, JSx et Sass à compiler et est préconfiguré comme suit:
+`webpack.mix.js` est un fichier qui vous permet de définir les fichiers JavaScript, JSx et Sass à compiler et est préconfiguré comme suit:
 
 ```js
 mix.react('frontend/js/app.js', 'public/js')

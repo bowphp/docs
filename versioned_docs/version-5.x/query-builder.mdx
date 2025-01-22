@@ -5,29 +5,6 @@ title: "🏗 SQL Builder"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Introduction](#introduction)
-- [Récupéré les informations](#recupéré-les-informations)
-  - [Exemple avec `get`](#exemple-avec-get)
-  - [Exemple avec `first`](#exemple-avec-first)
-  - [Exemple avec `last`](#exemple-avec-last)
-  - [Ajoutez des restrictions](#ajoutez-des-restrictions)
-    - [Restriction simple](#restriction-simple)
-    - [La clause OR](#la-clause-or)
-  - [Clauses additionnelles](#clauses-additionnelles)
-    - [whereNull / whereNotNull](#wherenull--wherenotnull)
-    - [whereIn / whereNotIn](#wherein--wherenotin)
-    - [whereBetween / whereNotBetween](#wherebetween--wherenotbetween)
-  - [Ordonner, Grouper, et limiter](#ordonner-grouper-et-limiter)
-    - [orderBy](#orderby)
-    - [groupBy et having](#groupby-et-having)
-    - [jump et take](#jump-et-take)
-- [Aggregates](#aggregates)
-  - [Déterminer si des enregistrements existent](#déterminer-si-des-enregistrements-existent)
-  - [Spécification d'une clause de sélection](#spécification-dune-clause-de-sélection)
-  - [Insertion d'information](#insertion-dinformation)
-  - [Mise à jour](#mise-à-jour)
-  - [Supprimer un enregistrement](#supprimer-un-enregistrement)
-
 ## Introduction
 
 Bow fourni un api lié à la construction de requête. Avec la méthode `table` permet de construire une requête `sql` en se basant sur la nom de la table et retour une instance de [`Bow\Database\QueryBuilder::class`](https://bowphp.com/api/master/Bow/Database/QueryBuilder.html).

@@ -5,6 +5,12 @@ title: "🪒 Helpers"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
+## Introduction
+
+Les helpers sont des fonctions raccourcies chargées dans l'application qui permet de faire rapidement certaine action. Voici la liste des helpers qui existe dans l'application Bow Framework. Voici les helpers dispnoble dans l'application.
+
+## Helper de gestion HTTP
+
 - [Introduction](#introduction)
 - [Helper de gestion HTTP](#helper-de-gestion-http)
 - [Base de donnée](#base-de-donnée)
@@ -12,7 +18,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 - [Gestion d'évènement](#gestion-dévènement)
 - [Système de storage](#système-de-storage)
 - [helper Application](#helper-application)
-- [Chaine de caractère](#chaine-de-carractère)
+- [Chaine de caractère](#chaine-de-caractère)
 - [Email](#email)
 - [Autre](#autre)
 - [Utilisation](#utilisation)
@@ -22,72 +28,116 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
   - [request](#request)
   - [json](#json)
   - [download](#download)
-  - [set_status_code](#set_status_code)
+  - [set\_status\_code](#set_status_code)
   - [view](#view)
   - [session](#session)
   - [cookie](#cookie)
-  - [create_csrf_token](#create_csrf_token)
-  - [csrf_token](#csrf_token)
-  - [csrf_field](#csrf_field)
-  - [method_field](#method_field)
-  - [generate_token_csrf](#generate_token_csrf)
-  - [verify_csrf](#verify_csrf)
-  - [csrf_time_is_expired](#csrf_time_is_expired)
+  - [create\_csrf\_token](#create_csrf_token)
+  - [csrf\_token](#csrf_token)
+  - [csrf\_field](#csrf_field)
+  - [method\_field](#method_field)
+  - [generate\_token\_csrf](#generate_token_csrf)
+  - [verify\_csrf](#verify_csrf)
+  - [csrf\_time\_is\_expired](#csrf_time_is_expired)
   - [sanitize](#sanitize)
   - [secure](#secure)
-  - [set_header](#set_header)
-  - [get_header](#get_header)
+  - [set\_header](#set_header)
+  - [get\_header](#get_header)
   - [redirect](#redirect)
-  - [redirect_back](#redirect_back)
+  - [redirect\_back](#redirect_back)
   - [send](#send)
-  - [curl](#curl)
   - [url](#url)
   - [flash](#flash)
   - [validator](#validator)
   - [route](#route)
   - [old](#old)
-  - [client_locale](#client_locale)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
-
-## Introduction
-
-Les helpers sont des fonctions raccourcies chargées dans l'application qui permet de faire rapidement certaine action. Voici la liste des helpers qui existe dans l'application Bow Framework. Voici les helpers dispnoble dans l'application.
-
-## Helper de gestion HTTP
-
-[app](#app), [config](#config), [response](#response), [request](#request), [json](#json), [download](#download), [set_status_code](#set_status_code), [view](#view), [session](#session), [cookie](#cookie), [create_csrf_token](#create_csrf_token), [csrf_token](#csrf_token), [csrf_field](#csrf_field), [method_field](#method_field), [generate_token_csrf](#generate_token_csrf), [verify_csrf](#verify_csrf), [csrf_time_is_expired](#csrf_time_is_expired), [sanitize](#sanitize), [secure](#secure), [set_header](#set_header), [get_header](#get_header), [redirect](#redirect), [send](#send), [curl](#curl), [url](#url), [flash](#flash), [validator](#validator), [route](#route), [old](#old), [client_locale](#client_locale), [redirect_back](#redirect_back)
+  - [client\_locale](#client_locale)
 
 ## Base de donnée
 
-[db](#db), [table](#table), [get_last_insert_id](#get_last_insert_id), [db_select](#db_select), [db_select_one](#db_select_one), [db_insert](#db_insert), [db_delete](#db_delete), [db_update](#db_update), [db_statement](#db_statement), [db_transaction](#db_transaction), [db_transaction_started](#db_transaction_started), [db_rollback](#db_rollback), [pdo](#pdo), [set_pdo](#set_pdo), [db_commit](#db_commit), [db_seed](#db_seed)
+- [db](#db)
+- [db_table](#table)
+- [get_last_insert_id](#get_last_insert_id)
+- [db_select](#db_select)
+- [db_select_one](#db_select_one)
+- [db_insert](#db_insert)
+- [db_delete](#db_delete)
+- [db_update](#db_update)
+- [db_statement](#db_statement)
+- [db_transaction](#db_transaction)
+- [db_transaction_started](#db_transaction_started)
+- [db_rollback](#db_rollback)
+- [pdo](#pdo)
+- [set_pdo](#set_pdo)
+- [db_commit](#db_commit)
+- [db_seed](#db_seed)
 
 ## Sécurité
 
-[encrypt](#encrypt), [decrypt](#decrypt), [app_hash](#app_hash), [bow_hash](#bow_hash)
+- [encrypt](#encrypt)
+- [decrypt](#decrypt)
+- [app_hash](#app_hash)
+- [bow_hash](#bow_hash)
+- [sanitize](#sanitize)
+- [secure](#secure)
 
 ## Gestion d'évènement
 
-[listen_event](#listen_event), [listen_event_once](#listen_event_once), [listen_transmission_event](#listen_transmisson_event), [listen__transmission_event](#listen_transmisson_event), [emitter](#emitter), [emit_event](#emit_event)
+- [event](#listen_event)
 
 ## Système de storage
 
-[ftp](#ftp), [s3](#s3), [config](#config), [mount](#mount), [file_system](#file_system), [cache](#cache)
+- [config](#config)
+- [mount](#mount)
+- [storage_service](#file_system)
+- [cache](#cache)
 
 ## helper Application
 
-[app_env](#app_env), [app_assets](#app_assets), [app_abort](#app_abort), [app_abort_if](#app_abort_if), [app_mode](#app_mode), [auth](#auth), [logger](#logger)
+- [app_env](#app_env)
+- [app_assets](#app_assets)
+- [app_abort](#app_abort)
+- [app_abort_if](#app_abort_if)
+- [app_mode](#app_mode)
+- [auth](#auth)
+- [logger](#logger)
 
 ## Chaine de caractère
 
-[str_slug](#str_slug), [str_is_mail](#str_is_mail), [str_is_domain](#str_is_domain), [str_is_slug](#str_is_slug), [str_is_alpha](#str_is_alpha), [str_is_lower](#str_is_lower), [str_is_upper](#str_is_upper), [str_is_alpha_num](#str_is_alpha_num), [str_shuffle_words](#str_shuffle_words), [str_wordify](#str_wordify), [str_plurial](#str_plurial), [str_camel](#str_camel), [str_snake](#str_snake), [str_contains](#str_contains), [str_capitalize](#str_capitalize), [str_random](#str_random), [str_force_in_utf8](#str_force_in_utf8), [e](#e), [str_fix_utf8](#str_fix_utf8)
+- [str_uuid](#str_slug)
+- [str_slug](#str_slug)
+- [str_is_mail](#str_is_mail)
+- [str_is_domain](#str_is_domain)
+- [str_is_slug](#str_is_slug)
+- [str_is_alpha](#str_is_alpha)
+- [str_is_lower](#str_is_lower)
+- [str_is_upper](#str_is_upper)
+- [str_is_alpha_num](#str_is_alpha_num)
+- [str_shuffle_words](#str_shuffle_words)
+- [str_wordily](#str_wordily)
+- [str_plural](#str_plural)
+- [str_camel](#str_camel)
+- [str_snake](#str_snake)
+- [str_contains](#str_contains)
+- [str_capitalize](#str_capitalize)
+- [str_random](#str_random)
+- [str_force_in_utf8](#str_force_in_utf8)
+- [e](#e)
+- [str_fix_utf8](#str_fix_utf8)
 
 ## Email
 
-[email](#email), [raw_email](#raw_email)
+- [email](#email)
+- [raw_email](#raw_email)
 
 ## Autre
 
-[debug](#debug), [sep](#sep), [collect](#collect), [trans](#trans), [t](#t), [__](#__)
+- [debug](#debug)
+- [sep](#sep)
+- [collect](#collect)
+- [trans](#trans)
+- [t](#t)
+- [__](#__)
 
 ## Utilisation
 
@@ -117,7 +167,7 @@ return response($content = "hello papac", $code = 200);
 
 ### request
 
-Permet d'avoir accès à une instance de `\Bow\Http\Request::class`. Elle doit être utilisée impérativement dans un controlleur. Avoir plus d'information sur les méthodes possible [ici](./requests)
+Permet d'avoir accès à une instance de `\Bow\Http\Request::class`. Elle doit être utilisée impérativement dans un contrôleur. Avoir plus d'information sur les méthodes possible [ici](./requests)
 
 ```php
 $name = request()->get("name");
@@ -125,7 +175,7 @@ $name = request()->get("name");
 
 ### json
 
-Permet d'utiliser le méthode `json` de `\Bow\Http\Response::class`. Elle doit être utilisée impérativement dans un controlleur.
+Permet d'utiliser la méthode `json` de `\Bow\Http\Response::class`. Elle doit être utilisée impérativement dans un contrôleur.
 
 ```php
 return json(["name" => "papac"], $code = 200);
@@ -274,12 +324,6 @@ return send("hello papac");
 // hello papac
 ```
 
-### curl
-
-```php
-curl("https://github.com/bowphp");
-```
-
 ### url
 
 ```php
@@ -304,21 +348,21 @@ $name = request()->get("name");
 ### route
 
 ```php
-$name = request()->get("name");
+$name = route("name");
 // papac
 ```
 
 ### old
 
 ```php
-$name = request()->get("name");
+$name = old("name");
 // papac
 ```
 
 ### client_locale
 
 ```php
-$name = request()->get("name");
+$name = client_locale();
 // papac
 ```
 

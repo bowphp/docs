@@ -5,23 +5,11 @@ title: "🚀 Installation"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Prérequis](#prérequis)
-- [Créer un projet](#créer-un-projet)
-  - [Via Composer](#via-composer)
-- [🚀 Démarrer votre projet](#-démarrer-votre-projet)
-- [⚙️ Configuration](#-configuration)
-  - [Dossier Public](#dossier-public)
-  - [Fichiers de configuration](#fichiers-de-configuration)
-  - [Permissions sur les dossiers](#permissions-sur-les-dossiers)
-- [Configuration Serveur Web](#configuration-serveur-web)
-  - [Apache](#apache)
-  - [Nginx](#nginx)
-  - [Déployé sur un server mutualisé](#déployé-sur-un-server-mutualisé)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
-
-## Prérequis
+## Introduction
 
 Pour créer une nouvelle application Bow, veuillez d'abord vous assurer que votre ordinateur remplit les conditions suivantes :
+
+## Prérequis
 
 - PHP >= 8.1
 - OpenSSL PHP Extension
@@ -45,7 +33,7 @@ composer create-project --prefer-dist bowphp/app nom-du-projet
 > Nous vous conseillons d'installer `composer` de façon globale sur votre machine. Pour ce faire, référez-vous à la [documentation](https://getcomposer.org/download) d'installation de composer.
 > Si vous n'êtes pas familier à `composer`, nous vous invitons à parcourir la documentation.
 
-<script id="asciicast-s8HpeoaUwnxEZ7OOPRxxXE52z" src="https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z.js" data-speed="2"  data-rows="20" async></script>
+[![asciicast](https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z.svg)](https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z)
 
 ## 🚀 Démarrer votre projet
 
@@ -53,10 +41,10 @@ Rendez vous à la racine de votre projet et démarrez le serveur:
 
 ```bash
 cd nom-du-projet
-php bow run:server --port=8000 --host=0.0.0.0
+php bow run:server --port=8080 --host=0.0.0.0
 ```
 
-Ouvrez votre navigateur et tapez `http://localhost:8000`.
+Ouvrez votre navigateur et tapez `http://localhost:8080`.
 
 > `5000` est le port par défaut quand le port n'est pas spécifié avec la commande `php bow run:server`.
 

@@ -5,30 +5,6 @@ title: "📦 Response"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Introduction](#introduction)
-- [Envoyé une réponse](#envoyé-une-réponse)
-  - [Une chaine de caractère](#une-chaine-de-caractère)
-  - [Une Collection et Un tableau ou un Object](#une-collection-et-un-tableau-ou-un-object)
-  - [Un modèle BARRY](#un-modèle-barry)
-- [Modification de réponse](#modification-de-réponse)
-  - [Modification du code d'erreur](#modification-du-code-derreur)
-  - [Ajouter une entête HTTP](#ajouter-une-entête-http)
-- [Envoyer un JSON](#envoyer-un-json)
-  - [Prototype de la méthode `json`](#protototype-de-la-méthode-json)
-  - [Exemple d'envoyé de JSON](#exemple-denvoye-de-json)
-- [Envoyer une réponse depuis les vues](#envoyer-une-réponse-depuis-les-vues)
-  - [Prototype de la méthode `render`](#protototype-de-la-méthode-render)
-  - [Exemple d'envoyé de vue](#exemple-denvoye-de-vue)
-  - [Télécharger un fichier](#télécharger-un-fichier)
-  - [Prototype de la méthode `download`](#protototype-de-la-méthode-download)
-  - [Exemple de télécharger](#exemple-de-télécharge)
-- [Redirection](#redirection)
-  - [Redirection avec `to`](#redirection-avec-to)
-    - [Prototype de `to`](#prototype-de-to)
-  - [Redirection avec `back`](#redirection-avec-back)
-    - [Prototype de `back`](#prototype-de-back)
-  - [Redirection avec des informations](#redirection-avec-des-informations)
-
 ## Introduction
 
 Tous les routes et contrôleurs doivent retourner une réponse à renvoyer à l'utilisateur. Bow fournit plusieurs façons différentes de renvoyer des réponses. La réponse la plus élémentaire est le retour d'une chaîne depuis une route ou un contrôleur. Bow convertira automatiquement la chaîne en une réponse HTTP complète.

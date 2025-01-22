@@ -1,10 +1,11 @@
 {
   "docs": {
     "Démarrage": [
-      "concept",
       "installation",
-      "configuration",
       "structure",
+      "configuration",
+      "concept",
+      "container",
       "contribution"
     ],
     "Guide": [
@@ -26,6 +27,7 @@
     ],
     "Http": [
       "http-request",
+      "validation",
       "http-response",
       "http-session",
       "http-client"

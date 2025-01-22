@@ -5,6 +5,8 @@ title: "🚀 Http Client"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
+## Introduction
+
 Le client HTTP de BowPHP est un composant puissant et flexible permettant de réaliser des requêtes HTTP vers des API ou des services distants. Il utilise la bibliothèque cURL pour offrir des fonctionnalités avancées tout en simplifiant leur utilisation.
 
 ## Fonctionnalités principales
@@ -18,14 +20,14 @@ Le client HTTP de BowPHP est un composant puissant et flexible permettant de ré
 
 ## Utilisation
 
-Pour utilisater le client http rien de plus simple que de faire une nouvelle instance ou une injection dans un service ou un controller:
+Pour utilisateur le client http rien de plus simple que de faire une nouvelle instance ou une injection dans un service ou un contrôleur :
 
 ```php
 $client = new HttpClient();
 ```
 
 :::info
-Le contructeur prends un paramètres $base_url qui est optionnel. Si le base url est define l'appel des endpoints devient plus simple
+Le constructeur prend un paramètre $base_url qui est optionnel. Si le base url est define l'appel des endpoints devient plus simple
 
 ```php
 $client = new HttpClient('https://api.example.com');

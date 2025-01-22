@@ -5,28 +5,6 @@ title: "🚀 Request"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Introduction](#introduction)
-- [Accéder à la requête](#accéder-à-la-requête)
-- [Recupération des données](#recupération-des-données)
-  - [Via des Closures de route](#via-des-closures-de-route)
-  - [Via un controller](#via-un-controlleur)
-- [Chemin de requête et méthode](#chemin-de-requête-et-méthode)
-  - [Récupérer le chemin de requête](#récupérer-le-chemin-de-requête)
-  - [Récupérer la méthode de requête](#récupérer-la-méthode-de-requête)
-  - [Vérifier si la requête est en AJAX](#vérifier-si-la-requête-est-en-ajax)
-  - [Récupérer une entrée](#récupérer-une-entrée)
-  - [Recupération d'une partie des données d'entrée](#recupération-dune-partie-des-données-dentrée)
-  - [Déterminer si une valeur d'entrée est présente](#déterminer-si-une-valeur-dentrée-est-présente)
-  - [Déterminer l'adresse IP de client](#déterminer-ladresse-ip-de-client)
-  - [Déterminer le Port de client](#déterminer-le-port-de-client)
-  - [Déterminer le protocol de client](#déterminer-le-protocol-de-client)
-  - [Récupérer les entête-https](#récupérer-les-entête-https)
-  - [Récupérer l'IP du serveur](#récupérer-le-ip-du-server)
-  - [Récupérer le domaine Origin](#récupérer-le-domaine-origin)
-  - [Récupérer le temps de la requête](#récupérer-le-temps-de-la-requête)
-  - [Récupérer une instance de la session](#récupérer-une-instance-de-la-session)
-  - [Récupérer l'authentification courante](#récupérer-lauthentification-courante)
-
 ## Introduction
 
 Une requête HTTP est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autre outil tel que `curl`, `httpie` et autre.
@@ -56,18 +34,12 @@ $app->get('/', function () {
 
 - Par l'injection de dépendance
 
-```php title=""
+```php title="routes/app.php"
 use Bow\Http\Request;
 
 $app->get('/', function (Request $request) {
   return $request->get('name');
 });
-```
-
-```jsx title="/src/components/HelloCodeTitle.js"
-function HelloCodeTitle(props) {
-  return <h1>Hello, {props.name}</h1>;
-}
 ```
 
 ### Via un controller
@@ -200,7 +172,7 @@ if ($request->has('name')) {
 
 ### Déterminer l'adresse IP de client
 
-Souvent vous allez vouloir l'adresse IP du client qui à envoyer la requête, la méthode `ip` permet comme son nom l'indique de récupérer l'adresse ip de client:
+Souvent, vous allez vouloir l'adresse IP du client qui à envoyer la requête, la méthode `ip` permet comme son nom l'indique de récupérer l'adresse ip de client:
 
 ```php
 $ip = $request->ip();
@@ -261,7 +233,7 @@ if ($request->hasHeader('x-proxy-key')) {
 }
 ```
 
-### Récupérer le IP du server
+### Récupérer l'IP du server
 
 Vous avez la possibilité de récupérer l'adresse IP de serveur sur lequel votre application Bow est hébergé.
 
