@@ -5,19 +5,15 @@ title: "🙅🏽‍♂️ CSRF Protection"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Introduction](#introduction)
-  - [Jetons CSRF & JavaScript](#jetons-csrf--javascript)
-- [X-CSRF-TOKEN](#x-csrf-token)
-- [X-XSRF-TOKEN](#x-xsrf-token)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
+# Guide pratique : Protection CSRF avec Bow Framework
 
-## Introduction
+La protection contre les attaques CSRF (*Cross-Site Request Forgery*) est essentielle pour sécuriser vos applications web. Bow Framework fournit des outils simples et efficaces pour prévenir ces attaques en générant et en validant automatiquement des jetons CSRF.
 
-Bow facilite la protection de votre application contre les attaques par contrefaçon de requête intersite (CSRF). Les falsifications de requêtes intersites sont un type d'exploitation malveillante par lequel des commandes non autorisées sont effectuées pour le compte d'un utilisateur authentifié.
+## Introduction à la protection CSRF
 
-Bow génère automatiquement un "jeton" CSRF pour chaque session utilisateur active gérée par l'application. Ce jeton est utilisé pour vérifier que l'utilisateur authentifié est celui qui envoie les requêtes à l'application.
+Une attaque CSRF consiste à tromper un utilisateur authentifié pour qu'il exécute une action non autorisée sur une application. Pour prévenir cela, Bow génère un **jeton CSRF unique** pour chaque session utilisateur active. Ce jeton est utilisé pour valider toutes les requêtes envoyées à l'application.
 
-Chaque fois que vous définissez un formulaire HTML dans votre application, vous devez inclure un champ de jeton CSRF masqué dans le formulaire afin que le middleware de protection CSRF puisse valider la demande:
+Pour protéger vos formulaires, incluez un champ caché contenant le jeton CSRF :
 
 ```html
 <form method="POST" action="/upload">
@@ -26,25 +22,33 @@ Chaque fois que vous définissez un formulaire HTML dans votre application, vous
 </form>
 ```
 
-Le middleware `App\Middlewares\ClientCsrfMiddleware::class`, qui est inclus dans le groupe de middleware Web, vérifie automatiquement que le jéton dans l'entrée de la requête correspond au jeton stocké dans la session.
+Le middleware `Bow\Middleware\CsrfMiddleware::class`, inclus dans le groupe de middleware Web par défaut, vérifie automatiquement que le jeton fourni correspond à celui stocké dans la session.
 
-### Jetons CSRF & JavaScript
+Vous pouvez activer ou désactivé la vérification automatique dans le fichier `config/app.php`, avec la clé `auto_csrf`, qui prend `true` ou `false`.
 
-Lors de la création d'applications pilotées par JavaScript, il est pratique que votre bibliothèque HTTP JavaScript associe automatiquement le jeton CSRF à chaque requête sortante.
+```php
+return [
+    ...
+    "auto_csrf" => true
+    ...
+];
+```
 
-Le middleware CSRF est automatiquement ajouté lors de l'exécution de chaque requête.
+## Intégration avec JavaScript
 
-## X-CSRF-TOKEN
+Lors de la création d'applications utilisant AJAX ou des bibliothèques JavaScript comme Axios ou jQuery, il est recommandé de configurer votre bibliothèque HTTP pour inclure automatiquement le jeton CSRF dans les en-têtes des requêtes.
 
-Outre la vérification du jeton CSRF en tant que paramètre POST, le middleware `App\Middlewares\ClientCsrfMiddleware::class` vérifie également l'en-tête de demande `X-CSRF-TOKEN`. Vous pouvez, par exemple, stocker le jeton dans une balise META HTML:
+Ajoutez le jeton CSRF à une balise META HTML :
 
 ```html
 <meta name="csrf-token" content="{{ csrf_token() }}">
 ```
 
-Ensuite, une fois que vous avez créé la balise `<meta>`, vous pouvez demander à une bibliothèque comme jQuery d'ajouter automatiquement le jeton à tous les en-têtes de requête. Cela fournit une protection CSRF simple et pratique pour vos applications basées sur AJAX:
+Ensuite, configurez votre bibliothèque pour inclure cet en-tête dans chaque requête :
 
-```js
+### Exemple avec jQuery
+
+```javascript
 $.ajaxSetup({
   headers: {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -52,10 +56,26 @@ $.ajaxSetup({
 });
 ```
 
-## X-XSRF-TOKEN
+### Exemple avec Axios
 
-Bow stock le jéton CSRF actuel dans un cookie `XSRF-TOKEN` inclus dans chaque réponse générée par le Framework. Vous pouvez utiliser la valeur de cookie pour définir l'en-tête de demande `X-XSRF-TOKEN`.
+```javascript
+import axios from 'axios';
 
-Ce cookie est principalement envoyé par commodité, car certains Frameworks et bibliothèques JavaScript, comme Angular et Axios, placent automatiquement sa valeur dans l'en-tête X-XSRF-TOKEN.
+axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+```
+
+## Gestion des jetons CSRF
+
+### Jetons dans les en-têtes HTTP
+
+Outre les champs de formulaire, Bow permet d'utiliser l'en-tête `X-CSRF-TOKEN` pour valider les requêtes. Cela est particulièrement utile pour les requêtes AJAX.
+
+### Jetons dans les cookies
+
+Bow génère également un cookie nommé `XSRF-TOKEN` contenant le jeton CSRF actuel. Ce cookie peut être utilisé pour configurer automatiquement l'en-tête `X-XSRF-TOKEN`.
+
+Par exemple, des frameworks comme Angular et Axios utilisent ce cookie pour sécuriser les requêtes sans configuration supplémentaire.
+
+Avec Bow Framework, la mise en œuvre de la protection CSRF devient simple et efficace, vous permettant de vous concentrer sur le développement de fonctionnalités tout en assurant la sécurité de vos utilisateurs.
 
 <SuggestionFeature />

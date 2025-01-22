@@ -43,14 +43,14 @@ Le routeur examine l'URL de la requête et détermine quelle route correspond. L
 Exemple de définition de route :
 
 ```php title="routes/app.php"
-$app->get('/users/{id}', 'UserController@show');
-$app->post('/api/login', 'AuthController@login');
+$app->get('/users/{id}', ['UserController', 'show']);
+$app->post('/api/login', ['AuthController', 'login']);
 ```
 
 :::note
 Ici :
-La requête `GET /users/42` est associée à la méthode show du contrôleur UserController.
-La requête `POST /api/login` est associée à la méthode login du contrôleur AuthController.
+- La requête `GET /users/42` est associée à la méthode show du contrôleur UserController.
+- La requête `POST /api/login` est associée à la méthode login du contrôleur AuthController.
 :::
 
 #### Association au contrôleur
@@ -63,7 +63,7 @@ Une fois la route détectée, le routeur :
 
 ### Une architecture modulaire
 
-BowPHP repose sur une architecture modulaire. Chaque module est indépendant, possédant sa propre configuration et remplit un rôle spécifique. Cela rend l'application facile à gérer et à étendre. Le routeur est un exemple de cette approche modulaire. Un autre exemple est le module Database, qui gère les connexions à la base de données.
+BowPHP repose sur une architecture modulaire. Chaque module est indépendant, possédant sa propre configuration et remplit un rôle spécifique. Cela rend l'application facile à gérer et à étendre. Le routeur est un exemple de cette approche modulaire. Un autre exemple est le module database, qui gère les connexions à la base de données.
 
 #### Exemple : Le module Database
 
@@ -91,7 +91,7 @@ return [
 ];
 ```
 
-#### **Classe `Bow\Database\DatabaseConfiguration`**
+#### **Classe `Bow\Database\DatabaseConfiguration::class`**
 
 Cette classe est chargée de lire les paramètres du fichier `config/database.php` et d'établir une connexion à la base de données.
 
@@ -135,7 +135,7 @@ graph TB
 - **Kernel** : Orchestre le chargement des configurations depuis le dossier config et initialise les modules.
 - **Modularité** : Chaque composant (routeur, base de données, etc.) est indépendant, ce qui simplifie la gestion et améliore la maintenabilité.
 
-## Contributing
+## Merci
 
 Merci d'avoir envisagé de contribuer à Bow Framework ! Le guide de contribution se trouve dans la documentation.
 
