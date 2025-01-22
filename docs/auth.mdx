@@ -5,8 +5,287 @@ title: "👮🏽 Authentification"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-# Introduction
+## Introduction
 
-Bow Framework intègre un système d'authentification native. Cela vous permettra de faire une authentification très simple qui sera accessible directement dans toute votre application.
+L'authentification est un aspect essentiel de toute application web. BowPHP fournit un système d'authentification flexible et facile à configurer, qui prend en charge deux méthodes principales : l'authentification par session et l'authentification par JWT (JSON Web Token). Cette documentation vous guidera étape par étape pour intégrer et personnaliser le système d'authentification dans votre application.
+
+## Table des matières
+- [1. Configuration de l'authentification](#configuration)
+- [2. Modèle d'authentification](#modele-dauthentification)
+- [3. Utilisation de base](#utilisation-de-base)
+- [4. Authentification avec JWT](#authentification-jwt)
+- [5. Middleware d'authentification](#middleware)
+
+## 1. Configuration de l'authentification
+
+BowPHP utilise un fichier de configuration pour gérer les différentes options d'authentification. Ce fichier se trouve dans `config/auth.php`. Vous y définissez les types d'authentification que vous souhaitez utiliser, ainsi que les paramètres associés (comme les modèles utilisateurs et les clés de connexion).
+
+### Exemple de configuration
+
+```php
+return [
+    // Définit le guard par défaut utilisé
+    'default' => 'web',
+
+    // Configuration du guard web (session)
+    'web' => [
+        'type' => 'session', // Authentification par session
+        'model' => \App\Models\User::class, // Modèle utilisateur
+        'credentials' => [
+            'username' => 'email', // Champ d'authentification
+            'password' => 'password' // Mot de passe
+        ]
+    ],
+
+    // Configuration du guard api (JWT)
+    'api' => [
+        'type' => 'jwt', // Authentification par JWT
+        'model' => \App\Models\User::class,
+        'credentials' => [
+            'username' => 'email',
+            'password' => 'password'
+        ]
+    ]
+];
+```
+
+Dans cet exemple, vous avez deux types de "guards" : `web` pour les sessions classiques et `api` pour les API utilisant JWT.
+
+## 2. Modèle d'authentification
+
+Votre modèle utilisateur doit implémenter l'interface d'authentification de BowPHP. Cela se fait en étendant la classe `Bow\Auth\Authentication` dans votre modèle `User`.
+
+### Exemple :
+
+```php
+use Bow\Auth\Authentication;
+
+class User extends Authentication
+{
+    // Propriétés et méthodes de votre modèle
+}
+```
+
+Cela permet à BowPHP de gérer l'authentification de vos utilisateurs de manière transparente.
+
+## 3. Utilisation de base
+
+Une fois votre configuration en place et votre modèle utilisateur configuré, vous pouvez commencer à utiliser le système d'authentification dans vos contrôleurs et routes.
+
+### Méthode `guard`
+
+Le système d'authentification de BowPHP prend en charge plusieurs **guards**, qui sont des mécanismes distincts permettant de gérer l'authentification. Vous pouvez configurer plusieurs guards dans votre fichier `config/auth.php` (par exemple, un pour l'interface web et un autre pour les API).
+
+La méthode `guard` permet de spécifier quel guard utiliser dans un contexte donné. Par défaut, le guard utilisé est celui défini dans la configuration (`web`), mais vous pouvez facilement spécifier un autre guard en fonction de vos besoins (par exemple, pour les API avec JWT).
+
+#### Exemple d'utilisation de `guard` :
+
+```php
+// Authentifier un utilisateur en utilisant le guard 'web' (session)
+Auth::guard('web')->attempts([
+    'email' => 'john@example.com',
+    'password' => 'secret'
+]);
+
+// Authentifier un utilisateur en utilisant le guard 'api' (JWT)
+Auth::guard('api')->attempts([
+    'email' => 'john@example.com',
+    'password' => 'secret'
+]);
+```
+
+:::note
+Ici, `Auth::guard('web')` spécifie que nous voulons utiliser le guard `web`, qui est configuré pour l'authentification par session. Vous pouvez également remplacer `'web'` par `'api'` pour utiliser le guard configuré pour JWT. Vous pouvez aussi utiliser le helper `app_auth`
+:::
+
+### Méthode `attempts`
+
+La méthode `attempts` est utilisée pour **authentifier un utilisateur** en vérifiant ses **identifiants**. Elle prend un tableau d'identifiants (souvent `email` et `password`) et retourne `true` si l'authentification est réussie, ou `false` si elle échoue.
+
+- Elle est généralement utilisée lorsqu'un utilisateur soumet un formulaire de connexion.
+- Elle peut être appelée sur un **guard** spécifique pour authentifier l'utilisateur en fonction de son contexte (par exemple, via JWT ou session).
+
+#### Exemple d'utilisation de `attempts` :
+
+```php
+// Authentifier un utilisateur avec des identifiants
+$credentials = [
+    'email' => 'john@example.com',
+    'password' => 'secret'
+];
+
+// Tentative d'authentification via le guard 'web'
+if (Auth::guard('web')->attempts($credentials)) {
+    echo 'Authentification réussie via session';
+} else {
+    echo 'Échec de l\'authentification';
+}
+```
+
+Dans cet exemple, la méthode `attempts` essaie d'authentifier l'utilisateur avec les identifiants fournis. Si les informations sont correctes, l'utilisateur est authentifié, et une session est créée pour lui (dans le cas du guard `web`).
+
+### Méthode `check`
+
+La méthode `check` permet de vérifier si l'utilisateur est actuellement authentifié. Elle retourne `true` si un utilisateur est connecté (quel que soit le guard utilisé), et `false` sinon.
+
+#### Exemple d'utilisation de `check` :
+
+```php
+// Vérifier si l'utilisateur est authentifié via le guard 'web'
+if (Auth::guard('web')->check()) {
+    echo 'L\'utilisateur est authentifié';
+} else {
+    echo 'Aucun utilisateur authentifié';
+}
+```
+
+Cette méthode est très utile pour protéger des routes ou exécuter des actions en fonction de l'état d'authentification de l'utilisateur.
+
+### Méthode `guest`
+
+La méthode `guest` est l'opposée de `check`. Elle retourne `true` si l'utilisateur **n'est pas authentifié** et `false` s'il est connecté.
+
+#### Exemple d'utilisation de `guest` :
+
+```php
+// Vérifier si l'utilisateur n'est pas authentifié via le guard 'web'
+if (Auth::guard('web')->guest()) {
+    echo 'Aucun utilisateur authentifié';
+} else {
+    echo 'L\'utilisateur est authentifié';
+}
+```
+
+### Méthode `user`
+
+La méthode `user` permet de récupérer l'**utilisateur actuellement authentifié**. Elle retourne l'instance de votre modèle utilisateur (par exemple, `App\Models\User`) ou `null` si aucun utilisateur n'est connecté.
+
+#### Exemple d'utilisation de `user` :
+
+```php
+// Récupérer l'utilisateur connecté via le guard 'web'
+$user = Auth::guard('web')->user();
+
+if ($user) {
+    echo 'Utilisateur authentifié : ' . $user->name;
+} else {
+    echo 'Aucun utilisateur authentifié';
+}
+```
+
+### Méthode `id`
+
+La méthode `id` permet de récupérer l'**ID** de l'utilisateur actuellement authentifié. Cela peut être utile si vous n'avez besoin que de l'ID de l'utilisateur sans avoir à récupérer l'objet complet.
+
+#### Exemple d'utilisation de `id` :
+
+```php
+// Récupérer l'ID de l'utilisateur connecté via le guard 'web'
+$userId = Auth::guard('web')->id();
+
+if ($userId) {
+    echo 'L\'ID de l\'utilisateur authentifié est ' . $userId;
+} else {
+    echo 'Aucun utilisateur authentifié';
+}
+```
+
+### Méthode `login`
+
+La méthode `login` est utilisée pour **connecter un utilisateur explicitement**. Vous pouvez l'utiliser avec un modèle utilisateur que vous avez récupéré de la base de données, par exemple après une tentative de connexion réussie.
+
+#### Exemple d'utilisation de `login` :
+
+```php
+$user = User::find(1); // Trouver un utilisateur
+Auth::guard('web')->login($user); // Connecter l'utilisateur via le guard 'web'
+```
+
+### Méthode `logout`
+
+La méthode `logout` permet de **déconnecter l'utilisateur actuellement authentifié**. Elle détruit la session de l'utilisateur (dans le cas du guard `web`) ou révoque son token JWT (dans le cas du guard `api`).
+
+#### Exemple d'utilisation de `logout` :
+
+```php
+// Déconnecter l'utilisateur via le guard 'web'
+Auth::guard('web')->logout();
+```
+
+## 4. Authentification avec JWT
+
+Si vous souhaitez utiliser des tokens JWT pour l'authentification (très couramment utilisé dans les API), vous devez installer le package `bowphp/policier` :
+
+```bash
+composer require bowphp/policier
+```
+
+### Configuration de JWT
+
+Vous devez configurer JWT dans le fichier `config/policier.php` pour définir les paramètres liés à la sécurité des tokens.
+
+```php
+return [
+    "signkey" => app_env("APP_JWT_SECRET"), // Clé secrète
+    "exp" => 3600 * 24 * 3, // Expiration en secondes (ici 3 jours)
+    "iss" => app_env("APP_JWT_ISSUER", "app.example.com"), // Émetteur du token
+    "alg" => "HS512", // Algorithme de signature
+    "aud" => app_env("APP_JWT_AUD", "app.example.com"), // Audience
+];
+```
+
+### Utilisation de JWT
+
+Une fois configuré, vous pouvez utiliser JWT pour authentifier un utilisateur via l'API.
+
+```php
+// Authentifier l'utilisateur via le guard 'api' (JWT)
+Auth::guard('api')->attempts($credentials);
+
+// Vérifier si l'utilisateur est authentifié via le JWT
+if (Auth::guard('api')->check()) {
+    // Utilisateur authentifié via JWT
+}
+
+// Récupérer le token généré
+$token = Auth::guard('api')->getToken();
+```
+
+## Middleware d'authentification
+
+Les middlewares permettent de protéger certaines routes de votre application, en assurant que seules les personnes authentifiées peuvent y accéder. BowPHP inclut un middleware d'authentification prêt à l'emploi.
+
+### Exemple d'utilisation :
+
+```php
+$app->get('/profile', function () {
+    // Route protégée, accessible uniquement aux utilisateurs authentifiés
+})->middleware('auth');
+```
+
+Et aussi, vous utilisez JWT, vous devez utiliser le middleware `api`. Regarde la configuration [policier](./policier).
+
+```php
+$app->get('/profile', function () {
+    // Route protégée, accessible uniquement aux utilisateurs authentifiés
+})->middleware('api');
+```
+
+### Personnalisation du middleware
+
+Si vous souhaitez personnaliser le comportement du middleware (par exemple, pour rediriger l'utilisateur vers une page spécifique lorsqu'il n'est pas authentifié), vous pouvez étendre la classe `AuthMiddleware` :
+
+```php
+use Bow\Middlewares\AuthMiddleware;
+
+class CustomAuthMiddleware extends AuthMiddleware
+{
+    // Redirection personnalisée en cas de non-authentification
+    public function redirectTo(): string
+    {
+        return '/login'; // Rediriger vers une page de connexion
+    }
+}
+```
 
 <SuggestionFeature />
