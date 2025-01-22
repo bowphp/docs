@@ -1,6 +1,6 @@
 ---
 id: container
-title: "🧰 Conteneur d'injection de dépendances"
+title: "🧰 Injection de dépendances"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
@@ -184,7 +184,8 @@ Voici un exemple complet pour comprendre comment tout cela fonctionne ensemble :
 Une interface définit ce que doit faire un service, mais pas comment il le fait :
 
 ```php
-interface UserRepositoryInterface {
+interface UserRepositoryInterface
+{
     public function find($id);
 }
 ```
@@ -194,7 +195,8 @@ interface UserRepositoryInterface {
 Une classe qui implémente cette interface fournit l'implémentation réelle :
 
 ```php
-class UserRepository implements UserRepositoryInterface {
+class UserRepository implements UserRepositoryInterface
+{
     public function find($id) {
         return "Utilisateur avec l'ID : " . $id;
     }
