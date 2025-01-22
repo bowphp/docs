@@ -26,8 +26,8 @@ Les helpers sont des fonctions raccourcies chargées dans l'application qui perm
   - [config](#config)
   - [response](#response)
   - [request](#request)
-  - [json](#json)
-  - [download](#download)
+  - [response_json](#response_json)
+  - [response_download](#response_download)
   - [set\_status\_code](#set_status_code)
   - [view](#view)
   - [session](#session)
@@ -39,8 +39,8 @@ Les helpers sont des fonctions raccourcies chargées dans l'application qui perm
   - [generate\_token\_csrf](#generate_token_csrf)
   - [verify\_csrf](#verify_csrf)
   - [csrf\_time\_is\_expired](#csrf_time_is_expired)
-  - [sanitize](#sanitize)
-  - [secure](#secure)
+  - [data_sanitize](#data_sanitize)
+  - [data_secure](#data_secure)
   - [set\_header](#set_header)
   - [get\_header](#get_header)
   - [redirect](#redirect)
@@ -78,8 +78,8 @@ Les helpers sont des fonctions raccourcies chargées dans l'application qui perm
 - [decrypt](#decrypt)
 - [app_hash](#app_hash)
 - [bow_hash](#bow_hash)
-- [sanitize](#sanitize)
-- [secure](#secure)
+- [data_sanitize](#data_sanitize)
+- [data_secure](#data_secure)
 
 ## Gestion d'évènement
 
@@ -173,16 +173,16 @@ Permet d'avoir accès à une instance de `\Bow\Http\Request::class`. Elle doit �
 $name = request()->get("name");
 ```
 
-### json
+### response_json
 
 Permet d'utiliser la méthode `json` de `\Bow\Http\Response::class`. Elle doit être utilisée impérativement dans un contrôleur.
 
 ```php
-return json(["name" => "papac"], $code = 200);
+return response_json(["name" => "papac"], $code = 200);
 // {"name": "papac"}
 ```
 
-### download
+### response_download
 
 Permet lors d'une requête de télécharger un fichier et elle est liée sur la classe `\Bow\Http\Response::class`. Elle doit être utilisée impérativement dans un controlleur.
 
@@ -190,7 +190,7 @@ Permet lors d'une requête de télécharger un fichier et elle est liée sur la 
 $file = "/path/to/file.png";
 $filename = "photo.png";
 
-return download($file, $filename);
+return response_download($file, $filename);
 ```
 
 ### set_status_code
@@ -277,14 +277,14 @@ csrf_time_is_expired();
 // bool
 ```
 
-### sanitize
+### data_sanitize
 
 ```php
-$name = sanitize("papa'c")
+$name = data_sanitize("papa'c")
 // papac
 ```
 
-### secure
+### data_secure
 
 ```php
 $name = request()->get("name");
