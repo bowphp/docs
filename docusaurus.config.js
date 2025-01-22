@@ -260,7 +260,7 @@ module.exports = {
       },
       items: [
         {
-          to: "docs/installation",
+          to: "docs/concept",
           label: "Documentation",
           position: "left",
         },

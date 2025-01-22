@@ -5,4 +5,313 @@ title: "🛫 Testez votre application"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
+### Introduction
+
+L'API de test fonctionnel de BowPHP permet de tester vos API de manière fluide en utilisant des requêtes HTTP. Cette API est construite autour de PHPUnit, ce qui vous permet d'utiliser toute la puissance de ce framework pour effectuer des tests. Les principales opérations HTTP (GET, POST, PUT, DELETE, PATCH) sont couvertes, et il est possible d'ajouter des en-têtes ou des pièces jointes à vos requêtes.
+
+### Classe `TestCase`
+
+La classe principale pour utiliser l'API de test est `TestCase`, qui étend la classe `PHPUnitTestCase` de PHPUnit. Elle fournit une interface simple pour envoyer des requêtes HTTP et vérifier les réponses.
+
+### **Méthodes de la classe `TestCase`**
+
+Le base_url des appèls HTTP est la valeur `APP_URL`, mais vous pouvez aussi la spécifier manuellement avec la propriété url dans la classe du test unitaire.
+
+#### **2. `attach(array $attach)`**
+Permet d'ajouter des pièces jointes (fichiers ou données) à vos requêtes.
+
+**Exemple d'utilisation** :
+
+```php
+$test->attach([
+    'file' => new \CURLFile('/path/to/file.jpg')
+]);
+```
+
+#### **3. `withHeaders(array $headers)`**
+Permet de spécifier des en-têtes supplémentaires pour toutes les requêtes suivantes.
+
+```php
+$test->withHeaders([
+    'Authorization' => 'Bearer token',
+    'Content-Type' => 'application/json'
+]);
+```
+
+#### **4. `withHeader(string $key, string $value)`**
+Ajoute un en-tête unique à vos requêtes.
+
+```php
+$test->withHeader('X-Custom-Header', 'custom_value');
+```
+
+#### **5. `get(string $url, array $param = [])`**
+Effectue une requête GET. Vous pouvez ajouter des paramètres supplémentaires à la requête.
+
+```php
+$response = $test->get('/api/users', ['page' => 1]);
+```
+
+#### **6. `post(string $url, array $param = [])`**
+Effectue une requête POST. Vous pouvez ajouter des données et des fichiers en utilisant la méthode `attach()`.
+
+```php
+$response = $test->post('/api/users', ['name' => 'John Doe']);
+```
+
+#### **7. `put(string $url, array $param = [])`**
+Effectue une requête PUT.
+
+```php
+$response = $test->put('/api/users/1', ['name' => 'John Updated']);
+```
+
+#### **8. `delete(string $url, array $param = [])`**
+Effectue une requête DELETE. Cette méthode utilise `PUT` en interne avec le paramètre `_method` pour simuler une requête DELETE.
+
+```php
+$response = $test->delete('/api/users/1');
+```
+
+#### **9. `patch(string $url, array $param = [])`**
+Effectue une requête PATCH. Comme pour `delete()`, cette méthode utilise `PUT` en interne.
+
+```php
+$response = $test->patch('/api/users/1', ['name' => 'John Modified']);
+```
+
+#### **10. `visit(string $method, string $url, array $params = [])`**
+Effectue une requête HTTP générique en fonction de la méthode spécifiée (`get`, `post`, `put`, etc.).
+
+```php
+$response = $test->visit('get', '/api/users');
+```
+
+### **Exemple complet d'utilisation**
+
+Voici un exemple complet qui montre comment configurer un test fonctionnel avec l'API de test :
+
+```php
+use Bow\Testing\TestCase;
+
+class UserApiTest extends TestCase
+{
+    protected ?string $url = 'http://localhost:8080'
+
+    public function testCreateUser()
+    {
+        // Ajouter un en-tête d'autorisation
+        $this->withHeader('Authorization', 'Bearer token');
+
+        // Ajouter des données de test à envoyer dans la requête POST
+        $data = [
+            'name' => 'John Doe',
+            'email' => 'john.doe@example.com'
+        ];
+
+        // Effectuer la requête POST
+        $response = $this->post('/api/users', $data);
+
+        // Vérifier que la réponse a le statut HTTP 201
+        $response->assertStatus(201);
+        $result = $response->toArray();
+
+        // Vérifier que le nom de l'utilisateur créé est correct
+        $this->assertEquals('John Doe', $result['name']);
+    }
+
+    public function testGetUser()
+    {
+        // Faire une requête GET pour récupérer un utilisateur
+        $response = $this->get('/api/users/1');
+
+        // Vérifier que la réponse a le statut HTTP 200
+        $response->assertStatus(200);
+        $result = $response->toArray();
+
+        // Vérifier que l'ID de l'utilisateur est correct
+        $this->assertEquals(1, $result['id']);
+    }
+}
+```
+
+La classe `Response` permet de manipuler les réponses HTTP dans le cadre de tests fonctionnels avec BowPHP. Elle encapsule un objet de la classe `HttpClientResponse` et expose plusieurs méthodes pour effectuer des assertions sur la réponse.
+
+## **Classe `Response` pour les Tests Fonctionnels**
+
+### Introduction
+La classe `Response` est utilisée pour représenter une réponse HTTP dans le cadre des tests fonctionnels dans BowPHP. Elle permet d'effectuer des assertions sur le contenu de la réponse, son en-tête, son type de contenu et son code de statut.
+
+### **Méthodes de la classe `Response`**
+
+#### **1. `assertJson(string $message = ''): Response`**
+Vérifie que le contenu de la réponse est au format JSON. Si ce n'est pas le cas, un échec de test sera généré.
+
+```php
+$response->assertJson("La réponse devrait être au format JSON");
+```
+
+#### **2. `assertExactJson(array $data, string $message = ''): Response`**
+Vérifie que le contenu JSON de la réponse correspond exactement aux données spécifiées.
+
+```php
+$response->assertExactJson([
+    'name' => 'John Doe',
+    'email' => 'john.doe@example.com'
+], "La réponse JSON ne correspond pas aux données attendues.");
+```
+
+#### **3. `assertContainsExactText(string $data, string $message = ''): Response`**
+Vérifie que le contenu de la réponse correspond exactement au texte donné.
+
+```php
+$response->assertContainsExactText("Bienvenue, John Doe", "Le texte de la réponse ne correspond pas.");
+```
+
+#### **4. `assertHeader(string $header, string $message = ''): Response`**
+Vérifie qu'un en-tête spécifique existe dans la réponse.
+
+```php
+$response->assertHeader('Content-Type', "L'en-tête Content-Type est manquant.");
+```
+
+#### **5. `assertArray(string $message = ''): Response`**
+Vérifie que le contenu de la réponse est un tableau.
+
+```php
+$response->assertArray("La réponse devrait être un tableau.");
+```
+
+#### **6. `assertContentType(string $content_type, string $message = ''): Response`**
+Vérifie que le type de contenu de la réponse correspond à celui spécifié.
+
+```php
+$response->assertContentType('application/json', "Le type de contenu n'est pas 'application/json'.");
+```
+
+#### **7. `assertContentTypeJson(string $message = ''): Response`**
+Vérifie que le type de contenu est `application/json`.
+
+```php
+$response->assertContentTypeJson("Le type de contenu devrait être JSON.");
+```
+
+#### **8. `assertContentTypeText(string $message = ''): Response`**
+Vérifie que le type de contenu est `text/plain`.
+
+```php
+$response->assertContentTypeText("Le type de contenu devrait être text/plain.");
+```
+
+#### **9. `assertContentTypeHtml(string $message = ''): Response`**
+Vérifie que le type de contenu est `text/html`.
+
+```php
+$response->assertContentTypeHtml("Le type de contenu devrait être text/html.");
+```
+
+#### **10. `assertContentTypeXml(string $message = ''): Response`**
+Vérifie que le type de contenu est `text/xml`.
+
+```php
+$response->assertContentTypeXml("Le type de contenu devrait être text/xml.");
+```
+
+#### **11. `assertStatus(int $code, string $message = ''): Response`**
+Vérifie que le code de statut HTTP de la réponse correspond à celui spécifié.
+
+```php
+$response->assertStatus(200, "Le statut HTTP n'est pas 200.");
+```
+
+#### **12. `assertKeyExists(string $key, string $message = ''): Response`**
+Vérifie qu'une clé existe dans le contenu JSON de la réponse.
+
+```php
+$response->assertKeyExists('id', "La clé 'id' est manquante dans la réponse.");
+```
+
+#### **13. `assertKeyMatchValue(string|int $key, mixed $value, string $message = ''): Response`**
+Vérifie qu'une clé spécifique dans le contenu JSON de la réponse correspond à une valeur spécifiée.
+
+```php
+$response->assertKeyMatchValue('name', 'John Doe', "Le nom dans la réponse ne correspond pas.");
+```
+
+#### **14. `assertContains(string $text): Response`**
+Vérifie que le contenu de la réponse contient une sous-chaîne spécifique.
+
+```php
+$response->assertContains("Bienvenue", "Le texte 'Bienvenue' devrait être présent.");
+```
+
+#### **15. `getContent(): string`**
+Récupère le contenu brut de la réponse.
+
+```php
+$content = $response->getContent();
+```
+
+#### **16. `toArray(): array|object`**
+Retourne le contenu de la réponse sous forme de tableau ou d'objet (si le contenu est JSON).
+
+```php
+$data = $response->toArray();
+```
+
+#### **17. `__call(string $method, array $params = [])`**
+Permet d'appeler dynamiquement les méthodes de l'objet `HttpClientResponse` encapsulé dans la réponse.
+
+```php
+$response->getCode(); // Appelle getCode() sur HttpClientResponse
+```
+
+### **Exemple d'utilisation complète**
+
+Voici un exemple complet qui montre comment utiliser la classe `Response` pour tester une API :
+
+```php
+use Bow\Testing\TestCase;
+
+class UserApiTest extends TestCase
+{
+    public function testCreateUser()
+    {
+        // Effectuer une requête POST
+        $data = [
+            'name' => 'John Doe',
+            'email' => 'john.doe@example.com'
+        ];
+        $response = $this->post('/api/users', $data);
+
+        // Vérifier que la réponse a le statut 201
+        $response->assertStatus(201, "Le statut HTTP devrait être 201");
+
+        // Vérifier que le contenu est en JSON
+        $response->assertJson("La réponse devrait être en JSON");
+
+        // Vérifier que le nom dans la réponse est correct
+        $response->assertKeyMatchValue('name', 'John Doe', "Le nom de l'utilisateur est incorrect.");
+    }
+
+    public function testGetUser()
+    {
+        // Effectuer une requête GET
+        $response = $this->get('/api/users/1');
+
+        // Vérifier que la réponse a le statut 200
+        $response->assertStatus(200, "Le statut HTTP devrait être 200");
+
+        // Vérifier que l'utilisateur existe
+        $response->assertKeyExists('id', "L'ID de l'utilisateur devrait exister.");
+    }
+}
+```
+
+### Références
+
+- [Documentation officielle de PHPUnit](https://phpunit.de/)
+
+Ce document peut être inclus dans la documentation officielle pour aider les utilisateurs de BowPHP à comprendre et à utiliser l'API de test fonctionnel de manière optimale.
+
 <SuggestionFeature />

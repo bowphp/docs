@@ -7,63 +7,81 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 # Introduction
 
-La console vous aide à accélérer votre développement. Il permet de générer des classes et tester votre application en locale.
+La console de Bow Framework est un outil puissant qui vous permet d’accélérer votre développement. Elle offre un ensemble de commandes pratiques pour générer des classes, tester votre application localement, gérer vos bases de données et bien plus encore. Voici un guide détaillé et illustré pour exploiter pleinement cette console.
 
-## Genereate app key and resources
+## Commandes de base pour générer des clés et des ressources
 
-| Commandee | Description |
-|----------|------|
-| generate:resource | Create new REST controller |
-| generate:session | For generate session table |
-| generate:key | Create new app key |
+Ces commandes vous aident à créer rapidement des éléments fondamentaux pour votre application :
 
-## Add user boilerplate class
+| **Commande**            | **Description**                          |
+|-------------------------------|------------------------------------|
+| `generate:resource`           | Crée un nouveau contrôleur REST. Par exemple : `php bow generate:resource UserController` génère un contrôleur pour gérer les utilisateurs. |
+| `generate:session-table`      | Génère une table pour les sessions. Exemple : `php bow generate:session-tabe` crée une migration pour la gestion des sessions. |
+| `generate:notification-table` | Génère une table pour les notifications. Exemple : `php bow generate:notification-tabe` crée une migration pour la gestion des notifications. |
+| `generate:cache-table`        | Génère une table pour les caches. Exemple : `php bow generate:cache-tabe` crée une migration pour la gestion des caches. |
+| `generate:queue-table`        | Génère une table pour les queues. Exemple : `php bow generate:queue-tabe` crée une migration pour la gestion des queues. |
+| `generate:key`                | Crée une nouvelle clé pour sécuriser l’application. Commande : `php bow generate:key` génère et affiche une nouvelle clé. |
 
-| Commandee | Description |
-|----------|------|
-| add:middleware | Create new middleware |
-| add:configuration | Create new configuration |
-| add:service | Create new service |
-| add:exception | Create new exception |
-| add:controller | Create new controller |
-| add:model | Create new model |
-| add:validator | Create new validator |
-| add:seeder | Create new table fake seeder |
-| add:migration | Create a new migration |
-| add:event | Create a new event listener |
-| add:producer | Create a new producer |
+## Ajouter des classes et composants personnalisés
 
-### MIGRATION apply a migration in user model
+Ces commandes permettent d’ajouter rapidement des composants à votre application pour répondre à des besoins spécifiques :
 
-| Commandee | Description |
-|----------|------|
-| migration:migrate | Make migration |
-| migration:reset | Reset all migration |
-| migration:rollback | Rollback to previous migration |
-| migrate | Alias of migration:migrate |
+| **Commande**            | **Description**                         |
+|--------------------------|-----------------------------------------|
+| `add:middleware`         | Crée un nouveau middleware. Exemple : `php bow add:middleware AuthMiddleware` crée un middleware nommé `AuthMiddleware`. |
+| `add:configuration`      | Crée un nouveau fichier de configuration. Par exemple : `php bow add:configuration payment` génère `config/payment.php`. |
+| `add:service`            | Crée un nouveau service. Exemple : `php bow add:service PaymentService` génère une classe pour gérer les paiements. |
+| `add:exception`          | Crée une nouvelle exception. Commande : `php bow add:exception InvalidUserException`. |
+| `add:controller`         | Crée un nouveau contrôleur. Exemple : `php bow add:controller OrderController`. |
+| `add:model`              | Crée un nouveau modèle. Exemple : `php bow add:model Product`. |
+| `add:validator`          | Crée un nouveau validateur. Commande : `php bow add:validator UserValidator`. |
+| `add:seeder`             | Crée un outil de "seeding". Par exemple : `php bow add:seeder users`. |
+| `add:migration`          | Crée une nouvelle migration. Exemple : `php bow add:migration create_orders_table`. |
+| `add:event`              | Crée un écouteur d’événement. Commande : `php bow add:event UserRegisteredEvent`. |
+| `add:producer`           | Crée un nouveau producteur (utilisé dans les systèmes de messagerie). Exemple : `php bow add:producer EmailProducer`. |
 
-### CLEAR for clear cache information
+## Gérer les migrations
 
-| Commandee | Description |
-|----------|------|
-| clear:view | Clear view cached information |
-| clear:cache | Clear cache information |
-| clear:session | Clear session cache information |
-| clear:log | Clear logs cache information |
-| clear:all | Clear all cache information |
+Les migrations facilitent la gestion de l’évolution de vos bases de données. Voici les commandes principales avec des exemples :
 
-### SEED Make seeding
+| **Commande**            | **Description**                         |
+|--------------------------|-----------------------------------------|
+| `migration:migrate`      | Applique les migrations. Exemple : `php bow migration:migrate`. |
+| `migration:reset`        | Réinitialise toutes les migrations. Commande : `php bow migration:reset`. |
+| `migration:rollback`     | Annule la dernière migration. Exemple : `php bow migration:rollback`. |
+| `migrate`                | Alias de `migration:migrate`. Vous pouvez simplement taper : `php bow migrate`. |
 
-| Commandee | Description |
-|----------|------|
-| seed:table [name] | Make seeding for one table |
-| seed:all | Make seeding for all |
+## Nettoyer le cache et les informations temporaires
 
-### RUN Launch process
+Ces commandes vous permettent de réinitialiser divers caches pour garantir le bon fonctionnement de votre application :
 
-| Commandee | Description |
-|----------|------|
-| run:console | show psysh php REPL for debug you code. |
-| run:server  | run a local web server. |
+| **Commande**            | **Description**                         |
+|--------------------------|-----------------------------------------|
+| `clear:view`             | Supprime le cache des vues compilées. Exemple : `php bow clear:view`. |
+| `clear:cache`            | Supprime le cache général. Commande : `php bow clear:cache`. |
+| `clear:session`          | Supprime le cache des sessions. Exemple : `php bow clear:session`. |
+| `clear:log`              | Supprime les journaux. Commande : `php bow clear:log`. |
+| `clear:all`              | Supprime toutes les informations en cache. Exemple : `php bow clear:all`. |
+
+## Gérer le "seeding" des bases de données
+
+Le "seeding" permet d’initialiser votre base de données avec des données factices. Voici les commandes disponibles :
+
+| **Commande**            | **Description**                         |
+|--------------------------|-----------------------------------------|
+| `seed:table [name]`      | Insère des données dans une table spécifique. Exemple : `php bow seed:table users`. |
+| `seed:all`               | Insère des données dans toutes les tables. Commande : `php bow seed:all`. |
+
+## Exécuter des processus en local
+
+Ces commandes vous permettent de tester et déboguer votre application directement depuis votre environnement local :
+
+| **Commande**            | **Description**                         |
+|--------------------------|-----------------------------------------|
+| `run:console`            | Lance une console interactive (REPL) pour déboguer votre code. Exemple : `php bow run:console`. |
+| `run:server`             | Lance un serveur web local. Commande : `php bow run:server` démarre un serveur à `http://localhost:8080`. |
+
+
+Ces outils sont conçus pour optimiser votre flux de travail et faciliter le développement. Essayez-les pour tirer pleinement parti de Bow Framework !
 
 <SuggestionFeature />

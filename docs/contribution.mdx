@@ -5,68 +5,94 @@ title: "👩🏽‍🍳 Guide de Contribution"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Introduction](#introduction)
-- [Processus de contribution](#processus-de-contribution)
-- [Format des messages de commit](#format-des-messages-de-commit)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
-
 ## Introduction
 
-Les contributions sont les bienvenues et seront entièrement créditées. Si vous voulez contribuer au projet, veuillez d'abord discuter
-des changements que vous voulez apporter via email, en créant une issue sur github, avec les responsables du dépôt avant
-de coder votre solution.
+Contribuer à un projet open source est une excellente manière de s’améliorer en tant que développeur et d’aider une communauté. Toutes les contributions sont les bienvenues et seront reconnues. Avant de soumettre une modification, discutez-en d’abord avec les mainteneurs via e-mail ou en créant une issue sur GitHub. Cela permet de valider l’orientation de votre proposition avant de commencer le travail.
 
-Veuillez s'il vous plaît vous conformer au code de conduite lors de vos interactions sur ce projet.
+Veuillez respecter le code de conduite du projet lors de vos interactions.
 
-Nous acceptons les contributions via Pull Request sur [GitHub](https://github.com).
+## Comment contribuer
 
-## Processus de contribution
+Le projet accepte les contributions via des Pull Requests sur [GitHub](https://github.com). Voici les étapes pour bien contribuer :
 
-- Fork le projet
-- Créez une branche avec un nom descriptif de vos modifications
-- Utilisez des messages de commits descriptifs
-- Ajoutez des tests unitaires
-- Documentez vos modifications - Assurez vous que la documentation est mise à jour selon vos modifications
-- Un pull request par fonctionnalité - Si vous voulez faire plus d'une chose, faites plusieurs pull requests
-- Mettez à jour la version - Nous suivons le schema SemVer
+1. **Forker le projet** :
+- Rendez-vous sur la page du projet sur GitHub.
+- Cliquez sur le bouton "Fork" pour copier le projet dans votre compte.
+
+2. **Créer une branche** :
+- Donnez un nom descriptif à votre branche reflétant les modifications apportées.
+- Exemple :
+
+```bash
+git checkout -b fix-login-bug
+```
+
+3. **Coder et documenter** :
+- Implémentez vos changements avec des messages de commit clairs (voir la section « Format des messages de commit »).
+- Si vos modifications impactent la logique ou l’utilisation, mettez à jour la documentation du projet.
+
+4. **Ajouter des tests unitaires** :
+- Assurez-vous que vos changements sont accompagnés de tests qui garantissent leur fonctionnement.
+- Exemple : si vous ajoutez une nouvelle fonctionnalité, écrivez des tests pour vérifier les scénarios principaux et les cas limites.
+
+5. **Soumettre une Pull Request** :
+- Poussez vos modifications sur votre répertoire forké :
+```bash
+git push origin fix-login-bug
+```
+
+- Allez sur la page GitHub du projet et créez une Pull Request en s’assurant de décrire les modifications apportées.
+
+## Règles pour les Pull Requests
+
+- **Un Pull Request par fonctionnalité** : Si vous souhaitez contribuer à plusieurs aspects du projet, créez une Pull Request distincte pour chaque modification.
+- **Mise à jour de version** : Si votre contribution modifie de manière significative le comportement du projet, indiquez comment elle affecte la version en suivant le schéma [SemVer](https://semver.org).
 
 ## Format des messages de commit
 
-Pour faciliter la maintenance du dépôt, Bow utilise un format pour les messages de commits.
+Pour garantir une bonne maintenance du projet, utilisez un format standardisé pour vos messages de commit. Voici les préfixes recommandés :
 
-- `refactor` pour ajouter un changement sur un fonctionnement
-- `fix` pour fixer un bug
-- `feat` pour ajouter une nouvelle fonctionnalité
-- `test` pour ajouter ou mise à jour un test unitaire
+- **refactor** : Indique un changement interne qui n’affecte pas le comportement utilisateur.
+- **fix** : Corrige un bug existant.
+- **feat** : Ajoute une nouvelle fonctionnalité.
+- **test** : Ajoute ou met à jour des tests unitaires.
 
-Veuillez vous référer à l'exemple suivant :
+### Exemple de message de commit
 
-```sh
+1. **Changement général** :
+```bash
+git commit -m "fix: correct login issue when using special characters"
+```
+
+2. **Changement dans une section spécifique** :
+```bash
+git commit -m "fix(session): resolve token expiration bug"
+```
+
+3. **Changement touchant plusieurs sections** :
+Si votre modification affecte plusieurs parties, ajoutez une description plus détaillée :
+```bash
 git commit
 ```
 
-Dans votre éditeur
+Dans l’éditeur :
+```
+feat(auth): implement OAuth2 login
 
-```txt
-change(module_name): your commit message
-
-Description
+- Added OAuth2 support for Google and Facebook.
+- Updated session handling for third-party logins.
 ```
 
-Si la modification affecte une section :
+> **Remarque** : Les messages de commit doivent être rédigés en anglais.
 
-```bash
-git commit -m "change(session): rename init variable"
-```
+## Bonnes pratiques
 
-Si la modification affecte un élément dans une section:
+- **Qualité du code** : Respectez les standards de codage du projet (vérifiez le fichier `CONTRIBUTING.md` ou `.editorconfig` si disponible).
+- **Relecture** : Revisez vos modifications avant de soumettre une Pull Request.
+- **Collaborer** : Soyez ouvert aux retours et prêts à ajuster vos contributions en fonction des commentaires des mainteneurs.
 
-```bash
-git commit -m "fix(http:request): bug fix #40"
-```
+En suivant ces étapes, vous contribuez à la croissance et à la stabilité du projet tout en gagnant de précieuses compétences en développement collaboratif !
 
-Dans le cas où vos modifications affectent plusieurs sections, ajoutez une description avec votre commit sous forme de liste à puce.
 
-> Notez que les messages de commit doivent être en anglais.
 
 <SuggestionFeature />
