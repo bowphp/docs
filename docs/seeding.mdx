@@ -3,12 +3,12 @@ id: seeding
 title: "💉 Seeding"
 ---
 
-import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
-
 - [Introduction](#introduction)
 - [Ajouter un seeder](#ajouter-un-seeder)
 - [Lancer le seeding](#lancer-le-seeding)
 - [Helper](#helper)
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
@@ -22,7 +22,7 @@ Pour ajouter un seeder, on passe par `php bow` avec la commande `add:seeder` ens
 php bow add:seeder pets
 ```
 
-Un fichier `pets_seeder.php` sera créé dans le dossier `seeders`. En voici le contenu :
+Un fichier `pets.php` sera créé dans le dossier `seeders`. En voici le contenu :
 
 ```php
 /**
@@ -45,7 +45,10 @@ foreach (range(1, 5) as $key) {
 return $seeds;
 ```
 
-> La clé `pets` est le nom de la table du seeding.
+:::note
+La clé `pets` est le nom de la table du seeding. Vous pouvez aussi utiliser le nom de la classe concerné `App\Models\Pet::class' si vous avez créé.
+Voir la [documentation](./orm) les modèles
+:::
 
 ## Lancer le seeding
 
@@ -55,7 +58,7 @@ Pour lancer le seeding, on utilise la commande `seed:table` suivie du nom de la 
 php bow seed:table pets
 ```
 
-Vous avez la possibilité de lancer tous les seeding avec la commande `seed:all`. Cela fera le seeding de tous les fichiers dans `seeders`.
+Vous avez la possibilité de lancer tous les seeding avec la commande `seed:all`. Cela fera le seeding de tous les fichiers dans `seeders` en se basant sur le fichier `_database.php`.
 
 ```bash
 php bow seed:all

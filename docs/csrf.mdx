@@ -3,15 +3,24 @@ id: csrf
 title: "🙅🏽‍♂️ CSRF Protection"
 ---
 
+- [Introduction](#introduction)
+- [Protection CSRF](#protection-csrf)
+- [Intégration avec JavaScript](#intégration-avec-javascript)
+  - [Exemple avec jQuery](#exemple-avec-jquery)
+  - [Exemple avec Axios](#exemple-avec-axios)
+- [Gestion des jetons CSRF](#gestion-des-jetons-csrf)
+  - [Jetons dans les en-têtes HTTP](#jetons-dans-les-en-têtes-http)
+  - [Jetons dans les cookies](#jetons-dans-les-cookies)
+
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-# Guide pratique : Protection CSRF avec Bow Framework
+## Introduction
 
 La protection contre les attaques CSRF (*Cross-Site Request Forgery*) est essentielle pour sécuriser vos applications web. Bow Framework fournit des outils simples et efficaces pour prévenir ces attaques en générant et en validant automatiquement des jetons CSRF.
 
-## Introduction à la protection CSRF
-
 Une attaque CSRF consiste à tromper un utilisateur authentifié pour qu'il exécute une action non autorisée sur une application. Pour prévenir cela, Bow génère un **jeton CSRF unique** pour chaque session utilisateur active. Ce jeton est utilisé pour valider toutes les requêtes envoyées à l'application.
+
+## Protection CSRF
 
 Pour protéger vos formulaires, incluez un champ caché contenant le jeton CSRF :
 

@@ -3,13 +3,11 @@ id: mail
 title: "✉️ Envoie de Mail"
 ---
 
-import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
-
 - [Introduction](#introduction)
 - [Configuration](#configuration)
 - [Utilisation](#utilisation)
-  - [La méthode send](#la-méthode-send)
-    - [Prototype send](#prototype-send)
+  - [La méthode email](#la-méthode-email)
+    - [Prototype email](#prototype-email)
   - [API de Message](#api-de-message)
       - [`addHeader`, ajout des entêtes personnalisés](#addheader-ajout-des-entêtes-personnalisés)
       - [`to`, définit le destinataire](#to-définit-le-destinataire)
@@ -26,6 +24,8 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
   - [La méthode raw](#la-méthode-raw)
     - [Prototype raw](#prototype-raw)
 
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
 ## Introduction
 
 Envoyer des emails dans une application est monnaie courante. Bow Framework intègre un système d'envoi d'email facile à utiliser. Vous pouvez utiliser ce système à travers plusieurs pilotes communement appelés drivers:
@@ -38,19 +38,21 @@ Envoyer des emails dans une application est monnaie courante. Bow Framework int�
 
 Vous trouverez la configuration dans le fichier `config/mail.php` qui est rélativement simple, les options sont toutes commentés.
 
-Installez les packages supplémentaire
+Installez le package `aws/aws-sdk-php` si vous voulez utiliser `ses` comme driver de mail.
 
-- ses "aws/aws-sdk-php"
+```bash
+composer require aws/aws-sdk-php
+```
 
 ## Utilisation
 
 Pour utiliser le service, vous devez appeler la classe [`Bow\Mail\Mail::class`](https://bowphp.com/api/master/Bow/Mail). Il y a deux méthode statique pour l'envoie de mail `email` et `raw_email`.
 
-### La méthode send
+### La méthode email
 
 **email** permet d'envoyer des emails en se basant sur une [vue](./views) dans l'application.
 
-#### Prototype send
+#### Prototype email
 
 ```php
 email($view, array $data, callable $callable)
@@ -68,10 +70,10 @@ Exemple d'utilisation :
 
 Considérons la vue `email-view.tintin.php` qui contient les informations suivantes :
 
-```jinja
+```php title="templates/email-view.tintin.php"
 Bonjour {{ $name }},
 
-Nous vous informons que vous compte viens d'être créditer de 100.000.000 F.
+Nous vous informons que vous compte viens d'être crédité de 100.000.000 F.
 
 Cordialement,
 ```
@@ -89,13 +91,13 @@ $data = [
 Mail::send('email-view', $data, function (Message $message) {
   $message->to('info@exemple.com');
   $message->subject("Paiement !");
-  $messate->from("Bow <info@exemple.com>");
+  $message->from("Bow <info@exemple.com>");
 });
 ```
 
 ### API de Message
 
-Bow Framework va donc passer une instance de `Bow\Mail\Message` qui vous permettra d'ajouter des informations supplémentaires à votre email, notamment le destinataire.
+Bow Framework va donc passer une instance de `Bow\Mail\Message::class` qui vous permettra d'ajouter des informations supplémentaires à votre email, notamment le destinataire.
 
 ##### `addHeader`, ajout des entêtes personnalisés
 

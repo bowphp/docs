@@ -1,10 +1,10 @@
 {
   "docs": {
     "Démarrage": [
-      "concept",
       "installation",
-      "configuration",
       "structure",
+      "configuration",
+      "concept",
       "contribution"
     ],
     "Guide": [
