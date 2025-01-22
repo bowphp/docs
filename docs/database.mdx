@@ -3,22 +3,6 @@ id: database
 title: "🎯 Démarrage"
 ---
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [SQLite Configuration](#sqlite-configuration)
-- [Connexion à plusieurs Bases de donnée](#connexion-à-plusieurs-bases-de-donnée)
-- [Utilisation de requête SQL Brute](#utilisation-de-requête-sql-brute)
-  - [Execution de requête Select](#execution-de-requête-select)
-  - [Sélection conditionnelle](#sélection-conditionnelle)
-  - [Execution de requête Insert](#execution-de-requête-insert)
-    - [Insertion multiple](#insertion-multiple)
-  - [Execution de requête Update](#execution-de-requête-update)
-  - [Execution de requête Delete](#execution-de-requête-delete)
-  - [Execution de requête](#execution-de-requête)
-- [Database Transactions](#database-transactions)
-  - [Utilisation manuelle de la transaction](#utilisation-manuelle-de-la-transaction)
-- [Les jointures](#les-jointures)
-
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
@@ -42,7 +26,7 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 ```json
 {
   "DB_DEFAULT": "sqlite",
-  "SQLITE_DATABASE": "/absolute/path/to/database.sqlite",
+  "SQLITE_DATABASE": "/absolute/path/to/database.sqlite"
 }
 ```
 

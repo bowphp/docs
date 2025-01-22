@@ -3,38 +3,6 @@ id: routing
 title: "🚦 Routing"
 ---
 
-- [Introduction](#introduction)
-- [Mappage d'URL](#mappage-durl)
-  - [Structure du Routage](#structure-du-routage)
-  - [Exemple de Routage](#exemple-de-routage)
-    - [Avec une Closure :](#avec-une-closure-)
-    - [Avec un tableau de fonctions (callables) :](#avec-un-tableau-de-fonctions-callables-)
-    - [Avec un contrôleur :](#avec-un-contrôleur-)
-    - [Avec un contrôleur et un middleware :](#avec-un-contrôleur-et-un-middleware-)
-    - [Utilisation d'un contrôleur avec la méthode `__invoke` :](#utilisation-dun-contrôleur-avec-la-méthode-__invoke-)
-- [Liste des Méthodes de Mappage](#liste-des-méthodes-de-mappage)
-  - [Exemples de Routage avec différentes Méthodes HTTP](#exemples-de-routage-avec-différentes-méthodes-http)
-- [Mappage Multiple](#mappage-multiple)
-  - [`match`: Mappage avec plusieurs Méthodes HTTP](#match-mappage-avec-plusieurs-méthodes-http)
-  - [`any`: Mappage avec n'importe quelle Méthode HTTP](#any-mappage-avec-nimporte-quelle-méthode-http)
-- [Groupes de Routes avec `prefix`](#groupes-de-routes-avec-prefix)
-- [Personnalisation des Routes](#personnalisation-des-routes)
-  - [Capturer des Variables dans l'URL](#capturer-des-variables-dans-lurl)
-  - [Ajouter des Critères de Validation sur les Variables](#ajouter-des-critères-de-validation-sur-les-variables)
-    - [Exemple avec une seule variable :](#exemple-avec-une-seule-variable-)
-    - [Exemple avec plusieurs variables :](#exemple-avec-plusieurs-variables-)
-  - [Nommer les Routes](#nommer-les-routes)
-  - [Utilisation des Middlewares](#utilisation-des-middlewares)
-    - [Exemple d'association de middleware :](#exemple-dassociation-de-middleware-)
-  - [Composition d'Actions](#composition-dactions)
-- [Utilisation de la méthode `route`](#utilisation-de-la-méthode-route)
-  - [Prototype de la méthode `route`](#prototype-de-la-méthode-route)
-  - [Liste des options disponibles dans `route`](#liste-des-options-disponibles-dans-route)
-  - [Exemple d'utilisation de `route` avec une closure](#exemple-dutilisation-de-route-avec-une-closure)
-  - [Exemple d'utilisation de `route` avec un contrôleur](#exemple-dutilisation-de-route-avec-un-contrôleur)
-  - [Exemple d'utilisation de `route` avec un contrôleur et un middleware](#exemple-dutilisation-de-route-avec-un-contrôleur-et-un-middleware)
-  - [Exemple d'utilisation de `route` avec un contrôleur, un middleware et une restriction](#exemple-dutilisation-de-route-avec-un-contrôleur-un-middleware-et-une-restriction)
-
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction

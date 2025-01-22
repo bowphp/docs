@@ -3,42 +3,6 @@ id: testing
 title: "🛫 Testez votre application"
 ---
 
-- [Introduction](#introduction)
-  - [Classe `TestCase`](#classe-testcase)
-  - [**Méthodes de la classe `TestCase`**](#méthodes-de-la-classe-testcase)
-    - [**2. `attach(array $attach)`**](#2-attacharray-attach)
-    - [**3. `withHeaders(array $headers)`**](#3-withheadersarray-headers)
-    - [**4. `withHeader(string $key, string $value)`**](#4-withheaderstring-key-string-value)
-    - [**5. `get(string $url, array $param = [])`**](#5-getstring-url-array-param--)
-    - [**6. `post(string $url, array $param = [])`**](#6-poststring-url-array-param--)
-    - [**7. `put(string $url, array $param = [])`**](#7-putstring-url-array-param--)
-    - [**8. `delete(string $url, array $param = [])`**](#8-deletestring-url-array-param--)
-    - [**9. `patch(string $url, array $param = [])`**](#9-patchstring-url-array-param--)
-    - [**10. `visit(string $method, string $url, array $params = [])`**](#10-visitstring-method-string-url-array-params--)
-  - [**Exemple complet d'utilisation**](#exemple-complet-dutilisation)
-- [**Classe `Response` pour les Tests Fonctionnels**](#classe-response-pour-les-tests-fonctionnels)
-  - [Introduction](#introduction-1)
-  - [**Méthodes de la classe `Response`**](#méthodes-de-la-classe-response)
-    - [**1. `assertJson(string $message = ''): Response`**](#1-assertjsonstring-message---response)
-    - [**2. `assertExactJson(array $data, string $message = ''): Response`**](#2-assertexactjsonarray-data-string-message---response)
-    - [**3. `assertContainsExactText(string $data, string $message = ''): Response`**](#3-assertcontainsexacttextstring-data-string-message---response)
-    - [**4. `assertHeader(string $header, string $message = ''): Response`**](#4-assertheaderstring-header-string-message---response)
-    - [**5. `assertArray(string $message = ''): Response`**](#5-assertarraystring-message---response)
-    - [**6. `assertContentType(string $content_type, string $message = ''): Response`**](#6-assertcontenttypestring-content_type-string-message---response)
-    - [**7. `assertContentTypeJson(string $message = ''): Response`**](#7-assertcontenttypejsonstring-message---response)
-    - [**8. `assertContentTypeText(string $message = ''): Response`**](#8-assertcontenttypetextstring-message---response)
-    - [**9. `assertContentTypeHtml(string $message = ''): Response`**](#9-assertcontenttypehtmlstring-message---response)
-    - [**10. `assertContentTypeXml(string $message = ''): Response`**](#10-assertcontenttypexmlstring-message---response)
-    - [**11. `assertStatus(int $code, string $message = ''): Response`**](#11-assertstatusint-code-string-message---response)
-    - [**12. `assertKeyExists(string $key, string $message = ''): Response`**](#12-assertkeyexistsstring-key-string-message---response)
-    - [**13. `assertKeyMatchValue(string|int $key, mixed $value, string $message = ''): Response`**](#13-assertkeymatchvaluestringint-key-mixed-value-string-message---response)
-    - [**14. `assertContains(string $text): Response`**](#14-assertcontainsstring-text-response)
-    - [**15. `getContent(): string`**](#15-getcontent-string)
-    - [**16. `toArray(): array|object`**](#16-toarray-arrayobject)
-    - [**17. `__call(string $method, array $params = [])`**](#17-__callstring-method-array-params--)
-  - [**Exemple d'utilisation complète**](#exemple-dutilisation-complète)
-  - [Références](#références)
-
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
