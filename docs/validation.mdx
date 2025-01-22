@@ -136,17 +136,12 @@ L'exception contiendra les messages d'erreur et définira automatiquement le cod
 
 Voici un exemple pratique d'utilisation du validateur dans un contrôleur:
 
-```php title="app/Controllers/UserController.php"
-namespace App\Controllers;
-
-use App\Controllers\Controller;
-use App\Models\User;
-
+```php
 class UserController
 {
-    public function store(Request $request)
+    public function store()
     {
-        $validation = validator($request->all(), [
+        $validation = validator(request()->all(), [
             "name" => "required|min:3|max:50",
             "email" => "required|email|unique:users,email",
             "password" => "required|min:6"
