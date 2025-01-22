@@ -26,6 +26,7 @@
     ],
     "Http": [
       "http-request",
+      "validation",
       "http-response",
       "http-session",
       "http-client"
