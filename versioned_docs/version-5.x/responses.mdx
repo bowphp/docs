@@ -118,12 +118,12 @@ return $response->json($data, $code = 200, [
 ]);
 ```
 
-Avec le HELPER :
+Avec le HELPER `response_json` :
 
 ```php
 $data = ['message' => 'Hello, World'];
 
-return json($data, 200, [
+return response_json($data, 200, [
   'X-Proto-Value' => 1 // Juste un test
 ]);
 ```
@@ -187,6 +187,8 @@ $file = '/path/to/file.png';
 
 return $response->download($file, 'image.png');
 ```
+
+Et vous pouvez utiliser le helper `response_download`.
 
 ## Redirection
 
