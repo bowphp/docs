@@ -44,7 +44,7 @@ module.exports = {
     mermaid: true,
   },
   customFields: {
-    startTutorial: "/blog/installation",
+    startTutorial: "/blog/creer-une-application-de-to-do-list-avec-bowphp",
     landingText:
       "Bow Framework a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement et est apprécié par <strong>+2500</strong> Développeur(se)s",
     apiUrl: "https://bowphp.com/api/master",
@@ -260,8 +260,8 @@ module.exports = {
       },
       items: [
         {
-          to: "docs/concept",
-          label: "Documentation",
+          to: "docs/installation",
+          label: "Docs",
           position: "left",
         },
         {
@@ -329,7 +329,7 @@ module.exports = {
             },
             {
               label: "Voulez-vous contribuer ?",
-              to: "https://bowphp.com/docs/contribution.html",
+              to: "https://bowphp.com/docs/contribution",
             },
             {
               label: "API Reference",
