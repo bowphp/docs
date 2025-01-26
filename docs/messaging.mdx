@@ -24,9 +24,6 @@ use Bow\Database\Barry\Model;
 class User extends Model 
 {
     use CanSendMessage;
-    
-    // Votre modèle peut avoir d'autres propriétés et méthodes
-    protected $fillable = ['name', 'email'];
 }
 ```
 
@@ -38,7 +35,7 @@ Une notification est une classe qui étend `Messaging`. Voici un exemple complet
 
 ```php
 use Bow\Messaging\Messaging;
-use Bow\Mail\Message;
+use Bow\Mail\Envelop;
 use Bow\Database\Barry\Model;
 
 class WelcomeMessage extends Messaging
@@ -54,13 +51,13 @@ class WelcomeMessage extends Messaging
     /**
      * Configuration du message email
      */
-    public function toMail(Model $notifiable): Message
+    public function toMail(Model $context): ?Envelop
     {
-        return (new Message())
-            ->to($notifiable->email)
+        return (new Envelop())
+            ->to($context->email)
             ->subject('Bienvenue sur notre plateforme!')
             ->view('emails.welcome', [
-                'user' => $notifiable,
+                'user' => $context,
                 'message' => $this->customMessage
             ]);
     }
@@ -68,12 +65,12 @@ class WelcomeMessage extends Messaging
     /**
      * Configuration de la notification en base de données
      */
-    public function toDatabase(Model $notifiable): array
+    public function toDatabase(Model $context): array
     {
         return [
             'type' => 'welcome_notification',
             'data' => [
-                'user_id' => $notifiable->id,
+                'user_id' => $context->id,
                 'message' => $this->customMessage,
                 'created_at' => now()
             ]
@@ -83,10 +80,10 @@ class WelcomeMessage extends Messaging
     /**
      * Définition des canaux à utiliser
      */
-    public function channels(Model $notifiable): array
+    public function channels(Model $context): array
     {
         // Vous pouvez ajouter une logique conditionnelle
-        if ($notifiable->preferences['email_notifications']) {
+        if ($context->preferences['email_notifications']) {
             return ['mail', 'database'];
         }
         
@@ -107,21 +104,21 @@ class PasswordResetMessage extends Messaging
     ) {
     }
 
-    public function toMail(Model $notifiable): Message
+    public function toMail(Model $context): Envelop
     {
         $resetUrl = url("/password/reset/{$this->token}");
 
-        return (new Message())
-            ->to($notifiable->email)
+        return (new Envelop())
+            ->to($context->email)
             ->subject('Réinitialisation de votre mot de passe')
             ->view('emails.password-reset', [
-                'user' => $notifiable,
+                'user' => $context,
                 'resetUrl' => $resetUrl,
                 'expiresIn' => '60 minutes'
             ]);
     }
 
-    public function channels(Model $notifiable): array
+    public function channels(Model $context): array
     {
         return ['mail'];
     }
@@ -138,18 +135,18 @@ class NewCommentMessage extends Messaging
     ) {
     }
 
-    public function toMail(Model $notifiable): Message
+    public function toMail(Model $context): Envelop
     {
-        return (new Message())
-            ->to($notifiable->email)
+        return (new Envelop())
+            ->to($context->email)
             ->subject('Nouveau commentaire sur votre post')
             ->view('emails.new-comment', [
-                'user' => $notifiable,
+                'user' => $context,
                 'comment' => $this->commentData
             ]);
     }
 
-    public function toDatabase(Model $notifiable): array
+    public function toDatabase(Model $context): array
     {
         return [
             'type' => 'new_comment',
@@ -162,7 +159,7 @@ class NewCommentMessage extends Messaging
         ];
     }
 
-    public function channels(Model $notifiable): array
+    public function channels(Model $context): array
     {
         return ['mail', 'database'];
     }
@@ -226,15 +223,15 @@ $user->sendMessageLaterOn(
 Le canal email est parfait pour les communications importantes. Exemple complet d'une notification par email :
 
 ```php
-public function toMail(Model $notifiable): Message
+public function toMail(Model $context): Envelop
 {
-    return (new Message())
-        ->to($notifiable->email)
+    return (new Envelop())
+        ->to($context->email)
         ->cc('support@example.com')
         ->bcc('archives@example.com')
         ->subject('Sujet Important')
         ->view('emails.template', [
-            'user' => $notifiable,
+            'user' => $context,
             'data' => $this->data
         ])
         ->attach('/chemin/vers/fichier.pdf')
@@ -261,7 +258,7 @@ CREATE TABLE notifications (
 Exemple d'utilisation avancée :
 
 ```php
-public function toDatabase(Model $notifiable): array
+public function toDatabase(Model $context): array
 {
     return [
         'type' => 'system_notification',
@@ -281,33 +278,11 @@ public function toDatabase(Model $notifiable): array
 }
 ```
 
-### SMS
-
-Pour implémenter le canal SMS, créez une classe dédiée :
-
-```php
-class SmsChannel implements ChannelInterface
-{
-    public function __construct(
-        private SmsService $smsService
-    ) {
-    }
-
-    public function send(Model $notifiable): void
-    {
-        $this->smsService->send(
-            $notifiable->phone_number,
-            $this->formatMessage()
-        );
-    }
-}
-```
-
 ## Extension du Système
 
 ### Création d'un Nouveau Canal
 
-Exemple de création d'un canal pour les notifications Slack :
+Exemple de création d'un canal pour les notifications Log :
 
 ```php
 namespace App\Messaging\Channels;
@@ -315,47 +290,31 @@ namespace App\Messaging\Channels;
 use Bow\Messaging\Contracts\ChannelInterface;
 use Bow\Database\Barry\Model;
 
-class SlackChannel implements ChannelInterface
+class LogChannel implements ChannelInterface
 {
-    public function __construct(
-        private array $slackConfig
-    ) {
-    }
-
-    public function send(Model $notifiable): void
+    public function send(Model $context, Messaging $message): void
     {
-        $client = new SlackClient($this->slackConfig['webhook_url']);
-        
-        $client->send([
-            'channel' => $this->slackConfig['channel'],
-            'text' => $this->slackConfig['message'],
-            'attachments' => $this->slackConfig['attachments'] ?? []
-        ]);
+        if (!method_exists($message, 'toLog')) {
+            throw new \InvalidArgumentException('The message must have a toLog method.');
+        }
+
+        $log = $message->toLog($context);
+
+        logger()->log($log);
     }
 }
 ```
 
 ### Enregistrement du Nouveau Canal
 
-```php
-// Dans votre classe de notification
-protected array $channels = [
-    'slack' => SlackChannel::class
-];
+Pour enregistrer votre nouveau canal, vous devez l'ajouter dans la configuration de l'application. Dans votre fichier `App\Configurations\ApplicationConfiguration.php`, ajoutez le code suivant dans la méthode `create()` :
 
-public function toSlack(Model $notifiable): array
+```php title="app/Configurations/ApplicationConfiguration.php"
+public function create(Loader $config): void  
 {
-    return [
-        'webhook_url' => config('services.slack.webhook_url'),
-        'channel' => '#notifications',
-        'message' => 'Nouvelle notification!',
-        'attachments' => [
-            [
-                'title' => 'Détails',
-                'text' => 'Contenu de la notification'
-            ]
-        ]
-    ];
+    Messaging::pushChannels([
+        'log' => LogChannel::class
+    ]);
 }
 ```
 
@@ -375,8 +334,8 @@ Pour déboguer vos notifications, vous pouvez :
 // Journaliser les envois
 Log::info('Envoi de notification', [
     'type' => get_class($notification),
-    'user' => $notifiable->id,
-    'channels' => $notification->channels($notifiable)
+    'user' => $context->id,
+    'channels' => $notification->channels($context)
 ]);
 
 // Tester en environnement local
