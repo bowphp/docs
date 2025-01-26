@@ -7,7 +7,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-La console de Bow Framework est un outil puissant qui vous permet d’accélérer votre développement. Elle offre un ensemble de commandes pratiques pour générer des classes, tester votre application localement, gérer vos bases de données et bien plus encore. Voici un guide détaillé et illustré pour exploiter pleinement cette console.
+La console de Bow Framework est un outil puissant qui vous permet d'accélérer votre développement. Elle offre un ensemble de commandes pratiques pour générer des classes, tester votre application localement, gérer vos bases de données et bien plus encore. Voici un guide détaillé et illustré pour exploiter pleinement cette console.
 
 ## Commandes de base pour générer des clés et des ressources
 
@@ -20,11 +20,11 @@ Ces commandes vous aident à créer rapidement des éléments fondamentaux pour 
 | `generate:notification-table` | Génère une table pour les notifications. Exemple : `php bow generate:notification-tabe` crée une migration pour la gestion des notifications. |
 | `generate:cache-table`        | Génère une table pour les caches. Exemple : `php bow generate:cache-tabe` crée une migration pour la gestion des caches. |
 | `generate:queue-table`        | Génère une table pour les queues. Exemple : `php bow generate:queue-tabe` crée une migration pour la gestion des queues. |
-| `generate:key`                | Crée une nouvelle clé pour sécuriser l’application. Commande : `php bow generate:key` génère et affiche une nouvelle clé. |
+| `generate:key`                | Crée une nouvelle clé pour sécuriser l'application. Commande : `php bow generate:key` génère et affiche une nouvelle clé. |
 
 ## Ajouter des classes et composants personnalisés
 
-Ces commandes permettent d’ajouter rapidement des composants à votre application pour répondre à des besoins spécifiques :
+Ces commandes permettent d'ajouter rapidement des composants à votre application pour répondre à des besoins spécifiques :
 
 | **Commande**            | **Description**                         |
 |--------------------------|-----------------------------------------|
@@ -37,12 +37,14 @@ Ces commandes permettent d’ajouter rapidement des composants à votre applicat
 | `add:validator`          | Crée un nouveau validateur. Commande : `php bow add:validator UserValidator`. |
 | `add:seeder`             | Crée un outil de "seeding". Par exemple : `php bow add:seeder users`. |
 | `add:migration`          | Crée une nouvelle migration. Exemple : `php bow add:migration create_orders_table`. |
-| `add:event`              | Crée un écouteur d’événement. Commande : `php bow add:event UserRegisteredEvent`. |
+| `add:event`              | Crée un événement. Commande : `php bow add:event UserRegisteredEvent`. |
+| `add:listener`           | Crée un écouteur d'événement. Commande : `php bow add:event UserRegisteredListener`. |
 | `add:producer`           | Crée un nouveau producteur (utilisé dans les systèmes de messagerie). Exemple : `php bow add:producer EmailProducer`. |
+| `add:message`            | Crée un nouveau message pour générer plusieurs canaux d'envoie de message. Exemple : `php bow add:message WelcomeMessage`. |
 
 ## Gérer les migrations
 
-Les migrations facilitent la gestion de l’évolution de vos bases de données. Voici les commandes principales avec des exemples :
+Les migrations facilitent la gestion de l'évolution de vos bases de données. Voici les commandes principales avec des exemples :
 
 | **Commande**            | **Description**                         |
 |--------------------------|-----------------------------------------|
@@ -65,7 +67,7 @@ Ces commandes vous permettent de réinitialiser divers caches pour garantir le b
 
 ## Gérer le "seeding" des bases de données
 
-Le "seeding" permet d’initialiser votre base de données avec des données factices. Voici les commandes disponibles :
+Le "seeding" permet d'initialiser votre base de données avec des données factices. Voici les commandes disponibles :
 
 | **Commande**            | **Description**                         |
 |--------------------------|-----------------------------------------|
@@ -80,7 +82,6 @@ Ces commandes vous permettent de tester et déboguer votre application directeme
 |--------------------------|-----------------------------------------|
 | `run:console`            | Lance une console interactive (REPL) pour déboguer votre code. Exemple : `php bow run:console`. |
 | `run:server`             | Lance un serveur web local. Commande : `php bow run:server` démarre un serveur à `http://localhost:8080`. |
-
 
 Ces outils sont conçus pour optimiser votre flux de travail et faciliter le développement. Essayez-les pour tirer pleinement parti de Bow Framework !
 
