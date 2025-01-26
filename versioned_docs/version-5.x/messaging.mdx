@@ -7,4 +7,337 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
+Le système de messaging de Bow Framework est un outil puissant qui permet d'envoyer des notifications via différents canaux (email, base de données, SMS). Il est conçu pour être flexible, extensible et facile à utiliser. Que vous ayez besoin d'envoyer des emails de bienvenue, des notifications d'activité ou des alertes système, le système de messaging vous couvre.
+
+## Configuration
+
+### Préparation du Modèle
+
+Pour commencer, votre modèle doit implémenter le trait `CanSendMessage`. Ce trait ajoute toutes les méthodes nécessaires pour envoyer des notifications.
+
+```php
+use Bow\Messaging\CanSendMessage;
+use Bow\Database\Barry\Model;
+
+class User extends Model 
+{
+    use CanSendMessage;
+}
+```
+
+## Création de Notifications
+
+### Structure de Base
+
+Une notification est une classe qui étend `Messaging`. Voici un exemple complet d'une notification de bienvenue :
+
+```php
+use Bow\Messaging\Messaging;
+use Bow\Mail\Envelop;
+use Bow\Database\Barry\Model;
+
+class WelcomeMessage extends Messaging
+{
+    /**
+     * Constructeur pour passer des données à la notification
+     */
+    public function __construct(
+        private string $customMessage = "Bienvenue!"
+    ) {
+    }
+
+    /**
+     * Configuration du message email
+     */
+    public function toMail(Model $context): ?Envelop
+    {
+        return (new Envelop())
+            ->to($context->email)
+            ->subject('Bienvenue sur notre plateforme!')
+            ->view('emails.welcome', [
+                'user' => $context,
+                'message' => $this->customMessage
+            ]);
+    }
+
+    /**
+     * Configuration de la notification en base de données
+     */
+    public function toDatabase(Model $context): array
+    {
+        return [
+            'type' => 'welcome_notification',
+            'data' => [
+                'user_id' => $context->id,
+                'message' => $this->customMessage,
+                'created_at' => now()
+            ]
+        ];
+    }
+
+    /**
+     * Définition des canaux à utiliser
+     */
+    public function channels(Model $context): array
+    {
+        // Vous pouvez ajouter une logique conditionnelle
+        if ($context->preferences['email_notifications']) {
+            return ['mail', 'database'];
+        }
+        
+        return ['database'];
+    }
+}
+```
+
+### Exemples de Notifications Courantes
+
+#### Notification de Réinitialisation de Mot de Passe
+
+```php
+class PasswordResetMessage extends Messaging
+{
+    public function __construct(
+        private string $token
+    ) {
+    }
+
+    public function toMail(Model $context): Envelop
+    {
+        $resetUrl = url("/password/reset/{$this->token}");
+
+        return (new Envelop())
+            ->to($context->email)
+            ->subject('Réinitialisation de votre mot de passe')
+            ->view('emails.password-reset', [
+                'user' => $context,
+                'resetUrl' => $resetUrl,
+                'expiresIn' => '60 minutes'
+            ]);
+    }
+
+    public function channels(Model $context): array
+    {
+        return ['mail'];
+    }
+}
+```
+
+#### Notification d'Activité
+
+```php
+class NewCommentMessage extends Messaging
+{
+    public function __construct(
+        private array $commentData
+    ) {
+    }
+
+    public function toMail(Model $context): Envelop
+    {
+        return (new Envelop())
+            ->to($context->email)
+            ->subject('Nouveau commentaire sur votre post')
+            ->view('emails.new-comment', [
+                'user' => $context,
+                'comment' => $this->commentData
+            ]);
+    }
+
+    public function toDatabase(Model $context): array
+    {
+        return [
+            'type' => 'new_comment',
+            'data' => [
+                'post_id' => $this->commentData['post_id'],
+                'comment_id' => $this->commentData['id'],
+                'commenter' => $this->commentData['user_name'],
+                'excerpt' => substr($this->commentData['content'], 0, 100)
+            ]
+        ];
+    }
+
+    public function channels(Model $context): array
+    {
+        return ['mail', 'database'];
+    }
+}
+```
+
+## Envoi de Notifications
+
+### Envoi Simple
+
+L'envoi simple est synchrone et immédiat :
+
+```php
+// Envoi d'une notification de bienvenue basique
+$user->sendMessage(new WelcomeMessage());
+
+// Envoi avec un message personnalisé
+$user->sendMessage(new WelcomeMessage("Ravi de vous avoir parmi nous!"));
+
+// Envoi d'une notification de réinitialisation de mot de passe
+$user->sendMessage(new PasswordResetMessage($token));
+
+// Envoi d'une notification de nouveau commentaire
+$user->sendMessage(new NewCommentMessage([
+    'id' => 1,
+    'post_id' => 123,
+    'user_name' => 'John Doe',
+    'content' => 'Super article!'
+]));
+```
+
+### Envoi en File d'Attente
+
+L'envoi en file d'attente est asynchrone et permet de meilleures performances :
+
+```php
+// File d'attente par défaut
+$user->setMessageQueue(new WelcomeMessage());
+
+// File d'attente spécifique avec priorité
+$user->sendMessageQueueOn('high-priority', new PasswordResetMessage($token));
+
+// Envoi différé (utile pour les rappels)
+$user->sendMessageLater(
+    3600, // délai en secondes (1 heure)
+    new ReminderMessage("N'oubliez pas de compléter votre profil!")
+);
+
+// Envoi différé sur une file spécifique
+$user->sendMessageLaterOn(
+    1800, // 30 minutes
+    'reminders',
+    new ReminderMessage("Finalisez votre commande!")
+);
+```
+
+## Canaux de Notification
+
+### Email
+
+Le canal email est parfait pour les communications importantes. Exemple complet d'une notification par email :
+
+```php
+public function toMail(Model $context): Envelop
+{
+    return (new Envelop())
+        ->to($context->email)
+        ->cc('support@example.com')
+        ->bcc('archives@example.com')
+        ->subject('Sujet Important')
+        ->view('emails.template', [
+            'user' => $context,
+            'data' => $this->data
+        ])
+        ->attach('/chemin/vers/fichier.pdf')
+        ->priority('high');
+}
+```
+
+### Base de Données
+
+Le canal de base de données est idéal pour les notifications in-app. Structure complète :
+
+```sql
+CREATE TABLE notifications (
+    id CHAR(36) PRIMARY KEY,
+    concern_id BIGINT NOT NULL,
+    concern_type VARCHAR(255) NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    data JSON NOT NULL,
+    read_at TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+Exemple d'utilisation avancée :
+
+```php
+public function toDatabase(Model $context): array
+{
+    return [
+        'type' => 'system_notification',
+        'data' => [
+            'title' => 'Mise à jour Système',
+            'message' => 'Une nouvelle version est disponible',
+            'action_url' => '/settings/updates',
+            'action_text' => 'Mettre à jour maintenant',
+            'severity' => 'high',
+            'icon' => 'update-icon',
+            'metadata' => [
+                'version' => '2.0.0',
+                'changes' => ['feature1', 'feature2']
+            ]
+        ]
+    ];
+}
+```
+
+## Extension du Système
+
+### Création d'un Nouveau Canal
+
+Exemple de création d'un canal pour les notifications Log :
+
+```php
+namespace App\Messaging\Channels;
+
+use Bow\Messaging\Contracts\ChannelInterface;
+use Bow\Database\Barry\Model;
+
+class LogChannel implements ChannelInterface
+{
+    public function send(Model $context, Messaging $message): void
+    {
+        if (!method_exists($message, 'toLog')) {
+            throw new \InvalidArgumentException('The message must have a toLog method.');
+        }
+
+        $log = $message->toLog($context);
+
+        logger()->log($log);
+    }
+}
+```
+
+### Enregistrement du Nouveau Canal
+
+Pour enregistrer votre nouveau canal, vous devez l'ajouter dans la configuration de l'application. Dans votre fichier `App\Configurations\ApplicationConfiguration.php`, ajoutez le code suivant dans la méthode `create()` :
+
+```php title="app/Configurations/ApplicationConfiguration.php"
+public function create(Loader $config): void  
+{
+    Messaging::pushChannels([
+        'log' => LogChannel::class
+    ]);
+}
+```
+
+## Bonnes Pratiques
+
+1. **Segmentation** : Créez des notifications spécifiques pour chaque cas d'utilisation
+2. **Files d'attente** : Utilisez les files d'attente pour les notifications non urgentes
+3. **Personnalisation** : Permettez aux utilisateurs de choisir leurs canaux préférés
+4. **Tests** : Testez vos notifications avec des cas réels
+5. **Monitoring** : Surveillez les échecs d'envoi et mettez en place des retry policies
+
+## Débogage
+
+Pour déboguer vos notifications, vous pouvez :
+
+```php
+// Journaliser les envois
+Log::info('Envoi de notification', [
+    'type' => get_class($notification),
+    'user' => $context->id,
+    'channels' => $notification->channels($context)
+]);
+
+// Tester en environnement local
+config(['mail.default' => 'log']);
+```
+
 <SuggestionFeature />
