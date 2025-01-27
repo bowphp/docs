@@ -15,6 +15,7 @@
       "middleware",
       "storage",
       "mail",
+      "messaging",
       "i18n",
       "testing"
     ],

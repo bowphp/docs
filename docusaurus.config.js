@@ -260,8 +260,8 @@ module.exports = {
       },
       items: [
         {
-          to: "docs/concept",
-          label: "Documentation",
+          to: "docs/installation",
+          label: "Docs",
           position: "left",
         },
         {
@@ -329,7 +329,7 @@ module.exports = {
             },
             {
               label: "Voulez-vous contribuer ?",
-              to: "https://bowphp.com/docs/contribution.html",
+              to: "https://bowphp.com/docs/contribution",
             },
             {
               label: "API Reference",
