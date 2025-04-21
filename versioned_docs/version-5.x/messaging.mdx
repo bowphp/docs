@@ -21,7 +21,7 @@ use Bow\Database\Barry\Model;
 
 class User extends Model 
 {
-    use CanSendMessage;
+  use CanSendMessage;
 }
 ```
 
@@ -38,55 +38,55 @@ use Bow\Database\Barry\Model;
 
 class WelcomeMessage extends Messaging
 {
-    /**
-     * Constructeur pour passer des données à la notification
-     */
-    public function __construct(
-        private string $customMessage = "Bienvenue!"
-    ) {
-    }
+  /**
+   * Constructeur pour passer des données à la notification
+   */
+  public function __construct(
+    private string $customMessage = "Bienvenue!"
+  ) {
+  }
 
-    /**
-     * Configuration du message email
-     */
-    public function toMail(Model $context): ?Envelop
-    {
-        return (new Envelop())
-            ->to($context->email)
-            ->subject('Bienvenue sur notre plateforme!')
-            ->view('emails.welcome', [
-                'user' => $context,
-                'message' => $this->customMessage
-            ]);
-    }
+  /**
+   * Configuration du message email
+   */
+  public function toMail(Model $context): ?Envelop
+  {
+    return (new Envelop())
+      ->to($context->email)
+      ->subject('Bienvenue sur notre plateforme!')
+      ->view('emails.welcome', [
+        'user' => $context,
+        'message' => $this->customMessage
+      ]);
+  }
 
-    /**
-     * Configuration de la notification en base de données
-     */
-    public function toDatabase(Model $context): array
-    {
-        return [
-            'type' => 'welcome_notification',
-            'data' => [
-                'user_id' => $context->id,
-                'message' => $this->customMessage,
-                'created_at' => now()
-            ]
-        ];
-    }
+  /**
+   * Configuration de la notification en base de données
+   */
+  public function toDatabase(Model $context): array
+  {
+    return [
+      'type' => 'welcome_notification',
+      'data' => [
+        'user_id' => $context->id,
+        'message' => $this->customMessage,
+        'created_at' => now()
+      ]
+    ];
+  }
 
-    /**
-     * Définition des canaux à utiliser
-     */
-    public function channels(Model $context): array
-    {
-        // Vous pouvez ajouter une logique conditionnelle
-        if ($context->preferences['email_notifications']) {
-            return ['mail', 'database'];
-        }
-        
-        return ['database'];
+  /**
+   * Définition des canaux à utiliser
+   */
+  public function channels(Model $context): array
+  {
+    // Vous pouvez ajouter une logique conditionnelle
+    if ($context->preferences['email_notifications']) {
+      return ['mail', 'database'];
     }
+    
+    return ['database'];
+  }
 }
 ```
 
@@ -97,29 +97,29 @@ class WelcomeMessage extends Messaging
 ```php
 class PasswordResetMessage extends Messaging
 {
-    public function __construct(
-        private string $token
-    ) {
-    }
+  public function __construct(
+    private string $token
+  ) {
+  }
 
-    public function toMail(Model $context): Envelop
-    {
-        $resetUrl = url("/password/reset/{$this->token}");
+  public function toMail(Model $context): Envelop
+  {
+    $resetUrl = url("/password/reset/{$this->token}");
 
-        return (new Envelop())
-            ->to($context->email)
-            ->subject('Réinitialisation de votre mot de passe')
-            ->view('emails.password-reset', [
-                'user' => $context,
-                'resetUrl' => $resetUrl,
-                'expiresIn' => '60 minutes'
-            ]);
-    }
+    return (new Envelop())
+      ->to($context->email)
+      ->subject('Réinitialisation de votre mot de passe')
+      ->view('emails.password-reset', [
+        'user' => $context,
+        'resetUrl' => $resetUrl,
+        'expiresIn' => '60 minutes'
+      ]);
+  }
 
-    public function channels(Model $context): array
-    {
-        return ['mail'];
-    }
+  public function channels(Model $context): array
+  {
+    return ['mail'];
+  }
 }
 ```
 
@@ -128,39 +128,39 @@ class PasswordResetMessage extends Messaging
 ```php
 class NewCommentMessage extends Messaging
 {
-    public function __construct(
-        private array $commentData
-    ) {
-    }
+  public function __construct(
+    private array $commentData
+  ) {
+  }
 
-    public function toMail(Model $context): Envelop
-    {
-        return (new Envelop())
-            ->to($context->email)
-            ->subject('Nouveau commentaire sur votre post')
-            ->view('emails.new-comment', [
-                'user' => $context,
-                'comment' => $this->commentData
-            ]);
-    }
+  public function toMail(Model $context): Envelop
+  {
+    return (new Envelop())
+      ->to($context->email)
+      ->subject('Nouveau commentaire sur votre post')
+      ->view('emails.new-comment', [
+        'user' => $context,
+        'comment' => $this->commentData
+      ]);
+  }
 
-    public function toDatabase(Model $context): array
-    {
-        return [
-            'type' => 'new_comment',
-            'data' => [
-                'post_id' => $this->commentData['post_id'],
-                'comment_id' => $this->commentData['id'],
-                'commenter' => $this->commentData['user_name'],
-                'excerpt' => substr($this->commentData['content'], 0, 100)
-            ]
-        ];
-    }
+  public function toDatabase(Model $context): array
+  {
+    return [
+      'type' => 'new_comment',
+      'data' => [
+        'post_id' => $this->commentData['post_id'],
+        'comment_id' => $this->commentData['id'],
+        'commenter' => $this->commentData['user_name'],
+        'excerpt' => substr($this->commentData['content'], 0, 100)
+      ]
+    ];
+  }
 
-    public function channels(Model $context): array
-    {
-        return ['mail', 'database'];
-    }
+  public function channels(Model $context): array
+  {
+    return ['mail', 'database'];
+  }
 }
 ```
 
@@ -182,10 +182,10 @@ $user->sendMessage(new PasswordResetMessage($token));
 
 // Envoi d'une notification de nouveau commentaire
 $user->sendMessage(new NewCommentMessage([
-    'id' => 1,
-    'post_id' => 123,
-    'user_name' => 'John Doe',
-    'content' => 'Super article!'
+  'id' => 1,
+  'post_id' => 123,
+  'user_name' => 'John Doe',
+  'content' => 'Super article!'
 ]));
 ```
 
@@ -202,15 +202,15 @@ $user->sendMessageQueueOn('high-priority', new PasswordResetMessage($token));
 
 // Envoi différé (utile pour les rappels)
 $user->sendMessageLater(
-    3600, // délai en secondes (1 heure)
-    new ReminderMessage("N'oubliez pas de compléter votre profil!")
+  3600, // délai en secondes (1 heure)
+  new ReminderMessage("N'oubliez pas de compléter votre profil!")
 );
 
 // Envoi différé sur une file spécifique
 $user->sendMessageLaterOn(
-    1800, // 30 minutes
-    'reminders',
-    new ReminderMessage("Finalisez votre commande!")
+  1800, // 30 minutes
+  'reminders',
+  new ReminderMessage("Finalisez votre commande!")
 );
 ```
 
@@ -223,17 +223,17 @@ Le canal email est parfait pour les communications importantes. Exemple complet 
 ```php
 public function toMail(Model $context): Envelop
 {
-    return (new Envelop())
-        ->to($context->email)
-        ->cc('support@example.com')
-        ->bcc('archives@example.com')
-        ->subject('Sujet Important')
-        ->view('emails.template', [
-            'user' => $context,
-            'data' => $this->data
-        ])
-        ->attach('/chemin/vers/fichier.pdf')
-        ->priority('high');
+  return (new Envelop())
+    ->to($context->email)
+    ->cc('support@example.com')
+    ->bcc('archives@example.com')
+    ->subject('Sujet Important')
+    ->view('emails.template', [
+      'user' => $context,
+      'data' => $this->data
+    ])
+    ->attach('/chemin/vers/fichier.pdf')
+    ->priority('high');
 }
 ```
 
@@ -243,13 +243,13 @@ Le canal de base de données est idéal pour les notifications in-app. Structure
 
 ```sql
 CREATE TABLE notifications (
-    id CHAR(36) PRIMARY KEY,
-    concern_id BIGINT NOT NULL,
-    concern_type VARCHAR(255) NOT NULL,
-    type VARCHAR(255) NOT NULL,
-    data JSON NOT NULL,
-    read_at TIMESTAMP NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  id CHAR(36) PRIMARY KEY,
+  concern_id BIGINT NOT NULL,
+  concern_type VARCHAR(255) NOT NULL,
+  type VARCHAR(255) NOT NULL,
+  data JSON NOT NULL,
+  read_at TIMESTAMP NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
@@ -258,21 +258,21 @@ Exemple d'utilisation avancée :
 ```php
 public function toDatabase(Model $context): array
 {
-    return [
-        'type' => 'system_notification',
-        'data' => [
-            'title' => 'Mise à jour Système',
-            'message' => 'Une nouvelle version est disponible',
-            'action_url' => '/settings/updates',
-            'action_text' => 'Mettre à jour maintenant',
-            'severity' => 'high',
-            'icon' => 'update-icon',
-            'metadata' => [
-                'version' => '2.0.0',
-                'changes' => ['feature1', 'feature2']
-            ]
-        ]
-    ];
+  return [
+    'type' => 'system_notification',
+    'data' => [
+      'title' => 'Mise à jour Système',
+      'message' => 'Une nouvelle version est disponible',
+      'action_url' => '/settings/updates',
+      'action_text' => 'Mettre à jour maintenant',
+      'severity' => 'high',
+      'icon' => 'update-icon',
+      'metadata' => [
+        'version' => '2.0.0',
+        'changes' => ['feature1', 'feature2']
+      ]
+    ]
+  ];
 }
 ```
 
@@ -290,16 +290,16 @@ use Bow\Database\Barry\Model;
 
 class LogChannel implements ChannelInterface
 {
-    public function send(Model $context, Messaging $message): void
-    {
-        if (!method_exists($message, 'toLog')) {
-            throw new \InvalidArgumentException('The message must have a toLog method.');
-        }
-
-        $log = $message->toLog($context);
-
-        logger()->log($log);
+  public function send(Model $context, Messaging $message): void
+  {
+    if (!method_exists($message, 'toLog')) {
+      throw new \InvalidArgumentException('The message must have a toLog method.');
     }
+
+    $log = $message->toLog($context);
+
+    logger()->log($log);
+  }
 }
 ```
 
@@ -310,9 +310,9 @@ Pour enregistrer votre nouveau canal, vous devez l'ajouter dans la configuration
 ```php title="app/Configurations/ApplicationConfiguration.php"
 public function create(Loader $config): void  
 {
-    Messaging::pushChannels([
-        'log' => LogChannel::class
-    ]);
+  Messaging::pushChannels([
+    'log' => LogChannel::class
+  ]);
 }
 ```
 
@@ -331,9 +331,9 @@ Pour déboguer vos notifications, vous pouvez :
 ```php
 // Journaliser les envois
 Log::info('Envoi de notification', [
-    'type' => get_class($notification),
-    'user' => $context->id,
-    'channels' => $notification->channels($context)
+  'type' => get_class($notification),
+  'user' => $context->id,
+  'channels' => $notification->channels($context)
 ]);
 
 // Tester en environnement local

@@ -24,7 +24,7 @@ Permet d'ajouter des pièces jointes (fichiers ou données) à vos requêtes.
 
 ```php
 $test->attach([
-    'file' => new \CURLFile('/path/to/file.jpg')
+  'file' => new \CURLFile('/path/to/file.jpg')
 ]);
 ```
 
@@ -33,8 +33,8 @@ Permet de spécifier des en-têtes supplémentaires pour toutes les requêtes su
 
 ```php
 $test->withHeaders([
-    'Authorization' => 'Bearer token',
-    'Content-Type' => 'application/json'
+  'Authorization' => 'Bearer token',
+  'Content-Type' => 'application/json'
 ]);
 ```
 
@@ -96,42 +96,42 @@ use Bow\Testing\TestCase;
 
 class UserApiTest extends TestCase
 {
-    protected ?string $url = 'http://localhost:8080'
+  protected ?string $url = 'http://localhost:8080'
 
-    public function testCreateUser()
-    {
-        // Ajouter un en-tête d'autorisation
-        $this->withHeader('Authorization', 'Bearer token');
+  public function testCreateUser()
+  {
+    // Ajouter un en-tête d'autorisation
+    $this->withHeader('Authorization', 'Bearer token');
 
-        // Ajouter des données de test à envoyer dans la requête POST
-        $data = [
-            'name' => 'John Doe',
-            'email' => 'john.doe@example.com'
-        ];
+    // Ajouter des données de test à envoyer dans la requête POST
+    $data = [
+      'name' => 'John Doe',
+      'email' => 'john.doe@example.com'
+    ];
 
-        // Effectuer la requête POST
-        $response = $this->post('/api/users', $data);
+    // Effectuer la requête POST
+    $response = $this->post('/api/users', $data);
 
-        // Vérifier que la réponse a le statut HTTP 201
-        $response->assertStatus(201);
-        $result = $response->toArray();
+    // Vérifier que la réponse a le statut HTTP 201
+    $response->assertStatus(201);
+    $result = $response->toArray();
 
-        // Vérifier que le nom de l'utilisateur créé est correct
-        $this->assertEquals('John Doe', $result['name']);
-    }
+    // Vérifier que le nom de l'utilisateur créé est correct
+    $this->assertEquals('John Doe', $result['name']);
+  }
 
-    public function testGetUser()
-    {
-        // Faire une requête GET pour récupérer un utilisateur
-        $response = $this->get('/api/users/1');
+  public function testGetUser()
+  {
+    // Faire une requête GET pour récupérer un utilisateur
+    $response = $this->get('/api/users/1');
 
-        // Vérifier que la réponse a le statut HTTP 200
-        $response->assertStatus(200);
-        $result = $response->toArray();
+    // Vérifier que la réponse a le statut HTTP 200
+    $response->assertStatus(200);
+    $result = $response->toArray();
 
-        // Vérifier que l'ID de l'utilisateur est correct
-        $this->assertEquals(1, $result['id']);
-    }
+    // Vérifier que l'ID de l'utilisateur est correct
+    $this->assertEquals(1, $result['id']);
+  }
 }
 ```
 
@@ -156,8 +156,8 @@ Vérifie que le contenu JSON de la réponse correspond exactement aux données s
 
 ```php
 $response->assertExactJson([
-    'name' => 'John Doe',
-    'email' => 'john.doe@example.com'
+  'name' => 'John Doe',
+  'email' => 'john.doe@example.com'
 ], "La réponse JSON ne correspond pas aux données attendues.");
 ```
 
@@ -275,36 +275,36 @@ use Bow\Testing\TestCase;
 
 class UserApiTest extends TestCase
 {
-    public function testCreateUser()
-    {
-        // Effectuer une requête POST
-        $data = [
-            'name' => 'John Doe',
-            'email' => 'john.doe@example.com'
-        ];
-        $response = $this->post('/api/users', $data);
+  public function testCreateUser()
+  {
+    // Effectuer une requête POST
+    $data = [
+      'name' => 'John Doe',
+      'email' => 'john.doe@example.com'
+    ];
+    $response = $this->post('/api/users', $data);
 
-        // Vérifier que la réponse a le statut 201
-        $response->assertStatus(201, "Le statut HTTP devrait être 201");
+    // Vérifier que la réponse a le statut 201
+    $response->assertStatus(201, "Le statut HTTP devrait être 201");
 
-        // Vérifier que le contenu est en JSON
-        $response->assertJson("La réponse devrait être en JSON");
+    // Vérifier que le contenu est en JSON
+    $response->assertJson("La réponse devrait être en JSON");
 
-        // Vérifier que le nom dans la réponse est correct
-        $response->assertKeyMatchValue('name', 'John Doe', "Le nom de l'utilisateur est incorrect.");
-    }
+    // Vérifier que le nom dans la réponse est correct
+    $response->assertKeyMatchValue('name', 'John Doe', "Le nom de l'utilisateur est incorrect.");
+  }
 
-    public function testGetUser()
-    {
-        // Effectuer une requête GET
-        $response = $this->get('/api/users/1');
+  public function testGetUser()
+  {
+    // Effectuer une requête GET
+    $response = $this->get('/api/users/1');
 
-        // Vérifier que la réponse a le statut 200
-        $response->assertStatus(200, "Le statut HTTP devrait être 200");
+    // Vérifier que la réponse a le statut 200
+    $response->assertStatus(200, "Le statut HTTP devrait être 200");
 
-        // Vérifier que l'utilisateur existe
-        $response->assertKeyExists('id', "L'ID de l'utilisateur devrait exister.");
-    }
+    // Vérifier que l'utilisateur existe
+    $response->assertKeyExists('id', "L'ID de l'utilisateur devrait exister.");
+  }
 }
 ```
 
