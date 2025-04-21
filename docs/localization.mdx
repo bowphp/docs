@@ -15,22 +15,21 @@ Dans toute application, il y a le besoin de rendre l'application multi-langue. B
 
 Pour utiliser le système de traduction. Il faut d'abord considérer la configuration qui se trouve dans le dossier `config/trans.php`, dans ce fichier, la langue par défaut, c'est le français, donc le `'lang' => 'fr'`.
 
-Dans le dossier `frontend/lang` sont rangé les traductions de votre application. Ce sont des fichiers `php` qui retournent un `array` et si vous remarquez il y a un dossier `fr` et `en`. Ce sont les dossiers pour chaque langue, ici `fr` pour le français et `en` pour l'anglais et s'il y avait une autre langage par exemple l'espagnol, se serait `es` le nom du dossier.
+Dans le dossier `lang` sont rangé les traductions de votre application. Ce sont des fichiers `php` qui retournent un `array` et si vous remarquez il y a un dossier `fr` et `en`. Ce sont les dossiers pour chaque langue, ici `fr` pour le français et `en` pour l'anglais et s'il y avait une autre langage par exemple l'espagnol, se serait `es` le nom du dossier.
 
 ```txt
-/frontend
-  /lang
-    /en
-      messages.php
-    /fr
-      messages.php
+/lang
+  /en
+    messages.php
+  /fr
+    messages.php
 ```
 
 Tous les fichiers de langue renvoient un tableau de chaînes à clé.
 
 Par exemple:
 
-```php title="frontend/lang/en/messages.php"
+```php title="lang/en/messages.php"
 return [
   'welcome' => 'Welcome to our application'
 ];
@@ -41,9 +40,10 @@ return [
 La langue par défaut de votre application est stockée dans le fichier de configuration `config/trans.php`. Bien entendu, vous pouvez modifier cette valeur pour répondre aux besoins de votre application. Vous pouvez également modifier la langue active au moment de l'exécution à l'aide de la méthode `setLocale` sur la classe [`Bow\Translate\Translator`](https://bowphp.com/api/master/Bow/Translate/Translator.html):
 
 ```php title="routes/app.php"
+
 use Bow\Translate\Translator;
 
-$app->get('docs/:locale', function ($locale) {
+$router->get('docs/:locale', function ($locale) {
   Translator::setLocale($locale);
   //
 });

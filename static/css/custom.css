@@ -1,14 +1,23 @@
 @import 'react-medium-image-zoom/dist/styles.css';
 
-body {
-  font-size: 16px !important;
+* {
+  font-size: 17px !important;
   line-height: 1.8;
+  font-family: "Optimistic Display",
+    -apple-system,
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji" !important;
 }
 
 .navbar {
   box-shadow: none !important;
-  /*background-color: rgb(0 0 0 / 10%) !important;*/
-  background-color: #1b1b1d !important;
+  background-color: rgb(0 0 0 / 10%) !important;
+  /* background-color: #1b1b1d !important; */
   opacity: 1;
 }
 

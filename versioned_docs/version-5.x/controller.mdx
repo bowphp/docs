@@ -23,8 +23,7 @@ Imaginez que vous avez une application pour la gestion des Bus d'une école et q
 
 Voici le code que cela pourrait donner :
 
-```php
-# Dans le fichier `app\Kernel.php`
+```php title="app\Kernel.php"
 public function namespaces()
 {
   return [
@@ -36,10 +35,8 @@ public function namespaces()
 
 Ensuite, il faudra aussi changer un peu la configuration du lancer de tache:
 
-```php
-# Dans le fichier `bow`
+```php title="Dans le fichier bow"
 $command = new Bow\Console\Command(__DIR__);
-...
 $command->setControllerDirectory(__DIR__.'/app/Bus/Controllers');
 ```
 

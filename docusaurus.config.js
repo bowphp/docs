@@ -51,8 +51,7 @@ module.exports = {
     users: [
       {
         caption: "Abou KONE",
-        description:
-          "Engineering Manager. CTO @akiltech.",
+        description: "Engineering Manager. CTO @akiltech.",
         image: "https://avatars1.githubusercontent.com/u/582061?s=460&v=4",
         infoLink: "https://github.com/devakone",
         pinned: true,
@@ -102,8 +101,7 @@ module.exports = {
         caption: "Akil Technologies",
         description:
           "En existence depuis 2015, AKIL a la base c&rsquo;est la mise en avant du savoir faire technologique Africain et plus précisément ivoirien, depuis Abidjan où nous sommes basés. Nous sommes fiers de nos équipes, représentatives du talent formé localement aux normes de développement internationales.",
-        image:
-          "/img/logoakil.png",
+        image: "/img/logoakil.png",
         infoLink: "https://akiltechnologies.com",
       },
       {
@@ -118,19 +116,19 @@ module.exports = {
         description:
           "Nous vous aidons dans la réalisation de votre projet digital.",
         image: "/img/papacandco.png",
-        infoLink: "mailto:papacservices@gmail.com",
+        infoLink: "https://papacandco.com/services",
       },
     ],
     fans: [
       {
-        name: "Ange Bagui",
+        name: "Ange BAGUI",
         description: "Co-Founder & CEO at Adjemin but Software Developer",
         github: "https://github.com/angebagui",
         image:
           "https://avatars3.githubusercontent.com/u/5214752?s=460&u=9d819e10cf354081517b488f9e50b0020620f1d8&v=4",
       },
       {
-        name: "Jean-Vincent kassi",
+        name: "Jean-Vincent KASSI",
         github: "https://github.com/jvkassi",
         image: "https://avatars2.githubusercontent.com/u/3010867?s=460&v=4",
       },
@@ -140,19 +138,19 @@ module.exports = {
         image: "https://avatars2.githubusercontent.com/u/7539516?s=400&v=4",
       },
       {
-        name: "Nougbele Daniel Jonatan",
+        name: "Daniel Jonatan NOUGBELE",
         github: "https://github.com/agatapouglof",
         image:
           "https://avatars3.githubusercontent.com/u/23237383?s=400&u=c8ee1b6c1cffeb9b41e2017a9525dba4766582e4&v=4",
       },
       {
-        name: "Ismaël Diomandé",
+        name: "Ismaël DIOMANDÉ",
         github: "https://github.com/Benito225",
         image:
           "https://avatars0.githubusercontent.com/u/23212440?s=400&u=bbec7cf3be80486fe3225e67723d83799ac4668d&v=4",
       },
       {
-        name: "Agnaramon Boris-Carnot",
+        name: "Agnaramon BORIS-CARNOT",
         github: "https://github.com/agnamc",
         image:
           "https://avatars3.githubusercontent.com/u/4026625?s=400&u=2e19b9857a206b8efb391081d6144250b4aae311&v=4",
@@ -221,10 +219,10 @@ module.exports = {
           anonymizeIP: true,
         },
         sitemap: {
-          changefreq: 'weekly',
+          changefreq: "weekly",
           priority: 0.5,
-          ignorePatterns: ['/tags/**'],
-          filename: 'sitemap.xml'
+          ignorePatterns: ["/tags/**"],
+          filename: "sitemap.xml",
         },
       },
     ],
@@ -249,7 +247,8 @@ module.exports = {
           "php, bowphp, bow framework, tintin, routing, i18n, request, http",
       },
       {
-        name: 'twitter:card', content: 'summary_large_image'
+        name: "twitter:card",
+        content: "summary_large_image",
       },
     ],
     navbar: {
@@ -304,7 +303,7 @@ module.exports = {
     },
     colorMode: {
       defaultMode: "dark",
-      disableSwitch: true,
+      disableSwitch: false,
       respectPrefersColorScheme: true,
     },
     footer: {
@@ -387,23 +386,23 @@ module.exports = {
   themes: ["@docusaurus/theme-mermaid"],
   headTags: [
     {
-      tagName: 'link',
+      tagName: "link",
       attributes: {
-        rel: 'preconnect',
-        href: 'https://bowphp.com',
+        rel: "preconnect",
+        href: "https://bowphp.com",
       },
     },
     {
-      tagName: 'script',
+      tagName: "script",
       attributes: {
-        type: 'application/ld+json',
+        type: "application/ld+json",
       },
       innerHTML: JSON.stringify({
-        '@context': 'https://schema.org/',
-        '@type': 'Organization',
-        name: 'Bow Framework',
-        url: 'https://bowphp.com',
-        logo: 'https://bowphp.com/img/bow.png',
+        "@context": "https://schema.org/",
+        "@type": "Organization",
+        name: "Bow Framework",
+        url: "https://bowphp.com",
+        logo: "https://bowphp.com/img/bow.png",
       }),
     },
   ],

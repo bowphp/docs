@@ -62,7 +62,7 @@ use Bow\Auth\Authentication;
 
 class User extends Authentication
 {
-    // Propriétés et méthodes de votre modèle
+  // Propriétés et méthodes de votre modèle
 }
 ```
 
@@ -83,14 +83,14 @@ La méthode `guard` permet de spécifier quel guard utiliser dans un contexte do
 ```php
 // Authentifier un utilisateur en utilisant le guard 'web' (session)
 Auth::guard('web')->attempts([
-    'email' => 'john@example.com',
-    'password' => 'secret'
+  'email' => 'john@example.com',
+  'password' => 'secret'
 ]);
 
 // Authentifier un utilisateur en utilisant le guard 'api' (JWT)
 Auth::guard('api')->attempts([
-    'email' => 'john@example.com',
-    'password' => 'secret'
+  'email' => 'john@example.com',
+  'password' => 'secret'
 ]);
 ```
 
@@ -110,15 +110,15 @@ La méthode `attempts` est utilisée pour **authentifier un utilisateur** en vé
 ```php
 // Authentifier un utilisateur avec des identifiants
 $credentials = [
-    'email' => 'john@example.com',
-    'password' => 'secret'
+  'email' => 'john@example.com',
+  'password' => 'secret'
 ];
 
 // Tentative d'authentification via le guard 'web'
 if (Auth::guard('web')->attempts($credentials)) {
-    echo 'Authentification réussie via session';
+  echo 'Authentification réussie via session';
 } else {
-    echo 'Échec de l\'authentification';
+  echo 'Échec de l\'authentification';
 }
 ```
 
@@ -133,9 +133,9 @@ La méthode `check` permet de vérifier si l'utilisateur est actuellement authen
 ```php
 // Vérifier si l'utilisateur est authentifié via le guard 'web'
 if (Auth::guard('web')->check()) {
-    echo 'L\'utilisateur est authentifié';
+  echo 'L\'utilisateur est authentifié';
 } else {
-    echo 'Aucun utilisateur authentifié';
+  echo 'Aucun utilisateur authentifié';
 }
 ```
 
@@ -150,9 +150,9 @@ La méthode `guest` est l'opposée de `check`. Elle retourne `true` si l'utilisa
 ```php
 // Vérifier si l'utilisateur n'est pas authentifié via le guard 'web'
 if (Auth::guard('web')->guest()) {
-    echo 'Aucun utilisateur authentifié';
+  echo 'Aucun utilisateur authentifié';
 } else {
-    echo 'L\'utilisateur est authentifié';
+  echo 'L\'utilisateur est authentifié';
 }
 ```
 
@@ -167,9 +167,9 @@ La méthode `user` permet de récupérer l'**utilisateur actuellement authentifi
 $user = Auth::guard('web')->user();
 
 if ($user) {
-    echo 'Utilisateur authentifié : ' . $user->name;
+  echo 'Utilisateur authentifié : ' . $user->name;
 } else {
-    echo 'Aucun utilisateur authentifié';
+  echo 'Aucun utilisateur authentifié';
 }
 ```
 
@@ -184,9 +184,9 @@ La méthode `id` permet de récupérer l'**ID** de l'utilisateur actuellement au
 $userId = Auth::guard('web')->id();
 
 if ($userId) {
-    echo 'L\'ID de l\'utilisateur authentifié est ' . $userId;
+  echo 'L\'ID de l\'utilisateur authentifié est ' . $userId;
 } else {
-    echo 'Aucun utilisateur authentifié';
+  echo 'Aucun utilisateur authentifié';
 }
 ```
 
@@ -226,11 +226,12 @@ Vous devez configurer JWT dans le fichier `config/policier.php` pour définir le
 
 ```php
 return [
-    "signkey" => app_env("APP_JWT_SECRET"), // Clé secrète
-    "exp" => 3600 * 24 * 3, // Expiration en secondes (ici 3 jours)
-    "iss" => app_env("APP_JWT_ISSUER", "app.example.com"), // Émetteur du token
-    "alg" => "HS512", // Algorithme de signature
-    "aud" => app_env("APP_JWT_AUD", "app.example.com"), // Audience
+  "signkey" => app_env("APP_JWT_SECRET"), // Clé secrète
+  "sub" => 'ID',
+  "exp" => 3600 * 24 * 3, // Expiration en secondes (ici 3 jours)
+  "iss" => app_env("APP_JWT_ISSUER", "app.example.com"), // Émetteur du token
+  "alg" => "HS512", // Algorithme de signature
+  "aud" => app_env("APP_JWT_AUD", "app.example.com"), // Audience
 ];
 ```
 
@@ -244,7 +245,7 @@ Auth::guard('api')->attempts($credentials);
 
 // Vérifier si l'utilisateur est authentifié via le JWT
 if (Auth::guard('api')->check()) {
-    // Utilisateur authentifié via JWT
+  // Utilisateur authentifié via JWT
 }
 
 // Récupérer le token généré
@@ -259,7 +260,7 @@ Les middlewares permettent de protéger certaines routes de votre application, e
 
 ```php
 $app->get('/profile', function () {
-    // Route protégée, accessible uniquement aux utilisateurs authentifiés
+  // Route protégée, accessible uniquement aux utilisateurs authentifiés
 })->middleware('auth');
 ```
 
@@ -267,7 +268,7 @@ Et aussi, vous utilisez JWT, vous devez utiliser le middleware `api`. Regarde la
 
 ```php
 $app->get('/profile', function () {
-    // Route protégée, accessible uniquement aux utilisateurs authentifiés
+  // Route protégée, accessible uniquement aux utilisateurs authentifiés
 })->middleware('api');
 ```
 
@@ -280,11 +281,11 @@ use Bow\Middlewares\AuthMiddleware;
 
 class CustomAuthMiddleware extends AuthMiddleware
 {
-    // Redirection personnalisée en cas de non-authentification
-    public function redirectTo(): string
-    {
-        return '/login'; // Rediriger vers une page de connexion
-    }
+  // Redirection personnalisée en cas de non-authentification
+  public function redirectTo(): string
+  {
+    return '/login'; // Rediriger vers une page de connexion
+  }
 }
 ```
 

@@ -12,7 +12,7 @@ Bow Framework se conforme au modèle *MVC* (*M*odèle *V*ue *C*ontrôleur).
 | Dossier | Description |
 |---------|-------------|
 | __app__ | Contient la logique principale de votre application. Presque toutes les classes de votre application seront dans ce dossier |
-| __frontend__ | Contient les scripts et fichiers de styles de l'application. Il contient entre autre le dossier `js`, `sass`, `lang`. C'est là que vous allez mettre vos fichiers static et ensuite les compiler |
+| __assets__ | Contient les scripts et fichiers de styles de l'application. Il contient entre autre le dossier `js`, `sass`, `lang`. C'est là que vous allez mettre vos fichiers static et ensuite les compiler |
 | __templates__ | Contient les vues de votre application |
 | __config__ | Contient les différents fichier de configuration des composants de l'application. |
 | __migrations__ | Dossier dans lequel sera sauvegardé les migrations de votre application |
@@ -45,14 +45,14 @@ Vous trouverez aussi les fichiers suivants :
 
 - __Kernel.php__ : La configuration du lanceur de l'application.
 
-## Dossier frontend
+## Dossier assets
 
 C'est là que vous allez insérer tous les fichiers qui sont utilisés dans les vues de votre application. Vous y retrouverez les dossiers suivants :
 
 - __js__: Votre fichier `Javascript` seront sauvegardés ici.
 - __sass__: Votre ficher scss seront sauvegardés ici.
 
-> Consultez la section [webpack.mix.js](./frontend)
+> Consultez la section [webpack.mix.js](./assets)
 
 ## Dossiers migrations et seeders
 

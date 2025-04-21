@@ -57,7 +57,7 @@ Vous voulez dire au conteneur : "Lorsque quelqu'un demandera un service, voici c
 use App\Services\Service;
 
 app()->bind('service', function() {
-    return new Service();  // Retourne une nouvelle instance du service
+  return new Service();  // Retourne une nouvelle instance du service
 });
 ```
 
@@ -75,7 +75,7 @@ Si vous voulez que le conteneur crée une nouvelle instance chaque fois qu'une d
 
 ```php
 app()->factory('user', function() {
-    return new User();  // Crée une nouvelle instance de User à chaque fois
+  return new User();  // Crée une nouvelle instance de User à chaque fois
 });
 ```
 
@@ -112,12 +112,12 @@ Imaginons que vous ayez une classe `UserService` qui a besoin de `UserRepository
 ```php
 class UserService
 {
-    private $repository;
-    
-    public function __construct(UserRepository $repository)
-    {
-        $this->repository = $repository;  // Le conteneur injecte UserRepository ici
-    }
+  private $repository;
+  
+  public function __construct(UserRepository $repository)
+  {
+    $this->repository = $repository;  // Le conteneur injecte UserRepository ici
+  }
 }
 ```
 
@@ -135,7 +135,7 @@ Chaque fois que vous demandez l'objet, une **nouvelle instance** est créée :
 
 ```php
 app()->bind('logger', function() {
-    return new Logger();  // Crée un nouvel objet Logger chaque fois
+  return new Logger();  // Crée un nouvel objet Logger chaque fois
 });
 ```
 
@@ -153,7 +153,7 @@ Chaque demande génère **une nouvelle instance** :
 
 ```php
 app()->factory('user', function() {
-    return new User();  // Crée une nouvelle instance à chaque fois
+  return new User();  // Crée une nouvelle instance à chaque fois
 });
 ```
 
@@ -186,7 +186,7 @@ Une interface définit ce que doit faire un service, mais pas comment il le fait
 ```php
 interface UserRepositoryInterface
 {
-    public function find($id);
+  public function find($id);
 }
 ```
 
@@ -197,9 +197,9 @@ Une classe qui implémente cette interface fournit l'implémentation réelle :
 ```php
 class UserRepository implements UserRepositoryInterface
 {
-    public function find($id) {
-        return "Utilisateur avec l'ID : " . $id;
-    }
+  public function find($id) {
+    return "Utilisateur avec l'ID : " . $id;
+  }
 }
 ```
 
@@ -208,18 +208,19 @@ class UserRepository implements UserRepositoryInterface
 `UserService` a besoin de `UserRepository` pour fonctionner :
 
 ```php
-class UserService {
-    private $repository;
-    
-    public function __construct(UserRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
-    
-    public function getUser($id)
-    {
-        return $this->repository->find($id);
-    }
+class UserService
+{
+  private $repository;
+  
+  public function __construct(UserRepositoryInterface $repository)
+  {
+    $this->repository = $repository;
+  }
+  
+  public function getUser($id)
+  {
+    return $this->repository->find($id);
+  }
 }
 ```
 

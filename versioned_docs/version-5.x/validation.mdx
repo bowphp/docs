@@ -17,21 +17,21 @@ La façon la plus simple d'utiliser le validateur est via la fonction helper `va
 
 ```php
 $data = [
-    "name" => "John Doe",
-    "email" => "john@example.com",
-    "age" => 25
+  "name" => "John Doe",
+  "email" => "john@example.com",
+  "age" => 25
 ];
 
 $validation = validator($data, [
-    "name" => "required|min:3|max:50",
-    "email" => "required|email",
-    "age" => "required|int"
+  "name" => "required|min:3|max:50",
+  "email" => "required|email",
+  "age" => "required|int"
 ]);
 
 if ($validation->fails()) {
-    // La validation a échoué
-    $errors = $validation->getMessages();
-    // Gérer les erreurs
+  // La validation a échoué
+  $errors = $validation->getMessages();
+  // Gérer les erreurs
 }
 ```
 
@@ -83,17 +83,17 @@ Vous pouvez personnaliser les messages d'erreur en passant un tableau de message
 
 ```php
 $validation = validator($data, [
-    "name" => "required|min:3",
-    "email" => "required|email"
+  "name" => "required|min:3",
+  "email" => "required|email"
 ], [
-    "name" => [
-        "required" => "Le nom est obligatoire",
-        "min" => "Le nom doit contenir au moins 3 caractères"
-    ],
-    "email" => [
-        "required" => "L'email est obligatoire",
-        "email" => "L'email n'est pas valide"
-    ]
+  "name" => [
+    "required" => "Le nom est obligatoire",
+    "min" => "Le nom doit contenir au moins 3 caractères"
+  ],
+  "email" => [
+    "required" => "L'email est obligatoire",
+    "email" => "L'email n'est pas valide"
+  ]
 ]);
 ```
 
@@ -126,7 +126,7 @@ Vous pouvez lancer une exception de validation avec la méthode `throwError()`:
 $validation = validator($data, $rules);
 
 if ($validation->fails()) {
-    $validation->throwError(); // Lance ValidationException
+  $validation->throwError(); // Lance ValidationException
 }
 ```
 
@@ -139,27 +139,27 @@ Voici un exemple pratique d'utilisation du validateur dans un contrôleur:
 ```php
 class UserController
 {
-    public function store()
-    {
-        $validation = validator(request()->all(), [
-            "name" => "required|min:3|max:50",
-            "email" => "required|email|unique:users,email",
-            "password" => "required|min:6"
-        ]);
+  public function store()
+  {
+    $validation = validator(request()->all(), [
+      "name" => "required|min:3|max:50",
+      "email" => "required|email|unique:users,email",
+      "password" => "required|min:6"
+    ]);
 
-        if ($validation->fails()) {
-            return response()->json([
-                "errors" => $validation->getMessages()
-            ], 400);
-        }
-
-        // Créer l'utilisateur
-        User::create(request()->all());
-
-        return response()->json([
-            "message" => "Utilisateur créé avec succès"
-        ]);
+    if ($validation->fails()) {
+      return response()->json([
+        "errors" => $validation->getMessages()
+      ], 400);
     }
+
+    // Créer l'utilisateur
+    User::create(request()->all());
+
+    return response()->json([
+      "message" => "Utilisateur créé avec succès"
+    ]);
+  }
 }
 ```
 

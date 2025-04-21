@@ -134,17 +134,17 @@ foreach ($todos as $todo) {
 }
 ```
 
-La méthode `retrieve` et `retrieveBy` permet aussi de récupérer les informations:
+La méthode `find` et `findBy` permet aussi de récupérer les informations:
 
 ```php
 // Avec find
-$todo = Todo::retrieve(1);
+$todo = Todo::find(1);
 
 // Avec findBy
-$todo = Todo::retrieveBy('id', 1);
+$todo = Todo::findBy('id', 1);
 ```
 
-> La méthode peut aussi retourner `null` dans le cas où il n'y a aucun enrégistrement trouvé
+> La méthode peut aussi retourner `null` dans le case ou il y a aucun enrégistrement trouvé
 
 ## Ajout de contraintes supplémentaires
 
@@ -201,29 +201,27 @@ class TodoController extends Controller
     $todo->budget = $request->get('budget', 0);
     $todo->status = 'pending';
 
-    $todo->persist();
+    $todo->save();
   }
 }
 ```
 
-Dans cet exemple, nous affectons le paramètre de nom de la requête HTTP entrante à les attributs `title`, `budget` de l'instance de modèle `App\Models\Todo`. Lorsque nous appelons la méthode `persist`, un enregistrement sera inséré dans la base de données. Les horodatages `created_at` et `updated_at` seront automatiquement définis lorsque la méthode de sauvegarde sera appelée, il n'est donc pas nécessaire de les définir manuellement.
+Dans cet exemple, nous affectons le paramètre de nom de la requête HTTP entrante à les attributs `title`, `budget` de l'instance de modèle `App\Models\Todo`. Lorsque nous appelons la méthode `save`, un enregistrement sera inséré dans la base de données. Les horodatages `created_at` et `updated_at` seront automatiquement définis lorsque la méthode de sauvegarde sera appelée, il n'est donc pas nécessaire de les définir manuellement.
 
 ### Insert via CREATE
 
-Les objets Active Record peuvent être créés à partir d'un hachage, d'un bloc ou avoir leurs attributs définis manuellement après la création. La nouvelle méthode renverra un nouvel objet tandis que `create` renverra l'objet sans l'enregistrer dans la base de donnée. Vous devez ensuite lancer l'insert avec la méthode `persist`;
+Les objets Active Record peuvent être créés à partir d'un hachage, d'un bloc ou avoir leurs attributs définis manuellement après la création. La nouvelle méthode renverra un nouvel objet tandis que `create` renverra l'objet et l'enregistrera dans la base de données.
 
 Par exemple, étant donné un utilisateur modèle avec des attributs de nom et d'occupation, l'appel de la méthode create créera et enregistrera un nouvel enregistrement dans la base de données:
 
 ```php
 use App\Models\Todo;
 
-$todo = Todo::create([
+$user = Todo::create([
   'title' => 'Acheter un ticket metro',
   'budget' => 2000,
   'status' => 'pending',
 ]);
-
-$todo->persist();
 ```
 
 ### UPDATE
@@ -233,14 +231,14 @@ La méthode `save` peut également être utilisée pour mettre à jour des modè
 ```php
 use App\Models\Todo;
 
-$todo = Todo::retrieve(1);
+$todo = Todo::find(1);
 
 $todo->title = 'Shopping pour Franck';
 
-$todo->touch();
+$todo->save();
 ```
 
-Ou bien vous pouvez aussi utiliser la methode `update`. Seulement vous dévez define les conditions pour ainsi limiter l'impact de la mise à jour.
+Ou bien vous pouvez aussi utiliser la methode `update`. Seulement vous dévez definir les conditions pour ainsi limiter l'impact de la mise à jour.
 
 ```php
 use App\Models\Todo;
@@ -258,11 +256,11 @@ De même, une fois récupéré, un objet Active Record peut être détruit, ce q
 ```php
 use App\Models\Todo;
 
-$todo = Todo::retrieve(1);
+$todo = Todo::find(1);
 $todo->delete();
 ```
 
-Si vous souhaitez supprimer plusieurs enregistrements en masse, vous pouvez utiliser la méthode `deleteBy` ou `truncate`:
+Si vous souhaitez supprimer plusieurs enregistrements en masse, vous pouvez utiliser la méthode `destroyBy` ou `truncate`:
 
 ```php
 // Delete all todo by id

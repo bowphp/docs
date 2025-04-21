@@ -93,7 +93,7 @@ class EmailCheckController extends Configuration
    */
   public function run()
   {
-    $this->container->make('app')->post(
+    $this->container->make('router')->post(
       '/email/checker', \App\Packages\EmailCheckController::class
     );
   }
