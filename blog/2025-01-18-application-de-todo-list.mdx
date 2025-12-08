@@ -31,12 +31,12 @@ Cela créera une nouvelle application BowPHP nommée `todolist`.
 
 ```json title=".env.json"
 {
-    "DB_DEFAULT": "mysql",
-    "DB_HOSTNAME": "127.0.0.1",
-    "DB_USERNAME": "username",
-    "DB_PASSWORD": "password",
-    "DB_DBNAME": "todolist_db",
-    "DB_PORT": 3306
+  "DB_DEFAULT": "mysql",
+  "DB_HOSTNAME": "127.0.0.1",
+  "DB_USERNAME": "username",
+  "DB_PASSWORD": "password",
+  "DB_DBNAME": "todolist_db",
+  "DB_PORT": 3306
 }
 ```
 
@@ -67,30 +67,30 @@ use Bow\Database\Migration\SQLGenerator as Table;
 
 class Version1000000000CreateTasksTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        $this->create('tasks', function (Table $table) {
-            $table->addPrimary('id');
-            $table->addString('title');
-            $table->addBoolean('completed', ['default' => false]);
-            $table->addTimestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+  */
+  public function up()
+  {
+    $this->create('tasks', function (Table $table) {
+      $table->addPrimary('id');
+      $table->addString('title');
+      $table->addBoolean('completed', ['default' => false]);
+      $table->addTimestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function rollback()
-    {
-        $this->dropIfExists('tasks');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function rollback()
+  {
+    $this->dropIfExists('tasks');
+  }
 }
 ```
 
@@ -119,47 +119,67 @@ use Bow\Database\Barry\Model;
 
 class Task extends Model
 {
-    //
+  //
 }
 ```
 
 2. **Créer un contrôleur `TaskController`** :
 
-```php
+```php title="app/Controllers/TaskController.php"
 namespace App\Controllers;
 
 use App\Models\Task;
+use Bow\Http\Request;
 
 class TaskController
 {
-    public function index()
-    {
-        $tasks = Task::all();
+  public function index()
+  {
+    $tasks = Task::all();
 
-        return view('tasks.index', compact('tasks'));
+    return view('tasks.index', compact('tasks'));
+  }
+
+  public function store(Request $request)
+  {
+    // Validation des données
+    $request->validate([
+      'title' => 'required|min:3|max:255'
+    ]);
+
+    Task::create([
+      'title' => $request->get('title'),
+      'completed' => false
+    ]);
+
+    return redirect('/')->withFlash('success', 'Tâche ajoutée avec succès !');
+  }
+
+  public function update(int $id)
+  {
+    $task = Task::find($id);
+    
+    if (!$task) {
+      return redirect('/')->withFlash('error', 'Tâche introuvable.');
     }
+    
+    $task->update(['completed' => !$task->completed]);
 
-    public function store(Request $request)
-    {
-        Task::create(['title' => $request->get('title')]);
+    return redirect('/')->withFlash('success', 'Tâche mise à jour !');
+  }
 
-        return redirect('/');
+  public function destroy(Request $request, int $id)
+  {
+    $task = Task::find($id);
+    
+    if (!$task) {
+      return redirect('/')->withFlash('error', 'Tâche introuvable.');
     }
+    
+    $task->delete();
 
-    public function update(int $id)
-    {
-        $task = Task::find($id);
-        $task->update(['completed' => ! $task->completed]);
-
-        return redirect('/');
-    }
-
-    public function destroy(Request $request, int $id)
-    {
-        Task::where("id", $id)->delete();
-
-        return redirect('/');
-    }
+    return redirect('/')->withFlash('success', 'Tâche supprimée !');
+  }
 }
 ```
 
@@ -176,44 +196,163 @@ $app->put('/tasks/{id}', [TaskController::class, 'update']);
 $app->delete('/tasks/{id}', [TaskController::class, 'destroy']);
 ```
 
+:::info Note sur les méthodes HTTP
+Bow Framework gère automatiquement la méthode spoofing via le champ `_method` dans les formulaires. 
+Cela permet d'utiliser PUT et DELETE même si HTML ne supporte nativement que GET et POST.
+:::
+
 ### **Étape 5 : Créer les vues**
 
 Créer le fichier de template `templates/tasks.tintin.php` et ajoutez-y le contenu suivant.
 
-```php
+```php title="templates/tasks.tintin.php"
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Todo List</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List - BowPHP</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .container { 
+      max-width: 600px; 
+      margin: 0 auto; 
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 { 
+      color: #333; 
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .add-form { 
+      display: flex; 
+      gap: 0.5rem; 
+      margin-bottom: 2rem;
+    }
+    input[type="text"] { 
+      flex: 1; 
+      padding: 0.75rem; 
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    input[type="text"]:focus { 
+      outline: none; 
+      border-color: #667eea;
+    }
+    button { 
+      padding: 0.75rem 1.5rem; 
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+    button:hover { background: #5568d3; }
+    .task-list { list-style: none; }
+    .task-item { 
+      display: flex; 
+      align-items: center; 
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      gap: 0.75rem;
+    }
+    .task-item.completed { 
+      opacity: 0.6;
+      text-decoration: line-through;
+    }
+    .task-title { flex: 1; }
+    .btn-icon { 
+      padding: 0.5rem; 
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+    }
+    .flash-message {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+    .flash-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .flash-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
 </head>
 <body>
-    <h1>Todo List</h1>
+  <div class="container">
+    <h1>📝 Ma Todo List</h1>
+    
+    #if(flash()->has('success'))
+      <div class="flash-message flash-success">
+        {{ flash()->get('success') }}
+      </div>
+    #endif
+    
+    #if(flash()->has('error'))
+      <div class="flash-message flash-error">
+        {{ flash()->get('error') }}
+      </div>
+    #endif
 
-    <form method="POST" action="/tasks">
-        <input type="text" name="title" placeholder="New Task" required>
-        <button type="submit">Add</button>
+    <form method="POST" action="/tasks" class="add-form">
+      {{ csrf_field() }}
+      <input type="text" name="title" placeholder="Ajouter une nouvelle tâche..." required>
+      <button type="submit">Ajouter</button>
     </form>
 
-    <ul>
-        #foreach ($tasks as $task)
-            <li>
-                <form method="POST" action="/tasks/<?= $task->id ?>">
-                    <input type="hidden" name="_method" value="PUT">
-                    <button type="submit">
-                        {{ $task->completed ? '✅' : '⬜' }}
-                    </button>
-                </form>
-                {{{ $task->title }}} ?>
-                <form method="POST" action="/tasks/<?= $task->id ?>">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit">❌</button>
-                </form>
-            </li>
-        #endforeach
+    <ul class="task-list">
+      #foreach ($tasks as $task)
+        <li class="task-item {{ $task->completed ? 'completed' : '' }}">
+          <form method="POST" action="/tasks/{{ $task->id }}" style="display: inline;">
+            {{ csrf_field() }}
+            <input type="hidden" name="_method" value="PUT">
+            <button type="submit" class="btn-icon">
+              {{ $task->completed ? '✅' : '⬜' }}
+            </button>
+          </form>
+          <span class="task-title">{{ $task->title }}</span>
+          <form method="POST" action="/tasks/{{ $task->id }}" style="display: inline;">
+            {{ csrf_field() }}
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="btn-icon" onclick="return confirm('Supprimer cette tâche ?')">❌</button>
+          </form>
+        </li>
+      #endforeach
     </ul>
+    
+    #if(count($tasks) === 0)
+      <p style="text-align: center; color: #999; padding: 2rem;">Aucune tâche. Ajoutez-en une ci-dessus !</p>
+    #endif
+  </div>
 </body>
 </html>
 ```
+
+:::tip Sécurité CSRF
+Notez l'utilisation de `{{ csrf_field() }}` dans tous les formulaires. C'est une protection CSRF intégrée dans Bow Framework qui empêche les attaques de type Cross-Site Request Forgery.
+:::
 
 ### **Étape 6 : Lancer l'application**
 
@@ -224,5 +363,51 @@ php bow run:server
 ```
 
 Accédez à votre application sur `http://localhost:5000`.
+
+### **Étape 7 : Améliorations possibles**
+
+Voici quelques idées pour améliorer votre application :
+
+1. **Filtrage des tâches** : Ajouter des filtres pour voir les tâches complétées/incomplètes
+2. **Date d'échéance** : Ajouter une colonne `due_date` pour gérer les dates limites
+3. **Catégories** : Créer un système de catégories ou tags pour organiser les tâches
+4. **Authentification** : Implémenter un système de connexion pour que chaque utilisateur ait ses propres tâches
+5. **API REST** : Transformer l'application en API pour une utilisation avec un frontend JavaScript (React, Vue.js)
+6. **Recherche** : Ajouter une barre de recherche pour filtrer les tâches
+7. **Priorités** : Ajouter des niveaux de priorité (haute, moyenne, basse)
+
+### **Déploiement**
+
+Pour déployer votre application en production :
+
+```bash
+# 1. Optimiser l'autoloader
+composer dump-autoload --optimize
+
+# 2. Configurer l'environnement de production dans .env.json
+{
+    "APP_ENV": "production",
+    "APP_DEBUG": false,
+    // ... autres configs
+}
+
+# 3. Configurer votre serveur web (Apache/Nginx)
+# Le point d'entrée doit pointer vers public/index.php
+```
+
+:::warning Sécurité en Production
+- Désactivez le mode debug (`APP_DEBUG=false`)
+- Utilisez des mots de passe forts pour la base de données
+- Configurez HTTPS sur votre serveur
+- Gardez Bow Framework et ses dépendances à jour
+- Validez toujours les entrées utilisateur
+:::
+
+### **Ressources utiles**
+
+- [Documentation officielle de Bow Framework](https://bowphp.com/docs)
+- [Guide de migration](https://bowphp.com/docs/migration)
+- [Guide ORM Barry](https://bowphp.com/docs/orm)
+- [Validation des données](https://bowphp.com/docs/validation)
 
 <SuggestionFeature />

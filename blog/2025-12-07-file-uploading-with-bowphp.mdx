@@ -1,0 +1,187 @@
+---
+title: "Téléversement de fichiers avec BowPHP"
+description: "Guide d'intégration sécurisée du téléversement de fichiers dans une application BowPHP"
+slug: televersement-de-fichiers-avec-bowphp
+authors: papac
+tags: [bowphp, php, upload, security]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Téléversement de fichiers avec BowPHP
+
+Ce billet explique comment intégrer de manière sécurisée le téléversement de fichiers dans une application BowPHP : routes, contrôleurs, emplacement de stockage et diffusion des fichiers téléversés.
+
+<!--truncate-->
+
+## Vue d'ensemble
+Le téléversement de fichiers est courant mais risqué. Avec BowPHP vous devez :
+- Enregistrer une route qui reçoit le fichier.
+- Valider et déplacer le fichier dans un contrôleur.
+- Stocker les fichiers en dehors du répertoire public (par ex. racine/var/storage).
+- Servir les fichiers via un contrôleur ou des URL signées pour éviter l'accès direct.
+
+## Formulaire HTML (client)
+Utilisez multipart/form-data et pointez vers la route BowPHP :
+
+```html
+<form action="/upload" method="post" enctype="multipart/form-data">
+  <label for="file">Choisir un fichier</label>
+  <input type="file" name="file" id="file" required>
+  <button type="submit">Téléverser</button>
+</form>
+```
+
+## Enregistrer la route (BowPHP)
+Ajoutez une route POST qui délègue au contrôleur :
+
+```php
+// filepath: /routes/web.php
+// ...existing code...
+use App\Controllers\UploadController;
+
+$app->post('/upload', [UploadController::class, 'store']);
+// ...existing code...
+```
+
+## UploadController (BowPHP)
+Gestionnaire minimal et sécurisé adapté à BowPHP. Ajustez l'API Request selon votre version ; un fallback vers $_FILES peut être ajouté si nécessaire.
+
+```php
+// filepath: /app/controllers/UploadController.php
+namespace App\Controllers;
+
+use Bow\Http\Request;
+use Bow\Http\Response;
+use Bow\Http\UploadedFile;
+
+class UploadController
+{
+  public function store(Request $request): Response
+  {
+    if (!$request->hasFile('file')) {
+      return response('Aucun fichier fourni', 400);
+    }
+
+    /** @var UploadedFile $file */
+    $file = $request->file('file');
+
+    if (!$file->isUploaded()) {
+      return response('Erreur lors du téléversement', 400);
+    }
+
+    // Limites
+    $maxBytes = 5 * 1024 * 1024; // 5 MB
+    if ($file->getFilesize() > $maxBytes) {
+      return response('Fichier trop volumineux', 400);
+    }
+
+    // Validation du MIME (utiliser finfo sur le fichier temporaire si disponible)
+    $allowed = [
+      'image/png'       => 'png',
+      'image/jpeg'      => 'jpg',
+      'application/pdf' => 'pdf',
+    ];
+
+    $mime = $file->getTypeMime();
+
+    if (!isset($allowed[$mime])) {
+      return response('Type de fichier invalide', 400);
+    }
+
+    $extension = $file->getExtension();
+
+    // Stocker en dehors du dossier public - utiliser le répertoire var/storage du projet
+    $uploadsDirectory = storage_path('uploads'); // projet_root/var/storage
+    if (!is_dir($uploadsDirectory)) {
+      mkdir($uploadsDirectory, 0750, true);
+    }
+
+    $filename = bin2hex(random_bytes(16)) . '.' . $extension;
+
+    // Déplacer le fichier via l'API UploadedFile
+    $result = $file->moveTo($uploadsDirectory, $filename);
+
+    // Vérifier la réussite du déplacement (moveTo peut renvoyer void/true/chemin/objet selon implémentation)
+    $dest = rtrim($uploadsDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
+    if (is_string($result) && is_file($result)) {
+      $dest = $result;
+    }
+
+    if (!is_file($dest)) {
+      return response('Échec du déplacement du fichier', 500);
+    }
+
+    chmod($dest, 0640);
+
+    // Retourner une référence sûre (ne pas exposer le chemin complet). Envisagez une URL signée ou un ID.
+    return response()->json([
+      'status' => 'ok',
+      'file'   => $filename,
+    ]);
+  }
+}
+```
+
+## Diffusion des fichiers téléversés (via contrôleur, sécurisé)
+Servez les fichiers via BowPHP pour pouvoir appliquer authentification et en-têtes au lieu d'exposer le dossier de stockage.
+
+```php
+// filepath: /app/controllers/FileServeController.php
+namespace App\Controllers;
+
+use Bow\Http\Request;
+use Bow\Http\Response;
+
+class FileServeController
+{
+  public function show(Request $request, $filename): Response
+  {
+    $uploadsDirectory = storage_path('uploads'); // projet_root/var/storage
+    $file = $uploadsDirectory . DIRECTORY_SEPARATOR . basename($filename);
+
+    if (!is_file($file)) {
+      return response('Introuvable', 404);
+    }
+
+    // Optionnel : vérifier permissions, propriété ou authentification ici.
+
+    // Envoyer le fichier avec les en-têtes appropriés
+    return response()->download($file, null, [
+      'Content-Type' => mime_content_type($file),
+      'Content-Length' => filesize($file),
+      'Content-Disposition' => 'attachment; filename="' . basename($file) . '"',
+    ]);
+  }
+}
+```
+
+Enregistrez la route GET pour la diffusion (appliquez le middleware d'authentification et de limitation de débit si nécessaire) :
+
+```php
+// filepath: /routes/web.php
+// ...existing code...
+$app->get('/uploads/{filename}', [\App\Controllers\FileServeController::class, 'show'])
+  ->middleware(['auth']); // appliquez le middleware d'authentification/limitation si nécessaire
+// ...existing code...
+```
+
+## Configuration BowPHP & notes sur le stockage
+- Conservez les uploads sous project_root/var/storage (hors dossier public).
+- Si vous utilisez config/storage.php ou config/filesystems.php, déclarez un disque local pointant vers var/storage.
+- Pour les gros fichiers, envisagez les uploads en morceaux (chunked) et le streaming pour éviter des pics mémoire.
+- Utilisez des URL signées ou un contrôleur pour accorder un accès temporaire au lieu de liens directs.
+
+## Notes de déploiement
+- Assurez-vous que project_root/var/storage existe dans chaque environnement avec le bon propriétaire et permissions.
+- Synchronisez les limites php.ini avec celles définies dans l'application.
+- Envisagez de migrer les uploads vers un stockage objet (S3) pour la scalabilité ; servez via URL signées.
+
+## Lectures complémentaires
+- PHP manual: Handling file uploads
+- OWASP: File Upload Cheat Sheet
+- BowPHP docs: routing, controllers, and response helpers
+
+<SuggestionFeature />
