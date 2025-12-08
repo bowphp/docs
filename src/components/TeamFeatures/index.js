@@ -13,10 +13,12 @@ const TeamFeatures = () => {
   return (
     <section className={styles.features}>
       <div className="container text--center">
-        <div className="row">
-          <div className="col">
-            <h2>CEUX QUI UTILISENT BOW FRAMEWORK?</h2>
-            <p>
+        <div className="row margin-bottom--lg">
+          <div className="col col--12">
+            <h2 className={styles.sectionTitle}>
+              Ceux qui utilisent Bow Framework ?
+            </h2>
+            <p className={styles.sectionDescription}>
               Ce projet est utilisé par toutes ces personnes influentes dans les
               communautés technologiques de Côte d'ivoire et dans reste du Monde.
             </p>
@@ -24,10 +26,10 @@ const TeamFeatures = () => {
         </div>
         <div className="row padding-horiz--md">
           {siteConfig.customFields.users.map((user, index) => (
-            <div className={clsx('col', styles.teamPadding)} style={{ borderRadius: 200 }} key={index}>
-              <div className={clsx("", styles.showcaseUser)} style={{ boxShadow: 'none' }}>
+            <div className={clsx('col', styles.teamPadding)} key={index}>
+              <div className={styles.showcaseUser}>
                 <div className="text--center">
-                  <a href={user.infoLink} key={user.infoLink}>
+                  <a href={user.infoLink}>
                     <img src={user.image} alt={user.caption} title={user.caption} />
                   </a>
                   <p>{user.caption}</p>

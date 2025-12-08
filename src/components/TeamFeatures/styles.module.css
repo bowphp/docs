@@ -52,26 +52,26 @@
   letter-spacing: -0.02em;
 }
 
-[data-theme='dark'] .features h2 {
-  background: linear-gradient(
-    135deg,
-    var(--ifm-color-primary-lighter),
-    var(--ifm-color-primary-lightest)
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.sectionTitle {
+  font-size: clamp(1.875rem, 5vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-primary-darker);
 }
 
-.features p {
+[data-theme='dark'] .sectionTitle {
+  color: var(--ifm-color-primary-lighter);
+}
+
+.sectionDescription {
   font-size: 1.125rem;
   color: var(--ifm-color-emphasis-700);
   max-width: 700px;
-  margin: 0 auto 3rem;
+  margin: 0 auto;
   line-height: 1.7;
 }
 
-[data-theme='dark'] .features p {
+[data-theme='dark'] .sectionDescription {
   color: var(--ifm-color-emphasis-800);
 }
 
