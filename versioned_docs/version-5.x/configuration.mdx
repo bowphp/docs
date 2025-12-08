@@ -115,16 +115,16 @@ Vous pouvez réutiliser une variable déjà définie dans le fichier `.env.json`
 
 ```json
 {
-  "APP_URL": "http://localhost:8080",
+  "BASE_URL": "http://localhost:8080",
   "WEBHOOK_GATEWAY": {
-    "VISA": "${APP_URL}/execute-visa-webhook",
-    "MASTERCARD": "${APP_URL}/execute-mastercard-webhook"
+    "VISA": "${BASE_URL}/execute-visa-webhook",
+    "MASTERCARD": "${BASE_URL}/execute-mastercard-webhook"
   }
 }
 ```
 
 :::note
-Ici ${APP_URL} défini la variable
+Ici ${BASE_URL} défini la variable
 :::
 
 Cela permet de centraliser certaines valeurs pour plus de cohérence :
