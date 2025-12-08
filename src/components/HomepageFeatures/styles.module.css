@@ -2,10 +2,269 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 150px;
+  padding: 5rem 2rem;
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    var(--ifm-background-surface-color) 0%,
+    var(--ifm-background-color) 50%,
+    var(--ifm-background-surface-color) 100%
+  );
+}
+
+[data-theme='dark'] .features {
+  background: linear-gradient(
+    180deg,
+    var(--ifm-background-color) 0%,
+    var(--ifm-background-surface-color) 50%,
+    var(--ifm-background-color) 100%
+  );
+}
+
+.features::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--ifm-color-primary-lighter),
+    transparent
+  );
+}
+
+.features::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--ifm-color-primary-lighter),
+    transparent
+  );
+}
+
+.featureCard {
+  padding: 2.5rem 1.5rem;
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  background: var(--ifm-background-color);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 2px 4px rgba(0, 0, 0, 0.04);
+  margin: 1rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme='dark'] .featureCard {
+  background: var(--ifm-background-surface-color);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.15);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+.featureCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--ifm-color-primary-lighter),
+    var(--ifm-color-primary),
+    var(--ifm-color-primary-darker)
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.featureCard::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--ifm-color-primary-lightest) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: all 0.6s ease;
+  pointer-events: none;
+}
+
+.featureCard:hover::before {
+  opacity: 1;
+}
+
+.featureCard:hover::after {
+  width: 400px;
+  height: 400px;
+  opacity: 0.15;
+}
+
+.featureCard:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.12),
+    0 8px 16px rgba(0, 0, 0, 0.08);
+  border-color: var(--ifm-color-primary-lighter);
+}
+
+[data-theme='dark'] .featureCard:hover {
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.3),
+    0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .featureSvg {
   height: 100px;
   width: 100px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+}
+
+[data-theme='dark'] .featureSvg {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.featureCard:hover .featureSvg {
+  transform: scale(1.15) rotate(5deg);
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.15));
+}
+
+[data-theme='dark'] .featureCard:hover .featureSvg {
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.4));
+}
+
+.featureTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: var(--ifm-heading-color);
+  letter-spacing: -0.02em;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.featureCard:hover .featureTitle {
+  color: var(--ifm-color-primary);
+}
+
+.featureDescription {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ifm-color-emphasis-700);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme='dark'] .featureDescription {
+  color: var(--ifm-color-emphasis-800);
+}
+
+/* Animation on scroll */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.featureCard {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.featureCard:nth-child(1) { animation-delay: 0.1s; }
+.featureCard:nth-child(2) { animation-delay: 0.2s; }
+.featureCard:nth-child(3) { animation-delay: 0.3s; }
+.featureCard:nth-child(4) { animation-delay: 0.4s; }
+
+/* Responsive */
+@media screen and (max-width: 996px) {
+  .features {
+    padding: 3rem 1.5rem;
+  }
+  
+  .featureCard {
+    padding: 2rem 1.25rem;
+    margin: 0.75rem;
+  }
+  
+  .featureTitle {
+    font-size: 1.375rem;
+  }
+  
+  .featureSvg {
+    height: 90px;
+    width: 90px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .features {
+    padding: 2rem 1rem;
+  }
+  
+  .featureSvg {
+    height: 80px;
+    width: 80px;
+  }
+  
+  .featureCard {
+    padding: 1.75rem 1rem;
+    margin: 0.5rem;
+  }
+  
+  .featureTitle {
+    font-size: 1.25rem;
+  }
+  
+  .featureDescription {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Accessibility - Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .featureCard,
+  .featureSvg,
+  .featureTitle,
+  .featureCard::before,
+  .featureCard::after {
+    animation: none;
+    transition: none;
+  }
+  
+  .featureCard:hover {
+    transform: none;
+  }
+  
+  .featureCard:hover .featureSvg {
+    transform: none;
+  }
 }

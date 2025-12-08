@@ -24,7 +24,7 @@ const TeamFeatures = () => {
         </div>
         <div className="row padding-horiz--md">
           {siteConfig.customFields.users.map((user, index) => (
-            <div className={clsx('col margin--lg', styles.teamPadding)} style={{ borderRadius: 200 }} key={index}>
+            <div className={clsx('col', styles.teamPadding)} style={{ borderRadius: 200 }} key={index}>
               <div className={clsx("", styles.showcaseUser)} style={{ boxShadow: 'none' }}>
                 <div className="text--center">
                   <a href={user.infoLink} key={user.infoLink}>

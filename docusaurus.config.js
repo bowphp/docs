@@ -1,5 +1,6 @@
-const darkCodeTheme = require('prism-react-renderer/themes/vsDark');
+const darkCodeTheme = require('prism-react-renderer');
 const versions = require("./versions.json");
+const { hooks } = require('prismjs');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -42,6 +43,9 @@ module.exports = {
   favicon: "img/bow.png",
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: 'log',
+    },
   },
   customFields: {
     startTutorial: "/blog/installation",
@@ -166,7 +170,6 @@ module.exports = {
     numberOfFollowers: 5500,
   },
   onBrokenLinks: "log",
-  onBrokenMarkdownLinks: "log",
   presets: [
     [
       "@docusaurus/preset-classic",
@@ -379,7 +382,7 @@ module.exports = {
       },
     },
     prism: {
-      darkTheme: darkCodeTheme,
+      // darkTheme: darkCodeTheme,
       additionalLanguages: ["php", "javascript", "css", "typescript"],
     },
   },
