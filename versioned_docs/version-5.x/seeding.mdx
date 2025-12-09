@@ -61,10 +61,10 @@ php bow seed:all
 
 ## Helper
 
-Souvent, vous sera tenté de faire des seeding lorsque vous testez votre application. Le helper `db_seed`, très pratique vous permettra de faire des seeding en plein test par exemple
+Souvent, vous sera tenté de faire des seeding lorsque vous testez votre application. Le helper `app_db_seed`, très pratique vous permettra de faire des seeding en plein test par exemple
 
 ```php
-db_seed("user", $overrides = ["name" => "Franck"]);
+app_db_seed("user", $overrides = ["name" => "Franck"]);
 ```
 
 Avec `$overrides` vous pouvez modifier des valeurs du seeding.

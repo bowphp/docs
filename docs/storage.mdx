@@ -15,12 +15,11 @@ Le fichier de configuration du système de gestion de fichiers se trouve dans `c
 
 ## Fonctionnement
 
-Vous avez la possibilité d'utiliser les services ou travailler dans votre disque local. Les méthodes statiques `mount` et `service` permettent reciproquement de manipuler le système de disque et les services de stockage actuellement `ftp` et `s3`.
+Vous avez la possibilité d'utiliser les services ou travailler dans votre disque local. Les méthodes statiques `local` et `service` permettent reciproquement de manipuler le système de disque et les services de stockage actuellement `ftp` et `s3`.
 
 ### Système de fichier local
 
-Pour gérer votre système de fichier local avec Bow Framework vous allez utiliser la méthode statique `mount`.
-
+Pour gérer votre système de fichier local avec Bow Framework vous allez utiliser la méthode statique `local`.
 #### Explication du concept
 
 Nous appelerons les différents dossiers spécifiés `disk`.
@@ -39,24 +38,24 @@ Considérons la configuration suivante:
 
 > Vous pouvez spécifier autant de disques que vous voulez.
 
-La classe `Storage` expose la méthode statique `mount` qui permet la manipulation de fichiers. La valeur passée à `mount` doit être un nom de disque valide spécifié dans la liste des `path`.
+La classe `Storage` expose la méthode statique `local` qui permet la manipulation de fichiers. La valeur passée à `local` doit être un nom de disque valide spécifié dans la liste des `path`.
 
 ```php
 use Bow\Storage\Storage;
 
-Storage::mount("public");
+Storage::local("public");
 // Ou
-Storage::mount();
+Storage::local();
 ```
 
-> Si la méthode `mount` est appelé sans paramêtre, elle utilisera par défaut la valeur de la clé `mount`.
+> Si la méthode `local` est appelé sans paramêtre, elle utilisera par défaut la valeur de la clé `mount`.
 
-Vous pouvez aussi utiliser le helper `mount()` qui fonctionne exactement de la même manière:
+Vous pouvez aussi utiliser le helper `app_local_storage()` qui fonctionne exactement de la même manière:
 
 ```php
-mount('public');
+app_local_storage('public');
 // Ou
-mount()->get('app.js');
+app_local_storage()->get('app.js');
 ```
 
 ### Les services S3 et FTP
@@ -88,8 +87,8 @@ Hello, world
 La méthode `get` sert à recupérer le contenu d'un fichier. Elle prend comme paramètre le nom du fichier.
 
 ```php
-$mount = mount('public');
-$content = $mount->get("app.txt");
+$local_storage = app_local_storage('public');
+$content = $local_storage->get("app.txt");
 
 // Avec un service
 $service = Storage::service('ftp');
@@ -99,17 +98,17 @@ echo $content;
 // => Hello, world
 ```
 
-> `service` et `mount` utilise la même interface de manipulation. Ce qui veux dire que les méthodes disponibles pour `mount` existe aussi pour `service`.
+> `service` et `local` utilise la même interface de manipulation. Ce qui veux dire que les méthodes disponibles pour `local` existe aussi pour `service`.
 
 ### Ajouter/Modifier le contenu d'un fichier
 
 La méthode `put` permet d'ajouter ou de modifier le contenu d'un fichier:
 
 ```php
-$mount = mount('public');
+$local_storage = app_local_storage('public');
 $content = 'console.log("Hello, world")';
 
-$mount->put('app.js', $content );
+$local_storage->put('app.js', $content );
 ```
 
 ### Ajouter du contenu au début ou à la fin d'un fichier
@@ -117,10 +116,10 @@ $mount->put('app.js', $content );
 Les méthodes `preprend` et `append` vous permettent d'ajouter respectivement du contenu au debut ou la fin d'un fichier:
 
 ```php
-$mount = mount('public');
+$local_storage = app_local_storage('public');
 
-$mount->prepend('app.txt', 'Contenu ajouté au début');
-$mount->append('app.txt', 'Contenu ajouté à la fin');
+$local_storage->prepend('app.txt', 'Contenu ajouté au début');
+$local_storage->append('app.txt', 'Contenu ajouté à la fin');
 ```
 
 ### Supprimer un fichier
@@ -128,17 +127,17 @@ $mount->append('app.txt', 'Contenu ajouté à la fin');
 La méthode `delete` permet de supprimer un fichier.
 
 ```php
-$mount = mount('public');
+$local_storage = app_local_storage('public');
 
-$mount->delete('app.js');
+$local_storage->delete('app.js');
 ```
 
 ### Copier un fichier
 
 ```php
-$mount = mount('public');
+$local_storage = app_local_storage('public');
 
-$mount->copy('app.txt', 'sous-dossier/app.txt');
+$local_storage->copy('app.txt', 'sous-dossier/app.txt');
 ```
 
 ### Créer un dossier
@@ -148,9 +147,9 @@ Vous pouvez créer un nouveau dossier à l'aide de la méthode `makeDirectory`:
 #### Prototype
 
 ```php
-$mount = mount('public');
+$local_storage = app_local_storage('public');
 
-$mount->makeDirectory($dirname, $mode = 0777, $recursive = false);
+$local_storage->makeDirectory($dirname, $mode = 0777, $recursive = false);
 ```
 
 | Paramètre | Type |
@@ -160,33 +159,33 @@ $mount->makeDirectory($dirname, $mode = 0777, $recursive = false);
 | recursive | `Boolean` - Permet de créer récursivement |
 
 ```php
-$mount = mount('public');
+$local_storage = app_local_storage('public');
 
-$mount->makeDirectory('dossier');
+$local_storage->makeDirectory('dossier');
 ```
 
 > Notez que vous pouvez changer le mode du dossier et choisir de le créer de manière récursif.
 
 ```php
-$mount->makeDirectory('chemin/vers/un/dossier', 777, true);
+$local_storage->makeDirectory('chemin/vers/un/dossier', 777, true);
 ```
 
 ### Vérifier si un fichier existe
 
 ```php
-$mount = mount('public');
+$local_storage = app_local_storage('public');
 
-if ($mount->exists('app.txt')) {
-  echo $mount->get('app.txt');
+if ($local_storage->exists('app.txt')) {
+  echo $local_storage->get('app.txt');
 }
 ```
 
 ### Vérifier si le paramêtre est un fichier
 
 ```php
-$mount = mount('public');
+$local_storage = app_local_storage('public');
 
-if ($mount->isFile('app.txt')) {
+if ($local_storage->isFile('app.txt')) {
   echo "C'est un fichier";
 }
 ```
@@ -194,9 +193,9 @@ if ($mount->isFile('app.txt')) {
 ### Vérifier si le paramêtre est un dossier
 
 ```php
-$mount = mount('public');
+$local_storage = app_local_storage('public');
 
-if ($mount->isDirectory('nom_du_dossier')) {
+if ($local_storage->isDirectory('nom_du_dossier')) {
   echo "C'est un dossier";
 }
 ```
@@ -204,9 +203,9 @@ if ($mount->isDirectory('nom_du_dossier')) {
 ### Obtenir le chemin absolu d'un fichier ou dossier
 
 ```php
-$mount = mount('public');
+$local_storage = app_local_storage('public');
 
-$path = $mount->path('app.txt');
+$path = $local_storage->path('app.txt');
 
 echo $path;
 // => /chemin/absolu/vers/le/fichier/app.txt

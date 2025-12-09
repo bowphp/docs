@@ -28,7 +28,7 @@ Les helpers sont des fonctions raccourcies chargées dans l'application qui perm
   - [request](#request)
   - [response_json](#response_json)
   - [response_download](#response_download)
-  - [set\_status\_code](#set_status_code)
+  - [set\_status\_code](#set_response_status_code)
   - [view](#view)
   - [session](#session)
   - [cookie](#cookie)
@@ -41,8 +41,8 @@ Les helpers sont des fonctions raccourcies chargées dans l'application qui perm
   - [csrf\_time\_is\_expired](#csrf_time_is_expired)
   - [data_sanitize](#data_sanitize)
   - [data_secure](#data_secure)
-  - [set\_header](#set_header)
-  - [get\_header](#get_header)
+  - [set\_header](#set_response_header)
+  - [get\_header](#get_response_header)
   - [redirect](#redirect)
   - [redirect\_back](#redirect_back)
   - [send](#send)
@@ -56,21 +56,21 @@ Les helpers sont des fonctions raccourcies chargées dans l'application qui perm
 ## Base de donnée
 
 - [db](#db)
-- [db_table](#table)
+- [app_db_table](#table)
 - [get_last_insert_id](#get_last_insert_id)
-- [db_select](#db_select)
-- [db_select_one](#db_select_one)
-- [db_insert](#db_insert)
-- [db_delete](#db_delete)
-- [db_update](#db_update)
-- [db_statement](#db_statement)
-- [db_transaction](#db_transaction)
-- [db_transaction_started](#db_transaction_started)
-- [db_rollback](#db_rollback)
+- [app_db_select](#app_db_select)
+- [app_db_select_one](#app_db_select_one)
+- [app_db_insert](#app_db_insert)
+- [app_db_delete](#app_db_delete)
+- [app_db_update](#app_db_update)
+- [app_db_statement](#app_db_statement)
+- [app_db_transaction](#app_db_transaction)
+- [app_db_transaction_started](#app_db_transaction_started)
+- [app_db_rollback](#app_db_rollback)
 - [pdo](#pdo)
 - [set_pdo](#set_pdo)
-- [db_commit](#db_commit)
-- [db_seed](#db_seed)
+- [app_db_commit](#app_db_commit)
+- [app_db_seed](#app_db_seed)
 
 ## Sécurité
 
@@ -193,12 +193,12 @@ $filename = "photo.png";
 return response_download($file, $filename);
 ```
 
-### set_status_code
+### set_response_status_code
 
 Permet de modifier le code du statut http de réponse et elle est liée sur la classe `\Bow\Http\Response::class`. Elle doit être utilisée impérativement dans un controlleur.
 
 ```php
-set_status_code(404);
+set_response_status_code(404);
 ```
 
 ### view
@@ -291,16 +291,16 @@ $name = request()->get("name");
 // papac
 ```
 
-### set_header
+### set_response_header
 
 ```php
-set_header("X-Token-API", $token);
+set_response_header("X-Token-API", $token);
 ```
 
-### get_header
+### get_response_header
 
 ```php
-$token = get_header("X-Token-API");
+$token = get_response_header("X-Token-API");
 // papac
 ```
 
