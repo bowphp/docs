@@ -1,3 +1,7 @@
+rm -rf ./.cache/framework || {
+  echo "Failed to remove cache directory"
+}
+
 # Ge the bow framework source
 [ -d ./framework ] || mkdir .cache
 
