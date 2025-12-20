@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
         php-version: [8.2]
         os: [ubuntu-latest]
     name: build php-${{ matrix.php-version }} / node-${{ matrix.node-version }} on ${{ matrix.os }}
