@@ -2,7 +2,7 @@ name: bowphp-docs
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
