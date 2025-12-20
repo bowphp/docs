@@ -121,6 +121,16 @@ if ($request->isAjax()) {
 }
 ```
 
+### Vérifier si la requête attend une réponse JSON
+
+La méthode `wantsJson` vous permet de vérifier si la requête attend une réponse au format JSON. Souvant les requêtes AJAX sont envoyées avec l'entête `Accept: application/json`, la méthode `wantsJson` vérifie si cette entête est présente dans la requête.
+
+```php
+if ($request->wantsJson()) {
+  // code ici
+}
+```
+
 ### Récupérer une entrée
 
 Souvent la requête envoyé par le client HTTP contient des données souvent demander pour actioner un mecanisme par exemple celui d'une inscription.

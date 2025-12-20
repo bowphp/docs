@@ -105,7 +105,7 @@ php bow add:controller UserController
 
 ### Contrôleur et espaces de noms
 
-Il est très important de noter que nous n’avons pas eu besoin de spécifier le `namespace` du contrôleur complet lors de la définition de la route du contrôleur. Étant donné que `public/index.php` charge vos fichiers de route dans un groupe de routage contenant le `namespace`, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Controllers` de le `namespace`.
+Il est très important de noter que nous n'avons pas eu besoin de spécifier le `namespace` du contrôleur complet lors de la définition de la route du contrôleur. Étant donné que `public/index.php` charge vos fichiers de route dans un groupe de routage contenant le `namespace`, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Controllers` de le `namespace`.
 
 Si vous choisissez d'imbriquer vos contrôleurs plus profondément dans le répertoire `App\Controllers`, utilisez le nom de classe spécifique relatif à le `namespace` racine `App\Controllers`. Donc, si votre classe de contrôleur complète est `App\Controllers\Photo\AdminController`, vous devez enregistrer les routes sur le contrôleur comme suit:
 

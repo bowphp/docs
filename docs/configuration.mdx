@@ -5,6 +5,8 @@ title: "👨🏽‍🔧 Configuration"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
+const BASE_URL = "http://localhost:5000";
+
 ## Introduction
 
 Dans Bow Framework, tous les fichiers de configuration sont centralisés dans le dossier `config`. Chaque fichier est bien documenté, ce qui vous permet de comprendre facilement les options disponibles et de les adapter à vos besoins.
@@ -75,7 +77,7 @@ Pour aider les nouveaux développeurs, vous pouvez créer un fichier de base : `
 
 ### Récupérer des informations depuis `.env.json`
 
-Toutes les variables définies dans `.env.json` sont automatiquement chargées lorsque l’application est exécutée. Pour y accéder dans vos fichiers de configuration, utilisez le helper `app_env`.
+Toutes les variables définies dans `.env.json` sont automatiquement chargées lorsque l'application est exécutée. Pour y accéder dans vos fichiers de configuration, utilisez le helper `app_env`.
 
 #### Exemple simple
 
@@ -83,7 +85,7 @@ Toutes les variables définies dans `.env.json` sont automatiquement chargées l
 'database' => app_env('DB_HOSTNAME'),
 ```
 
-Si la variable n’est pas définie, `app_env` retournera `null`. Vous pouvez également fournir une valeur par défaut :
+Si la variable n'est pas définie, `app_env` retournera `null`. Vous pouvez également fournir une valeur par défaut :
 
 ```php
 'database' => app_env('DB_HOSTNAME', 'localhost'),
@@ -113,18 +115,18 @@ echo app_env('WEBHOOK_GATEWAY.VISA');
 
 Vous pouvez réutiliser une variable déjà définie dans le fichier `.env.json` avec la syntax `${KEY}`:
 
-```json
+```json title=".env.json"
 {
-  "APP_URL": "http://localhost:8080",
+  "BASE_URL": "http://localhost:8080",
   "WEBHOOK_GATEWAY": {
-    "VISA": "${APP_URL}/execute-visa-webhook",
-    "MASTERCARD": "${APP_URL}/execute-mastercard-webhook"
+    "VISA": "${BASE_URL}/execute-visa-webhook",
+    "MASTERCARD": "${BASE_URL}/execute-mastercard-webhook"
   }
 }
 ```
 
 :::note
-Ici ${APP_URL} défini la variable
+Ici `${BASE_URL}` défini la variable
 :::
 
 Cela permet de centraliser certaines valeurs pour plus de cohérence :

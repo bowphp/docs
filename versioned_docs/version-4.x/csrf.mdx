@@ -36,7 +36,7 @@ Le middleware CSRF est automatiquement ajouté lors de l'exécution de chaque re
 
 ## X-CSRF-TOKEN
 
-Outre la vérification du jeton CSRF en tant que paramètre POST, le middleware `App\Middlewares\ClientCsrfMiddleware::class` vérifie également l’en-tête de demande `X-CSRF-TOKEN`. Vous pouvez, par exemple, stocker le jeton dans une balise META HTML:
+Outre la vérification du jeton CSRF en tant que paramètre POST, le middleware `App\Middlewares\ClientCsrfMiddleware::class` vérifie également l'en-tête de demande `X-CSRF-TOKEN`. Vous pouvez, par exemple, stocker le jeton dans une balise META HTML:
 
 ```html
 <meta name="csrf-token" content="{{ csrf_token() }}">

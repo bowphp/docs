@@ -15,7 +15,7 @@ module.exports = [
   },
   {
     caption: 'Etudesk',
-    description: "ETUDESK permet aux particuliers de se former en ligne sur des compétences orientées-entreprise afin de répondre à la problématique d’inadéquation formation/emploi en Afrique",
+    description: "ETUDESK permet aux particuliers de se former en ligne sur des compétences orientées-entreprise afin de répondre à la problématique d'inadéquation formation/emploi en Afrique",
     image: 'https://www.etudesk.com/images/logo.png',
     infoLink: 'https://www.etudesk.com',
     pinned: true,

@@ -40,10 +40,10 @@ use Bow\Database\Database;
 $users = Database::connection('sqlite')->select(...);
 ```
 
-Ou via le helper `db`:
+Ou via le helper `app_db`:
 
 ```php
-$users = db('sqlite')->select(...);
+$users = app_db('sqlite')->select(...);
 ```
 
 Une fois la configuration changé, elle est directement appliquer sur la connexion des modèles. [Cliquer ici](./orm) pour plus d'information sur les models.
@@ -75,7 +75,7 @@ Alors notre table à comme colonne:
 
 ### Execution de requête Select
 
-Pour exécuter une requête brute de type `SELECT` nous devrez utiliser la méthode `Database::select` ou le helper `db_select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `SELECT` nous devrez utiliser la méthode `Database::select` ou le helper `app_db_select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'une requête pour obtenir toutes les informations de la table `pets`:
 
@@ -85,10 +85,10 @@ use Bow\Database\Database;
 $pets = Database::select('select * from `pets`');
 ```
 
-Via helper `db_select`:
+Via helper `app_db_select`:
 
 ```php
-$pets = db_select('select * from `pets`');
+$pets = app_db_select('select * from `pets`');
 ```
 
 ### Sélection conditionnelle
@@ -101,18 +101,18 @@ use Bow\Database\Database;
 $pet = Database::select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
-Via helper `db_select`:
+Via helper `app_db_select`:
 
 ```php
-$pet = db_select('select * from `pets` where id = :id', ['id' => 1]);
+$pet = app_db_select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
-Notez que la valeur retournée par la méthode `db_select` est un `array` ou `null` s'il n'y a aucune informations.
+Notez que la valeur retournée par la méthode `app_db_select` est un `array` ou `null` s'il n'y a aucune informations.
 Dans le cas ou c'est un `array` le contenu est de type `stClass` (plus d'information sur [stClass](http://php.net/manual/fr/language.types.object.php)).
 
 ### Execution de requête Insert
 
-Pour exécuter une requête brute de type `INSERT` nous devrez utiliser la méthode `Database::insert` ou le helper `db_insert`. On considère toujours notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `INSERT` nous devrez utiliser la méthode `Database::insert` ou le helper `app_db_insert`. On considère toujours notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'une requête pour insérer une information dans la table `pets`:
 
@@ -128,7 +128,7 @@ $pet = [
 $inserted = Database::insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
-Via helper `db_insert`:
+Via helper `app_db_insert`:
 
 ```php
 $pet = [
@@ -137,10 +137,10 @@ $pet = [
   'color' => 'White'
 ];
 
-$inserted = db_insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
+$inserted = app_db_insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
-Notez que la valeur retournée par la fonction `db_insert` est un `int` ou `number` qui est le nombre d'insertion.
+Notez que la valeur retournée par la fonction `app_db_insert` est un `int` ou `number` qui est le nombre d'insertion.
 
 #### Insertion multiple
 
@@ -169,10 +169,10 @@ $inserted = Database::insert(
 );
 ```
 
-Via helper `db_insert`:
+Via helper `app_db_insert`:
 
 ```php
-$updated = db_insert(
+$updated = app_db_insert(
   'insert into `pets` (id, name, color) values (:id, :name, :color);',
   $pets
 );
@@ -180,7 +180,7 @@ $updated = db_insert(
 
 ### Execution de requête Update
 
-Pour exécuter une requête brute de type `UPDATE` nous devrez utiliser la méthode `Database::update` ou le helper `db_update`. On considère toujours notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `UPDATE` nous devrez utiliser la méthode `Database::update` ou le helper `app_db_update`. On considère toujours notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'une requête de mettre à jour d'information dans la table `pets`:
 
@@ -199,7 +199,7 @@ $updated = Database::update(
 );
 ```
 
-Via le helper `db_update`:
+Via le helper `app_db_update`:
 
 ```php
 $pet = [
@@ -208,7 +208,7 @@ $pet = [
   'color' => 'Yellow'
 ];
 
-$updated = db_update(
+$updated = app_db_update(
   'update `pets` set id = :id, name = :name, color = :color where id = :id',
   $pet
 );
@@ -216,7 +216,7 @@ $updated = db_update(
 
 ### Execution de requête Delete
 
-Pour exécuter une requête brute de type `DELETE` nous devrez utiliser la méthode `Database::delete` ou le helper `db_delete`. On considère toujours notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `DELETE` nous devrez utiliser la méthode `Database::delete` ou le helper `app_db_delete`. On considère toujours notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
 Execution d'une requête pour insérer une information dans la table `pets`:
 
@@ -229,10 +229,10 @@ $deleted = Database::delete(
 );
 ```
 
-Via le helper `db_delete`:
+Via le helper `app_db_delete`:
 
 ```php
-$deleted = db_delete(
+$deleted = app_db_delete(
   'delete from `pets` where id = :id',
   ['id' => 2]
 );
@@ -240,7 +240,7 @@ $deleted = db_delete(
 
 ### Execution de requête
 
-Pour exécuter une requête brute autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`. Il y a une méthode faite pour `Database::statement` ou le helper `db_statement`.
+Pour exécuter une requête brute autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`. Il y a une méthode faite pour `Database::statement` ou le helper `app_db_statement`.
 
 ```php
 use Bow\Database\Database;
@@ -248,10 +248,10 @@ use Bow\Database\Database;
 Database::statement('alter table `pets` add `owner` varchar(80) default null;');
 ```
 
-Via le helper `db_statement`:
+Via le helper `app_db_statement`:
 
 ```php
-db_statement('alter table `pets` add `owner` varchar(80) default null;');
+app_db_statement('alter table `pets` add `owner` varchar(80) default null;');
 ```
 
 ## Database Transactions
@@ -270,10 +270,10 @@ Database::startTransaction(function () {
 });
 ```
 
-Via le helper `db_transaction`:
+Via le helper `app_db_transaction`:
 
 ```php
-db_transaction(function () {
+app_db_transaction(function () {
   update('update users set votes = :votes', ['votes' => 1]);
 
   delete('delete from posts');
@@ -290,7 +290,7 @@ use Bow\Database\Database;
 
 Database::startTransaction();
 // Ou
-db_transaction();
+app_db_transaction();
 ```
 
 Vous pouvez annuler la transaction avec la méthode:
@@ -300,7 +300,7 @@ use Bow\Database\Database;
 
 Database::rollback();
 // Ou
-db_rollback();
+app_db_rollback();
 ```
 
 Vous pouvez valider la transaction avec la méthode:
@@ -310,7 +310,7 @@ use Bow\Database\Database;
 
 Database::commit();
 // Ou
-db_commit();
+app_db_commit();
 ```
 
 Avec la méthode `inTransaction` vous pouvez vérifier si la base de donnée est en transaction:
@@ -320,7 +320,7 @@ use Bow\Database\Database;
 
 Database::inTransaction();
 // Ou
-db_transaction_started();
+app_db_transaction_started();
 ```
 
 ## Les jointures
@@ -344,13 +344,13 @@ create table `pets` (
 Pour faire une jointure dans Bow Framework c'est très simple en fait. Pour ce faire on utilise la méthode `join`.
 
 ```php
-$results = db_table('pets')->join('authors', 'authors.id', 'pets.author_id')->get();
+$results = app_db_table('pets')->join('authors', 'authors.id', 'pets.author_id')->get();
 ```
 
 Souvent, il est intéressant d'ajouter des contraintes dans la requête normalement avec la clause `WHERE`.
 
 ```php
-$results = db_table('pets')
+$results = app_db_table('pets')
   ->join('authors', 'authors.id', 'pets.author_id')
   ->whereRaw('pets.author_id', 1)->get();
 ```
@@ -369,7 +369,7 @@ create table `authors` (
 Notre requête sera maintenant :
 
 ```php
-$results = db_table('authors')
+$results = app_db_table('authors')
   ->join('authors', 'authors.id', 'pets.author_id')
   ->join('countries', 'countries.id', 'pets.country_id')
   ->whereRaw('pets.author_id', 1)

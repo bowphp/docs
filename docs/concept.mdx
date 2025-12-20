@@ -4,7 +4,6 @@ title: "👨🏽‍💻 Concept et Architecture"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
-import BugReportFeature from "@site/src/components/Partials/BugReportFeature";
 
 ## Introduction
 
@@ -43,7 +42,7 @@ Le routeur examine l'URL de la requête et détermine quelle route correspond. L
 Exemple de définition de route :
 
 ```php title="routes/app.php"
-$app->get('/users/{id}', ['UserController', 'show']);
+$app->get('/users/\{id\}', ['UserController', 'show']);
 $app->post('/api/login', ['AuthController', 'login']);
 ```
 
@@ -57,7 +56,7 @@ Ici :
 
 Une fois la route détectée, le routeur :
 
-- Valide les paramètres de l'URL (comme {id}).
+- Valide les paramètres de l'URL (comme `{id}`).
 - Exécute les middlewares définis pour cette route (s'il y en a).
 - Appelle le contrôleur et la méthode associés à la route.
 
@@ -139,5 +138,4 @@ Merci d'avoir envisagé de contribuer à Bow Framework ! Le guide de contributio
 - [Franck DAKIA](https://github.com/papac)
 - [Merci aux collaborateurs](https://github.com/bowphp/app/graphs/contributors)
 
-<BugReportFeature />
 <SuggestionFeature />
