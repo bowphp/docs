@@ -7,24 +7,31 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Les vues contiennent le code HTML fourni par votre application et séparent votre logique de contrôleur/application de votre logique de présentation:
+:::info
+Les vues contiennent le code HTML fourni par votre application et séparent votre logique de contrôleur/application de votre logique de présentation.
+:::
 
 <script id="asciicast-srlT0uYy1bOin8Z3Z35E66JJB" src="https://asciinema.org/a/srlT0uYy1bOin8Z3Z35E66JJB.js" data-speed="3" data-rows="20" async></script>
 
 ## Configuration
 
-Bow Framework implémente 2 moteurs de template et le template par defaut est **[Tintin](./tintin)**.
-La configuration des vues ce trouve dans le fichier `view.php` du dossier `config/`.
+:::tip Moteurs de template
+Bow Framework implémente 2 moteurs de template et le template par défaut est **[Tintin](./tintin)**.
+:::
 
-Spécifiez le nom du template à utiliser avec option `engine` de la configuration, cette option peut prendre le valeur suivant `tintin`, `twig` et `php`. Par défaut Bow utilise `tintin`.
+La configuration des vues se trouve dans le fichier `view.php` du dossier `config/`.
 
-> Notez que si vous définissez `php`, le rendu des vues se fera sans moteur de template
+Spécifiez le nom du template à utiliser avec l'option `engine` de la configuration, cette option peut prendre les valeurs suivantes : `tintin`, `twig` et `php`. Par défaut Bow utilise `tintin`.
 
-Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entré `extension`. Vous verez également que les vues sont stockées dans le répertoire `templates` par defaut.
+:::warning Remarque
+Notez que si vous définissez `php`, le rendu des vues se fera sans moteur de template.
+:::
+
+Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entrée `extension`. Vous verrez également que les vues sont stockées dans le répertoire `templates` par défaut.
 
 ## Création de vue
 
-Une simple vue peut ressembler à ceci
+Une simple vue peut ressembler à ceci :
 
 ```html
 <!-- View stored in templates/greeting.tintin.php -->
@@ -35,7 +42,7 @@ Une simple vue peut ressembler à ceci
 </html>
 ```
 
-Apres avoir modifier et sauvegarde votre vue dans `templates/greeting.tintin.php`. Vous pouvez maintenant l'envoyer au utilisateur avec le helper view comme ceci:
+Après avoir modifié et sauvegardé votre vue dans `templates/greeting.tintin.php`, vous pouvez maintenant l'envoyer aux utilisateurs avec le helper `view` comme ceci :
 
 ```php
 $app->get('/', function() {
@@ -45,8 +52,8 @@ $app->get('/', function() {
 
 ### Utilisation
 
-Exemple d'utilisation: (Avec le classe `View`)
-Cette utilise la méthode `parse`.
+Exemple d'utilisation (avec la classe `View`).
+Cette méthode utilise `parse`.
 
 ```php
 View::parse(view, data, status)
@@ -54,8 +61,8 @@ View::parse(view, data, status)
 
 | Paramètre | type | description|
 |-----------|------|------------|
-| `view`      | `String` | Le chemin de la vue sachant dans le moteur se base sur le dossier des vues|
-| `data`      | `Array`, `Object` | Les données a passé à la vue|
+| `view`      | `String` | Le chemin de la vue sachant que le moteur se base sur le dossier des vues|
+| `data`      | `Array`, `Object` | Les données à passer à la vue|
 | `status`    | `Integer` | Le code http |
 
 ```php
@@ -72,9 +79,11 @@ use Bow\View\View;
 echo View::parse('nom-de-la-vue-sans-extension', ['name' => 'bow'], 200);
 ```
 
-> Vous pouvez utiliser le helper `view` qui s'utilise de la même façon.
+:::tip Helper
+Vous pouvez utiliser le helper `view` qui s'utilise de la même façon.
+:::
 
-Avec la vue suivante:
+Avec la vue suivante :
 
 ```html
 <!-- View stored in templates/greeting.tintin.php -->
@@ -85,7 +94,7 @@ Avec la vue suivante:
 </html>
 ```
 
-Exemple dans un controlleur:
+Exemple dans un contrôleur :
 
 ```php
 namespace App\Controllers;
@@ -112,7 +121,9 @@ class HomeController extends Controller
 
 ## Introduction Tintin
 
-Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP. Par défaut #Tintin est le moteur de template de Bow Framework utilise.
+:::info Tintin
+Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP. Par défaut, Tintin est le moteur de template utilisé par Bow Framework.
+:::
 
 ```t
 Hello, {{ $name }}.

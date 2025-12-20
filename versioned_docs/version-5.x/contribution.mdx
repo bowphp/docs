@@ -7,13 +7,17 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Contribuer à un projet open source est une excellente manière de s'améliorer en tant que développeur et d'aider une communauté. Toutes les contributions sont les bienvenues et seront reconnues. Avant de soumettre une modification, discutez-en d'abord avec les mainteneurs via e-mail ou en créant une issue sur GitHub. Cela permet de valider l'orientation de votre proposition avant de commencer le travail.
+Contribuer à un projet open source est une excellente manière de s'améliorer en tant que développeur et d'aider une communauté. Toutes les contributions sont les bienvenues et seront reconnues.
 
-Veuillez respecter le code de conduite du projet lors de vos interactions.
+:::info Discussion préalable
+Avant de soumettre une modification, discutez-en d'abord avec les mainteneurs via e-mail ou en créant une issue sur GitHub. Cela permet de valider l'orientation de votre proposition avant de commencer le travail.
+:::
+
+Veuillez respecter le [code de conduite](https://github.com/bowphp/framework/blob/5.x/CODE_OF_CONDUCT.md) du projet lors de vos interactions.
 
 ## Comment contribuer
 
-Le projet accepte les contributions via des Pull Requests sur [Framework](https://github.com/framework) ou [App](https://github.com/app). Voici les étapes pour bien contribuer :
+Le projet accepte les contributions via des Pull Requests sur [Framework](https://github.com/bowphp/framework) ou [App](https://github.com/bowphp/app). Voici les étapes pour bien contribuer :
 
 1. **Forker le projet** :
 - Rendez-vous sur la page du projet sur GitHub.
@@ -35,13 +39,17 @@ git checkout -b fix-login-bug
 - Assurez-vous que vos changements sont accompagnés de tests qui garantissent leur fonctionnement.
 - Exemple : si vous ajoutez une nouvelle fonctionnalité, écrivez des tests pour vérifier les scénarios principaux et les cas limites.
 
+:::tip Tests
+Exécutez `composer test --testdox` pour vérifier que tous les tests passent avant de soumettre votre Pull Request.
+:::
+
 5. **Soumettre une Pull Request** :
 - Poussez vos modifications sur votre répertoire forké :
 ```bash
 git push origin fix-login-bug
 ```
 
-- Allez sur la page GitHub du projet et créez une Pull Request en s'assurant de décrire les modifications apportées.
+- Allez sur la page GitHub du projet et créez une Pull Request en veillant à décrire clairement les modifications apportées.
 
 ## Règles pour les Pull Requests
 
@@ -50,12 +58,16 @@ git push origin fix-login-bug
 
 ## Format des messages de commit
 
-Pour garantir une bonne maintenance du projet, utilisez un format standardisé pour vos messages de commit. Voici les préfixes recommandés :
+Pour garantir une bonne maintenance du projet, utilisez un format standardisé pour vos messages de commit suivant la convention [Conventional Commits](https://www.conventionalcommits.org).
 
-- **refactor** : Indique un changement interne qui n'affecte pas le comportement utilisateur.
+### Préfixes recommandés
+
+- **refactor** : Changement interne qui n'affecte pas le comportement utilisateur.
 - **fix** : Corrige un bug existant.
 - **feat** : Ajoute une nouvelle fonctionnalité.
 - **test** : Ajoute ou met à jour des tests unitaires.
+- **docs** : Modifications de la documentation.
+- **chore** : Tâches de maintenance (dépendances, configuration, etc.).
 
 ### Exemple de message de commit
 
@@ -83,13 +95,20 @@ feat(auth): implement OAuth2 login
 - Updated session handling for third-party logins.
 ```
 
-> **Remarque** : Les messages de commit doivent être rédigés en anglais.
+:::note Langue
+Les messages de commit doivent être rédigés en anglais pour faciliter la collaboration internationale.
+:::
 
 ## Bonnes pratiques
 
-- **Qualité du code** : Respectez les standards de codage du projet (vérifiez le fichier `CONTRIBUTING.md` ou `.editorconfig` si disponible).
-- **Relecture** : Révisez vos modifications avant de soumettre le Pull Request.
-- **Collaborer** : Soyez ouvert aux retours et prêts à ajuster vos contributions en fonction des commentaires des mainteneurs.
+- **Qualité du code** : Respectez les standards de codage du projet. Consultez le fichier [CONTRIBUTING.md](https://github.com/bowphp/framework/blob/5.x/CONTRIBUTING.md) pour plus de détails.
+- **Relecture** : Révisez vos modifications avant de soumettre le Pull Request pour éviter les erreurs.
+- **Collaborer** : Soyez ouvert aux retours et prêt à ajuster vos contributions en fonction des commentaires des mainteneurs.
+- **Tests** : Assurez-vous que tous les tests passent et que votre code est couvert par des tests.
+
+:::tip
+Utilisez `composer format` pour formater automatiquement votre code selon les standards PSR-2.
+:::
 
 En suivant ces étapes, vous contribuez à la croissance et à la stabilité du projet tout en gagnant de précieuses compétences en développement collaboratif !
 

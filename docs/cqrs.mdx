@@ -7,9 +7,13 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-**CQRS** (*Command Query Responsibility Segregation*) est un modèle d'architecture qui sépare les responsabilités des commandes et des requêtes. L'idée principale est d'utiliser un modèle différent pour les opérations d'écriture (commandes) et de lecture (requêtes). Cette approche peut être utile dans des situations complexes, bien que pour la plupart des systèmes, **CQRS** puisse introduire une certaine complexité supplémentaire.
+**CQRS** (*Command Query Responsibility Segregation*) est un modèle d'architecture qui sépare les responsabilités des commandes et des requêtes. L'idée principale est d'utiliser un modèle différent pour les opérations d'écriture (commandes) et de lecture (requêtes).
 
-[Pour plus d'informations sur CQRS, consultez cet article](https://www.martinfowler.com/bliki/CQRS.html).
+:::info Quand utiliser CQRS ?
+Cette approche peut être utile dans des situations complexes, bien que pour la plupart des systèmes, **CQRS** puisse introduire une certaine complexité supplémentaire. Privilégiez CQRS pour les systèmes où les besoins en lecture et en écriture sont très différents.
+:::
+
+[Pour plus d'informations sur CQRS, consultez cet article de Martin Fowler](https://www.martinfowler.com/bliki/CQRS.html).
 
 ## Installation
 
@@ -19,9 +23,9 @@ Ajoutez le package CQRS à votre projet avec la commande suivante :
 composer require bowphp/cqrs
 ```
 
-## Utilisation des commandes (Command)
+## Utilisation des commandes (Commands)
 
-Les commandes sont utilisées pour effectuer des opérations d'écriture ou des actions qui modifient l'état de votre système.
+Les commandes représentent des intentions d'effectuer des opérations d'écriture ou des actions qui modifient l'état de votre système.
 
 ### Étape 1 : Créer une commande
 
@@ -65,6 +69,10 @@ class CreateUserCommandHandler implements CommandHandlerInterface
   }
 }
 ```
+
+:::tip Bonnes pratiques
+Le handler doit contenir la logique métier associée à la commande. Il est recommandé d'injecter les dépendances (comme les services) via le constructeur.
+:::
 
 ### Étape 3 : Enregistrer la commande et son handler
 
@@ -120,9 +128,9 @@ Ajoutez une route pour appeler cette méthode :
 $app->post("/users/create", UserController::class);
 ```
 
-## Utilisation des requêtes (Query)
+## Utilisation des requêtes (Queries)
 
-Les requêtes sont utilisées pour récupérer des données sans modifier l'état de votre système.
+Les requêtes sont utilisées pour récupérer des données sans modifier l'état de votre système. Elles doivent être en lecture seule.
 
 ### Étape 1 : Créer une requête
 
@@ -154,6 +162,10 @@ class GetUserByIdQueryHandler implements QueryHandlerInterface
   }
 }
 ```
+
+:::note Lecture seule
+Les handlers de requête ne doivent jamais modifier l'état du système. Ils sont exclusivement dédiés à la récupération de données.
+:::
 
 ### Étape 3 : Enregistrer la requête et son handler
 
@@ -202,7 +214,16 @@ Ajoutez une route pour appeler cette méthode :
 $app->get("/users/{id}", [UserController::class, 'show']);
 ```
 
+## Conclusion
+
 Avec **CQRS**, vous pouvez structurer vos applications pour séparer clairement les préoccupations entre la lecture et l'écriture, tout en conservant un code organisé et maintenable.
+
+:::tip Avantages de CQRS
+- **Séparation des responsabilités** : Les opérations de lecture et d'écriture sont isolées
+- **Scalabilité** : Possibilité d'optimiser indépendamment les lectures et les écritures
+- **Maintenabilité** : Code plus facile à tester et à maintenir
+- **Flexibilité** : Permet d'utiliser différents modèles de données pour les lectures et les écritures
+:::
 
 
 <SuggestionFeature />

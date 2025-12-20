@@ -7,15 +7,15 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Dans toute application, il y a le besoin de rendre l'application multi-langue. Bow implement un système simple de traduction.
+Dans toute application, il y a le besoin de rendre l'application multilingue. Bow implémente un système simple de traduction.
 
 [![asciicast](https://asciinema.org/a/zxbid2giZdnaJjOhOkALKBC8G.svg)](https://asciinema.org/a/zxbid2giZdnaJjOhOkALKBC8G)
 
 ## Configuration
 
-Pour utiliser le système de traduction. Il faut d'abord considérer la configuration qui se trouve dans le dossier `config/trans.php`, dans ce fichier, la langue par défaut, c'est le français, donc le `'lang' => 'fr'`.
+Pour utiliser le système de traduction, il faut d'abord considérer la configuration qui se trouve dans le fichier `config/trans.php`. Dans ce fichier, la langue par défaut est le français, donc `'lang' => 'fr'`.
 
-Dans le dossier `lang` sont rangé les traductions de votre application. Ce sont des fichiers `php` qui retournent un `array` et si vous remarquez il y a un dossier `fr` et `en`. Ce sont les dossiers pour chaque langue, ici `fr` pour le français et `en` pour l'anglais et s'il y avait une autre langage par exemple l'espagnol, se serait `es` le nom du dossier.
+Dans le dossier `lang` sont rangées les traductions de votre application. Ce sont des fichiers `php` qui retournent un `array`. Si vous remarquez, il y a un dossier `fr` et `en`. Ce sont les dossiers pour chaque langue : `fr` pour le français et `en` pour l'anglais. S'il y avait une autre langue, par exemple l'espagnol, ce serait `es` le nom du dossier.
 
 ```txt
 /lang
@@ -25,9 +25,11 @@ Dans le dossier `lang` sont rangé les traductions de votre application. Ce sont
     messages.php
 ```
 
-Tous les fichiers de langue renvoient un tableau de chaînes à clé.
+:::info Structure des fichiers
+Tous les fichiers de langue renvoient un tableau de chaînes à clé. Chaque clé représente une traduction spécifique.
+:::
 
-Par exemple:
+Par exemple :
 
 ```php title="lang/en/messages.php"
 return [
@@ -37,7 +39,9 @@ return [
 
 ## Configuration de la locale
 
-La langue par défaut de votre application est stockée dans le fichier de configuration `config/trans.php`. Bien entendu, vous pouvez modifier cette valeur pour répondre aux besoins de votre application. Vous pouvez également modifier la langue active au moment de l'exécution à l'aide de la méthode `setLocale` sur la classe [`Bow\Translate\Translator`](https://bowphp.com/api/master/Bow/Translate/Translator.html):
+La langue par défaut de votre application est stockée dans le fichier de configuration `config/trans.php`. Bien entendu, vous pouvez modifier cette valeur pour répondre aux besoins de votre application.
+
+Vous pouvez également modifier la langue active au moment de l'exécution à l'aide de la méthode `setLocale` sur la classe [`Bow\Translate\Translator`](https://bowphp.com/api/master/Bow/Translate/Translator.html) :
 
 ```php title="routes/app.php"
 
@@ -49,7 +53,9 @@ $router->get('docs/:locale', function ($locale) {
 });
 ```
 
-Vous pouvez configurer une `lang`, qui sera utilisée lorsque la langue active ne contient pas une chaîne de traduction donnée. Comme la langue par défaut, la langue de secours est également configurée dans le fichier de configuration `config/trans.php`:
+### Langue de secours
+
+Vous pouvez configurer une langue de secours qui sera utilisée lorsque la langue active ne contient pas une chaîne de traduction donnée. Comme la langue par défaut, la langue de secours est également configurée dans le fichier de configuration `config/trans.php` :
 
 ```php title="config/trans.php"
 'lang' => 'en',
@@ -57,7 +63,7 @@ Vous pouvez configurer une `lang`, qui sera utilisée lorsque la langue active n
 
 ## Récupération de chaînes de traduction
 
-Vous pouvez extraire des lignes de fichiers de langue à l'aide de la fonction du helper `trans` ou `t`. La méthode `t` accepte le fichier et la clé de la chaîne de traduction comme premier argument. Par exemple, récupérons la chaîne de traduction de bienvenue dans le fichier de langue `frontend/lang/messages.php`:
+Vous pouvez extraire des lignes de fichiers de langue à l'aide de la fonction helper `trans` ou `t`. La méthode `t` accepte le fichier et la clé de la chaîne de traduction comme premier argument. Par exemple, récupérons la chaîne de traduction de bienvenue dans le fichier de langue `lang/messages.php` :
 
 ```php
 echo t('messages.welcome');
@@ -95,7 +101,9 @@ if (trans()->isLocale('en')) {
 }
 ```
 
+:::tip Traductions manquantes
 Si la chaîne de traduction spécifiée n'existe pas, la fonction `t` renverra la clé de la chaîne de traduction. Ainsi, à l'aide de l'exemple ci-dessus, la fonction `t` renverrait `messages.welcome` si la chaîne de traduction n'existe pas.
+:::
 
 ### Remplacement de paramètres dans les chaînes de traduction
 
@@ -113,7 +121,7 @@ echo t('messages.welcome', ['name' => 'Galy']);
 
 ## La pluralisation
 
-La pluralisation est un problème complexe, car différentes langues ont une variété de règles complexes pour la pluralisation. En utilisant un caractère "pipe" (`|`), vous pouvez distinguer les formes singulière et plurielle d'une chaîne:
+La pluralisation est un problème complexe, car différentes langues ont une variété de règles complexes pour la pluralisation. En utilisant un caractère "pipe" (`|`), vous pouvez distinguer les formes singulière et plurielle d'une chaîne :
 
 ```php
 "names" => "C'est un utilisateur|Ce sont des utilisateurs",
@@ -125,7 +133,9 @@ Après avoir défini une chaîne de traduction comportant des options de plurali
 echo t("messages.names", count($names) > 1);
 ```
 
-Avec les données remplacées
+### Pluralisation avec remplacement
+
+Avec les données remplacées :
 
 ```php
 "names" => "Bonjour {name}|Bonjour à tous",

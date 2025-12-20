@@ -7,10 +7,11 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Package d'authentification via les réseaux sociaux pour Bow Framework.
-Ce package utilise le package [`thephpleague/oauth2-client`](https://github.com/thephpleague/oauth2-client) pour faire un wrapper.
+:::info
+Package d'authentification via les réseaux sociaux pour Bow Framework. Ce package utilise [`thephpleague/oauth2-client`](https://github.com/thephpleague/oauth2-client) comme wrapper.
+:::
 
-Actuellement, il supporte le fournisseur suivant :
+Actuellement, il supporte les fournisseurs suivants :
 
 - Facebook
 - Gitlab
@@ -29,13 +30,13 @@ composer require bowphp/soauth
 
 ## Configuration
 
-Après l'installation Dans votre fichier `.env.json`, vous devez définir les informations d'accès au fournisseur comme suit:
+Après l'installation, dans votre fichier `.env.json`, vous devez définir les informations d'accès au fournisseur comme suit :
 
 ### Configuration Facebook
 
-Vous pouvez créer la nouvelle application facebook à l'adresse [https://developers.facebook.com/fr](https://developers.facebook.com/fr).
+Vous pouvez créer une nouvelle application Facebook à l'adresse [https://developers.facebook.com/fr](https://developers.facebook.com/fr).
 
-```bash
+```json
 {
   "FACEBOOK_CLIENT_ID": "client_id",
   "FACEBOOK_CLIENT_SECRET": "client_secret",
@@ -45,7 +46,7 @@ Vous pouvez créer la nouvelle application facebook à l'adresse [https://develo
 
 ### Configuration Gitlab
 
-```bash
+```json
 {
   "GITLAB_CLIENT_ID": "client_id",
   "GITLAB_CLIENT_SECRET": "client_secret",
@@ -55,7 +56,7 @@ Vous pouvez créer la nouvelle application facebook à l'adresse [https://develo
 
 ### Configuration GitHub
 
-```bash
+```json
 {
   "GITHUB_CLIENT_ID": "client_id",
   "GITHUB_CLIENT_SECRET": "client_secret",
@@ -63,7 +64,9 @@ Vous pouvez créer la nouvelle application facebook à l'adresse [https://develo
 }
 ```
 
-> Ainsi de suite, la configuration des autres providers suivent la même approche.
+:::tip Remarque
+La configuration des autres fournisseurs suit la même approche.
+:::
 
 ## Utilisation
 
@@ -87,7 +90,7 @@ use Bow\Soauth\Soauth;
 class SoauthController extends Controller
 {
   /**
-   * Redirection vers le fournisseur define
+   * Redirection vers le fournisseur défini
    * 
    * @param string $provider
    * @return mixed
@@ -110,9 +113,9 @@ class SoauthController extends Controller
 }
 ```
 
-### Ajouter un itinéraire
+### Ajouter une route
 
-Définissez la route qui utilisera pour les actions d'appel soauth:
+Définissez la route qui sera utilisée pour les actions d'appel Soauth :
 
 ```php title="routes/app.php"
 $app->get('/oauth/:provider/redirect', 'SoauthController::redirect');

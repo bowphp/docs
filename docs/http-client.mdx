@@ -20,163 +20,238 @@ Le client HTTP de BowPHP est un composant puissant et flexible permettant de ré
 
 ## Utilisation
 
-Pour utilisateur le client http rien de plus simple que de faire une nouvelle instance ou une injection dans un service ou un contrôleur :
+Pour utiliser le client HTTP, créez simplement une nouvelle instance ou injectez-le dans un service ou un contrôleur :
 
 ```php
+use Bow\Http\Client\HttpClient;
+
 $client = new HttpClient();
 ```
 
 :::info
-Le constructeur prend un paramètre $base_url qui est optionnel. Si le base url est define l'appel des endpoints devient plus simple
+Le constructeur accepte un paramètre optionnel `$base_url`. Si l'URL de base est définie, l'appel des endpoints devient plus simple :
 
 ```php
 $client = new HttpClient('https://api.example.com');
 ```
 :::
 
-> Dans le cas ou nous n'avez pas définit la base url à la création de l'instance, `setBaseUrl` nous permet de le faire.
-
-#### `get`
-
-Effectue une requête GET.
-
-- **Paramètres** :
-  - `$url` : Le chemin relatif ou l'URL complète.
-  - `$data` : Les paramètres de la requête (ajoutés à l'URL sous forme de chaîne de requête).
-- **Retourne** :
-  - Une instance de `Response` contenant les données de la réponse.
+:::tip
+Si vous n'avez pas défini l'URL de base lors de la création de l'instance, utilisez `setBaseUrl` pour le faire ultérieurement :
 
 ```php
+$client->setBaseUrl('https://api.example.com');
+```
+:::
+
+## Méthodes HTTP
+
+### `get`
+
+Effectue une requête GET pour récupérer des ressources.
+
+**Paramètres :**
+- `$url` : Le chemin relatif ou l'URL complète
+- `$data` : Tableau de paramètres ajoutés à l'URL sous forme de query string
+
+**Retourne :** Une instance de `Response`
+
+**Exemple :**
+
+```php
+use Bow\Http\Client\HttpClient;
+
 $client = new HttpClient('https://api.example.com');
-$response = $client->get('/users', ['page' => 2]);
+$response = $client->get('/users', ['page' => 2, 'limit' => 10]);
 
 echo $response->getContent();
+// Accéder aux données JSON
+$users = $response->toArray();
 ```
 
-#### `post`
+### `post`
 
-Effectue une requête POST.
+Effectue une requête POST pour créer ou envoyer des données.
 
-- **Paramètres** :
-  - `$url` : Le chemin relatif ou l'URL complète.
-  - `$data` : Les données à envoyer (JSON ou `application/x-www-form-urlencoded`).
-- **Retourne** :
-  - Une instance de `Response` contenant les données de la réponse.
+**Paramètres :**
+- `$url` : Le chemin relatif ou l'URL complète
+- `$data` : Tableau de données à envoyer (JSON ou form-urlencoded selon la configuration)
+
+**Retourne :** Une instance de `Response`
+
+**Exemple :**
 
 ```php
+use Bow\Http\Client\HttpClient;
+
 $client = new HttpClient('https://api.example.com');
 $response = $client->acceptJson()->post('/users', [
     'name' => 'John Doe',
-    'email' => 'john.doe@example.com'
+    'email' => 'john.doe@example.com',
+    'role' => 'admin'
 ]);
 
-echo $response->getContent();
+// Vérifier le succès
+if ($response->isSuccessful()) {
+    $user = $response->toArray();
+    echo "Utilisateur créé avec l'ID: {$user['id']}";
+}
 ```
 
-#### `put`
+### `put`
 
-Effectue une requête PUT.
+Effectue une requête PUT pour mettre à jour une ressource existante.
 
-- **Paramètres** :
-  - `$url` : Le chemin relatif ou l'URL complète.
-  - `$data` : Les données à envoyer.
-- **Retourne** :
-  - Une instance de `Response` contenant les données de la réponse.
+**Paramètres :**
+- `$url` : Le chemin relatif ou l'URL complète
+- `$data` : Tableau de données à envoyer pour la mise à jour
+
+**Retourne :** Une instance de `Response`
+
+**Exemple :**
 
 ```php
+use Bow\Http\Client\HttpClient;
+
 $client = new HttpClient('https://api.example.com');
-$response = $client->acceptJson()->put('/users', [
-    'name' => 'John Doe',
-    'email' => 'john.doe@example.com'
+$response = $client->acceptJson()->put('/users/123', [
+    'name' => 'Jane Doe',
+    'email' => 'jane.doe@example.com'
 ]);
 
-echo $response->getContent();
+if ($response->isSuccessful()) {
+    echo "Utilisateur mis à jour avec succès";
+}
 ```
 
-#### `delete`
+### `delete`
 
-Effectue une requête DELETE.
+Effectue une requête DELETE pour supprimer une ressource.
 
-- **Paramètres** :
-  - `$url` : Le chemin relatif ou l'URL complète.
-  - `$data` : Les données à envoyer (si applicables).
-- **Retourne** :
-  - Une instance de `Response` contenant les données de la réponse.
+**Paramètres :**
+- `$url` : Le chemin relatif ou l'URL complète
+- `$data` : Tableau de données optionnelles à envoyer
+
+**Retourne :** Une instance de `Response`
+
+**Exemple :**
 
 ```php
-$client = new HttpClient('https://api.example.com');
-$response = $client->delete('/users/2');
+use Bow\Http\Client\HttpClient;
 
-echo $response->getContent();
+$client = new HttpClient('https://api.example.com');
+$response = $client->delete('/users/123');
+
+if ($response->isSuccessful()) {
+    echo "Utilisateur supprimé avec succès";
+}
 ```
 
-#### `addAttach`
+## Configuration avancée
 
-Attache un ou plusieurs fichiers à la requête.
+### `addAttach`
 
-- **Paramètres** :
-  - `$attach` : Chemin(s) du ou des fichiers à envoyer.
-- **Retourne** :
-  - L'instance du client pour un chaînage fluide.
+Attache un ou plusieurs fichiers à une requête multipart/form-data.
+
+**Paramètres :**
+- `$attach` : Chemin du fichier (string) ou tableau de chemins de fichiers
+
+**Retourne :** L'instance du client pour un chaînage fluide
+
+**Exemple :**
 
 ```php
-$client = new HttpClient('https://api.example.com');
-$response = $client->addAttach('/path/to/file.txt')->post('/upload');
+use Bow\Http\Client\HttpClient;
 
-echo $response->getContent();
+$client = new HttpClient('https://api.example.com');
+
+// Upload d'un seul fichier
+$response = $client->addAttach('/path/to/document.pdf')
+    ->post('/upload');
+
+// Upload de plusieurs fichiers
+$response = $client->addAttach([
+    '/path/to/image1.jpg',
+    '/path/to/image2.jpg'
+])->post('/upload-multiple');
 ```
 
-### addHeaders
+### `addHeaders`
 
-Ajoute des en-têtes personnalisés à la requête.
+Ajoute des en-têtes HTTP personnalisés à la requête.
 
-- **Paramètres** :
-  - `$headers` : Tableau associatif des en-têtes (ex. : `['Authorization' => 'Bearer token']`).
-- **Retourne** :
-  - L'instance du client pour un chaînage fluide.
+**Paramètres :**
+- `$headers` : Tableau associatif d'en-têtes
+
+**Retourne :** L'instance du client pour un chaînage fluide
+
+**Exemple :**
 
 ```php
+use Bow\Http\Client\HttpClient;
+
 $client = new HttpClient('https://api.example.com');
-$response = $client->get('/users', ['page' => 2]);
+$response = $client
+    ->addHeaders([
+        'Authorization' => 'Bearer your-api-token',
+        'X-Custom-Header' => 'custom-value'
+    ])
+    ->get('/protected-endpoint');
 
 echo $response->getContent();
 ```
 
-### setUserAgent
+### `setUserAgent`
 
-Définit l'agent utilisateur pour la requête.
+Définit l'agent utilisateur (User-Agent) pour la requête.
 
-- **Paramètres** :
-  - `$user_agent` : Chaîne représentant l'agent utilisateur.
-- **Retourne** :
-  - L'instance du client pour un chaînage fluide.
+**Paramètres :**
+- `$user_agent` : Chaîne représentant l'agent utilisateur
+
+**Retourne :** L'instance du client pour un chaînage fluide
+
+**Exemple :**
 
 ```php
+use Bow\Http\Client\HttpClient;
+
 $client = new HttpClient('https://api.example.com');
-$response = $client->get('/users', ['page' => 2]);
+$response = $client
+    ->setUserAgent('MyApp/1.0 (Bow Framework)')
+    ->get('/users');
 
 echo $response->getContent();
 ```
 
-### acceptJson
+### `acceptJson`
 
 Configure le client pour envoyer et accepter des données au format JSON.
+Ajoute automatiquement l'en-tête `Content-Type: application/json`.
 
-- **Retourne** :
-  - L'instance du client pour un chaînage fluide.
+**Retourne :** L'instance du client pour un chaînage fluide
+
+**Exemple :**
 
 ```php
-$client = new HttpClient('https://api.example.com');
-$response = $client->get('/users', ['page' => 2]);
+use Bow\Http\Client\HttpClient;
 
-echo $response->getContent();
+$client = new HttpClient('https://api.example.com');
+$response = $client
+    ->acceptJson()
+    ->post('/users', [
+        'name' => 'John Doe',
+        'email' => 'john@example.com'
+    ]);
+
+// Les données seront automatiquement encodées en JSON
+$result = $response->toArray();
 ```
 
 ## La classe `Response`
 
-La classe `Response` est utilisée pour manipuler la réponse. Elle encapsule les informations retournées par la requête, telles que le contenu de la réponse, les en-têtes HTTP, le code de statut, ainsi que des informations de performance. Voici une vue d'ensemble des fonctionnalités de cette classe.
+La classe `Response` encapsule toutes les informations retournées par une requête HTTP : contenu, en-têtes, code de statut et métriques de performance. Elle offre une interface simple et intuitive pour manipuler les réponses.
 
-### Méthodes
+### Méthodes principales
 
 #### `getContent`
 
@@ -184,7 +259,14 @@ La classe `Response` est utilisée pour manipuler la réponse. Elle encapsule le
 public function getContent(): ?string
 ```
 
-Cette méthode retourne le contenu de la réponse HTTP sous forme de chaîne de caractères. Si aucun contenu n'est disponible, elle retourne `null`.
+Retourne le contenu brut de la réponse HTTP sous forme de chaîne. Retourne `null` si aucun contenu n'est disponible.
+
+**Exemple :**
+
+```php
+$content = $response->getContent();
+echo $content;
+```
 
 #### `toJson`
 
@@ -192,7 +274,22 @@ Cette méthode retourne le contenu de la réponse HTTP sous forme de chaîne de 
 public function toJson(?bool $associative = null): object|array
 ```
 
-Cette méthode permet de décoder le contenu de la réponse (en supposant qu'il soit au format JSON) en un objet ou un tableau PHP. Le paramètre optionnel `$associative` permet de choisir si le résultat doit être un tableau associatif (`true`) ou un objet (`false`).
+Décode le contenu JSON de la réponse en objet ou tableau PHP.
+
+**Paramètres :**
+- `$associative` : `true` pour un tableau associatif, `false` pour un objet (défaut)
+
+**Exemple :**
+
+```php
+// Retourne un objet
+$user = $response->toJson();
+echo $user->name;
+
+// Retourne un tableau
+$userData = $response->toJson(true);
+echo $userData['name'];
+```
 
 #### `toArray`
 
@@ -200,7 +297,16 @@ Cette méthode permet de décoder le contenu de la réponse (en supposant qu'il 
 public function toArray(): array
 ```
 
-C'est une méthode alias de `toJson(true)`, qui retourne le contenu JSON de la réponse sous forme de tableau associatif.
+Alias de `toJson(true)`. Retourne le contenu JSON sous forme de tableau associatif.
+
+**Exemple :**
+
+```php
+$users = $response->toArray();
+foreach ($users as $user) {
+    echo $user['name'];
+}
+```
 
 #### `getHeaders`
 
@@ -217,7 +323,19 @@ public function getCode(): ?int
 public function statusCode(): ?int
 ```
 
-Ces méthodes retournent le code de statut HTTP de la réponse (par exemple, 200 pour une requête réussie, 404 pour une ressource introuvable). Si le code de statut n'est pas disponible, elles retournent `null`.
+Retournent le code de statut HTTP de la réponse (200, 404, 500, etc.). Retourne `null` si indisponible.
+
+**Exemple :**
+
+```php
+$code = $response->getCode();
+// ou
+$code = $response->statusCode();
+
+if ($code === 200) {
+    echo "Requête réussie";
+}
+```
 
 #### `isSuccessful`
 
@@ -225,7 +343,16 @@ Ces méthodes retournent le code de statut HTTP de la réponse (par exemple, 200
 public function isSuccessful(): bool
 ```
 
-Cette méthode retourne `true` si le code de statut HTTP indique une réponse réussie (200 ou 201), sinon elle retourne `false`.
+Retourne `true` si le code de statut indique un succès (200 ou 201).
+
+**Exemple :**
+
+```php
+if ($response->isSuccessful()) {
+    $data = $response->toArray();
+    // Traiter les données
+}
+```
 
 #### `isFailed`
 
@@ -233,25 +360,62 @@ Cette méthode retourne `true` si le code de statut HTTP indique une réponse r�
 public function isFailed(): bool
 ```
 
-Cette méthode retourne `true` si le code de statut HTTP indique une erreur (tout code autre que 200 ou 201), sinon elle retourne `false`.
+Retourne `true` si la requête a échoué (code différent de 200 ou 201).
 
-#### Informations de performance
+**Exemple :**
 
-Le client HTTP de Bow fournit également des méthodes pour obtenir des informations sur la performance de la requête HTTP.
+```php
+if ($response->isFailed()) {
+    echo "Erreur : " . $response->getCode();
+}
+```
 
-- **`getExecutionTime`** : Retourne le temps total d'exécution de la requête en secondes.
-- **`getConnexionTime`** : Retourne le temps nécessaire pour établir une connexion avec le serveur.
-- **`getUploadSize`** : Retourne la taille des données envoyées lors de la requête en octets.
-- **`getUploadSpeed`** : Retourne la vitesse de téléchargement des données envoyées.
-- **`getDownloadSize`** : Retourne la taille des données reçues lors de la requête en octets.
-- **`getDownloadSpeed`** : Retourne la vitesse de téléchargement des données reçues.
+### Métriques de performance
 
-Ces informations sont utiles pour analyser les performances des requêtes HTTP, en particulier dans des scénarios où la rapidité et l'efficacité sont essentielles.
+Le client HTTP fournit plusieurs méthodes pour analyser les performances des requêtes :
 
-#### Gestion des erreurs
+| Méthode | Description | Retour |
+|---------|-------------|--------|
+| `getExecutionTime()` | Temps total d'exécution de la requête | `?int` (secondes) |
+| `getConnexionTime()` | Temps d'établissement de la connexion | `?float` (secondes) |
+| `getUploadSize()` | Taille des données envoyées | `?int` (octets) |
+| `getUploadSpeed()` | Vitesse d'upload | `?float` (octets/sec) |
+| `getDownloadSize()` | Taille des données reçues | `?int` (octets) |
+| `getDownloadSpeed()` | Vitesse de download | `?float` (octets/sec) |
 
-- **`getErrorMessage`** : Retourne le message d'erreur, s'il y en a un. Si aucune erreur n'est présente, cette méthode retourne une chaîne vide.
-- **`getErrorNumber`** : Retourne le code d'erreur cURL, s'il y en a un.
+**Exemple d'utilisation :**
+
+```php
+$response = $client->get('/large-data');
+
+echo "Temps d'exécution : " . $response->getExecutionTime() . "s\n";
+echo "Taille téléchargée : " . $response->getDownloadSize() . " octets\n";
+echo "Vitesse : " . $response->getDownloadSpeed() . " octets/s\n";
+```
+
+### Gestion des erreurs
+
+**`getErrorMessage`** : Retourne le message d'erreur cURL s'il y en a un, sinon une chaîne vide.
+
+**`getErrorNumber`** : Retourne le code d'erreur cURL.
+
+**Exemple :**
+
+```php
+if ($response->isFailed()) {
+    echo "Erreur #{$response->getErrorNumber()}: {$response->getErrorMessage()}";
+}
+```
+
+### Autres méthodes
+
+#### `getHeaders`
+
+```php
+public function getHeaders(): array
+```
+
+Retourne tous les en-têtes HTTP de la réponse sous forme de tableau.
 
 #### `getContentType`
 
@@ -259,6 +423,15 @@ Ces informations sont utiles pour analyser les performances des requêtes HTTP, 
 public function getContentType(): ?string
 ```
 
-Cette méthode retourne le type de contenu retourné par la réponse (par exemple, `application/json`), ou `null` si ce type n'est pas disponible.
+Retourne le type MIME du contenu (ex: `application/json`, `text/html`).
+
+**Exemple :**
+
+```php
+$contentType = $response->getContentType();
+if ($contentType === 'application/json') {
+    $data = $response->toArray();
+}
+```
 
 <SuggestionFeature />

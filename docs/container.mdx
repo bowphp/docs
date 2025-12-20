@@ -5,7 +5,7 @@ title: "🧰 Injection de dépendances"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-# Introduction
+## Introduction
 
 ### Qu'est-ce que l'Injection de Dépendances (DI) ?
 
@@ -15,19 +15,19 @@ L'**injection de dépendances** est un concept qui permet de **fournir** les obj
 
 L'**inversion de contrôle** est un principe qui consiste à **déléguer** la gestion des objets et de leurs dépendances à un autre composant appelé **conteneur**. Cela signifie que le conteneur crée et gère les objets nécessaires pour vous, au lieu que votre code les crée manuellement.
 
-Dans BowPHP, cette gestion est faite par un conteneur appelé **Capsule**.
+Dans Bow Framework, cette gestion est faite par un conteneur appelé **Capsule**.
 
-## Pourquoi utiliser un Conteneur DIC ?
+## Pourquoi utiliser un conteneur DIC ?
 
-Le conteneur DIC de BowPHP vous permet de gérer facilement toutes les dépendances de votre application. Voici quelques avantages :
+Le conteneur DIC de Bow Framework vous permet de gérer facilement toutes les dépendances de votre application. Voici quelques avantages :
 
 1. **Facilite la gestion des objets** : Plus besoin de créer des objets partout dans votre code.
 2. **Modularité et réutilisabilité** : Votre code devient plus facile à maintenir et à tester.
 3. **Flexibilité** : Vous pouvez facilement changer la façon dont les objets sont créés et gérés.
 
-## Comment utiliser le Conteneur DIC dans BowPHP ?
+## Comment utiliser le conteneur DIC dans Bow Framework ?
 
-### 1. **Accéder au Conteneur**
+### 1. Accéder au conteneur
 
 Le conteneur est l'endroit où toutes les dépendances sont stockées. Voici comment y accéder :
 
@@ -45,7 +45,7 @@ $container = Capsule::getInstance();  // Accède au conteneur de façon plus exp
 
 Les deux méthodes vous permettent de travailler avec le même conteneur.
 
-### 2. **Enregistrer des Liaisons dans le Conteneur**
+### 2. Enregistrer des liaisons dans le conteneur
 
 Lorsque vous avez une classe ou un service que vous souhaitez utiliser dans plusieurs endroits de votre application, vous devez **enregistrer** cette classe dans le conteneur.
 
@@ -79,7 +79,7 @@ app()->factory('user', function() {
 });
 ```
 
-### 3. **Résoudre des Dépendances**
+### 3. Résoudre des dépendances
 
 Une fois qu'un objet est enregistré dans le conteneur, vous pouvez facilement le récupérer (ou **le résoudre**) à tout moment dans votre application. Le conteneur crée et fournit l'objet pour vous.
 
@@ -101,7 +101,7 @@ $service = app()->makeWith('service', ['param' => 'value']);  // Passe des param
 $service = app(Service::class);  // Récupère l'objet directement en utilisant la classe
 ```
 
-### 4. **Injection Automatique des Dépendances**
+### 4. Injection automatique des dépendances
 
 Si une classe dépend d'une autre (par exemple, un service qui utilise un repository), le conteneur peut automatiquement créer les objets nécessaires et les injecter. Cela vous évite de devoir créer manuellement les objets.
 
@@ -127,7 +127,7 @@ Le conteneur peut automatiquement **injecter** `UserRepository` lorsque vous dem
 $userService = app(UserService::class);  // Le conteneur crée UserService et injecte UserRepository
 ```
 
-### 5. **Liaisons de Types Simples et Complexes**
+### 5. Liaisons de types simples et complexes
 
 #### Liaison simple
 
@@ -157,7 +157,7 @@ app()->factory('user', function() {
 });
 ```
 
-### 6. **Vérification de l'Existence d'une Liaison**
+### 6. Vérification de l'existence d'une liaison
 
 Avant de résoudre une dépendance, vous pouvez vérifier si le conteneur contient déjà l'objet demandé.
 
@@ -169,17 +169,19 @@ if (isset(app('service'))) {
 }
 ```
 
-## Bonnes Pratiques à Suivre
+## Bonnes pratiques à suivre
 
-1. **Utilisez l'injection par constructeur** : Cela permet de déclarer clairement les dépendances d'une classe et est facile à tester.
+:::tip Recommandations
+1. **Utilisez l'injection par constructeur** : Cela permet de déclarer clairement les dépendances d'une classe et facilite les tests.
 2. **Privilégiez les interfaces aux classes concrètes** : Utilisez des interfaces pour les dépendances afin de garder votre code flexible et facile à maintenir.
 3. **Limitez l'utilisation des singletons** : Les singletons sont utiles pour certaines situations, mais il est préférable de ne pas en abuser, car cela peut rendre le code difficile à tester.
+:::
 
-## Exemple Complet pour Débutants
+## Exemple complet
 
 Voici un exemple complet pour comprendre comment tout cela fonctionne ensemble :
 
-### Définir une Interface
+### Définir une interface
 
 Une interface définit ce que doit faire un service, mais pas comment il le fait :
 
@@ -190,7 +192,7 @@ interface UserRepositoryInterface
 }
 ```
 
-### Implémentation de l'Interface
+### Implémentation de l'interface
 
 Une classe qui implémente cette interface fournit l'implémentation réelle :
 
@@ -203,7 +205,7 @@ class UserRepository implements UserRepositoryInterface
 }
 ```
 
-### Service Utilisant le Repository
+### Service utilisant le repository
 
 `UserService` a besoin de `UserRepository` pour fonctionner :
 
@@ -224,7 +226,7 @@ class UserService
 }
 ```
 
-### Enregistrement dans le Conteneur
+### Enregistrement dans le conteneur
 
 Enregistrez l'interface et l'implémentation dans le conteneur :
 
@@ -232,7 +234,7 @@ Enregistrez l'interface et l'implémentation dans le conteneur :
 app()->bind(UserRepositoryInterface::class, UserRepository::class);
 ```
 
-### Utilisation dans le Code
+### Utilisation dans le code
 
 Le conteneur crée automatiquement le service et ses dépendances :
 
@@ -242,6 +244,12 @@ $userService = app(UserService::class);
 echo $userService->getUser(1);  // Affiche : "Utilisateur avec l'ID : 1"
 ```
 
-Le conteneur d'injection de dépendances de BowPHP rend votre code plus **modulaire**, **flexible**, et **testable**. En utilisant l'IoC, vous déléguez la gestion des objets et des dépendances à un conteneur, ce qui simplifie la création et l'utilisation des objets dans votre application. Grâce à ces principes, vous pouvez créer des applications plus propres, plus faciles à maintenir et plus robustes.
+## Conclusion
+
+Le conteneur d'injection de dépendances de Bow Framework rend votre code plus **modulaire**, **flexible** et **testable**. En utilisant l'IoC, vous déléguez la gestion des objets et des dépendances à un conteneur, ce qui simplifie la création et l'utilisation des objets dans votre application.
+
+:::info Avantages
+Grâce à ces principes, vous pouvez créer des applications plus propres, plus faciles à maintenir et plus robustes.
+:::
 
 <SuggestionFeature />

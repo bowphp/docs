@@ -1,23 +1,22 @@
-const darkCodeTheme = require('prism-react-renderer');
+import { themes as prismThemes } from "prism-react-renderer";
 const versions = require("./versions.json");
-const { hooks } = require('prismjs');
 
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.NODE_ENV === "development";
 
 const isDeployPreview =
-  !!process.env.NETLIFY && process.env.CONTEXT === 'deploy-preview';
+  !!process.env.NETLIFY && process.env.CONTEXT === "deploy-preview";
 
 // Netlify branch deploy like "docusaurus-v2"
 const isBranchDeploy =
-  !!process.env.NETLIFY && process.env.CONTEXT === 'branch-deploy';
+  !!process.env.NETLIFY && process.env.CONTEXT === "branch-deploy";
 
 // Used to debug production build issues faster
 const isBuildFast = !!process.env.BUILD_FAST;
 
-const baseUrl = process.env.BASE_URL ?? '/';
+const baseUrl = process.env.BASE_URL ?? "/";
 
 function getNextVersionName() {
-  return 'Canary';
+  return "Canary";
 }
 
 module.exports = {
@@ -44,7 +43,7 @@ module.exports = {
   markdown: {
     mermaid: true,
     hooks: {
-      onBrokenMarkdownLinks: 'log',
+      onBrokenMarkdownLinks: "log",
     },
   },
   customFields: {
@@ -382,8 +381,8 @@ module.exports = {
       },
     },
     prism: {
-      // darkTheme: darkCodeTheme,
-      additionalLanguages: ["php", "javascript", "css", "typescript"],
+      darkTheme: prismThemes.vsDark,
+      additionalLanguages: ["php", "javascript", "css", "typescript", "bash"],
     },
   },
   themes: ["@docusaurus/theme-mermaid"],

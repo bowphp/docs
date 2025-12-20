@@ -7,7 +7,9 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Bow Framework intègre un système de gestion de fichier permettant de manipuler des fichiers avec une grande simplicité.
+:::info
+Bow Framework intègre un système de gestion de fichiers permettant de manipuler des fichiers avec une grande simplicité.
+:::
 
 ## Configuration
 
@@ -15,16 +17,17 @@ Le fichier de configuration du système de gestion de fichiers se trouve dans `c
 
 ## Fonctionnement
 
-Vous avez la possibilité d'utiliser les services ou travailler dans votre disque local. Les méthodes statiques `local` et `service` permettent reciproquement de manipuler le système de disque et les services de stockage actuellement `ftp` et `s3`.
+Vous avez la possibilité d'utiliser les services ou travailler dans votre disque local. Les méthodes statiques `local` et `service` permettent respectivement de manipuler le système de disque et les services de stockage actuellement `ftp` et `s3`.
 
-### Système de fichier local
+### Système de fichiers local
 
-Pour gérer votre système de fichier local avec Bow Framework vous allez utiliser la méthode statique `local`.
+Pour gérer votre système de fichiers local avec Bow Framework, vous allez utiliser la méthode statique `local`.
+
 #### Explication du concept
 
 Nous appelerons les différents dossiers spécifiés `disk`.
 
-Considérons la configuration suivante:
+Considérons la configuration suivante :
 
 ```php
 'disk' =>[
@@ -36,7 +39,9 @@ Considérons la configuration suivante:
 ];
 ```
 
-> Vous pouvez spécifier autant de disques que vous voulez.
+:::tip Remarque
+Vous pouvez spécifier autant de disques que vous voulez.
+:::
 
 La classe `Storage` expose la méthode statique `local` qui permet la manipulation de fichiers. La valeur passée à `local` doit être un nom de disque valide spécifié dans la liste des `path`.
 
@@ -48,9 +53,11 @@ Storage::local("public");
 Storage::local();
 ```
 
-> Si la méthode `local` est appelé sans paramêtre, elle utilisera par défaut la valeur de la clé `mount`.
+:::info Information
+Si la méthode `local` est appelée sans paramètre, elle utilisera par défaut la valeur de la clé `mount`.
+:::
 
-Vous pouvez aussi utiliser le helper `app_storage()` qui fonctionne exactement de la même manière:
+Vous pouvez aussi utiliser le helper `app_storage()` qui fonctionne exactement de la même manière :
 
 ```php
 app_storage('public');
@@ -60,9 +67,9 @@ app_storage()->get('app.js');
 
 ### Les services S3 et FTP
 
-Pour utiliser un système de stockage externe. Cela se fait via la méthode `service`. Cette méthode, vous permet de séléctionner le type de stockage externe que vous voulez utiliser. Vous trouverez la configuration nécessaire des services dans le fichier de configuration section `services` du fichier `config/resource.php`.
+Pour utiliser un système de stockage externe, cela se fait via la méthode `service`. Cette méthode vous permet de sélectionner le type de stockage externe que vous voulez utiliser. Vous trouverez la configuration nécessaire des services dans le fichier de configuration, section `services` du fichier `config/resource.php`.
 
-Exemple avec le service `ftp`:
+Exemple avec le service `ftp` :
 
 ```php
 $service = Storage::service('ftp');
@@ -71,20 +78,22 @@ $service->get('app.js');
 
 ## Manipulation des fichiers
 
-Cette section décrit les différentes méthodes disponible pour la manipulation de fichiers et leur utilisation.
+Cette section décrit les différentes méthodes disponibles pour la manipulation de fichiers et leur utilisation.
 
-Supposons que nous avons le fichier `app.txt` dans le disque `public`:
+Supposons que nous avons le fichier `app.txt` dans le disque `public` :
 
 ```plain
 // contenu du fichier app.txt
 Hello, world
 ```
 
-> Notez que ces méthodes (sauf la méthode `get`) retournent respectivement `true` ou `false` en cas de succès ou d'échec
+:::info Important
+Notez que ces méthodes (sauf la méthode `get`) retournent respectivement `true` ou `false` en cas de succès ou d'échec.
+:::
 
 ### Récupérer le contenu d'un fichier
 
-La méthode `get` sert à recupérer le contenu d'un fichier. Elle prend comme paramètre le nom du fichier.
+La méthode `get` sert à récupérer le contenu d'un fichier. Elle prend comme paramètre le nom du fichier.
 
 ```php
 $local_storage = app_storage('public');
@@ -98,11 +107,13 @@ echo $content;
 // => Hello, world
 ```
 
-> `service` et `local` utilise la même interface de manipulation. Ce qui veux dire que les méthodes disponibles pour `local` existe aussi pour `service`.
+:::info Compatibilité
+`service` et `local` utilisent la même interface de manipulation. Ce qui veut dire que les méthodes disponibles pour `local` existent aussi pour `service`.
+:::
 
 ### Ajouter/Modifier le contenu d'un fichier
 
-La méthode `put` permet d'ajouter ou de modifier le contenu d'un fichier:
+La méthode `put` permet d'ajouter ou de modifier le contenu d'un fichier :
 
 ```php
 $local_storage = app_storage('public');
@@ -113,7 +124,7 @@ $local_storage->put('app.js', $content );
 
 ### Ajouter du contenu au début ou à la fin d'un fichier
 
-Les méthodes `preprend` et `append` vous permettent d'ajouter respectivement du contenu au debut ou la fin d'un fichier:
+Les méthodes `preprend` et `append` vous permettent d'ajouter respectivement du contenu au début ou à la fin d'un fichier :
 
 ```php
 $local_storage = app_storage('public');
@@ -164,7 +175,9 @@ $local_storage = app_storage('public');
 $local_storage->makeDirectory('dossier');
 ```
 
-> Notez que vous pouvez changer le mode du dossier et choisir de le créer de manière récursif.
+:::tip Remarque
+Notez que vous pouvez changer le mode du dossier et choisir de le créer de manière récursive.
+:::
 
 ```php
 $local_storage->makeDirectory('chemin/vers/un/dossier', 777, true);
@@ -180,7 +193,7 @@ if ($local_storage->exists('app.txt')) {
 }
 ```
 
-### Vérifier si le paramêtre est un fichier
+### Vérifier si le paramètre est un fichier
 
 ```php
 $local_storage = app_storage('public');
@@ -190,7 +203,7 @@ if ($local_storage->isFile('app.txt')) {
 }
 ```
 
-### Vérifier si le paramêtre est un dossier
+### Vérifier si le paramètre est un dossier
 
 ```php
 $local_storage = app_storage('public');

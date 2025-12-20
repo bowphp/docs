@@ -7,71 +7,106 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Pour créer une nouvelle application Bow, veuillez d'abord vous assurer que votre ordinateur remplit les conditions suivantes :
+Bow Framework est un micro-framework PHP moderne et élégant. Avant de créer votre première application, assurez-vous que votre environnement respecte les prérequis suivants.
 
-## Prérequis
+## Prérequis système
 
-- PHP >= 8.1
+- **PHP >= 8.1**
 - OpenSSL PHP Extension
 - PDO PHP Extension
 - Mbstring PHP Extension
 - XML PHP Extension
 - JSON PHP Extension
 
-> Si vous êtes sous Windows et que vous utilisez un serveur web tel que [Laragon](https://laragon.org/), ces dépendances sont déjà satisfaites.
+:::tip Environnements de développement
+Si vous utilisez [Laragon](https://laragon.org/) (Windows), [XAMPP](https://www.apachefriends.org/), ou [MAMP](https://www.mamp.info/), ces extensions sont généralement déjà installées et configurées.
+:::
 
 ## Créer un projet
 
-Bow Framework utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Donc, avant d'utiliser Bow, il vous faut d'abord installer Composer sur votre machine.
+Bow Framework utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Assurez-vous que Composer est installé sur votre machine avant de continuer.
 
-### Via Composer
+### Installation via Composer
 
 ```bash
 composer create-project --prefer-dist bowphp/app nom-du-projet
 ```
 
-> Nous vous conseillons d'installer `composer` de façon globale sur votre machine. Pour ce faire, référez-vous à la [documentation](https://getcomposer.org/download) d'installation de composer.
-> Si vous n'êtes pas familier à `composer`, nous vous invitons à parcourir la documentation.
+:::info Installation de Composer
+Nous recommandons d'installer Composer de manière globale sur votre machine. Consultez la [documentation officielle](https://getcomposer.org/download) pour les instructions d'installation.
+
+Si vous découvrez Composer, prenez le temps de parcourir sa [documentation](https://getcomposer.org/doc/) pour comprendre son fonctionnement.
+:::
 
 [![asciicast](https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z.svg)](https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z)
 
 ## 🚀 Démarrer votre projet
 
-Rendez vous à la racine de votre projet et démarrez le serveur:
+Rendez-vous à la racine de votre projet et démarrez le serveur de développement :
 
 ```bash
 cd nom-du-projet
 php bow run:server --port=8080 --host=0.0.0.0
 ```
 
-Ouvrez votre navigateur et tapez `http://localhost:8080`.
+Ouvrez votre navigateur et accédez à `http://localhost:8080`.
 
-> `5000` est le port par défaut quand le port n'est pas spécifié avec la commande `php bow run:server`.
+:::info Port par défaut
+Si vous ne spécifiez pas de port, le serveur démarre sur le port `5000` par défaut :
+
+```bash
+php bow run:server
+# Accessible sur http://localhost:5000
+```
+:::
 
 ## ⚙️ Configuration
 
-### Dossier Public
+### Dossier public
 
-Après l'installation de Bow Framework, vous devez configurer le `document root` de votre serveur pour qu'il pointe vers le dossier `public`.
+Après l'installation, configurez le `document root` de votre serveur web pour qu'il pointe vers le dossier `public`.
 
-Le fichier `index.php` qui se trouve dans le dossier public sert de point d'entrée pour toutes les requêtes HTTP (c'est le **Front Contrôleur**).
+Le fichier `index.php` situé dans ce dossier sert de point d'entrée unique pour toutes les requêtes HTTP (pattern **Front Controller**).
 
 ### Fichiers de configuration
 
-Tous les fichiers de configurations de Bow Framework sont stockés dans le dossier `config`. Toutes les options sont documentées pour vous permettre de vous familiariser avec les options disponibles.
+Tous les fichiers de configuration de Bow Framework se trouvent dans le dossier `config`. Chaque option est documentée pour faciliter la personnalisation de votre application.
 
-### Permissions sur les dossiers
+**Structure du dossier config :**
+- `app.php` : Configuration de l'application
+- `database.php` : Configuration des bases de données
+- `mail.php` : Configuration de l'envoi d'emails
+- Et bien d'autres...
 
-Après l'installation de Bow, vous aurez besoin de configurer quelques permissions. Les dossiers contenu dans le dossier `var` doivent avoir les permissions d'écriture sur le serveur web.
+### Permissions des dossiers
 
-## Configuration Serveur Web
+Les dossiers contenus dans `var` doivent avoir les permissions d'écriture pour le serveur web :
+
+```bash
+# Sur Linux/macOS
+chmod -R 775 var/
+chown -R www-data:www-data var/
+```
+
+:::warning Important
+Assurez-vous que le serveur web a les droits d'écriture sur le dossier `var` pour que les logs, le cache et les sessions fonctionnent correctement.
+:::
+
+## Configuration des serveurs web
 
 ### Apache
 
-Bow inclut un fichier `public/.htaccess` qui est utilisé pour faire de la ré-écriture d'URLs sur le front contrôleur. Avant d'utiliser Bow avec Apache, assurez-vous que le module `mod_rewrite` est activé pour que le serveur
-prenne en compte les instructions du fichier `.htaccess`.
+Bow inclut un fichier `public/.htaccess` qui gère la réécriture d'URLs vers le front controller. 
 
-Si le fichier `.htaccess` par défaut dans Bow ne fonctionne pas avec votre installation d'Apache, essayez cette alternative:
+**Prérequis :** Le module `mod_rewrite` doit être activé.
+
+```bash
+# Activer mod_rewrite sur Ubuntu/Debian
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+```
+
+Si le fichier `.htaccess` par défaut ne fonctionne pas, essayez cette configuration alternative :
 
 ```c
 Options +FollowSymLinks
@@ -84,18 +119,40 @@ RewriteRule ^ index.php [L]
 
 ### Nginx
 
-Si vous utilisez Nginx, les directives suivantes dans votre configuration redirigeront les requêtes vers le front contrôleur:
+Pour Nginx, ajoutez cette configuration dans votre bloc `server` :
 
 ```nginx
-location / {
-  try_files $uri $uri/ /index.php?$query_string;
+server {
+    listen 80;
+    server_name example.com;
+    root /path/to/your/project/public;
+    
+    index index.php index.html;
+    
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+    
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
 }
 ```
 
-### Déployé sur un server mutualisé
+### Déploiement sur serveur mutualisé
 
-Pour deployer Bow Framework sur un serveur mutualisé. Il faut déplacer le fichier `index.php` et `.htaccess` à la racine du projet.
-Et assuré le bien appelé les fichiers du fichier `index.php` ensuite vous pouvez copier le code qui suit dans le fichier htaccess.
+Pour déployer Bow Framework sur un hébergement mutualisé :
+
+1. Déplacez les fichiers `index.php` et `.htaccess` du dossier `public` vers la racine du projet
+2. Modifiez les chemins dans `index.php` pour qu'ils pointent correctement vers les dossiers du framework
+3. Utilisez la configuration `.htaccess` suivante :
 
 ```c
 Options -indexes
@@ -119,14 +176,19 @@ Options -indexes
 </Files>
 ```
 
-> Il est en ce sens recommandé d'appelé vos fichiers d'assets avec la méthode `app_assets` et modifier votre `.env.json` la valeur de `APP_ASSET_PREFIX` en `/public` et bow fait le reste 😅
+:::tip Gestion des assets
+Pour un hébergement mutualisé, utilisez le helper `app_assets()` pour vos fichiers statiques et modifiez la valeur de `APP_ASSET_PREFIX` à `/public` dans votre fichier `.env.json`. Bow gérera automatiquement les chemins corrects ! 🚀
+:::
 
-Vous pouvez continuer vers ces sections pour démarrer votre développement.
+## Prochaines étapes
 
-- [Ajouter des routes à votre application](./routing)
-- [Plus de contrôleur](./controller)
-- [Comment ajouter des données dans une Base de donnée ?](./database)
-- [Manipuler les sessions](./session)
-- [Consulter aussi le système de stockage](./storage)
+Maintenant que votre installation est terminée, découvrez comment construire votre application :
+
+- 🛣️ [Créer vos premières routes](./routing)
+- 🎮 [Utiliser les contrôleurs](./controller)
+- 💾 [Travailler avec les bases de données](./database)
+- 🔐 [Gérer les sessions utilisateur](./session)
+- 📦 [Utiliser le système de stockage](./storage)
+- 🎨 [Créer des vues avec Tintin](./views)
 
 <SuggestionFeature />

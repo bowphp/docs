@@ -7,13 +7,15 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Les migrations sont un moyen pour versionner votre base de donnée qui évolue souvent avec les modifications de l'application.
+:::info À propos des migrations
+Les migrations sont un moyen de versionner votre base de données qui évolue souvent avec les modifications de l'application.
+:::
 
-Les migrations sont sauvegardés dans le dossier `migration`.
+Les migrations sont sauvegardées dans le dossier `migration`.
 
 ## Ajouter une migration
 
-Pour ajouter une migration il faut passer par `php bow` avec la commande `add:migration` ensuite le nom de la migration(ex: `createTodosTable`). Bow créra un fichier du même nom précédé d'une date de création.
+Pour ajouter une migration, il faut passer par `php bow` avec la commande `add:migration` ensuite le nom de la migration (ex: `createTodosTable`). Bow créera un fichier du même nom précédé d'une date de création.
 
 ```bash
 php bow add:migration create_todos_table
@@ -33,7 +35,11 @@ php bow add:migration create_todos_table --table=todos
 
 Une classe de migration contient deux méthodes: `up` et `rollback`. La méthode `up` sert à ajouter de nouvelles tables, colonnes ou index à votre base de données, tandis que la méthode `rollback` doit inverser les opérations effectuées par la méthode `up`.
 
-Par exemple, la migration créé précédement:
+:::tip Structure d'une migration
+Voici un exemple de la migration créée précédemment :
+:::
+
+Par exemple, la migration créée précédemment :
 
 ```php
 use Bow\Database\Migration\Migration;
@@ -70,7 +76,9 @@ Pour exécuter toutes vos migrations en attente, exécutez la commande `migratio
 php bow migration:migrate
 ```
 
-Vous pouvez aussi utiliser le racourci `migrate`.
+:::tip Raccourci
+Vous pouvez aussi utiliser le raccourci `migrate`.
+:::
 
 ```bash
 php bow migrate
@@ -103,7 +111,9 @@ $this->create("users", function (SQLGenerator $table) {
 
 ## Connexion à la base de données et options de table
 
-Si vous souhaitez effectuer une opération de schéma sur une connexion à une base de données autre que la connexion par défaut, utilisez la méthode de `connection` suivante:
+:::info Connexion personnalisée
+Si vous souhaitez effectuer une opération de schéma sur une connexion à une base de données autre que la connexion par défaut, utilisez la méthode `connection`.
+:::
 
 ```php
 $this->connection('name')->create("users", function (SQLGenerator $table) {
@@ -182,15 +192,15 @@ Liste des attributes: **unique**, **primary**, **index**, **increment**, **defau
 | Paramètre | Type | Description |
 |----------|------|------|
 | unique  | **Boolean** | Ajout UNIQUE sur la description de la colonne |
-| primary  | **Boolean** | Define la colonne comme une clé primaire. Ajout PRIMARY AUTO sur la description de la colonne |
-| index  | **Boolean** | Definie la colonne comme une INDEX |
-| increment  | **Boolean** | Definie la colonne comme une AUTO INCREMENT |
-| size  | **Integer** | Definie la taille de la colonne |
-| nullable  | **Boolean** | La colonne pourra avoir une valeur nul |
-| unsigned  | **Boolean** | Seulement pour les colonnes de type nombre. Elle define la colonne comme non signé |
-| default  | **Mixed** | Ajout une valeur par defaut à la colonne si une valeur n'est pas ajouté |
+| primary  | **Boolean** | Définit la colonne comme une clé primaire. Ajout PRIMARY AUTO sur la description de la colonne |
+| index  | **Boolean** | Définit la colonne comme une INDEX |
+| increment  | **Boolean** | Définit la colonne comme une AUTO INCREMENT |
+| size  | **Integer** | Définit la taille de la colonne |
+| nullable  | **Boolean** | La colonne pourra avoir une valeur nulle |
+| unsigned  | **Boolean** | Seulement pour les colonnes de type nombre. Elle définit la colonne comme non signée |
+| default  | **Mixed** | Ajoute une valeur par défaut à la colonne si une valeur n'est pas ajoutée |
 
-Regardons ensemble cette exemple:
+Regardons ensemble cet exemple :
 
 ```php
 $table->addColumn('id', 'int', [
