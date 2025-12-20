@@ -50,12 +50,12 @@ Storage::local();
 
 > Si la méthode `local` est appelé sans paramêtre, elle utilisera par défaut la valeur de la clé `mount`.
 
-Vous pouvez aussi utiliser le helper `app_local_storage()` qui fonctionne exactement de la même manière:
+Vous pouvez aussi utiliser le helper `app_storage()` qui fonctionne exactement de la même manière:
 
 ```php
-app_local_storage('public');
+app_storage('public');
 // Ou
-app_local_storage()->get('app.js');
+app_storage()->get('app.js');
 ```
 
 ### Les services S3 et FTP
@@ -87,7 +87,7 @@ Hello, world
 La méthode `get` sert à recupérer le contenu d'un fichier. Elle prend comme paramètre le nom du fichier.
 
 ```php
-$local_storage = app_local_storage('public');
+$local_storage = app_storage('public');
 $content = $local_storage->get("app.txt");
 
 // Avec un service
@@ -105,7 +105,7 @@ echo $content;
 La méthode `put` permet d'ajouter ou de modifier le contenu d'un fichier:
 
 ```php
-$local_storage = app_local_storage('public');
+$local_storage = app_storage('public');
 $content = 'console.log("Hello, world")';
 
 $local_storage->put('app.js', $content );
@@ -116,7 +116,7 @@ $local_storage->put('app.js', $content );
 Les méthodes `preprend` et `append` vous permettent d'ajouter respectivement du contenu au debut ou la fin d'un fichier:
 
 ```php
-$local_storage = app_local_storage('public');
+$local_storage = app_storage('public');
 
 $local_storage->prepend('app.txt', 'Contenu ajouté au début');
 $local_storage->append('app.txt', 'Contenu ajouté à la fin');
@@ -127,7 +127,7 @@ $local_storage->append('app.txt', 'Contenu ajouté à la fin');
 La méthode `delete` permet de supprimer un fichier.
 
 ```php
-$local_storage = app_local_storage('public');
+$local_storage = app_storage('public');
 
 $local_storage->delete('app.js');
 ```
@@ -135,7 +135,7 @@ $local_storage->delete('app.js');
 ### Copier un fichier
 
 ```php
-$local_storage = app_local_storage('public');
+$local_storage = app_storage('public');
 
 $local_storage->copy('app.txt', 'sous-dossier/app.txt');
 ```
@@ -147,7 +147,7 @@ Vous pouvez créer un nouveau dossier à l'aide de la méthode `makeDirectory`:
 #### Prototype
 
 ```php
-$local_storage = app_local_storage('public');
+$local_storage = app_storage('public');
 
 $local_storage->makeDirectory($dirname, $mode = 0777, $recursive = false);
 ```
@@ -159,7 +159,7 @@ $local_storage->makeDirectory($dirname, $mode = 0777, $recursive = false);
 | recursive | `Boolean` - Permet de créer récursivement |
 
 ```php
-$local_storage = app_local_storage('public');
+$local_storage = app_storage('public');
 
 $local_storage->makeDirectory('dossier');
 ```
@@ -173,7 +173,7 @@ $local_storage->makeDirectory('chemin/vers/un/dossier', 777, true);
 ### Vérifier si un fichier existe
 
 ```php
-$local_storage = app_local_storage('public');
+$local_storage = app_storage('public');
 
 if ($local_storage->exists('app.txt')) {
   echo $local_storage->get('app.txt');
@@ -183,7 +183,7 @@ if ($local_storage->exists('app.txt')) {
 ### Vérifier si le paramêtre est un fichier
 
 ```php
-$local_storage = app_local_storage('public');
+$local_storage = app_storage('public');
 
 if ($local_storage->isFile('app.txt')) {
   echo "C'est un fichier";
@@ -193,7 +193,7 @@ if ($local_storage->isFile('app.txt')) {
 ### Vérifier si le paramêtre est un dossier
 
 ```php
-$local_storage = app_local_storage('public');
+$local_storage = app_storage('public');
 
 if ($local_storage->isDirectory('nom_du_dossier')) {
   echo "C'est un dossier";
@@ -203,7 +203,7 @@ if ($local_storage->isDirectory('nom_du_dossier')) {
 ### Obtenir le chemin absolu d'un fichier ou dossier
 
 ```php
-$local_storage = app_local_storage('public');
+$local_storage = app_storage('public');
 
 $path = $local_storage->path('app.txt');
 
