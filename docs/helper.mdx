@@ -9,7 +9,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 Les helpers sont des fonctions raccourcies chargées dans l'application qui permet de faire rapidement certaine action. Voici la liste des helpers qui existe dans l'application Bow Framework. Voici les helpers dispnoble dans l'application.
 
-## Helper de gestion HTTP
+## Table des matières
 
 - [Introduction](#introduction)
 - [Helper de gestion HTTP](#helper-de-gestion-http)
@@ -17,46 +17,37 @@ Les helpers sont des fonctions raccourcies chargées dans l'application qui perm
 - [Sécurité](#sécurité)
 - [Gestion d'évènement](#gestion-dévènement)
 - [Système de storage](#système-de-storage)
-- [helper Application](#helper-application)
+- [Helper Application](#helper-application)
 - [Chaine de caractère](#chaine-de-caractère)
 - [Email](#email)
+- [Session et Cookie](#session-et-cookie)
+- [Validation](#validation)
 - [Autre](#autre)
 - [Utilisation](#utilisation)
-  - [app](#app)
-  - [config](#config)
-  - [response](#response)
-  - [request](#request)
-  - [response_json](#response_json)
-  - [response_download](#response_download)
-  - [set\_response\_status\_code](#set_response_status_code)
-  - [view](#view)
-  - [session](#session)
-  - [cookie](#cookie)
-  - [create\_csrf\_token](#create_csrf_token)
-  - [csrf\_token](#csrf_token)
-  - [csrf\_field](#csrf_field)
-  - [method\_field](#method_field)
-  - [generate\_token\_csrf](#generate_token_csrf)
-  - [verify\_csrf](#verify_csrf)
-  - [csrf\_time\_is\_expired](#csrf_time_is_expired)
-  - [data_sanitize](#data_sanitize)
-  - [data_secure](#data_secure)
-  - [set\_response\_header](#set_response_header)
-  - [get\_response\_header](#get_response_header)
-  - [redirect](#redirect)
-  - [redirect\_back](#redirect_back)
-  - [send](#send)
-  - [url](#url)
-  - [flash](#flash)
-  - [validator](#validator)
-  - [route](#route)
-  - [old](#old)
-  - [client\_locale](#client_locale)
+
+## Helper de gestion HTTP
+
+- [app](#app)
+- [config](#config)
+- [response](#response)
+- [response_json](#response_json)
+- [response_download](#response_download)
+- [set_response_status_code](#set_response_status_code)
+- [set_response_header](#set_response_header)
+- [get_response_header](#get_response_header)
+- [request](#request)
+- [redirect](#redirect)
+- [redirect_back](#redirect_back)
+- [url](#url)
+- [route](#route)
+- [old](#old)
+- [view](#view)
 
 ## Base de donnée
 
 - [db](#db)
-- [app_db_table](#table)
+- [table](#table)
+- [app_db_table](#app_db_table)
 - [get_last_insert_id](#get_last_insert_id)
 - [app_db_select](#app_db_select)
 - [app_db_select_one](#app_db_select_one)
@@ -67,9 +58,9 @@ Les helpers sont des fonctions raccourcies chargées dans l'application qui perm
 - [app_db_transaction](#app_db_transaction)
 - [app_db_transaction_started](#app_db_transaction_started)
 - [app_db_rollback](#app_db_rollback)
+- [app_db_commit](#app_db_commit)
 - [pdo](#pdo)
 - [set_pdo](#set_pdo)
-- [app_db_commit](#app_db_commit)
 - [app_db_seed](#app_db_seed)
 
 ## Sécurité
@@ -78,33 +69,47 @@ Les helpers sont des fonctions raccourcies chargées dans l'application qui perm
 - [decrypt](#decrypt)
 - [app_hash](#app_hash)
 - [bow_hash](#bow_hash)
-- [data_sanitize](#data_sanitize)
-- [data_secure](#data_secure)
+- [sanitize](#sanitize)
+- [secure](#secure)
+- [csrf_token](#csrf_token)
+- [csrf_field](#csrf_field)
+- [method_field](#method_field)
+- [create_csrf_token](#create_csrf_token)
+- [gen_csrf_token](#gen_csrf_token)
+- [verify_csrf](#verify_csrf)
+- [csrf_time_is_expired](#csrf_time_is_expired)
 
 ## Gestion d'évènement
 
-- [event](#listen_event)
+- [event](#event)
+- [queue](#queue)
 
 ## Système de storage
 
 - [config](#config)
 - [app_storage](#app_storage)
-- [storage_service](#file_system)
+- [storage_service](#storage_service)
 - [cache](#cache)
 
-## helper Application
+## Helper Application
 
 - [app_env](#app_env)
 - [app_assets](#app_assets)
 - [app_abort](#app_abort)
 - [app_abort_if](#app_abort_if)
 - [app_mode](#app_mode)
+- [app_in_debug](#app_in_debug)
 - [auth](#auth)
+- [app_auth](#app_auth)
 - [logger](#logger)
+- [app_logger](#app_logger)
+- [app_now](#app_now)
+- [client_locale](#client_locale)
+- [view](#view)
 
 ## Chaine de caractère
 
-- [str_uuid](#str_slug)
+- [str_uuid](#str_uuid)
 - [str_slug](#str_slug)
 - [str_is_mail](#str_is_mail)
 - [str_is_domain](#str_is_domain)
@@ -125,19 +130,30 @@ Les helpers sont des fonctions raccourcies chargées dans l'application qui perm
 - [e](#e)
 - [str_fix_utf8](#str_fix_utf8)
 
+## Session et Cookie
+
+- [session](#session)
+- [cookie](#cookie)
+- [flash](#flash)
+
 ## Email
 
-- [app_email](#app_email)
-- [app_raw_email](#app_raw_email)
+- [email](#email)
+- [raw_email](#raw_email)
+
+## Validation
+
+- [validator](#validator)
 
 ## Autre
 
 - [debug](#debug)
 - [sep](#sep)
 - [collect](#collect)
-- [trans](#trans)
+- [app_trans](#app_trans)
 - [t](#t)
 - [__](#__)
+- [is_blank](#is_blank)
 
 ## Utilisation
 
@@ -256,13 +272,6 @@ $method = method_field("DELETE")
 // <input type="hidden" name="_method" value="DELETE" />
 ```
 
-### generate_token_csrf
-
-```php
-generate_token_csrf();
-// papac
-```
-
 ### verify_csrf
 
 ```php
@@ -277,18 +286,22 @@ csrf_time_is_expired();
 // bool
 ```
 
-### data_sanitize
+### sanitize
+
+Permet de nettoyer les données en supprimant les caractères spéciaux et les balises HTML.
 
 ```php
-$name = data_sanitize("papa'c")
+$name = sanitize("papa'c<script>alert(1)</script>");
 // papac
 ```
 
-### data_secure
+### secure
+
+Permet de sécuriser les données en les nettoyant et en les échappant.
 
 ```php
-$name = request()->get("name");
-// papac
+$name = secure("papa'c<script>");
+// papa&#039;c
 ```
 
 ### set_response_header
@@ -306,64 +319,203 @@ $token = get_response_header("X-Token-API");
 
 ### redirect
 
+Permet de créer une redirection HTTP. Retourne une instance de `\Bow\Http\Redirect`.
+
 ```php
-return redirect();
-// papac
+return redirect('/dashboard');
+
+// Ou avec des méthodes chainables
+return redirect()->to('/home');
+return redirect()->route('user.profile', ['id' => 1]);
 ```
 
 ### redirect_back
 
+Permet de rediriger vers la page précédente.
+
 ```php
 return redirect_back();
-```
 
-### send
-
-```php
-return send("hello papac");
-// hello papac
+// Avec un code de statut personnalisé
+return redirect_back(301);
 ```
 
 ### url
 
+Permet de construire une URL complète en ajoutant des paramètres.
+
 ```php
-$name = request()->get("name");
-// papac
+$url = url('/users', ['page' => 2, 'sort' => 'name']);
+// http://votre-domaine.com/users?page=2&sort=name
 ```
 
 ### flash
 
+Permet de définir un message flash dans la session.
+
 ```php
-$name = request()->get("name");
-// papac
+flash('success', 'Utilisateur créé avec succès');
+
+// Dans la vue suivante
+{{ session('success') }} // Utilisateur créé avec succès
 ```
 
 ### validator
 
+Permet de valider des données selon des règles définies.
+
 ```php
-$name = request()->get("name");
-// papac
+$validation = validator(
+    ['email' => 'test@example.com', 'age' => 25],
+    ['email' => 'required|email', 'age' => 'required|int']
+);
+
+if ($validation->fails()) {
+    return response()->json($validation->getErrors(), 422);
+}
 ```
 
 ### route
 
+Permet de générer une URL à partir du nom d'une route.
+
 ```php
-$name = route("name");
-// papac
+// Route définie: Route::get('/users/:id', 'UserController::show')->name('user.show');
+$url = route('user.show', ['id' => 1]);
+// /users/1
+
+// Avec URL absolue
+$url = route('user.show', ['id' => 1], true);
+// http://votre-domaine.com/users/1
 ```
 
 ### old
 
+Permet de récupérer l'ancienne valeur d'un champ après une redirection (utile pour les formulaires).
+
 ```php
-$name = old("name");
-// papac
+// Dans la vue après une validation échouée
+<input type="text" name="email" value="{{ old('email') }}" />
+
+// Avec une valeur par défaut
+old('email', 'default@example.com')
 ```
 
 ### client_locale
 
+Permet de récupérer la langue du client à partir de l'en-tête HTTP Accept-Language.
+
 ```php
-$name = client_locale();
-// papac
+$locale = client_locale();
+// fr, en, etc.
+```
+
+### app_db_seed
+
+Permet d'exécuter un seeder de manière programmatique.
+
+```php
+// Exécuter un seeder par son nom
+app_db_seed('users');
+
+// Avec des données de surcharge
+app_db_seed('users', ['email' => 'custom@example.com']);
+
+// Avec une classe Model
+app_db_seed(User::class, ['name' => 'John Doe']);
+```
+
+### is_blank
+
+Détermine si une valeur est "vide" (null, chaîne vide, tableau vide, etc.).
+
+```php
+is_blank(null); // true
+is_blank(''); // true
+is_blank('  '); // true
+is_blank([]); // true
+is_blank(0); // false
+is_blank('hello'); // false
+```
+
+### queue
+
+Permet d'ajouter un job dans la file d'attente.
+
+```php
+queue(new SendEmailJob($user));
+```
+
+### app_trans / t / __
+
+Permet de traduire une clé de traduction.
+
+```php
+app_trans('welcome.message'); // Bienvenue sur notre site
+t('welcome.message'); // Même résultat
+__('welcome.message'); // Même résultat
+
+// Avec des variables
+t('welcome.user', ['name' => 'John']); // Bienvenue John
+```
+
+### email / raw_email
+
+Permet d'envoyer des emails.
+
+```php
+// Avec une vue
+email('emails.welcome', ['user' => $user], function($mail) {
+    $mail->to('user@example.com')
+         ->subject('Bienvenue');
+});
+
+// Email simple
+raw_email('user@example.com', 'Subject', 'Message body');
+```
+
+### app_now
+
+Retourne l'instance Carbon du moment actuel.
+
+```php
+$now = app_now();
+// Instance de Carbon\Carbon
+$now->format('Y-m-d'); // 2025-12-20
+```
+
+### app_auth / auth
+
+Permet d'accéder au système d'authentification.
+
+```php
+// Vérifier si l'utilisateur est authentifié
+if (app_auth()->check()) {
+    $user = app_auth()->user();
+}
+
+// Avec un guard spécifique
+$admin = app_auth('admin')->user();
+```
+
+### app_logger / logger
+
+Permet d'accéder au système de logging.
+
+```php
+logger()->info('User logged in', ['user_id' => 1]);
+logger()->error('Database error', ['exception' => $e]);
+app_logger()->warning('Deprecated method called');
+```
+
+### app_in_debug
+
+Vérifie si l'application est en mode debug.
+
+```php
+if (app_in_debug()) {
+    // Code de débogage
+}
 ```
 
 [https://github.com/bowphp/framework/blob/4.0/src/Support/helper.php](https://github.com/bowphp/framework/blob/4.0/src/Support/helper.php)

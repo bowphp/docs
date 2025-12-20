@@ -7,15 +7,17 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Une requête HTTP est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autre outil tel que `curl`, `httpie` et autre.
+:::info À propos des requêtes HTTP
+Une requête HTTP est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autres outils tels que `curl`, `httpie`, etc.
+:::
 
-Ce message est traité par Bow à travers la classe [`Bow\Http\Request`](https://bowphp.com/api/5.x/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoyé par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
+Ce message est traité par Bow à travers la classe [`Bow\Http\Request`](https://bowphp.com/api/5.x/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoyée par l'utilisateur comme son adresse IP, le type du message, les informations d'un formulaire, etc.
 
 ## Accéder à la requête
 
 Pour capturer un message ou requête HTTP, vous pouvez premièrement utiliser le helper `request()` qui vous donne une instance de [`Bow\Http\Request`](https://bowphp.com/api/5.x/Bow/Http/Request.html), deuxièmement vous pouvez passer par l'injecteur de dépendance via une action de contrôleur.
 
-## Recupération des données
+## Récupération des données
 
 En utilisant quelques méthodes simples, vous pouvez accéder à toutes les entrées utilisateur de votre application.
 
@@ -44,7 +46,7 @@ $app->get('/', function (Request $request) {
 
 ### Via un controller
 
-Si votre méthode de contrôleur attend également une entrée d'un paramètre de route, vous devez répertorier les paramètres de votre route après vos autres dépendances. Par exemple, si votre route est défini comme suit:
+Si votre méthode de contrôleur attend également une entrée d'un paramètre de route, vous devez répertorier les paramètres de votre route après vos autres dépendances. Par exemple, si votre route est définie comme suit :
 
 ```php
 $app->get('/users/:id', 'UserController::show');
@@ -100,7 +102,7 @@ if ($request->is('users/*')) {
 
 ### Récupérer la méthode de requête
 
-La méthode `method` retournera le verbe HTTP pour la requête. Vous pouvez utiliser les méthodes `isPost`, `isGet`, `isPut`, `isDelete`, `isOptions`, `isPutch` pour vérifier que le verbe HTTP correspond à une méthode HTTP de la requête donnée:
+La méthode `method` retournera le verbe HTTP pour la requête. Vous pouvez utiliser les méthodes `isPost`, `isGet`, `isPut`, `isDelete`, `isOptions`, `isPatch` pour vérifier que le verbe HTTP correspond à une méthode HTTP de la requête donnée :
 
 ```php
 $method = $request->method();
@@ -113,7 +115,7 @@ if ($request->isPost()) {
 
 ### Vérifier si la requête est en AJAX
 
-Pour déterminer si une requête a été envoyé via AJAX, la méthode `isAjax` vous permet de vérifier ça.
+Pour déterminer si une requête a été envoyée via AJAX, la méthode `isAjax` vous permet de vérifier cela.
 
 ```php
 if ($request->isAjax()) {
@@ -121,11 +123,23 @@ if ($request->isAjax()) {
 }
 ```
 
+### Vérifier si la requête attend une réponse JSON
+
+La méthode `wantsJson` vous permet de vérifier si la requête attend une réponse au format JSON. Souvent, les requêtes AJAX sont envoyées avec l'en-tête `Accept: application/json`, la méthode `wantsJson` vérifie si cet en-tête est présent dans la requête.
+
+```php
+if ($request->wantsJson()) {
+  // code ici
+}
+```
+
 ### Récupérer une entrée
 
-Souvent la requête envoyé par le client HTTP contient des données souvent demander pour actioner un mecanisme par exemple celui d'une inscription.
+Souvent, la requête envoyée par le client HTTP contient des données souvent demandées pour actionner un mécanisme, par exemple celui d'une inscription.
 
-Bow Framework dans son démarrage optimise le donnée envoyés au serveur en remplaçant les valeur vide par `null` et supprimer les spaces blancs dans les valeurs de chaque champs avec la fonction php `trim`.
+:::info Optimisation des données
+Bow Framework, dans son démarrage, optimise les données envoyées au serveur en remplaçant les valeurs vides par `null` et en supprimant les espaces dans les valeurs de chaque champ avec la fonction PHP `trim`.
+:::
 
 ```php
 $name = $request->get('name');
@@ -134,7 +148,9 @@ $name = $request->get('name');
 $name = $request->name;
 ```
 
-> Vous pouvez aussi défini une valeur par défaut à `get`
+:::tip Valeur par défaut
+Vous pouvez aussi définir une valeur par défaut à `get`.
+:::
 
 ```php
 $name = $request->get('name', 'Papac');
@@ -144,9 +160,9 @@ $name = $request->get('name', function () {
 });
 ```
 
-Ceci permet justement de récupérer le contenu du champ `name` d'un formulaire ou d'un url en fonction du type de requête.
+Ceci permet justement de récupérer le contenu du champ `name` d'un formulaire ou d'une URL en fonction du type de requête.
 
-### Recupération d'une partie des données d'entrée
+### Récupération d'une partie des données d'entrée
 
 Si vous devez extraire un sous-ensemble des données d'entrée, vous pouvez utiliser les méthodes `ignore` et `only`. Ces deux méthodes acceptent un seul tableau ou une liste d'arguments dynamique:
 
@@ -170,9 +186,9 @@ if ($request->has('name')) {
 }
 ```
 
-### Déterminer l'adresse IP de client
+### Déterminer l'adresse IP du client
 
-Souvent, vous allez vouloir l'adresse IP du client qui à envoyer la requête, la méthode `ip` permet comme son nom l'indique de récupérer l'adresse ip de client:
+Souvent, vous allez vouloir récupérer l'adresse IP du client ayant envoyé la requête. La méthode `ip` permet, comme son nom l'indique, de récupérer l'adresse IP du client :
 
 ```php
 $ip = $request->ip();
@@ -182,9 +198,9 @@ if ($ip == 'xxx.xxx.xxx.xxx') {
 }
 ```
 
-### Déterminer le Port de client
+### Déterminer le port du client
 
-La méthode `port` permet comme son nom l'indique de récupérer le port de client:
+La méthode `port` permet, comme son nom l'indique, de récupérer le port du client :
 
 ```php
 $port = $request->port();
@@ -192,9 +208,9 @@ $port = $request->port();
 // Code ici
 ```
 
-### Déterminer le protocol de client
+### Déterminer le protocole du client
 
-La méthode `protocol` permet comme son nom l'indique de récupérer le protocol de client:
+La méthode `protocol` permet, comme son nom l'indique, de récupérer le protocole du client :
 
 ```php
 $protocol = $request->protocol();
@@ -202,7 +218,7 @@ $protocol = $request->protocol();
 // Code ici
 ```
 
-Il y a aussi la méthode `isProtocol` qui permet de faire de vérification sur le protocol:
+Il y a aussi la méthode `isProtocol` qui permet de faire de la vérification sur le protocole :
 
 ```php
 if ($request->isProtocol('http')) {
@@ -210,7 +226,7 @@ if ($request->isProtocol('http')) {
 }
 ```
 
-Et `isSecure` vous permet de vérifier si la requête est sécurisé.
+Et `isSecure` vous permet de vérifier si la requête est sécurisée.
 
 ```php
 if ($request->isSecure()) {
@@ -218,9 +234,9 @@ if ($request->isSecure()) {
 }
 ```
 
-### Récupérer les entête-https
+### Récupérer les en-têtes HTTP
 
-Vous avez la possibilité de récupérer les [entête-https](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers) du client avec la méthode `getHeader` et `hasHeader` pour vérifier l'existance d'une entête-http.
+Vous avez la possibilité de récupérer les [en-têtes HTTP](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers) du client avec la méthode `getHeader` et `hasHeader` pour vérifier l'existence d'un en-tête HTTP.
 
 ```php
 $header = $request->getHeader('content-type');
@@ -233,9 +249,9 @@ if ($request->hasHeader('x-proxy-key')) {
 }
 ```
 
-### Récupérer l'IP du server
+### Récupérer l'IP du serveur
 
-Vous avez la possibilité de récupérer l'adresse IP de serveur sur lequel votre application Bow est hébergé.
+Vous avez la possibilité de récupérer l'adresse IP du serveur sur lequel votre application Bow est hébergée.
 
 ```php
 $hostname = $request->hostname();
@@ -246,7 +262,7 @@ echo $hostname;
 
 ### Récupérer le domaine Origin
 
-Le domaine dit `origin` est l'adresse récupérer avec la méthode `hostname` ensuite associé avec le protocol de la requête.
+Le domaine dit `origin` est l'adresse récupérée avec la méthode `hostname` ensuite associée au protocole de la requête.
 
 ```php
 $hostname = $request->origin();
@@ -257,7 +273,7 @@ echo $hostname;
 
 ### Récupérer le temps de la requête
 
-Il est souvent intéressé de voir combien de temps à faire une requête. La méthode `time` nous permet de le faire et elle retourne un timestamp.
+Il est souvent intéressant de voir combien de temps a pris une requête. La méthode `time` permet de le faire et elle retourne un timestamp.
 
 ```php
 $time = $request->time();
@@ -267,7 +283,7 @@ echo $time;
 
 ### Récupérer une instance de la session
 
-Il est souvent intéressé de manipuler la session directement. La méthode `session` nous permet de le faire et elle retourne l'instance de la session.
+Il est souvent intéressant de manipuler la session directement. La méthode `session` permet de le faire et elle retourne l'instance de la session.
 
 ```php
 $session = $request->session();
@@ -275,7 +291,9 @@ $session = $request->session();
 var_dump($session);
 ```
 
-> Pour plus d'information sur la session, visitez cette page [HTTP Session](./session)
+:::info En savoir plus
+Pour plus d'informations sur la session, visitez la page [HTTP Session](./session).
+:::
 
 ### Récupérer l'authentification courante
 

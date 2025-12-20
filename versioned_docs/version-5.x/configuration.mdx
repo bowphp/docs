@@ -36,7 +36,7 @@ La notation à point permet d'accéder facilement aux valeurs dans les fichiers 
 
 #### Exemple
 
-Supposons que vous avez un fichier `bow.php` avec le contenu suivant :
+Supposons que vous ayez un fichier `bow.php` avec le contenu suivant :
 
 ```php
 return [
@@ -60,7 +60,9 @@ config('bow.skill.orm'); // Retourne true
 config('bow.skill.preset.0'); // Retourne "reactjs"
 ```
 
-> **Astuce :** Le premier segment de la notation correspond toujours au nom du fichier de configuration (dans cet exemple, `bow`).
+:::tip Astuce
+Le premier segment de la notation correspond toujours au nom du fichier de configuration (dans cet exemple, `bow`).
+:::
 
 ## Fichier `.env.json`
 
@@ -71,7 +73,11 @@ Pour adapter votre application à différents environnements (développement, pr
 1. **Sécurité** : Ce fichier ne doit pas être versionné pour éviter d'exposer des informations sensibles.
 2. **Flexibilité** : Chaque développeur ou serveur peut avoir une configuration personnalisée.
 
-Pour aider les nouveaux développeurs, vous pouvez créer un fichier de base : `.env.example.json`, qui servira de modèle pour configurer leur propre environnement.
+:::warning Important
+Ajoutez `.env.json` dans votre fichier `.gitignore` pour ne jamais le versionner. Cela évite d'exposer vos clés secrètes et mots de passe.
+:::
+
+Pour aider les nouveaux développeurs, vous pouvez créer un fichier de base `.env.example.json` qui servira de modèle pour configurer leur propre environnement.
 
 ### Récupérer des informations depuis `.env.json`
 
@@ -111,7 +117,7 @@ echo app_env('WEBHOOK_GATEWAY.VISA');
 
 ### Réutiliser des variables
 
-Vous pouvez réutiliser une variable déjà définie dans le fichier `.env.json` avec la syntax `${KEY}`:
+Vous pouvez réutiliser une variable déjà définie dans le fichier `.env.json` avec la syntaxe `${KEY}` :
 
 ```json title=".env.json"
 {
@@ -124,7 +130,7 @@ Vous pouvez réutiliser une variable déjà définie dans le fichier `.env.json`
 ```
 
 :::note
-Ici `${BASE_URL}` défini la variable
+Ici, `${BASE_URL}` fait référence à la variable définie précédemment.
 :::
 
 Cela permet de centraliser certaines valeurs pour plus de cohérence :
@@ -134,12 +140,27 @@ echo app_env('WEBHOOK_GATEWAY.VISA');
 // Retourne : http://localhost:8080/execute-visa-webhook
 ```
 
-## Helpers
+## Helpers personnalisés
 
 Bow inclut de nombreuses fonctions PHP pratiques appelées "helpers". Ces fonctions sont utilisées par le framework pour simplifier les opérations courantes. Vous pouvez également les utiliser dans vos projets.
 
-### Personnalisation des helpers
+### Ajouter vos propres helpers
 
 Dans le fichier `config/helpers.php`, vous trouverez des helpers supplémentaires qui ne sont pas directement intégrés au framework. Vous pouvez modifier ce fichier pour y ajouter vos propres fonctions personnalisées afin de répondre aux besoins spécifiques de votre application.
+
+```php title="config/helpers.php"
+<?php
+
+if (!function_exists('format_price')) {
+    function format_price(float $price): string
+    {
+        return number_format($price, 2, ',', ' ') . ' €';
+    }
+}
+```
+
+:::info Documentation
+Consultez la [documentation des helpers](/docs/helper) pour découvrir toutes les fonctions disponibles dans Bow Framework.
+:::
 
 <SuggestionFeature />

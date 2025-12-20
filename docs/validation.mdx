@@ -9,11 +9,15 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-La validation des données est une partie cruciale de toute application web. BowPHP fournit un système de validation simple, élégant et puissant qui vous permet de valider facilement vos données entrantes.
+:::info
+La validation des données est une partie cruciale de toute application web. Bow Framework fournit un système de validation simple, élégant et puissant qui vous permet de valider facilement vos données entrantes.
+:::
 
 ## Utilisation de base
 
-La façon la plus simple d'utiliser le validateur est via la fonction helper `validator()`. Voici un exemple simple:
+:::tip Conseil
+La façon la plus simple d'utiliser le validateur est via la fonction helper `validator()`. Voici un exemple simple :
+:::
 
 ```php
 $data = [
@@ -36,6 +40,10 @@ if ($validation->fails()) {
 ```
 
 ## Règles de validation disponibles
+
+:::info Règles
+Bow Framework propose un large éventail de règles de validation pour couvrir la plupart des besoins de validation courants.
+:::
 
 ### Règles de base
 
@@ -79,7 +87,9 @@ if ($validation->fails()) {
 
 ## Messages d'erreur personnalisés
 
-Vous pouvez personnaliser les messages d'erreur en passant un tableau de messages comme troisième argument:
+:::tip Personnalisation
+Vous pouvez personnaliser les messages d'erreur en passant un tableau de messages comme troisième argument :
+:::
 
 ```php
 $validation = validator($data, [
@@ -99,7 +109,9 @@ $validation = validator($data, [
 
 ## Récupération des erreurs
 
-Le validateur fournit plusieurs méthodes pour récupérer les informations sur les erreurs:
+:::tip Méthodes disponibles
+Le validateur fournit plusieurs méthodes pour récupérer les informations sur les erreurs :
+:::
 
 ```php
 // Vérifie si la validation a échoué
@@ -120,7 +132,9 @@ $validation->getFailsRules(); // array
 
 ## Validation et exceptions
 
-Vous pouvez lancer une exception de validation avec la méthode `throwError()`:
+:::warning Exceptions
+Vous pouvez lancer une exception de validation avec la méthode `throwError()` :
+:::
 
 ```php
 $validation = validator($data, $rules);
@@ -165,9 +179,13 @@ class UserController
 
 ## Bonnes pratiques
 
-1. **Validation précoce**: Validez les données le plus tôt possible dans le cycle de vie de la requête.
-2. **Messages clairs**: Utilisez des messages d'erreur descriptifs et compréhensibles.
-3. **Règles composées**: Combinez plusieurs règles pour une validation robuste.
-4. **Sécurité**: Utilisez toujours la validation côté serveur, même si vous avez une validation côté client.
+:::tip Recommandations
+Suivez ces bonnes pratiques pour une validation efficace et sécurisée :
+:::
+
+1. **Validation précoce** : Validez les données le plus tôt possible dans le cycle de vie de la requête.
+2. **Messages clairs** : Utilisez des messages d'erreur descriptifs et compréhensibles.
+3. **Règles composées** : Combinez plusieurs règles pour une validation robuste.
+4. **Sécurité** : Utilisez toujours la validation côté serveur, même si vous avez une validation côté client.
 
 <SuggestionFeature />

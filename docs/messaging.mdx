@@ -1,13 +1,17 @@
 ---
 id: messaging
-title: "🎯 Messaging"
+title: "🎯 Système de messaging"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le système de messaging de Bow Framework est un outil puissant qui permet d'envoyer des notifications via différents canaux (email, base de données, SMS). Il est conçu pour être flexible, extensible et facile à utiliser. Que vous ayez besoin d'envoyer des emails de bienvenue, des notifications d'activité ou des alertes système, le système de messaging vous couvre.
+:::info À propos du système de messaging
+Le système de messaging de Bow Framework est un outil puissant qui permet d'envoyer des notifications via différents canaux (email, base de données, SMS). Il est conçu pour être flexible, extensible et facile à utiliser.
+:::
+
+Que vous ayez besoin d'envoyer des emails de bienvenue, des notifications d'activité ou des alertes système, le système de messaging vous couvre.
 
 ## Configuration
 
@@ -39,7 +43,7 @@ use Bow\Database\Barry\Model;
 class WelcomeMessage extends Messaging
 {
   /**
-   * Constructeur pour passer des données à la notification
+   * Constructeur - passe des données à la notification
    */
   public function __construct(
     private string $customMessage = "Bienvenue!"
@@ -47,7 +51,7 @@ class WelcomeMessage extends Messaging
   }
 
   /**
-   * Configuration du message email
+   * Configure le message email
    */
   public function toMail(Model $context): ?Envelop
   {
@@ -61,7 +65,7 @@ class WelcomeMessage extends Messaging
   }
 
   /**
-   * Configuration de la notification en base de données
+   * Configure la notification en base de données
    */
   public function toDatabase(Model $context): array
   {
@@ -76,7 +80,7 @@ class WelcomeMessage extends Messaging
   }
 
   /**
-   * Définition des canaux à utiliser
+   * Définit les canaux à utiliser
    */
   public function channels(Model $context): array
   {
@@ -191,7 +195,9 @@ $user->sendMessage(new NewCommentMessage([
 
 ### Envoi en File d'Attente
 
-L'envoi en file d'attente est asynchrone et permet de meilleures performances :
+:::tip Performances optimales
+L'envoi en file d'attente est asynchrone et permet de meilleures performances. Utilisez cette méthode pour les notifications non critiques.
+:::
 
 ```php
 // File d'attente par défaut
@@ -239,7 +245,11 @@ public function toMail(Model $context): Envelop
 
 ### Base de Données
 
-Le canal de base de données est idéal pour les notifications in-app. Structure complète :
+Le canal de base de données est idéal pour les notifications in-app.
+
+:::info Structure de la table
+Voici la structure complète de la table `notifications` nécessaire pour le canal database :
+:::
 
 ```sql
 CREATE TABLE notifications (
@@ -277,6 +287,10 @@ public function toDatabase(Model $context): array
 ```
 
 ## Extension du Système
+
+:::tip Extensibilité
+Vous pouvez créer vos propres canaux personnalisés pour envoyer des notifications via d'autres moyens (SMS, Slack, Push, etc.).
+:::
 
 ### Création d'un Nouveau Canal
 
@@ -318,11 +332,15 @@ public function create(Loader $config): void
 
 ## Bonnes Pratiques
 
-1. **Segmentation** : Créez des notifications spécifiques pour chaque cas d'utilisation
-2. **Files d'attente** : Utilisez les files d'attente pour les notifications non urgentes
-3. **Personnalisation** : Permettez aux utilisateurs de choisir leurs canaux préférés
-4. **Tests** : Testez vos notifications avec des cas réels
-5. **Monitoring** : Surveillez les échecs d'envoi et mettez en place des retry policies
+:::warning Recommandations importantes
+Suivez ces bonnes pratiques pour un système de messaging robuste et performant.
+:::
+
+1. **Segmentation** - Créez des notifications spécifiques pour chaque cas d'utilisation
+2. **Files d'attente** - Utilisez les files d'attente pour les notifications non urgentes
+3. **Personnalisation** - Permettez aux utilisateurs de choisir leurs canaux préférés
+4. **Tests** - Testez vos notifications avec des cas réels
+5. **Monitoring** - Surveillez les échecs d'envoi et mettez en place des stratégies de nouvelle tentative
 
 ## Débogage
 

@@ -5,55 +5,84 @@ title: "📯 Front-End"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-Bow est preset (Préconfiguré) avec un environment Frontend, notamment avec [Reacjs](https://reactjs.org), [Vuejs](https://vuejs.org) et [Sass](https://sass-lang.com) base sur le package [laravel-mix](https://laravel-mix.com). Ce qui permet d'accélérer le développement d'application web.
+## Introduction
 
-## Utilisation
+Bow est préconfiguré avec un environnement Frontend moderne, incluant [React](https://reactjs.org), [Vue.js](https://vuejs.org) et [Sass](https://sass-lang.com), basé sur le package [Laravel Mix](https://laravel-mix.com). Cette configuration permet d'accélérer considérablement le développement d'applications web.
 
-Pour lancer la compilation, allez dans la racine de votre application et taper `npm install` ou `yarn install` dans votre console, en fonction du gestionnaire de package que vous utilisez.
+## Installation des dépendances
 
-### Compilation simplement
+Pour lancer la compilation, rendez-vous dans la racine de votre application et tapez `npm install` ou `yarn install` dans votre console, selon le gestionnaire de packages que vous utilisez.
 
-Lance la compilation des fichiers définis dans `webpack.mix.js`.
+```bash
+npm install
+# ou
+yarn install
+```
+
+## Commandes de compilation
+
+### Compilation en mode développement
+
+Lance la compilation des fichiers définis dans `webpack.mix.js` sans optimisation.
 
 ```bash
 npm run dev
 ```
 
-### Compilation et minification les fichiers sources
+### Compilation en mode production
 
-Compile les sources définis dans `webpack.mix.js` et optimise les fichiers.
+Compile et minifie les sources définies dans `webpack.mix.js` pour optimiser les performances.
 
 ```bash
 npm run prod
 ```
 
-### Surveiller le changement de fichier et récompile en fonction
+### Surveiller les changements
 
-Ceci permet de surveiller le changement des fichiers définis dans webpack.mix.js et ensuite rélance la compilation.
+Surveille automatiquement les changements des fichiers définis dans `webpack.mix.js` et relance la compilation à chaque modification.
 
 ```bash
 npm run watch
 ```
 
-### Pour lancer code sniffer
+:::tip Mode watch
+Cette commande est particulièrement utile pendant le développement, car elle recompile automatiquement vos assets dès que vous sauvegardez un fichier.
+:::
 
-Code sniffer c'est un outil qui permet de formater le code, validé sa qualité et réorganisé votre code dans le standard de développement (Ici me standard c'est le `psr-2`).
+### Formatage et validation du code
 
-Cette commande va aussi lancer `format` qui est simple outil de validation syntaxique pour PHP.
+Code Sniffer est un outil qui permet de formater le code, valider sa qualité et réorganiser votre code selon les standards de développement (ici le standard PSR-2).
+
+Cette commande lance également `format`, un outil de validation syntaxique pour PHP.
 
 ```bash
 npm run format
 ```
 
-## Webpack.mix.js
+## Configuration avec Webpack Mix
 
-`webpack.mix.js` est un fichier qui vous permet de définir les fichiers JavaScript, JSx et Sass à compiler et est préconfiguré comme suit:
+Le fichier `webpack.mix.js` vous permet de définir les fichiers JavaScript, JSX et Sass à compiler. Voici la configuration par défaut :
+
+```js
+const mix = require('laravel-mix');
+
+mix.react('assets/js/app.js', 'public/js')
+   .sass('assets/sass/app.scss', 'public/css');
+```
+
+### Personnalisation
+
+Vous pouvez facilement ajouter d'autres fichiers à compiler :
 
 ```js
 mix.react('assets/js/app.js', 'public/js')
-  .sass('assets/js/app.scss', 'public/css');
+   .sass('assets/sass/app.scss', 'public/css')
+   .js('assets/js/custom.js', 'public/js')
+   .version(); // Active le versioning des assets
 ```
 
-Pour plus d'information sur [laravel-mix](https://laravel-mix.com/docs/4.0/basic-example).
+:::info Documentation
+Pour plus d'informations sur toutes les fonctionnalités de Laravel Mix, consultez la [documentation officielle](https://laravel-mix.com/docs).
+:::
 
 <SuggestionFeature />

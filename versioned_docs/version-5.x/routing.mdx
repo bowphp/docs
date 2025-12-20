@@ -7,17 +7,21 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le routage est un élément essentiel dans le développement d'une application web. Il permet de relier une URL à une action spécifique dans le contrôleur de l'application. Dans BowPHP, le système de routage est directement intégré à l'instance de l'application, via la variable superglobale `$router`.
+:::info À propos du routage
+Le routage est un élément essentiel dans le développement d'une application web. Il permet de relier une URL à une action spécifique dans le contrôleur de l'application.
+:::
+
+Dans Bow Framework, le système de routage est directement intégré à l'instance de l'application, via la variable superglobale `$router`.
 
 Les routes de l'application se définissent dans le fichier `app.php`, qui se trouve dans le dossier `routes` de votre projet.
 
 ## Mappage d'URL
 
-Le système de routage de BowPHP permet de faire correspondre une URL à un contrôleur ou une action. Cela se fait en associant une URL à une méthode HTTP (`GET`, `POST`, `PUT`, `DELETE`, etc.) et en définissant l'action à exécuter lorsqu'une requête correspond à cette route.
+Le système de routage de Bow Framework permet de faire correspondre une URL à un contrôleur ou une action. Cela se fait en associant une URL à une méthode HTTP (`GET`, `POST`, `PUT`, `DELETE`, etc.) et en définissant l'action à exécuter lorsqu'une requête correspond à cette route.
 
 ### Structure du Routage
 
-Le routage dans BowPHP s'écrit ainsi :
+Le routage dans Bow Framework s'écrit ainsi :
 
 ```php
 $router->[method](url, action);
@@ -37,8 +41,9 @@ $router->get('/', function () {
 });
 ```
 
-> **Qu'est-ce qu'une closure ?**
-Une *closure* est une fonction anonyme qui peut être définie à la volée et utilisée dans le routage de BowPHP. Pour plus d'infos, consultez la [documentation sur les closures](http://php.net/manual/fr/class.closure.php).
+:::tip Qu'est-ce qu'une closure ?
+Une *closure* est une fonction anonyme qui peut être définie à la volée et utilisée dans le routage de Bow Framework. Pour plus d'informations, consultez la [documentation sur les closures](http://php.net/manual/fr/class.closure.php).
+:::
 
 #### Avec un tableau de fonctions (callables) :
 
@@ -57,7 +62,9 @@ $callables[] = function () {
 $router->get('/', $callables);
 ```
 
-> **Attention** : La première fonction doit retourner `true` pour permettre à la suivante de s'exécuter. Si elle retourne `false`, l'exécution des fonctions suivantes s'arrêtera.
+:::warning Attention
+La première fonction doit retourner `true` pour permettre à la suivante de s'exécuter. Si elle retourne `false`, l'exécution des fonctions suivantes s'arrêtera.
+:::
 
 #### Avec un contrôleur :
 
@@ -81,7 +88,7 @@ $router->get('/', UserController::class);
 
 ## Liste des Méthodes de Mappage
 
-Voici les principales méthodes de routage dans BowPHP :
+Voici les principales méthodes de routage dans Bow Framework :
 
 ```php
 $router->get($url, $action);
@@ -142,21 +149,23 @@ $router->options('/', function () {
 });
 ```
 
-:::note
-**Note importante** : Les navigateurs ne supportent pas les méthodes `DELETE`, `PUT` et `PATCH` nativement. Pour contourner cette limitation, vous pouvez ajouter un champ caché dans vos formulaires HTML :
-:::
+:::note Note importante
+Les navigateurs ne supportent pas les méthodes `DELETE`, `PUT` et `PATCH` nativement. Pour contourner cette limitation, vous pouvez ajouter un champ caché dans vos formulaires HTML :
 
 ```html
 <input type="hidden" name="_method" value="DELETE">
 ```
 
-Ceci va permettre à BowPHP de comprendre que vous voulez contacter la route associée à la methode `DELETE`
+Ceci va permettre à Bow Framework de comprendre que vous voulez contacter la route associée à la méthode `DELETE`.
+:::
 
 ## Mappage Multiple
 
-### `match`: Mappage avec plusieurs Méthodes HTTP
+### `match` - Mappage avec plusieurs Méthodes HTTP
 
-Si vous souhaitez faire correspondre plusieurs méthodes HTTP (comme `GET` et `POST`) à une même URL, vous pouvez utiliser la méthode `match` :
+:::tip Méthode match
+Si vous souhaitez faire correspondre plusieurs méthodes HTTP (comme `GET` et `POST`) à une même URL, vous pouvez utiliser la méthode `match`.
+:::
 
 ```php
 $router->match(['GET', 'POST'], '/users', function () {
@@ -178,7 +187,7 @@ $router->match(['GET', 'POST'], '/users', function (Request $request) {
 });
 ```
 
-### `any`: Mappage avec n'importe quelle Méthode HTTP
+### `any` - Mappage avec n'importe quelle Méthode HTTP
 
 Si vous souhaitez que n'importe quelle méthode HTTP corresponde à une URL, vous pouvez utiliser `any` :
 
@@ -208,8 +217,8 @@ $router->prefix('/users', function () use ($router) {
 });
 ```
 
-:::danger
-**Note** : La méthode `prefix` ne peut pas être imbriquée dans d'autres groupes de routes.
+:::danger Limitation importante
+La méthode `prefix` ne peut pas être imbriquée dans d'autres groupes de routes.
 :::
 
 
@@ -257,7 +266,9 @@ $router->get('/:name/:lastname/:number', function ($name, $lastname, $number) {
 ]);
 ```
 
-> **Note** : La méthode `where` permet de définir des règles de validation pour chaque variable capturée dans l'URL.
+:::tip Validation des variables
+La méthode `where` permet de définir des règles de validation pour chaque variable capturée dans l'URL.
+:::
 
 ### Nommer les Routes
 
@@ -288,7 +299,7 @@ $router->get('/:name', function ($name) {
 
 ### Composition d'Actions
 
-BowPHP permet également de combiner un contrôleur et un middleware pour une route spécifique. Voici un exemple :
+Bow Framework permet également de combiner un contrôleur et un middleware pour une route spécifique. Voici un exemple :
 
 ```php
 $router->get('/:name', [
@@ -299,7 +310,7 @@ $router->get('/:name', [
 
 ## Utilisation de la méthode `route`
 
-La méthode `route` dans BowPHP permet de définir une route de manière plus simple et flexible. Elle accepte un tableau de paramètres, ce qui vous permet de personnaliser la route de façon plus détaillée.
+La méthode `route` dans Bow Framework permet de définir une route de manière plus simple et flexible. Elle accepte un tableau de paramètres, ce qui vous permet de personnaliser la route de façon plus détaillée.
 
 ### Prototype de la méthode `route`
 
@@ -344,7 +355,9 @@ $router->route([
 ]);
 ```
 
-> **Note** : Pour plus d'informations sur les contrôleurs, consultez la section [Contrôleurs](./controllers).
+:::info En savoir plus
+Pour plus d'informations sur les contrôleurs, consultez la section [Contrôleurs](./controller).
+:::
 
 ### Exemple d'utilisation de `route` avec un contrôleur et un middleware
 
@@ -357,7 +370,9 @@ $router->route([
 ]);
 ```
 
-> **Note** : Pour en savoir plus sur les middlewares, consultez la section [Middleware](./middleware).
+:::info En savoir plus
+Pour en savoir plus sur les middlewares, consultez la section [Middlewares](./middleware).
+:::
 
 ### Exemple d'utilisation de `route` avec un contrôleur, un middleware et une restriction
 
@@ -371,6 +386,8 @@ $router->route([
 ]);
 ```
 
+:::tip Avantage de la méthode route
 Cette méthode est particulièrement utile lorsque vous avez besoin d'une syntaxe plus concise et que vous souhaitez avoir plus de contrôle sur les paramètres de votre route.
+:::
 
 <SuggestionFeature />

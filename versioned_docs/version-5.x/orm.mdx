@@ -14,13 +14,17 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Un ORM c'est une façon de rélier les tables entre elles en utilisant des classes. Ici chaque enregistrement d'une table représentera un Objet qui peut être en rélation avec d'autre enregistrement. C'est ce qu'on appelle en anglais **The Object Relation Mapping** et en français bennn, Mappage de rélation en Objet :wink:.
+:::info
+Un ORM (Object Relation Mapping) est une façon de relier les tables entre elles en utilisant des classes. Chaque enregistrement d'une table représente un objet qui peut être en relation avec d'autres enregistrements.
+:::
 
-L'ORM inclus avec Bow Framework fournit une implémentation ActiveRecord belle et simple pour travailler avec votre base de données. Chaque table de base de données a un "modèle" correspondant qui est utilisé pour interagir avec cette table. Les modèles vous permettent de rechercher des données dans vos tables, ainsi que d'insérer de nouveaux enregistrements dans la table.
+L'ORM inclus avec Bow Framework fournit une implémentation ActiveRecord simple et élégante pour travailler avec votre base de données. Chaque table de base de données a un "modèle" correspondant qui est utilisé pour interagir avec cette table. Les modèles vous permettent de rechercher des données dans vos tables, ainsi que d'insérer de nouveaux enregistrements.
 
-Dans tout bon Framework qui se respecte, il y a un système de ORM et qui possède un nom super mignon. Celui de Bow se nomme **BARRY**, n'est pas mignon ça :smile:.
+Dans tout bon framework qui se respecte, il y a un système ORM avec un nom sympathique. Celui de Bow se nomme **Barry**.
 
-> Avant de commencer, assurez-vous de configurer une connexion à la base de données dans `config/database.php`.
+:::warning Prérequis
+Avant de commencer, assurez-vous de configurer une connexion à la base de données dans `config/database.php`.
+:::
 
 Avant de continuer, veuillez ajouter une migration :
 
@@ -43,25 +47,27 @@ public function up()
 }
 ```
 
-En fin de faire la migration:
+Enfin, faites la migration :
 
 ```bash
 php bow migration:migrate
 ```
 
-> Cette migration sera utilisé pour vous permettre de faire directement les tests sur le modèle `App\Models\Todo::class`.
+:::tip Information
+Cette migration sera utilisée pour vous permettre de faire directement les tests sur le modèle `App\Models\Todo::class`.
+:::
 
-## Ajouter un model
+## Ajouter un modèle
 
-Pour ajouter un modèle il faut utiliser la ligne de commande `php bow` avec la commande `add:model` suivi du nom du model.
+Pour ajouter un modèle, il faut utiliser la ligne de commande `php bow` avec la commande `add:model` suivi du nom du modèle.
 
 ```bash
 php bow add:model Todo
 ```
 
-Après création du modèle, un fichier du meme nom sera créer, dans notre cas `Todo.php`, à la racine du dossier `app/Models`.
+Après création du modèle, un fichier du même nom sera créé, dans notre cas `Todo.php`, à la racine du dossier `app/Models`.
 
-Voici un aperçu du fichier:
+Voici un aperçu du fichier :
 
 ```php
 namespace App\Models;
@@ -74,13 +80,15 @@ class Todo extends Model
 }
 ```
 
-> Avant d'utiliser le model vérifier que vous avez configurer votre base de donnée
+:::warning Important
+Avant d'utiliser le modèle, vérifiez que vous avez configuré votre base de données.
+:::
 
-### Nom de Table
+### Nom de table
 
-Notez que nous n'avons pas indiqué à BARRY quelle table utiliser pour notre modèle Todo. Par convention, le "snake case", le nom pluriel de la classe sera utilisé comme nom de table à moins qu'un autre nom ne soit explicitement spécifié.
+Notez que nous n'avons pas indiqué à Barry quelle table utiliser pour notre modèle `Todo`. Par convention, en "snake_case", le nom pluriel de la classe sera utilisé comme nom de table à moins qu'un autre nom ne soit explicitement spécifié.
 
-Vous pouvez spécifier manuellement un nom de table en définissant une propriété de table sur votre modèle:
+Vous pouvez spécifier manuellement un nom de table en définissant une propriété `table` sur votre modèle :
 
 ```php
 namespace App\Models;
@@ -100,7 +108,7 @@ class Todo extends Model
 
 ### Clés primaires
 
-BARRY supposera également que chaque table a une colonne de clé primaire nommée id. Vous pouvez définir une propriété `$primary_key` protégée pour remplacer cette convention:
+Barry supposera également que chaque table a une colonne de clé primaire nommée `id`. Vous pouvez définir une propriété `$primary_key` protégée pour remplacer cette convention :
 
 ```php
 namespace App\Models;
@@ -120,7 +128,9 @@ class Todo extends Model
 
 ## Récupérer les données
 
-Une fois que vous avez créé un modèle et sa table de base de données associée, vous êtes prêt à commencer à récupérer les données de votre base de données. Considérez chaque modèle BARRY comme un puissant [générateur de requêtes](./query-builder) vous permettant d'interroger couramment la table de base de données associée au modèle.
+:::info
+Une fois que vous avez créé un modèle et sa table de base de données associée, vous êtes prêt à commencer à récupérer les données. Considérez chaque modèle Barry comme un puissant [générateur de requêtes](./query-builder) vous permettant d'interroger la table de base de données associée au modèle.
+:::
 
 Par exemple:
 
@@ -144,11 +154,13 @@ $todo = Todo::find(1);
 $todo = Todo::findBy('id', 1);
 ```
 
-> La méthode peut aussi retourner `null` dans le case ou il y a aucun enrégistrement trouvé
+:::tip Remarque
+La méthode peut aussi retourner `null` dans le cas où il n'y a aucun enregistrement trouvé.
+:::
 
 ## Ajout de contraintes supplémentaires
 
-La méthode BARRY `all` retournera tous les résultats dans le tableau du modèle. Étant donné que chaque modèle BARRY sert de [générateur de requêtes](./query-builder), vous pouvez également ajouter des contraintes aux requêtes, puis utiliser la méthode get pour récupérer les résultats:
+La méthode Barry `all` retournera tous les résultats dans le tableau du modèle. Étant donné que chaque modèle Barry sert de [générateur de requêtes](./query-builder), vous pouvez également ajouter des contraintes aux requêtes, puis utiliser la méthode `get` pour récupérer les résultats :
 
 ```php
 $flights = App\Models\Todo::where('status', 'done')
@@ -238,7 +250,7 @@ $todo->title = 'Shopping pour Franck';
 $todo->save();
 ```
 
-Ou bien vous pouvez aussi utiliser la methode `update`. Seulement vous dévez definir les conditions pour ainsi limiter l'impact de la mise à jour.
+Vous pouvez aussi utiliser la méthode `update`. Cependant, vous devez définir les conditions pour limiter l'impact de la mise à jour.
 
 ```php
 use App\Models\Todo;
@@ -249,7 +261,7 @@ Todo::where('status', 'done')
 
 La méthode `update` attend un tableau de paires de colonnes et de valeurs représentant les colonnes à mettre à jour.
 
-## Suppression de donnée
+## Suppression de données
 
 De même, une fois récupéré, un objet Active Record peut être détruit, ce qui le supprime de la base de données.
 

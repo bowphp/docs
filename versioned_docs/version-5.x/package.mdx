@@ -7,7 +7,9 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Ce système permet d'étendre votre application, de gréffer des packages externe dans votre application Bow Framework.
+:::info
+Ce système permet d'étendre votre application et de greffer des packages externes dans Bow Framework.
+:::
 
 ## Création de plugin
 
@@ -20,19 +22,23 @@ php bow add:configuration PluginConfiguration
 Le fichier `PluginConfiguration.php` sera créé dans le dossier `app/Configurations` qui contient deux méthodes `create` et `run`.
 
 - `create` permet d'initialiser le package
-- `run` permet de lancer d'initialisation le package.
+- `run` permet de lancer l'initialisation du package
 
-Dans l'initialisation des packages, c'est la methode create qui ce lancera avant pour tous le autre packages qui seront définis au-dessus dans votre configuration ensuite la methode `run` sera dans le même ordre.
+Dans l'initialisation des packages, c'est la méthode `create` qui se lancera en premier pour tous les autres packages qui seront définis dans votre configuration, ensuite la méthode `run` sera exécutée dans le même ordre.
 
-> N'Essayez pas de contacter un package ici si vous attendez qu'il soit d'abord configurer.
+:::warning Attention
+N'essayez pas de contacter un package ici si vous attendez qu'il soit d'abord configuré.
+:::
 
-Dans le fichier de configuration, Bow va injecter le [DIC](https://fr.wikipedia.org/wiki/Injection_de_d%C3%A9pendances) et sera accéssible via la propriété `$this->container`. Plus d'information sur le [DIC](./container) de Bow.
+Dans le fichier de configuration, Bow va injecter le [DIC](https://fr.wikipedia.org/wiki/Injection_de_d%C3%A9pendances) et sera accessible via la propriété `$this->container`. Plus d'informations sur le [DIC](./container) de Bow.
 
 ### Exemple de création
 
-Nous allons faire un plugin aui va vérifier un email, alors on crée la configuration avec le nom `EmailCheckerConfiguration`:
+Nous allons créer un plugin qui va vérifier un email. Pour cela, nous créons la configuration avec le nom `EmailCheckerConfiguration` :
 
-> Notez que c'est un exemple pour vous montrer comment vous y prendre, cet exemple dans un vrai projet aurait pu être traité autrement.
+:::tip Remarque
+Cet exemple est fourni à titre pédagogique. Dans un vrai projet, cette fonctionnalité pourrait être traitée différemment.
+:::
 
 ```bash
 php bow add:configuration EmailCheckerConfiguration
@@ -76,7 +82,7 @@ class EmailCheckController extends Controller
 }
 ```
 
-Nous allons maintenant créer note configuration :
+Nous allons maintenant créer notre configuration :
 
 ```php title="app/Configurations/EmailCheckController.php"
 namespace App\Configurations;

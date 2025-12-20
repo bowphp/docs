@@ -17,56 +17,88 @@ Pour ajouter un seeder, on passe par `php bow` avec la commande `add:seeder` ens
 php bow add:seeder pets
 ```
 
-Un fichier `pets.php` sera créé dans le dossier `seeders`. En voici le contenu :
+Un fichier avec un timestamp sera créé dans le dossier `seeders` (par exemple `20251220174703-pets-seeder.php`). En voici le contenu :
 
 ```php
-/**
- * The pets seeder
- *
- * @see https://github.com/fzaninotto/Faker for all documentation
- */
-$faker = \Faker\Factory::create();
+<?php
 
-$seeds['pets'] = [];
+use App\Models\Pet;
+use Faker\Factory as FakerFactory;
 
-foreach (range(1, 5) as $key) {
-  $seeds['pets'][] = [
-    'name' => $faker->name,
-    'created_at' => date('Y-m-d H:i:s'),
-    'updated_at' => date('Y-m-d H:i:s'),
-  ];
+class PetsSeeder20251220174703
+{
+    public function run()
+    {
+        $faker = FakerFactory::create();
+
+        foreach (range(1, 5) as $value) {
+            $pet = [
+                'name' => $faker->name,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+
+            Pet::create($pet);
+        }
+    }
 }
-
-return $seeds;
 ```
 
 :::note
-La clé `pets` est le nom de la table du seeding. Vous pouvez aussi utiliser le nom de la classe concerné `App\Models\Pet::class' si vous avez créé.
-Voir la [documentation](./orm) les modèles
+Le seeder est maintenant une classe avec une méthode `run()`. Le nom de la classe inclut un timestamp pour éviter les conflits. Vous pouvez utiliser le modèle correspondant (`Pet::create()`) pour insérer les données.
+Voir la [documentation](./orm) sur les modèles pour plus d'informations.
 :::
 
 ## Lancer le seeding
 
-Pour lancer le seeding, on utilise la commande `seed:table` suivie du nom de la table.
+Pour lancer le seeding, on utilise la commande `seed:file` suivie du nom de la classe du seeder.
 
 ```bash
-php bow seed:table pets
+php bow seed:file PetsSeeder20251220174703
 ```
 
-Vous avez la possibilité de lancer tous les seeding avec la commande `seed:all`. Cela fera le seeding de tous les fichiers dans `seeders` en se basant sur le fichier `_database.php`.
+Le seeder correspondant sera exécuté et les données seront insérées dans la base de données via la méthode `create()` du modèle.
+
+Vous avez la possibilité de lancer tous les seeding avec la commande `seed:all`. Cela exécutera tous les seeders dans le dossier `seeders`.
 
 ```bash
 php bow seed:all
 ```
 
-## Helper
+## Personnalisation du seeder
 
-Souvent, vous sera tenté de faire des seeding lorsque vous testez votre application. Le helper `app_db_seed`, très pratique vous permettra de faire des seeding en plein test par exemple
+Vous pouvez personnaliser le seeder selon vos besoins. Voici un exemple plus complet avec le modèle User :
 
 ```php
-app_db_seed("user", $overrides = ["name" => "Franck"]);
+<?php
+
+use App\Models\User;
+use Faker\Factory as FakerFactory;
+
+class UserSeeder20251220174703
+{
+    public function run()
+    {
+        $faker = FakerFactory::create();
+
+        foreach (range(1, 10) as $value) {
+            $user = [
+                'name' => $faker->name,
+                'description' => $faker->text(100),
+                'email' => $faker->unique()->email,
+                'password' => app_hash('password'),
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+
+            User::create($user);
+        }
+    }
+}
 ```
 
-Avec `$overrides` vous pouvez modifier des valeurs du seeding.
+:::tip
+Utilisez `$faker->unique()` pour garantir l'unicité des valeurs comme les emails. Consultez la [documentation Faker](https://github.com/fzaninotto/Faker) pour voir toutes les possibilités de génération de données.
+:::
 
 <SuggestionFeature />

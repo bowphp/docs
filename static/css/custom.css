@@ -2,12 +2,12 @@
 
 :root {
   /* Typography - Optimized for readability */
-  --ifm-font-family-base: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", 
+  --ifm-font-family-base: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", 
     Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   --ifm-font-family-monospace: "JetBrains Mono", "Fira Code", "Cascadia Code", "SF Mono", 
     Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   
-  --ifm-font-size-base: 16px;
+  --ifm-font-size-base: 15px;
   --ifm-line-height-base: 1.7;
   --ifm-font-weight-normal: 400;
   --ifm-font-weight-semibold: 600;
@@ -189,47 +189,47 @@ article p {
   --site-color-checkbox-checked-bg: hsl(167deg 56% 73% / 10%);
   --docusaurus-highlighted-code-line-bg: rgb(66 66 66 / 35%);
   
-  /* Optimized dark colors for eye comfort */
-  --ifm-background-color: #0d1117;
-  --ifm-background-surface-color: #161b22;
-  --ifm-color-emphasis-0: #21262d;
-  --ifm-color-emphasis-100: #30363d;
-  --ifm-color-emphasis-200: #373e47;
-  --ifm-color-emphasis-300: #444c56;
-  --ifm-color-emphasis-400: #545d68;
-  --ifm-color-emphasis-600: #768390;
-  --ifm-color-emphasis-700: #8b949e;
-  --ifm-color-emphasis-800: #b1bac4;
-  --ifm-color-emphasis-900: #c9d1d9;
-  --ifm-color-emphasis-1000: #e6edf3;
+  /* Optimized dark colors for eye comfort - Darker theme */
+  --ifm-background-color: #151515;
+  --ifm-background-surface-color: #1a1a1a;
+  --ifm-color-emphasis-0: #1f1f1f;
+  --ifm-color-emphasis-100: #242424;
+  --ifm-color-emphasis-200: #2a2a2a;
+  --ifm-color-emphasis-300: #323232;
+  --ifm-color-emphasis-400: #3e3e3e;
+  --ifm-color-emphasis-600: #5a5a5a;
+  --ifm-color-emphasis-700: #757575;
+  --ifm-color-emphasis-800: #9e9e9e;
+  --ifm-color-emphasis-900: #b8b8b8;
+  --ifm-color-emphasis-1000: #d4d4d4;
   
   /* Slightly warmer text color to reduce eye strain */
-  --ifm-font-color-base: #c9d1d9;
-  --ifm-font-color-base-inverse: #0d1117;
-  --ifm-font-color-secondary: #8b949e;
+  --ifm-font-color-base: #b8b8b8;
+  --ifm-font-color-base-inverse: #151515;
+  --ifm-font-color-secondary: #757575;
   
   /* Card and content backgrounds */
-  --ifm-card-background-color: #161b22;
-  --ifm-code-background: #161b22;
-  --ifm-pre-background: #0d1117;
+  --ifm-card-background-color: #1a1a1a;
+  --ifm-code-background: #1a1a1a;
+  --ifm-pre-background: #151515;
   
   /* Navbar with subtle backdrop */
-  --ifm-navbar-background-color: rgba(13, 17, 23, 0.95);
-  --ifm-navbar-shadow: 0 1px 0 0 rgba(48, 54, 61, 0.5);
+  --ifm-navbar-background-color: rgba(21, 21, 21, 0.98);
+  --ifm-navbar-shadow: 0 1px 0 0 rgba(36, 36, 36, 0.6);
   
   /* Sidebar */
-  --ifm-menu-color-background-active: rgba(48, 54, 61, 0.6);
-  --ifm-menu-color-background-hover: rgba(48, 54, 61, 0.4);
+  --ifm-menu-color-background-active: rgba(36, 36, 36, 0.7);
+  --ifm-menu-color-background-hover: rgba(36, 36, 36, 0.5);
   
   /* Footer */
-  --ifm-footer-background-color: #0d1117;
-  --ifm-footer-color: #8b949e;
-  --ifm-footer-link-color: #c9d1d9;
+  --ifm-footer-background-color: #151515;
+  --ifm-footer-color: #757575;
+  --ifm-footer-link-color: #b8b8b8;
   
   /* Scrollbar (for webkit browsers) */
-  --ifm-scrollbar-track-background-color: #161b22;
-  --ifm-scrollbar-thumb-background-color: #30363d;
-  --ifm-scrollbar-thumb-hover-background-color: #444c56;
+  --ifm-scrollbar-track-background-color: #1a1a1a;
+  --ifm-scrollbar-thumb-background-color: #242424;
+  --ifm-scrollbar-thumb-hover-background-color: #323232;
 }
 
 /* Custom scrollbar for dark mode */
@@ -254,7 +254,7 @@ article p {
 
 /* Reduce brightness of images in dark mode for eye comfort */
 [data-theme='dark'] img:not(.navbar__logo img):not(.footer__logo img) {
-  opacity: 0.9;
+  opacity: 0.85;
   transition: opacity var(--ifm-transition-fast) ease;
 }
 
@@ -310,10 +310,10 @@ article p {
 [data-theme='dark'] .footer {
   background: linear-gradient(
     180deg,
-    var(--ifm-background-color) 0%,
-    var(--ifm-color-emphasis-100) 100%
+    #151515 0%,
+    #1a1a1a 100%
   );
-  border-top-color: var(--ifm-color-emphasis-300);
+  border-top-color: var(--ifm-color-emphasis-200);
 }
 
 .footer::before {
@@ -438,8 +438,8 @@ article p {
 }
 
 [data-theme='dark'] .footer__social-link {
-  background: var(--ifm-color-emphasis-300);
-  color: var(--ifm-color-emphasis-900);
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-800);
 }
 
 .footer__social-link:hover {

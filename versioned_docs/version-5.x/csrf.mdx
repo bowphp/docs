@@ -9,7 +9,9 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 La protection contre les attaques CSRF (*Cross-Site Request Forgery*) est essentielle pour sécuriser vos applications web. Bow Framework fournit des outils simples et efficaces pour prévenir ces attaques en générant et en validant automatiquement des jetons CSRF.
 
+:::info Qu'est-ce qu'une attaque CSRF ?
 Une attaque CSRF consiste à tromper un utilisateur authentifié pour qu'il exécute une action non autorisée sur une application. Pour prévenir cela, Bow génère un **jeton CSRF unique** pour chaque session utilisateur active. Ce jeton est utilisé pour valider toutes les requêtes envoyées à l'application.
+:::
 
 ## Protection CSRF
 
@@ -22,21 +24,29 @@ Pour protéger vos formulaires, incluez un champ caché contenant le jeton CSRF 
 </form>
 ```
 
-Le middleware `Bow\Middleware\CsrfMiddleware::class`, inclus dans le groupe de middleware Web par défaut, vérifie automatiquement que le jeton fourni correspond à celui stocké dans la session.
+Le middleware `Bow\Middleware\CsrfMiddleware::class`, inclus dans le groupe de middleware web par défaut, vérifie automatiquement que le jeton fourni correspond à celui stocké dans la session.
 
-Vous pouvez activer ou désactivé la vérification automatique dans le fichier `config/app.php`, avec la clé `auto_csrf`, qui prend `true` ou `false`.
+### Configuration
+
+Vous pouvez activer ou désactiver la vérification automatique dans le fichier `config/app.php`, avec la clé `auto_csrf` :
 
 ```php
 return [
   ...
-  "auto_csrf" => true
+  "auto_csrf" => true,
   ...
 ];
 ```
 
+:::tip
+La vérification CSRF est activée par défaut (`true`). Il est recommandé de ne jamais la désactiver en production.
+:::
+
 ## Intégration avec JavaScript
 
 Lors de la création d'applications utilisant AJAX ou des bibliothèques JavaScript comme Axios ou jQuery, il est recommandé de configurer votre bibliothèque HTTP pour inclure automatiquement le jeton CSRF dans les en-têtes des requêtes.
+
+### Étape 1 : Ajouter le jeton CSRF dans une balise META
 
 Ajoutez le jeton CSRF à une balise META HTML :
 
@@ -44,11 +54,13 @@ Ajoutez le jeton CSRF à une balise META HTML :
 <meta name="csrf-token" content="{{ csrf_token() }}">
 ```
 
+### Étape 2 : Configurer votre bibliothèque JavaScript
+
 Ensuite, configurez votre bibliothèque pour inclure cet en-tête dans chaque requête :
 
-### Exemple avec jQuery
+#### Exemple avec jQuery
 
-```javascript
+```js
 $.ajaxSetup({
   headers: {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -56,9 +68,9 @@ $.ajaxSetup({
 });
 ```
 
-### Exemple avec Axios
+#### Exemple avec Axios
 
-```javascript
+```js
 import axios from 'axios';
 
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -76,6 +88,15 @@ Bow génère également un cookie nommé `XSRF-TOKEN` contenant le jeton CSRF ac
 
 Par exemple, des frameworks comme Angular et Axios utilisent ce cookie pour sécuriser les requêtes sans configuration supplémentaire.
 
+## Conclusion
+
 Avec Bow Framework, la mise en œuvre de la protection CSRF devient simple et efficace, vous permettant de vous concentrer sur le développement de fonctionnalités tout en assurant la sécurité de vos utilisateurs.
+
+:::tip Bonnes pratiques
+- Toujours activer la protection CSRF en production
+- Utiliser `csrf_field()` dans tous vos formulaires POST/PUT/DELETE
+- Configurer correctement les en-têtes CSRF pour les requêtes AJAX
+- Ne jamais désactiver la vérification CSRF sauf pour des endpoints API spécifiques et sécurisés autrement
+:::
 
 <SuggestionFeature />

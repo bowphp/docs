@@ -1,13 +1,15 @@
 ---
 id: auth
-title: "👮🏽 Authentification"
+title: "Authentification"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-L'authentification est un aspect essentiel de toute application web. BowPHP fournit un système d'authentification flexible et facile à configurer, qui prend en charge deux méthodes principales : l'authentification par session et l'authentification par JWT (JSON Web Token). Cette documentation vous guidera étape par étape pour intégrer et personnaliser le système d'authentification dans votre application.
+:::info
+L'authentification est un aspect essentiel de toute application web. Bow Framework fournit un système d'authentification flexible et facile à configurer, qui prend en charge deux méthodes principales : l'authentification par session et l'authentification par JWT (JSON Web Token). Cette documentation vous guidera étape par étape pour intégrer et personnaliser le système d'authentification dans votre application.
+:::
 
 ## Table des matières
 - [1. Configuration de l'authentification](#configuration)
@@ -18,7 +20,7 @@ L'authentification est un aspect essentiel de toute application web. BowPHP four
 
 ## 1. Configuration de l'authentification
 
-BowPHP utilise un fichier de configuration pour gérer les différentes options d'authentification. Ce fichier se trouve dans `config/auth.php`. Vous y définissez les types d'authentification que vous souhaitez utiliser, ainsi que les paramètres associés (comme les modèles utilisateurs et les clés de connexion).
+Bow Framework utilise un fichier de configuration pour gérer les différentes options d'authentification. Ce fichier se trouve dans `config/auth.php`. Vous y définissez les types d'authentification que vous souhaitez utiliser, ainsi que les paramètres associés (comme les modèles utilisateurs et les clés de connexion).
 
 ### Exemple de configuration
 
@@ -53,7 +55,9 @@ Dans cet exemple, vous avez deux types de "guards" : `web` pour les sessions cla
 
 ## 2. Modèle d'authentification
 
-Votre modèle utilisateur doit implémenter l'interface d'authentification de BowPHP. Cela se fait en étendant la classe `Bow\Auth\Authentication` dans votre modèle `User`.
+:::tip
+Votre modèle utilisateur doit implémenter l'interface d'authentification de Bow Framework. Cela se fait en étendant la classe `Bow\Auth\Authentication` dans votre modèle `User`.
+:::
 
 ### Exemple :
 
@@ -66,7 +70,7 @@ class User extends Authentication
 }
 ```
 
-Cela permet à BowPHP de gérer l'authentification de vos utilisateurs de manière transparente.
+Cela permet à Bow Framework de gérer l'authentification de vos utilisateurs de manière transparente.
 
 ## 3. Utilisation de base
 
@@ -74,7 +78,7 @@ Une fois votre configuration en place et votre modèle utilisateur configuré, v
 
 ### Méthode `guard`
 
-Le système d'authentification de BowPHP prend en charge plusieurs **guards**, qui sont des mécanismes distincts permettant de gérer l'authentification. Vous pouvez configurer plusieurs guards dans votre fichier `config/auth.php` (par exemple, un pour l'interface web et un autre pour les API).
+Le système d'authentification de Bow Framework prend en charge plusieurs **guards**, qui sont des mécanismes distincts permettant de gérer l'authentification. Vous pouvez configurer plusieurs guards dans votre fichier `config/auth.php` (par exemple, un pour l'interface web et un autre pour les API).
 
 La méthode `guard` permet de spécifier quel guard utiliser dans un contexte donné. Par défaut, le guard utilisé est celui défini dans la configuration (`web`), mais vous pouvez facilement spécifier un autre guard en fonction de vos besoins (par exemple, pour les API avec JWT).
 
@@ -94,8 +98,8 @@ Auth::guard('api')->attempts([
 ]);
 ```
 
-:::note
-Ici, `Auth::guard('web')` spécifie que nous voulons utiliser le guard `web`, qui est configuré pour l'authentification par session. Vous pouvez également remplacer `'web'` par `'api'` pour utiliser le guard configuré pour JWT. Vous pouvez aussi utiliser le helper `app_auth`
+:::tip
+Ici, `Auth::guard('web')` spécifie que nous voulons utiliser le guard `web`, qui est configuré pour l'authentification par session. Vous pouvez également remplacer `'web'` par `'api'` pour utiliser le guard configuré pour JWT. Vous pouvez aussi utiliser le helper `app_auth`.
 :::
 
 ### Méthode `attempts`
@@ -214,11 +218,13 @@ Auth::guard('web')->logout();
 
 ## 4. Authentification avec JWT
 
+:::warning
 Si vous souhaitez utiliser des tokens JWT pour l'authentification (très couramment utilisé dans les API), vous devez installer le package `bowphp/policier` :
 
 ```bash
 composer require bowphp/policier
 ```
+:::
 
 ### Configuration de JWT
 
@@ -254,7 +260,9 @@ $token = Auth::guard('api')->getToken();
 
 ## Middleware d'authentification
 
-Les middlewares permettent de protéger certaines routes de votre application, en assurant que seules les personnes authentifiées peuvent y accéder. BowPHP inclut un middleware d'authentification prêt à l'emploi.
+:::tip
+Les middlewares permettent de protéger certaines routes de votre application, en assurant que seules les personnes authentifiées peuvent y accéder. Bow Framework inclut un middleware d'authentification prêt à l'emploi.
+:::
 
 ### Exemple d'utilisation :
 
@@ -264,7 +272,9 @@ $app->get('/profile', function () {
 })->middleware('auth');
 ```
 
-Et aussi, vous utilisez JWT, vous devez utiliser le middleware `api`. Regarde la configuration [policier](./policier).
+:::info
+Et aussi, si vous utilisez JWT, vous devez utiliser le middleware `api`. Regardez la configuration [policier](./policier).
+:::
 
 ```php
 $app->get('/profile', function () {

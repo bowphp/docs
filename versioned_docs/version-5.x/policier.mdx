@@ -7,11 +7,13 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Policier permet de valider la demande via [JWT](https://jwt.io)
+:::info À propos de Policier
+Policier permet de valider les requêtes via [JWT](https://jwt.io) (JSON Web Tokens).
+:::
 
 ## Installation
 
-Pour installer la stratégie d'installation, vous devez utiliser `composer` (gestionnaire de paquets PHP) comme ceci.
+Pour installer le package, vous devez utiliser `composer` (gestionnaire de paquets PHP) comme ceci :
 
 ```bash
 composer require bowphp/policier
@@ -61,7 +63,7 @@ return [
   'signkey' => null,
 
   /**
-   * Signature en utilisant votre RSA, ce chargera automatique si la clé de hashage est de type RSA
+   * Signature en utilisant votre RSA, ce qui se chargera automatiquement si la clé de hachage est de type RSA
    */
   "keychain" => [
     /**
@@ -101,13 +103,15 @@ Policier::configure($configure);
 $policier = Policier::getInstance();
 ```
 
-Après la configuration, vous pouvez utiliser le helper `policier`:
+Après la configuration, vous pouvez utiliser le helper `policier` :
 
 ```php
 policier($action, ...$args);
 ```
 
-La valeur d'action doit être l'une de ces valeurs: `encode`, `decode`, `parse`, `verify`, `validate`.
+:::tip Actions disponibles
+La valeur d'action doit être l'une de ces valeurs : `encode`, `decode`, `parse`, `verify`, `validate`.
+:::
 
 ### Mise à jour ou Récupération de la configuration
 
@@ -149,7 +153,9 @@ echo $token;
 //=> eyJ0eX...OiJKV1.eyJpc3Mi...OiJsb2.l7v0bS0r...qnK1IeR
 ```
 
-`$token` est une instance de `Policier\Token` et implémente la méthode magique `__toString`. Vous pouvez obtenir l'heure d'expiration avec `expiredIn` et `getToken` pour prendre la valeur du token.
+:::info Instance Token
+`$token` est une instance de `Policier\Token` et implémente la méthode magique `__toString`. Vous pouvez obtenir l'heure d'expiration avec `expireIn` et `getToken` pour prendre la valeur du token.
+:::
 
 Via l'assistant:
 
@@ -256,9 +262,9 @@ policier('validate', $token, $claims);
 
 Si vous utilisez [Bow Framework](https://github.com/bowphp/app), vous pouvez utiliser le plugin de configuration `Policier\Bow\PolicierConfiguration::class` et le middleware `Policier\Bow\PolicierMiddleware::class`.
 
-Relier la configuration sur `app\Kernel.php`:
+Relier la configuration sur `app\Kernel.php` :
 
-```php titl="app\Kernel.php"
+```php title="app\Kernel.php"
 public function middlewares()
 {
   return [
@@ -294,7 +300,9 @@ Le token a été analysé dans l'instance de Policier dans le processus middlewa
 
 ### Personnalisation du Middleware
 
-Notez que vous pouvez créer un autre middleware qui étendra le middleware par defaut `Policier\Bow\PolicierMiddleware::class`. Ce qui vous donne la possibilité de changer les messages d'erreur en surchargant les methodes `getUnauthorizedMessage`, `getExpirateMessage`, `getExpirateCode` et `getUnauthorizedCode`.
+:::tip Personnalisation avancée
+Vous pouvez créer un autre middleware qui étendra le middleware par défaut `Policier\Bow\PolicierMiddleware::class`. Ce qui vous donne la possibilité de changer les messages d'erreur en surchargeant les méthodes `getUnauthorizedMessage`, `getExpirationMessage`, `getExpirationStatusCode` et `getUnauthorizedStatusCode`.
+:::
 
 ```bash
 php bow add:middleware CustomPolicierMiddleware
@@ -346,7 +354,7 @@ class CustomPolicierMiddleware extends PolicierMiddleware
   }
 
   /**
-   * Obtenir le code de réponse
+   * Obtenir le code de réponse pour l'expiration
    *
    * @return int
    */
@@ -359,7 +367,9 @@ class CustomPolicierMiddleware extends PolicierMiddleware
 
 #### Publier le middleware
 
-Pour publier le middleware personnalisé et écraser celui par défaut de Policier c'est très simple, il suffit seulement d'ajouter le middleware dans le fichier `app/Kernel/Loader.php` avec la clé `api`.
+:::info Publication du middleware personnalisé
+Pour publier le middleware personnalisé et écraser celui par défaut de Policier, il suffit d'ajouter le middleware dans le fichier `app/Kernel.php` avec la clé `policier`.
+:::
 
 ```php
 public function middlewares()

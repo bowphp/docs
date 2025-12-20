@@ -7,7 +7,9 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Bow fourni un api lié à la construction de requête. Avec la méthode `table` permet de construire une requête `sql` en se basant sur la nom de la table et retour une instance de [`Bow\Database\QueryBuilder::class`](https://bowphp.com/api/master/Bow/Database/QueryBuilder.html).
+:::info À propos du Query Builder
+Bow fournit une API liée à la construction de requêtes. La méthode `table` permet de construire une requête SQL en se basant sur le nom de la table et retourne une instance de [`Bow\Database\QueryBuilder::class`](https://bowphp.com/api/master/Bow/Database/QueryBuilder.html).
+:::
 
 ```php
 use Bow\Database\Database
@@ -23,16 +25,16 @@ $builder = app_db_table('users');
 ```
 
 Sur l'instance de la `QueryBuilder` de Bow, il y a plusieurs méthodes qui vont vous permettre de construire une requête SQL.
-Par exemple la methode `toSql` qui permet d'affichez la requête construite.
+Par exemple, la méthode `toSql` qui permet d'afficher la requête construite.
 
 ```php
 $builder->toSql();
 // select * from `users`
 ```
 
-## Récupéré les informations
+## Récupérer les informations
 
-Pour récupérer les informations avec le builder, vous devez utiliser le méthode `get` qui retourne une collection, `first` qui lui retourne `null` ou un objet `stdclass` et `last` qui se comporte comme `first` sauf qu'il retourne plutôt le dernier élément du résultat de l'exécution de la requête.
+Pour récupérer les informations avec le builder, vous devez utiliser la méthode `get` qui retourne une collection, `first` qui retourne `null` ou un objet `stdclass` et `last` qui se comporte comme `first` sauf qu'il retourne plutôt le dernier élément du résultat de l'exécution de la requête.
 
 ### Exemple avec `get`
 
@@ -46,7 +48,9 @@ foreach ($users as $user) {
 }
 ```
 
-> Notez que vous pouvez passer un tableau à `get` qui est une liste des colonnes de la projection comme ceci `$builder->get(['name'])`.
+:::tip Projection de colonnes
+Vous pouvez passer un tableau à `get` qui est une liste des colonnes de la projection comme ceci : `$builder->get(['name'])`.
+:::
 
 ### Exemple avec `first`
 
@@ -69,7 +73,7 @@ $user = $builder->last();
 
 #### Restriction simple
 
-Avec le builder, vous pouvez ajouter des restrictions simple sur la construction de la requête SQL avec la méthode `where`.
+Avec le builder, vous pouvez ajouter des restrictions simples sur la construction de la requête SQL avec la méthode `where`.
 
 ```php
 $users = app_db_table('users')->where('id', 1)->get();
@@ -169,7 +173,11 @@ $users = Database::table('users')->jump(10)->take(5)->get();
 
 ## Aggregates
 
-Le générateur de requêtes fournit également une variété de méthodes d'agrégation telles que `count`, `max`, `min`, `avg` et `sum`. Vous pouvez appeler n'importe laquelle de ces méthodes après avoir construit votre requête.
+:::info Méthodes d'agrégation
+Le générateur de requêtes fournit également une variété de méthodes d'agrégation telles que `count`, `max`, `min`, `avg` et `sum`.
+:::
+
+Vous pouvez appeler n'importe laquelle de ces méthodes après avoir construit votre requête.
 
 ```php
 $users = app_db_table('users')->count();
@@ -179,9 +187,9 @@ $price = app_db_table('orders')->max('price');
 $avg = app_db_table('orders')->avg('price');
 ```
 
-### Déterminer si des enregistrements existent
+### Vérifier si des enregistrements existent
 
-Au lieu d'utiliser la méthode `count` pour déterminer s'il existe des enregistrements correspondant aux contraintes de votre requête, vous pouvez utiliser la méthode `exists`:
+Au lieu d'utiliser la méthode `count` pour déterminer s'il existe des enregistrements correspondant aux contraintes de votre requête, vous pouvez utiliser la méthode `exists` :
 
 ```php
 $exists = app_db_table('users')->where('id', 1)->exists();
@@ -197,9 +205,13 @@ $price = app_db_table('orders')->select('price')->get();
 $price = app_db_table('orders')->select(['id', 'price'])->get();
 ```
 
-### Insertion d'information
+### Insertion d'informations
 
-Le générateur de requêtes fournit également une méthode `insert` pour insérer des enregistrements dans la table de base de données. La méthode insert accepte un tableau de noms de colonnes et de valeurs:
+:::tip Insertion de données
+Le générateur de requêtes fournit une méthode `insert` pour insérer des enregistrements dans la table de base de données.
+:::
+
+La méthode `insert` accepte un tableau de noms de colonnes et de valeurs :
 
 ```php
 app_db_table('users')->insert(
@@ -221,7 +233,11 @@ app_db_table('users')->where('id', 1)->update(
 
 ### Supprimer un enregistrement
 
-Le générateur de requêtes peut également être utilisé pour supprimer des enregistrements de la table via la méthode `delete`. Vous pouvez contraindre des instructions delete en ajoutant des clauses where avant d'appeler la méthode `delete`:
+:::warning Suppression de données
+Le générateur de requêtes peut également être utilisé pour supprimer des enregistrements de la table via la méthode `delete`.
+:::
+
+Vous pouvez contraindre des instructions `delete` en ajoutant des clauses `where` avant d'appeler la méthode `delete` :
 
 ```php
 app_db_table('users')->delete();

@@ -7,7 +7,9 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-L'API de test fonctionnel de BowPHP permet de tester vos API de manière fluide en utilisant des requêtes HTTP. Cette API est construite autour de PHPUnit, ce qui vous permet d'utiliser toute la puissance de ce framework pour effectuer des tests. Les principales opérations HTTP (GET, POST, PUT, DELETE, PATCH) sont couvertes, et il est possible d'ajouter des en-têtes ou des pièces jointes à vos requêtes.
+:::info
+L'API de test fonctionnel de Bow Framework permet de tester vos API de manière fluide en utilisant des requêtes HTTP. Cette API est construite autour de PHPUnit, ce qui vous permet d'utiliser toute la puissance de ce framework pour effectuer des tests. Les principales opérations HTTP (GET, POST, PUT, DELETE, PATCH) sont couvertes, et il est possible d'ajouter des en-têtes ou des pièces jointes à vos requêtes.
+:::
 
 ### Classe `TestCase`
 
@@ -15,9 +17,11 @@ La classe principale pour utiliser l'API de test est `TestCase`, qui étend la c
 
 ### **Méthodes de la classe `TestCase`**
 
-Le base_url des appèls HTTP est la valeur `APP_URL`, mais vous pouvez aussi la spécifier manuellement avec la propriété url dans la classe du test unitaire.
+:::tip Configuration
+Le `base_url` des appels HTTP est la valeur `APP_URL`, mais vous pouvez aussi la spécifier manuellement avec la propriété `url` dans la classe du test unitaire.
+:::
 
-#### **2. `attach(array $attach)`**
+#### **1. `attach(array $attach)`**
 Permet d'ajouter des pièces jointes (fichiers ou données) à vos requêtes.
 
 **Exemple d'utilisation** :
@@ -28,7 +32,7 @@ $test->attach([
 ]);
 ```
 
-#### **3. `withHeaders(array $headers)`**
+#### **2. `withHeaders(array $headers)`**
 Permet de spécifier des en-têtes supplémentaires pour toutes les requêtes suivantes.
 
 ```php
@@ -38,49 +42,49 @@ $test->withHeaders([
 ]);
 ```
 
-#### **4. `withHeader(string $key, string $value)`**
+#### **3. `withHeader(string $key, string $value)`**
 Ajoute un en-tête unique à vos requêtes.
 
 ```php
 $test->withHeader('X-Custom-Header', 'custom_value');
 ```
 
-#### **5. `get(string $url, array $param = [])`**
+#### **4. `get(string $url, array $param = [])`**
 Effectue une requête GET. Vous pouvez ajouter des paramètres supplémentaires à la requête.
 
 ```php
 $response = $test->get('/api/users', ['page' => 1]);
 ```
 
-#### **6. `post(string $url, array $param = [])`**
+#### **5. `post(string $url, array $param = [])`**
 Effectue une requête POST. Vous pouvez ajouter des données et des fichiers en utilisant la méthode `attach()`.
 
 ```php
 $response = $test->post('/api/users', ['name' => 'John Doe']);
 ```
 
-#### **7. `put(string $url, array $param = [])`**
+#### **6. `put(string $url, array $param = [])`**
 Effectue une requête PUT.
 
 ```php
 $response = $test->put('/api/users/1', ['name' => 'John Updated']);
 ```
 
-#### **8. `delete(string $url, array $param = [])`**
+#### **7. `delete(string $url, array $param = [])`**
 Effectue une requête DELETE. Cette méthode utilise `PUT` en interne avec le paramètre `_method` pour simuler une requête DELETE.
 
 ```php
 $response = $test->delete('/api/users/1');
 ```
 
-#### **9. `patch(string $url, array $param = [])`**
+#### **8. `patch(string $url, array $param = [])`**
 Effectue une requête PATCH. Comme pour `delete()`, cette méthode utilise `PUT` en interne.
 
 ```php
 $response = $test->patch('/api/users/1', ['name' => 'John Modified']);
 ```
 
-#### **10. `visit(string $method, string $url, array $params = [])`**
+#### **9. `visit(string $method, string $url, array $params = [])`**
 Effectue une requête HTTP générique en fonction de la méthode spécifiée (`get`, `post`, `put`, etc.).
 
 ```php
@@ -96,7 +100,7 @@ use Bow\Testing\TestCase;
 
 class UserApiTest extends TestCase
 {
-  protected ?string $url = 'http://localhost:8080'
+  protected ?string $url = 'http://localhost:8080';
 
   public function testCreateUser()
   {
@@ -135,12 +139,11 @@ class UserApiTest extends TestCase
 }
 ```
 
-La classe `Response` permet de manipuler les réponses HTTP dans le cadre de tests fonctionnels avec BowPHP. Elle encapsule un objet de la classe `HttpClientResponse` et expose plusieurs méthodes pour effectuer des assertions sur la réponse.
+## **Classe `Response` pour les tests fonctionnels**
 
-## **Classe `Response` pour les Tests Fonctionnels**
-
-### Introduction
-La classe `Response` est utilisée pour représenter une réponse HTTP dans le cadre des tests fonctionnels dans BowPHP. Elle permet d'effectuer des assertions sur le contenu de la réponse, son en-tête, son type de contenu et son code de statut.
+:::info
+La classe `Response` permet de manipuler les réponses HTTP dans le cadre de tests fonctionnels avec Bow Framework. Elle encapsule un objet de la classe `HttpClientResponse` et expose plusieurs méthodes pour effectuer des assertions sur la réponse.
+:::
 
 ### **Méthodes de la classe `Response`**
 
@@ -308,10 +311,10 @@ class UserApiTest extends TestCase
 }
 ```
 
-### Références
+## Références
 
-- [Documentation officielle de PHPUnit](https://phpunit.de/)
-
-Ce document peut être inclus dans la documentation officielle pour aider les utilisateurs de BowPHP à comprendre et à utiliser l'API de test fonctionnel de manière optimale.
+:::tip Documentation complémentaire
+Consultez la [documentation officielle de PHPUnit](https://phpunit.de/) pour plus d'informations sur les assertions et les fonctionnalités avancées.
+:::
 
 <SuggestionFeature />

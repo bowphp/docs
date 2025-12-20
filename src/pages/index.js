@@ -19,21 +19,13 @@ function HomepageHeader() {
       <div className="container">
         <div className={styles.heroContent}>
           <div className="text--center">
-            <div className={styles.logoWrapper}>
-              <img 
-                src={siteConfig.favicon} 
-                alt={`${siteConfig.title} logo`}
-                title={siteConfig.title}
-                loading="eager"
-              />
-            </div>
             <h1 className={clsx("hero__title", styles.heroTitle)}>
               {siteConfig.title}
             </h1>
             <p className={clsx("hero__subtitle", styles.heroSubtitle)}>
               {siteConfig.tagline}
             </p>
-            <div 
+            <div
               className={styles.heroDescription}
               dangerouslySetInnerHTML={{
                 __html: siteConfig.customFields.landingText,
@@ -42,13 +34,15 @@ function HomepageHeader() {
             <div className={styles.buttons}>
               <Link
                 className="button button--primary button--lg"
-                to="/docs/installation">
+                to="/docs/installation"
+              >
                 Démarrer →
               </Link>
               <Link
                 className="button button--outline button--primary button--lg"
                 to="/blog/televersement-de-fichiers-avec-bowphp"
-                style={{ fontWeight: 700 }}>
+                style={{ fontWeight: 700 }}
+              >
                 Téléversement de fichiers
               </Link>
             </div>
