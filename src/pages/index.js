@@ -62,8 +62,15 @@ function CodeSnippetSection() {
             <h2 className="text--center margin-bottom--lg">
               Simple, Élégant, Puissant
             </h2>
-            <p className="text--center margin-bottom--xl" style={{ fontSize: '1.125rem', color: 'var(--ifm-color-emphasis-700)' }}>
-              Découvrez la simplicité de BowPHP avec des exemples de code concrets
+            <p
+              className="text--center margin-bottom--xl"
+              style={{
+                fontSize: "1.125rem",
+                color: "var(--ifm-color-emphasis-700)",
+              }}
+            >
+              Découvrez la simplicité de BowPHP avec des exemples de code
+              concrets
             </p>
           </div>
         </div>
@@ -72,7 +79,7 @@ function CodeSnippetSection() {
             <Tabs groupId="code-examples" className={styles.codeTabs}>
               <TabItem value="routes" label="Routes" default>
                 <CodeBlock language="php" title="routes/app.php">
-{`$app->get('/hello/{name}', function($name) {
+                  {`$app->get('/hello/{name}', function($name) {
   return "Hello, $name!";
 });
 
@@ -85,10 +92,13 @@ $app->prefix('api', function() use ($app) {
 });`}
                 </CodeBlock>
               </TabItem>
-              
+
               <TabItem value="controller" label="Contrôleur">
-                <CodeBlock language="php" title="app/Controllers/UserController.php">
-{`namespace App\\Controllers;
+                <CodeBlock
+                  language="php"
+                  title="app/Controllers/UserController.php"
+                >
+                  {`namespace App\\Controllers;
 
 use Bow\\Http\\Request;
 use Bow\\Http\\Response;
@@ -110,6 +120,8 @@ class UserController
       'password' => password_hash($request->get('password'), PASSWORD_DEFAULT)
     ]);
 
+    $user->persist();
+
     return response()->json([
       'message' => 'Utilisateur créé avec succès',
       'user' => $user
@@ -118,16 +130,15 @@ class UserController
 }`}
                 </CodeBlock>
               </TabItem>
-              
+
               <TabItem value="database" label="Base de données">
                 <CodeBlock language="php" title="app/Models/User.php">
-{`namespace App\\Models;
+                  {`namespace App\\Models;
 
 use Bow\\Database\\Barry\\Model;
 
 class User extends Model
 {
-  protected $fillable = ['name', 'email', 'password'];
   protected $hidden = ['password'];
 }
 
@@ -144,10 +155,13 @@ $user->update(['name' => 'John Doe']);
 $user->posts()->where('published', true)->get();`}
                 </CodeBlock>
               </TabItem>
-              
+
               <TabItem value="middleware" label="Middleware">
-                <CodeBlock language="php" title="app/Middleware/AuthMiddleware.php">
-{`namespace App\\Middleware;
+                <CodeBlock
+                  language="php"
+                  title="app/Middleware/AuthMiddleware.php"
+                >
+                  {`namespace App\\Middleware;
 
 use Bow\\Http\\Request;
 
@@ -171,16 +185,16 @@ class AuthMiddleware
 }
 
 // Application dans routes/app.php
-$app->group(['middleware' => ['auth']], function() use ($app) {
-  $app->get('/dashboard', [DashboardController::class, 'index']);
-  $app->get('/profile', [ProfileController::class, 'show']);
+$router->middleware('auth')->prefix('/', function() use ($router) {
+  $router->get('/dashboard', [DashboardController::class, 'index']);
+  $router->get('/profile', [ProfileController::class, 'show']);
 });`}
                 </CodeBlock>
               </TabItem>
-              
+
               <TabItem value="validation" label="Validation">
                 <CodeBlock language="php" title="Validation des données">
-{`// Validation simple
+                  {`// Validation simple
 $request->validate([
   'email' => 'required|email',
   'age' => 'required|numeric|min:18',
@@ -204,10 +218,10 @@ if ($validation->fails()) {
 // alpha, alpha_dash, url, ip, date, unique, exists, etc.`}
                 </CodeBlock>
               </TabItem>
-              
+
               <TabItem value="response" label="Réponses">
                 <CodeBlock language="php" title="Types de réponses">
-{`// JSON
+                  {`// JSON
 return response()->json(['message' => 'Success'], 200);
 
 // Vue
