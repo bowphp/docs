@@ -236,8 +236,8 @@ return response()->download('/path/to/file.pdf');
 
 // Réponse personnalisée
 return response('Contenu', 200)
-  ->setHeader('Content-Type', 'text/plain')
-  ->setCookie('name', 'value', 3600);`}
+  ->withHeader('Content-Type', 'text/plain')
+  ->withCookie('name', 'value', 3600);`}
                 </CodeBlock>
               </TabItem>
             </Tabs>
