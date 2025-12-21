@@ -176,7 +176,7 @@ $response = $client->addAttach([
 ])->post('/upload-multiple');
 ```
 
-### `addHeaders`
+### `withHeaders`
 
 Ajoute des en-têtes HTTP personnalisés à la requête.
 
@@ -192,7 +192,7 @@ use Bow\Http\Client\HttpClient;
 
 $client = new HttpClient('https://api.example.com');
 $response = $client
-    ->addHeaders([
+    ->withHeaders([
         'Authorization' => 'Bearer your-api-token',
         'X-Custom-Header' => 'custom-value'
     ])

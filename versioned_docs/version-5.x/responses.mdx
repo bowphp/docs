@@ -83,10 +83,10 @@ Si dans votre API, la requête a été traitée avec succès et que vous n'avez 
 
 ### Ajouter un en-tête HTTP
 
-Souvent, vous serez amené à ajouter d'autres en-têtes HTTP à votre réponse HTTP. Les méthodes `addHeader` et `withHeaders` vous permettent de le faire.
+Souvent, vous serez amené à ajouter d'autres en-têtes HTTP à votre réponse HTTP. Les méthodes `withHeader` et `withHeaders` vous permettent de le faire.
 
 ```php
-$response->addHeader('Content-Type', 'application/json');
+$response->withHeader('Content-Type', 'application/json');
 ```
 
 Vous pouvez ajouter plusieurs en-têtes en même temps :
