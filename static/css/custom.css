@@ -508,3 +508,9 @@ article p {
     transform: none;
   }
 }
+
+.theme-doc-markdown {
+  h1 {
+    text-transform: uppercase !important;
+  }
+}

@@ -16,7 +16,6 @@
     "@cmfcmf/docusaurus-search-local": "^2.0.1",
     "@docusaurus/core": "^3.9.2",
     "@docusaurus/plugin-content-blog": "^3.9.2",
-    "@docusaurus/plugin-google-gtag": "^3.9.2",
     "@docusaurus/plugin-sitemap": "^3.9.2",
     "@docusaurus/preset-classic": "^3.9.2",
     "@docusaurus/theme-mermaid": "^3.9.2",
@@ -29,6 +28,7 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.9.2",
+    "@docusaurus/plugin-google-gtag": "^3.9.2",
     "@docusaurus/tsconfig": "^3.9.2",
     "@docusaurus/types": "^3.9.2",
     "react-medium-image-zoom": "^5.1.2"
