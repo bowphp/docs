@@ -9,19 +9,17 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 Bow Framework se conforme au modèle *MVC* (*M*odèle *V*ue *C*ontrôleur).
 
-| Dossier | Description |
-|---------|-------------|
-| __app__ | Contient la logique principale de votre application. Presque toutes les classes de votre application seront dans ce dossier |
-| __assets__ | Contient les scripts et fichiers de styles de l'application. Il contient entre autres les dossiers `js`, `sass`, `lang`. C'est là que vous allez mettre vos fichiers statiques et ensuite les compiler |
-| __templates__ | Contient les vues de votre application |
-| __config__ | Contient les différents fichiers de configuration des composants de l'application. |
-| __migrations__ | Dossier dans lequel seront sauvegardées les migrations de votre application |
-| __seeders__ | Dossier dans lequel seront sauvegardés les seeders de votre application |
-| __public__ | Le front contrôleur et les fichiers compilés sont stockés dans ce dossier. |
-| __routes__ | Contient les routes de votre application |
-| __tests__ | Contient les tests de l'application. |
-| __lang__ | Dossier dans lequel les locales de votre application seront sauvegardés |
-| __var__ | Contient le dossier dans lequel sont sauvegardés les `cache`, les `log` et le stockage de fichiers téléchargés via le système de `Storage` de Bow.|
+- __app__: Contient la logique principale de votre application. Presque toutes les classes de votre application seront dans ce dossier |
+- __assets__: Contient les scripts et fichiers de styles de l'application. Il contient entre autres les dossiers `js`, `sass`, `lang`. C'est là que vous allez mettre vos fichiers statiques et ensuite les compiler |
+- __templates__: Contient les vues de votre application |
+- __config__: Contient les différents fichiers de configuration des composants de l'application. |
+- __migrations__: Dossier dans lequel seront sauvegardées les migrations de votre application |
+- __seeders__: Dossier dans lequel seront sauvegardés les seeders de votre application |
+- __public__: Le front contrôleur et les fichiers compilés sont stockés dans ce dossier. |
+- __routes__: Contient les routes de votre application |
+- __tests__: Contient les tests de l'application. |
+- __lang__: Dossier dans lequel les locales de votre application seront sauvegardés |
+- __var__: Contient le dossier dans lequel sont sauvegardés les `cache`, les `log` et le stockage de fichiers téléchargés via le système de `Storage` de Bow.|
 
 ## Dossier app
 
@@ -39,6 +37,7 @@ Ici, vous retrouverez les dossiers suivants :
 - __Services__ : Dossier dans lequel seront sauvegardés les services générés par Bow Console.
 - __Jobs__ : Dossier dans lequel seront sauvegardés les jobs générés par Bow Console.
 - __Commandes__ : Dossier dans lequel seront sauvegardées les commandes générées par Bow Console.
+- __Queries__ : Dossier dans lequel seront sauvegardées les queries générées par Bow Console.
 - __Listeners__ : Dossier dans lequel seront sauvegardés les listeners générés par Bow Console.
 
 Vous trouverez aussi les fichiers suivants :
@@ -51,10 +50,7 @@ C'est là que vous allez insérer tous les fichiers qui sont utilisés dans les 
 
 - __js__: Vos fichiers `JavaScript` seront sauvegardés ici.
 - __sass__: Vos fichiers scss seront sauvegardés ici.
-
-:::tip Information
-Consultez la section [webpack.mix.js](./assets)
-:::
+- __css__: Vos fichiers css seront sauvegardés ici.
 
 ## Dossiers migrations et seeders
 
