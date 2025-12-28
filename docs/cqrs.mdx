@@ -214,6 +214,58 @@ Ajoutez une route pour appeler cette méthode :
 $app->get("/users/{id}", [UserController::class, 'show']);
 ```
 
+## Enregistrement avec les attributs PHP
+
+Vous pouvez aussi lier automatiquement les handlers à leurs commandes/requêtes avec des attributs PHP et une seule déclaration de registre.
+
+```php title="app/CommandHandlers/CreateUserCommandHandler.php"
+use Bow\CQRS\Attribute\CommandHandler;
+use Bow\CQRS\Command\CommandHandlerInterface;
+use Bow\CQRS\Command\CommandInterface;
+
+#[CommandHandler(CreateUserCommand::class)]
+class CreateUserCommandHandler implements CommandHandlerInterface
+{
+  public function __construct(public UserService $userService) {}
+
+  public function process(CommandInterface $command): mixed
+  {
+    // ...
+  }
+}
+```
+
+```php title="app/QueryHandlers/GetUserByIdQueryHandler.php"
+use Bow\CQRS\Attribute\QueryHandler;
+use Bow\CQRS\Query\QueryHandlerInterface;
+use Bow\CQRS\Query\QueryInterface;
+
+#[QueryHandler(GetUserByIdQuery::class)]
+class GetUserByIdQueryHandler implements QueryHandlerInterface
+{
+  public function __construct(public UserService $userService) {}
+
+  public function process(QueryInterface $query): mixed
+  {
+    // ...
+  }
+}
+```
+
+Enregistrez ensuite tous les handlers annotés en une fois :
+
+```php title="app/Configurations/ApplicationConfiguration.php"
+use Bow\CQRS\Registration as CQRSRegistration;
+
+public function run()
+{
+  CQRSRegistration::handlers([
+    CreateUserCommandHandler::class,
+    GetUserByIdQueryHandler::class,
+  ]);
+}
+```
+
 ## Conclusion
 
 Avec **CQRS**, vous pouvez structurer vos applications pour séparer clairement les préoccupations entre la lecture et l'écriture, tout en conservant un code organisé et maintenable.
