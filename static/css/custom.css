@@ -4,11 +4,9 @@
   /* Typography - Optimized for readability */
   --ifm-font-family-base: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", 
     Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  --ifm-font-family-monospace: "JetBrains Mono", "Fira Code", "Cascadia Code", "SF Mono", 
-    Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  
-  --ifm-font-size-base: 15px;
-  --ifm-line-height-base: 1.7;
+  --ifm-font-family-monospace: "JetBrains Mono", "Fira Code", "Cascadia Code", "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.8;
   --ifm-font-weight-normal: 400;
   --ifm-font-weight-semibold: 600;
   --ifm-font-weight-bold: 700;
@@ -190,7 +188,7 @@ article p {
   --docusaurus-highlighted-code-line-bg: rgb(66 66 66 / 35%);
   
   /* Optimized dark colors for eye comfort - Darker theme */
-  --ifm-background-color: #151515;
+  --ifm-background-color: #141414;
   --ifm-background-surface-color: #1a1a1a;
   --ifm-color-emphasis-0: #1f1f1f;
   --ifm-color-emphasis-100: #242424;
