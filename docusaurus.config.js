@@ -234,9 +234,9 @@ module.exports = {
     //   require.resolve("@cmfcmf/docusaurus-search-local"),
     //   {
     //     indexDocs: true,
-    //     indexDocSidebarParentCategories: 0,
+    //     indexDocSidebarParentCategories: 10,
     //     indexBlog: true,
-    //     indexPages: false,
+    //     indexPages: true,
     //     maxSearchResults: 10
     //   },
     // ],
@@ -262,7 +262,7 @@ module.exports = {
       items: [
         {
           to: "docs/installation",
-          label: "Docs",
+          label: "Documentation",
           position: "left",
         },
         {
@@ -272,7 +272,7 @@ module.exports = {
         },
         {
           href: "https://bowphp.com/api/master",
-          label: "API",
+          label: "API Reference",
           position: "left",
         },
         {
