@@ -1,22 +1,22 @@
 {
   "title": {
     "message": "Bow Framework",
-    "description": "Bow Framework"
+    "description": "The title in the navbar"
   },
-  "item.label.Docs": {
-    "message": "Docs",
-    "description": "Docs"
+  "item.label.Documentation": {
+    "message": "Documentation",
+    "description": "Navbar item with label Documentation"
   },
-  "item.label.API": {
-    "message": "API",
-    "description": "API"
+  "item.label.Blog": {
+    "message": "Blog",
+    "description": "Navbar item with label Blog"
   },
-  "item.label.Slack": {
-    "message": "Slack",
-    "description": "Slack"
+  "item.label.API Reference": {
+    "message": "API Reference",
+    "description": "Navbar item with label API Reference"
   },
   "item.label.Telegram": {
     "message": "Telegram",
-    "description": "Telegram"
+    "description": "Navbar item with label Telegram"
   }
 }

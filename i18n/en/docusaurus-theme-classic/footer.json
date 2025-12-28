@@ -5,58 +5,58 @@
   },
   "link.title.Documentation": {
     "message": "Documentation",
-    "description": "Documentation"
+    "description": "The title of the footer links column with title=Documentation in the footer"
   },
   "link.title.Communautés": {
-    "message": "Community",
-    "description": "Community"
+    "message": "Communautés",
+    "description": "The title of the footer links column with title=Communautés in the footer"
   },
   "link.title.En plus": {
-    "message": "More",
-    "description": "More"
+    "message": "En plus",
+    "description": "The title of the footer links column with title=En plus in the footer"
   },
   "link.item.label.Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement.": {
     "message": "Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement.",
     "description": "The label of footer link with label=Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement. linking to #"
   },
   "link.item.label.Commencer Bow Framework": {
-    "message": "Start with Bow Framework",
-    "description": "Start with Bow Framework"
+    "message": "Commencer Bow Framework",
+    "description": "The label of footer link with label=Commencer Bow Framework linking to https://bowphp.com/docs/installation"
   },
   "link.item.label.Voulez-vous contribuer ?": {
-    "message": "Contribute ?",
-    "description": "Do you want to contribute"
+    "message": "Voulez-vous contribuer ?",
+    "description": "The label of footer link with label=Voulez-vous contribuer ? linking to https://bowphp.com/docs/contribution"
   },
   "link.item.label.API Reference": {
     "message": "API Reference",
-    "description": "API Reference"
+    "description": "The label of footer link with label=API Reference linking to https://bowphp.com/api/master"
   },
   "link.item.label.Code D'ivoire": {
     "message": "Code D'ivoire",
-    "description": "Code D'ivoire"
+    "description": "The label of footer link with label=Code D'ivoire linking to https://codedivoire.slack.com/"
   },
   "link.item.label.Galsen Dev": {
     "message": "Galsen Dev",
-    "description": "Galsen Dev"
+    "description": "The label of footer link with label=Galsen Dev linking to https://discord.gg/u8aAaCnyGn"
   },
   "link.item.label.Code Learning Club": {
     "message": "Code Learning Club",
-    "description": "Code Learning Club"
+    "description": "The label of footer link with label=Code Learning Club linking to https://codelearningclub.com"
   },
-  "link.item.label.Twitter": {
-    "message": "Twitter",
-    "description": "Twitter"
-  },
-  "link.item.label.Slack": {
-    "message": "Slack",
-    "description": "Slack"
+  "link.item.label.X": {
+    "message": "X",
+    "description": "The label of footer link with label=X linking to https://x.com/papacdev"
   },
   "link.item.label.Github": {
     "message": "Github",
-    "description": "Github"
+    "description": "The label of footer link with label=Github linking to https://github.com/bowphp"
+  },
+  "link.item.label.Telegram": {
+    "message": "Telegram",
+    "description": "The label of footer link with label=Telegram linking to https://t.me/+PiAXH-w9qLUyOTU0"
   },
   "copyright": {
-    "message": "Copyright © 2022 développé avec 💚 par <a href=\"https://github.com/papac\">Franck DAKIA</a>",
+    "message": "Copyright © 2025 développé avec 💚 par <a href=\"https://github.com/papac\">Franck DAKIA</a>",
     "description": "The footer copyright"
   }
 }

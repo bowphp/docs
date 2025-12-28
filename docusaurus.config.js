@@ -27,8 +27,31 @@ module.exports = {
   organizationName: "bowphp",
   projectName: "bowphp.com",
   i18n: {
-    defaultLocale: "fr",
-    locales: ["fr"],
+    defaultLocale: "en",
+    locales: ["en", "fr"],
+    path: "i18n",
+    localeConfigs: {
+      en: {
+        label: "English",
+        direction: "ltr",
+        htmlLang: "en-US",
+        calendar: "gregory",
+        path: "en",
+        translate: true,
+        // url: 'https://en.bowphp.com',
+        baseUrl: "en",
+      },
+      fr: {
+        label: "Français",
+        direction: "ltr",
+        htmlLang: "fr-FR",
+        calendar: "gregory",
+        path: "fr",
+        translate: true,
+        // url: 'https://fr.bowphp.com',
+        baseUrl: "fr",
+      },
+    },
   },
   scripts: [
     "https://www.googletagmanager.com/gtag/js?id=UA-97409420-1",
