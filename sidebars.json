@@ -44,6 +44,7 @@
       "service",
       "helpers",
       "cqrs",
+      "csv",
       "console",
       "package"
     ]

@@ -1,0 +1,89 @@
+---
+id: csv
+title: 🧩 CSV Export/Import
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Le module `bowphp/csv` permet d'exporter ou d'importer facilement des modèles (type Eloquent) au format CSV en s'appuyant sur [league/csv](https://csv.thephpleague.com/).
+
+## Installation
+
+```bash
+composer require bowphp/csv
+```
+
+## Exporter un modèle en CSV
+
+Ajoutez le trait `Bow\Csv\Csv` à votre modèle :
+
+```php title="app/Models/User.php"
+use Bow\Csv\Csv;
+use Bow\Database\Barry\Model;
+
+class User extends Model
+{
+  use Csv;
+}
+```
+
+### Export basique
+
+```php
+$user = new User();
+$csv = $user->toCsv(); // Retourne une chaîne CSV
+```
+
+### Export avec des colonnes spécifiques
+
+```php
+$user = new User();
+$user->setCsvHeaders(['id', 'name']);
+
+$csv = $user->toCsv(); // N'inclura que id et name
+```
+
+### Export vers un fichier
+
+```php
+$user = new User();
+$user->toCsv('users.csv'); // Télécharge users.csv
+```
+
+## Importer un CSV dans un modèle
+
+```php
+use Bow\Csv\CsvService;
+
+$service = new CsvService();
+$service->import(new User(), '/chemin/vers/fichier.csv', ['id', 'name', 'email']);
+```
+
+### Importer directement via le modèle (`importCsv`)
+
+```php
+$user = new User();
+$user->setCsvHeaders(['id', 'name', 'email']);
+
+// Importe chaque ligne du fichier CSV dans le modèle User
+$user->importCsv('/chemin/vers/fichier.csv');
+```
+
+## Helpers globaux
+
+Deux fonctions sont exposées si vous préférez un appel fonctionnel :
+
+```php
+app_export_model_to_csv(new User(), null, ['id', 'name']);
+app_import_csv_to_model(new User(), '/chemin/vers/fichier.csv', ['id', 'name', 'email']);
+```
+
+## Bonnes pratiques
+
+- Définissez les headers via `setCsvHeaders()` pour contrôler l'ordre et la liste des colonnes.
+- Vérifiez/validez les données entrantes avant `import()` (formats, valeurs attendues).
+- Les modèles doivent exposer `toArray()` de manière cohérente pour que les lignes soient correctement sérialisées.
+
+<SuggestionFeature />
