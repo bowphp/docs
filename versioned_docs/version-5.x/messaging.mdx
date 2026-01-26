@@ -1,6 +1,6 @@
 ---
 id: messaging
-title: "Système de Messaging"
+title: "Système de Notification"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
@@ -17,15 +17,15 @@ Que vous ayez besoin d'envoyer des emails de bienvenue, des notifications d'acti
 
 ### Préparation du Modèle
 
-Pour commencer, votre modèle doit implémenter le trait `CanSendMessage`. Ce trait ajoute toutes les méthodes nécessaires pour envoyer des notifications.
+Pour commencer, votre modèle doit implémenter le trait `WithNotifier`. Ce trait ajoute toutes les méthodes nécessaires pour envoyer des notifications.
 
 ```php
-use Bow\Messaging\CanSendMessage;
+use Bow\Notifier\WithNotifier;
 use Bow\Database\Barry\Model;
 
 class User extends Model 
 {
-  use CanSendMessage;
+  use WithNotifier;
 }
 ```
 
@@ -33,14 +33,14 @@ class User extends Model
 
 ### Structure de Base
 
-Une notification est une classe qui étend `Messaging`. Voici un exemple complet d'une notification de bienvenue :
+Une notification est une classe qui étend `Notifier`. Voici un exemple complet d'une notification de bienvenue :
 
 ```php
-use Bow\Messaging\Messaging;
+use Bow\Notifier\Notifier;
 use Bow\Mail\Envelop;
 use Bow\Database\Barry\Model;
 
-class WelcomeMessage extends Messaging
+class WelcomeNotifier extends Notifier
 {
   /**
    * Constructeur - passe des données à la notification
@@ -99,7 +99,7 @@ class WelcomeMessage extends Messaging
 #### Notification de Réinitialisation de Mot de Passe
 
 ```php
-class PasswordResetMessage extends Messaging
+class PasswordResetNotifier extends Notifier
 {
   public function __construct(
     private string $token
@@ -130,7 +130,7 @@ class PasswordResetMessage extends Messaging
 #### Notification d'Activité
 
 ```php
-class NewCommentMessage extends Messaging
+class NewCommentNotifier extends Notifier
 {
   public function __construct(
     private array $commentData
@@ -176,16 +176,16 @@ L'envoi simple est synchrone et immédiat :
 
 ```php
 // Envoi d'une notification de bienvenue basique
-$user->sendMessage(new WelcomeMessage());
+$user->sendMessage(new WelcomeNotifier());
 
 // Envoi avec un message personnalisé
-$user->sendMessage(new WelcomeMessage("Ravi de vous avoir parmi nous!"));
+$user->sendMessage(new WelcomeNotifier("Ravi de vous avoir parmi nous!"));
 
 // Envoi d'une notification de réinitialisation de mot de passe
-$user->sendMessage(new PasswordResetMessage($token));
+$user->sendMessage(new PasswordResetNotifier($token));
 
 // Envoi d'une notification de nouveau commentaire
-$user->sendMessage(new NewCommentMessage([
+$user->sendMessage(new NewCommentNotifier([
   'id' => 1,
   'post_id' => 123,
   'user_name' => 'John Doe',
@@ -201,7 +201,7 @@ L'envoi en file d'attente est asynchrone et permet de meilleures performances. U
 
 ```php
 // File d'attente par défaut
-$user->setMessageQueue(new WelcomeMessage());
+$user->setMessageQueue(new WelcomeNotifier());
 
 // File d'attente spécifique avec priorité
 $user->sendMessageQueueOn('high-priority', new PasswordResetMessage($token));
@@ -297,14 +297,14 @@ Vous pouvez créer vos propres canaux personnalisés pour envoyer des notificati
 Exemple de création d'un canal pour les notifications Log :
 
 ```php
-namespace App\Messaging\Channels;
+namespace App\Notifier\Channels;
 
-use Bow\Messaging\Contracts\ChannelInterface;
+use Bow\Notifier\Contracts\ChannelInterface;
 use Bow\Database\Barry\Model;
 
 class LogChannel implements ChannelInterface
 {
-  public function send(Model $context, Messaging $message): void
+  public function send(Model $context, Notifier $message): void
   {
     if (!method_exists($message, 'toLog')) {
       throw new \InvalidArgumentException('The message must have a toLog method.');
@@ -324,7 +324,7 @@ Pour enregistrer votre nouveau canal, vous devez l'ajouter dans la configuration
 ```php title="app/Configurations/ApplicationConfiguration.php"
 public function create(Loader $config): void  
 {
-  Messaging::pushChannels([
+  Notifier::pushChannels([
     'log' => LogChannel::class
   ]);
 }

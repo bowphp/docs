@@ -1,0 +1,372 @@
+---
+id: pagination
+title: "Pagination"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+La pagination est une fonctionnalité essentielle pour afficher de grandes quantités de données de manière organisée. Bow Framework fournit une classe `Pagination` puissante et flexible qui facilite la navigation à travers les résultats de requêtes de base de données.
+
+## Utilisation de base
+
+### Pagination avec Query Builder
+
+Vous pouvez paginer les résultats du Query Builder en utilisant la méthode `paginate` :
+
+```php
+use Bow\Database\Database;
+
+$users = Database::table('users')->paginate(15);
+```
+
+### Pagination avec les modèles
+
+Avec l'ORM Barry, la pagination est tout aussi simple :
+
+```php
+use App\Models\User;
+
+$users = User::paginate(15);
+```
+
+### Pagination avec des conditions
+
+Vous pouvez combiner la pagination avec des conditions de requête :
+
+```php
+use App\Models\User;
+
+$users = User::where('status', 'active')
+  ->orderBy('created_at', 'desc')
+  ->paginate(10);
+```
+
+## Méthodes de navigation
+
+La classe `Pagination` fournit plusieurs méthodes pour naviguer entre les pages :
+
+### Informations sur la page courante
+
+```php
+// Obtenir le numéro de la page courante
+$pagination->current(); // Ex: 2
+
+// Obtenir le nombre d'éléments par page
+$pagination->perPage(); // Ex: 15
+
+// Obtenir le nombre total d'éléments
+$pagination->total(); // Ex: 150
+
+// Obtenir le nombre total de pages
+$pagination->totalPages(); // Ex: 10
+```
+
+### Navigation entre les pages
+
+```php
+// Obtenir le numéro de la page suivante
+$pagination->next(); // Ex: 3
+
+// Vérifier s'il y a une page suivante
+$pagination->hasNext(); // true ou false
+
+// Obtenir le numéro de la page précédente
+$pagination->previous(); // Ex: 1
+
+// Vérifier s'il y a une page précédente
+$pagination->hasPrevious(); // true ou false
+```
+
+### Vérifications de position
+
+```php
+// Vérifier si on est sur la première page
+$pagination->onFirstPage(); // true ou false
+
+// Vérifier si on est sur la dernière page
+$pagination->onLastPage(); // true ou false
+
+// Vérifier s'il y a plusieurs pages
+$pagination->hasPages(); // true ou false
+```
+
+## Accéder aux données
+
+### Récupérer les éléments
+
+```php
+// Obtenir la collection des éléments de la page courante
+$items = $pagination->items();
+
+foreach ($items as $item) {
+  echo $item->name;
+}
+```
+
+### Informations sur les éléments
+
+```php
+// Nombre d'éléments sur la page courante
+$pagination->count(); // Ex: 15
+
+// Vérifier si la pagination est vide
+$pagination->isEmpty(); // true ou false
+
+// Vérifier si la pagination contient des éléments
+$pagination->isNotEmpty(); // true ou false
+
+// Index du premier élément (1-indexed)
+$pagination->firstItem(); // Ex: 16 (sur la page 2 avec 15 par page)
+
+// Index du dernier élément (1-indexed)
+$pagination->lastItem(); // Ex: 30
+```
+
+### Accès par tableau
+
+La classe `Pagination` implémente `ArrayAccess`, ce qui vous permet d'accéder aux éléments comme un tableau :
+
+```php
+// Accéder à un élément par son index
+$firstUser = $pagination[0];
+
+// Vérifier si un index existe
+if (isset($pagination[0])) {
+  // ...
+}
+```
+
+### Itération
+
+Vous pouvez itérer directement sur l'objet pagination :
+
+```php
+foreach ($pagination as $user) {
+  echo $user->name;
+}
+```
+
+## Génération d'URLs
+
+La classe `Pagination` permet de générer des URLs pour la navigation.
+
+### Configuration de l'URL de base
+
+```php
+$pagination->setBaseUrl('https://example.com/users');
+```
+
+### Personnalisation du paramètre de page
+
+Par défaut, le paramètre de page est `page`. Vous pouvez le personnaliser :
+
+```php
+$pagination->setPageParam('p');
+// Génèrera des URLs comme: https://example.com/users?p=2
+```
+
+### Ajout de paramètres de requête
+
+```php
+// Ajouter des paramètres (conserve les existants)
+$pagination->withQueryParams(['sort' => 'name', 'order' => 'asc']);
+
+// Remplacer tous les paramètres
+$pagination->setQueryParams(['filter' => 'active']);
+```
+
+### Génération d'URLs
+
+```php
+// URL pour une page spécifique
+$pagination->url(3); // https://example.com/users?page=3
+
+// URL de la page suivante
+$pagination->nextPageUrl(); // https://example.com/users?page=3
+
+// URL de la page précédente
+$pagination->previousPageUrl(); // https://example.com/users?page=1
+
+// URL de la première page
+$pagination->firstPageUrl(); // https://example.com/users?page=1
+
+// URL de la dernière page
+$pagination->lastPageUrl(); // https://example.com/users?page=10
+```
+
+### Plage d'URLs
+
+Vous pouvez obtenir un tableau d'URLs pour une plage de pages autour de la page courante :
+
+```php
+// Obtenir les URLs pour 3 pages de chaque côté de la page courante
+$urls = $pagination->getUrlRange(3);
+// [
+//     2 => 'https://example.com/users?page=2',
+//     3 => 'https://example.com/users?page=3',
+//     4 => 'https://example.com/users?page=4', // page courante
+//     5 => 'https://example.com/users?page=5',
+//     6 => 'https://example.com/users?page=6',
+// ]
+```
+
+## Liens de pagination
+
+La méthode `links()` génère un tableau complet de données pour le rendu de la pagination :
+
+```php
+$links = $pagination->links(2); // 2 pages de chaque côté
+```
+
+Chaque élément du tableau contient :
+
+- `url` : L'URL de la page (ou `null`)
+- `label` : Le texte à afficher
+- `active` : Si c'est la page courante
+- `disabled` : Si le lien est désactivé
+
+### Exemple de résultat
+
+```php
+[
+  ['url' => 'https://...?page=1', 'label' => '« Previous', 'active' => false, 'disabled' => false],
+  ['url' => 'https://...?page=1', 'label' => '1', 'active' => false, 'disabled' => false],
+  ['url' => null, 'label' => '...', 'active' => false, 'disabled' => true],
+  ['url' => 'https://...?page=4', 'label' => '4', 'active' => false, 'disabled' => false],
+  ['url' => 'https://...?page=5', 'label' => '5', 'active' => true, 'disabled' => false],
+  ['url' => 'https://...?page=6', 'label' => '6', 'active' => false, 'disabled' => false],
+  ['url' => null, 'label' => '...', 'active' => false, 'disabled' => true],
+  ['url' => 'https://...?page=10', 'label' => '10', 'active' => false, 'disabled' => false],
+  ['url' => 'https://...?page=6', 'label' => 'Next »', 'active' => false, 'disabled' => false],
+]
+```
+
+## Sérialisation
+
+### Conversion en tableau
+
+```php
+$array = $pagination->toArray();
+// [
+//     'current_page' => 2,
+//     'data' => [...],
+//     'first_item' => 16,
+//     'last_item' => 30,
+//     'per_page' => 15,
+//     'total' => 150,
+//     'total_pages' => 10,
+//     'next_page' => 3,
+//     'previous_page' => 1,
+// ]
+```
+
+### Conversion en JSON
+
+```php
+$json = $pagination->toJson();
+
+// Avec options de formatage
+$json = $pagination->toJson(JSON_PRETTY_PRINT);
+```
+
+## Affichage dans les vues
+
+### Avec Tintin (moteur de template)
+
+```html
+<div class="container">
+  <!-- Afficher les éléments -->
+  %foreach($users as $user)
+    <div class="user">
+      {{ $user->name }}
+    </div>
+  %endforeach
+
+  <!-- Navigation de pagination -->
+  %if($users->hasPages())
+    <nav class="pagination">
+      <!-- Bouton précédent -->
+      %if($users->hasPrevious())
+        <a href="{{ $users->previousPageUrl() }}">« Précédent</a>
+      %else
+        <span class="disabled">« Précédent</span>
+      %endif
+
+      <!-- Liens des pages -->
+      %foreach($users->links() as $link)
+        %if($link['disabled'])
+          <span class="disabled">{{ $link['label'] }}</span>
+        %elseif($link['active'])
+          <span class="active">{{ $link['label'] }}</span>
+        %else
+          <a href="{{ $link['url'] }}">{{ $link['label'] }}</a>
+        %endif
+      %endforeach
+
+      <!-- Bouton suivant -->
+      %if($users->hasNext())
+        <a href="{{ $users->nextPageUrl() }}">Suivant »</a>
+      %else
+        <span class="disabled">Suivant »</span>
+      %endif
+    </nav>
+  %endif
+</div>
+```
+
+### Informations de pagination
+
+```html
+<p>
+  Affichage de {{ $users->firstItem() }} à {{ $users->lastItem() }} 
+  sur {{ $users->total() }} résultats
+</p>
+```
+
+## Exemple complet
+
+### Contrôleur
+
+```php
+namespace App\Controllers;
+
+use App\Models\User;
+use Bow\Http\Request;
+
+class UserController extends Controller
+{
+  public function index(Request $request)
+  {
+    $perPage = $request->get('per_page', 15);
+    $search = $request->get('search');
+
+    $query = User::query();
+
+    if ($search) {
+      $query->where('name', 'like', "%{$search}%")
+        ->orWhere('email', 'like', "%{$search}%");
+    }
+
+    $users = $query->orderBy('name')->paginate($perPage);
+
+    // Configurer les URLs de pagination
+    $users->setBaseUrl(url('/users'))
+      ->withQueryParams([
+          'search' => $search,
+          'per_page' => $perPage,
+      ]);
+
+    return view('users.index', compact('users', 'search'));
+  }
+}
+```
+
+### Route
+
+```php
+$app->get('/users', 'UserController::index');
+```
+
+<SuggestionFeature />
