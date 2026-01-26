@@ -16,6 +16,7 @@
       "storage",
       "mail",
       "messaging",
+      "pagination",
       "i18n",
       "testing"
     ],

@@ -23,6 +23,7 @@
       "database",
       "query-builder",
       "orm",
+      "pagination",
       "migration",
       "seeding"
     ],
