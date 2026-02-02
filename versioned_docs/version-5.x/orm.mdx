@@ -32,7 +32,7 @@ Ensuite modifiez la migration:
 ```php
 public function up()
 {
-  $this->create("todos", function (SQLGenerator $table) {
+  $this->create("todos", function (Table $table) {
     $table->addIncrement('id');
     $table->addString('title');
     $table->addInteger('status', ["default" => 1]);

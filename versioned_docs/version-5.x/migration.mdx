@@ -43,7 +43,7 @@ Par exemple, la migration créée précédemment :
 
 ```php
 use Bow\Database\Migration\Migration;
-use Bow\Database\Migration\SQLGenerator;
+use Bow\Database\Migration\Table;
 
 class Version20190929153939CreatTodosTable extends Migration
 {
@@ -52,7 +52,7 @@ class Version20190929153939CreatTodosTable extends Migration
    */
   public function up()
   {
-    $this->create("users", function (SQLGenerator $table) {
+    $this->create("users", function (Table $table) {
       $table->addIncrement('id');
       $table->addTimestamps();
     });
@@ -100,10 +100,10 @@ php artisan migration:reset
 
 ## Création de table
 
-Pour créer une nouvelle table de base de données, utilisez la méthode `create`. La méthode `create` accepte deux arguments. Le premier est le nom de la table, tandis que le second est une clôture qui reçoit un objet `\Bow\Database\Migration\SQLGenerator::class` pouvant être utilisé pour définir la nouvelle table:
+Pour créer une nouvelle table de base de données, utilisez la méthode `create`. La méthode `create` accepte deux arguments. Le premier est le nom de la table, tandis que le second est une clôture qui reçoit un objet `\Bow\Database\Migration\Table::class` pouvant être utilisé pour définir la nouvelle table:
 
 ```php
-$this->create("users", function (SQLGenerator $table) {
+$this->create("users", function (Table $table) {
   $table->addIncrement('id');
   $table->addTimestamps();
 });
@@ -116,7 +116,7 @@ Si vous souhaitez effectuer une opération de schéma sur une connexion à une b
 :::
 
 ```php
-$this->connection('name')->create("users", function (SQLGenerator $table) {
+$this->connection('name')->create("users", function (Table $table) {
   $table->addIncrement('id');
   $table->addTimestamps();
 });
@@ -156,14 +156,14 @@ public function rollback()
 
 ## Créer des colonnes
 
-La méthode de `alter` sur `Bow\Database\Migration\Migration::class` peut être utilisée pour mettre à jour des tables existantes. Comme la méthode `create`, la méthode `alter` accepte deux arguments: le nom de la table et une clôture qui reçoit une instance de `\Bow\Database\Migration\SQLGenerator::class` que vous pouvez utiliser pour ajouter des colonnes à la table:
+La méthode de `alter` sur `Bow\Database\Migration\Migration::class` peut être utilisée pour mettre à jour des tables existantes. Comme la méthode `create`, la méthode `alter` accepte deux arguments: le nom de la table et une clôture qui reçoit une instance de `\Bow\Database\Migration\Table::class` que vous pouvez utiliser pour ajouter des colonnes à la table:
 
 ```php
-use Bow\Database\Migration\SQLGenerator;
+use Bow\Database\Migration\Table;
 
 public function up()
 {
-  $this->alter('users', function (SQLGenerator $table) {
+  $this->alter('users', function (Table $table) {
     $table->addString('name');
   });
 }
@@ -171,7 +171,7 @@ public function up()
 
 ## Api de migration
 
-Notons pour l'instant que tous ces méthodes sont en réalité des helpers de la méthode `addColumn` de `\Bow\Database\Migration\SQLGenerator::class`.
+Notons pour l'instant que tous ces méthodes sont en réalité des helpers de la méthode `addColumn` de `\Bow\Database\Migration\Table::class`.
 
 ### Examinons ensemble
 
