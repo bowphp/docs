@@ -11,7 +11,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 Le routage est un élément essentiel dans le développement d'une application web. Il permet de relier une URL à une action spécifique dans le contrôleur de l'application.
 :::
 
-Dans Bow Framework, le système de routage est directement intégré à l'instance de l'application, via la variable superglobale `$router`.
+Dans Bow Framework, le système de routage est intégré à l'instance de l'application et exposé dans vos fichiers de routes via la variable `$router`.
 
 Les routes de l'application se définissent dans le fichier `app.php`, qui se trouve dans le dossier `routes` de votre projet.
 
@@ -95,8 +95,10 @@ $router->get($url, $action);
 $router->post($url, $action);
 $router->put($url, $action);
 $router->delete($url, $action);
-$router->option($url, $action);
+$router->options($url, $action);
 $router->patch($url, $action);
+$router->match(['GET', 'POST'], $url, $action);
+$router->any($url, $action);
 ```
 
 ### Exemples de Routage avec différentes Méthodes HTTP
@@ -218,7 +220,72 @@ $router->prefix('/users', function () use ($router) {
 ```
 
 :::danger Limitation importante
-La méthode `prefix` ne peut pas être imbriquée dans d'autres groupes de routes.
+Évitez d'imbriquer des groupes `prefix` : le préfixe courant est réinitialisé après l'exécution du callback.
+:::
+
+## Contraintes de Sous-domaine
+
+Bow Framework permet de restreindre des routes à un domaine ou sous-domaine spécifique.
+
+### Contrainte sur une route individuelle avec `withDomain`
+
+Utilisez la méthode `withDomain` chaînée sur l'objet `Route` :
+
+```php
+$router->get('/dashboard', function () {
+  return 'Admin Dashboard';
+})->withDomain('admin.example.com');
+```
+
+### Contrainte sur un groupe de routes avec `$router->domain`
+
+:::warning Fonctionnalité en développement
+La méthode `$router->domain()` est prévue pour appliquer une contrainte de domaine à un groupe de routes, mais son implémentation est actuellement incomplète dans le framework. Utilisez `withDomain()` sur chaque route individuelle en attendant.
+:::
+
+```php
+// Syntaxe prévue (non fonctionnelle actuellement)
+$router->domain('api.example.com', function () use ($router) {
+  $router->get('/users', 'ApiController::users');
+  $router->get('/posts', 'ApiController::posts');
+});
+```
+
+### Sous-domaine statique
+
+```php
+$router->get('/dashboard', function () {
+  return 'Admin Dashboard';
+})->withDomain('admin.example.com');
+```
+
+### Sous-domaine dynamique avec paramètre
+
+Vous pouvez capturer une partie du sous-domaine comme paramètre en utilisant la notation `:param` ou `<param>` :
+
+```php
+$router->get('/dashboard', function ($tenant) {
+  return "Dashboard pour le tenant : $tenant";
+})->withDomain(':tenant.example.com');
+```
+
+Le paramètre `$tenant` sera automatiquement injecté dans votre action avec la valeur extraite du sous-domaine.
+
+### Utilisation d'un wildcard
+
+Pour accepter n'importe quel sous-domaine, utilisez `*` :
+
+```php
+$router->get('/', function () {
+  return 'Bienvenue';
+})->withDomain('*.example.com');
+```
+
+:::tip Cas d'utilisation
+Les contraintes de sous-domaine sont particulièrement utiles pour :
+- Les applications multi-tenant (`client1.app.com`, `client2.app.com`)
+- Séparer les interfaces admin et publique (`admin.site.com` vs `www.site.com`)
+- Les API versionnées (`v1.api.example.com`, `v2.api.example.com`)
 :::
 
 
@@ -239,6 +306,14 @@ Pour capturer des variables dans l'URL, utilisez la notation `:variable_name`. C
 ```php
 $router->get('/:name', function ($name) {
   return 'Bonjour ' . $name;
+});
+```
+
+Vous pouvez aussi utiliser des paramètres optionnels :
+
+```php
+$router->get('/users/:id?', function ($id = null) {
+  return $id;
 });
 ```
 
@@ -287,9 +362,10 @@ Un middleware est une fonction ou un ensemble de fonctions qui interviennent ent
 #### Exemple d'association de middleware :
 
 ```php
-$router->get('/:name', ['middleware' => 'auth', function ($name) {
-  return 'Bonjour ' . $name;
-}]);
+$router->get('/:name', [
+  'middleware' => 'auth',
+  'controller' => 'UserController::show'
+]);
 
 // Ou avec la méthode `middleware()` :
 $router->get('/:name', function ($name) {
@@ -328,10 +404,13 @@ $router->route([
 |-------------|--------------|-------------------------------------------------------|
 | `path`      | `String`     | Le chemin de l'URL à matcher                         |
 | `method`    | `String`, `Array` | Méthode HTTP (`GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`) |
-| `handler`   | `String`, `Array` | Action à exécuter (peut être une closure, un contrôleur, etc.) |
+| `handler`   | `String`, `Closure`, `Array` | Action à exécuter |
 | `middleware`| `String`, `Array` | Middleware(s) à appliquer avant d'exécuter l'action |
 | `where`     | `String`, `Array` | Contrainte(s) appliquée(s) sur les variables dans l'URL |
-| `name`      | `String`, `Array` | Nom de la route pour une gestion facile               |
+
+:::note Important
+La méthode `route()` retourne `void` et ne permet pas de chaîner `->name()` directement. Pour nommer une route, utilisez les méthodes HTTP (`get`, `post`, etc.) puis `->name(...)`.
+:::
 
 ### Exemple d'utilisation de `route` avec une closure
 

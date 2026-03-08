@@ -11,12 +11,14 @@ Le client HTTP de BowPHP est un composant puissant et flexible permettant de ré
 
 ## Fonctionnalités principales
 
-1. Méthodes HTTP supportées : `GET`, `POST`, `PUT`, `DELETE`.
+1. Méthodes HTTP supportées : `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD`, `OPTIONS`.
 2. Gestion des en-têtes personnalisés.
 3. Support des fichiers attachés pour les requêtes multipart/form-data.
 4. Encodage JSON natif des données.
 5. Définition d'une URL de base (`base_url`) pour simplifier la gestion des endpoints API.
-6. Gestion des erreurs avec des exceptions spécifiques.
+6. Authentification intégrée (Basic, Bearer, HTTP Auth).
+7. Configuration des timeouts et vérification SSL.
+8. Gestion des erreurs avec des exceptions spécifiques.
 
 ## Utilisation
 
@@ -86,15 +88,15 @@ use Bow\Http\Client\HttpClient;
 
 $client = new HttpClient('https://api.example.com');
 $response = $client->acceptJson()->post('/users', [
-    'name' => 'John Doe',
-    'email' => 'john.doe@example.com',
-    'role' => 'admin'
+  'name' => 'John Doe',
+  'email' => 'john.doe@example.com',
+  'role' => 'admin'
 ]);
 
 // Vérifier le succès
 if ($response->isSuccessful()) {
-    $user = $response->toArray();
-    echo "Utilisateur créé avec l'ID: {$user['id']}";
+  $user = $response->toArray();
+  echo "Utilisateur créé avec l'ID: {$user['id']}";
 }
 ```
 
@@ -115,12 +117,12 @@ use Bow\Http\Client\HttpClient;
 
 $client = new HttpClient('https://api.example.com');
 $response = $client->acceptJson()->put('/users/123', [
-    'name' => 'Jane Doe',
-    'email' => 'jane.doe@example.com'
+  'name' => 'Jane Doe',
+  'email' => 'jane.doe@example.com'
 ]);
 
 if ($response->isSuccessful()) {
-    echo "Utilisateur mis à jour avec succès";
+  echo "Utilisateur mis à jour avec succès";
 }
 ```
 
@@ -143,8 +145,78 @@ $client = new HttpClient('https://api.example.com');
 $response = $client->delete('/users/123');
 
 if ($response->isSuccessful()) {
-    echo "Utilisateur supprimé avec succès";
+  echo "Utilisateur supprimé avec succès";
 }
+```
+
+### `patch`
+
+Effectue une requête PATCH pour mettre à jour partiellement une ressource.
+
+**Paramètres :**
+- `$url` : Le chemin relatif ou l'URL complète
+- `$data` : Tableau de données à envoyer pour la mise à jour partielle
+
+**Retourne :** Une instance de `Response`
+
+**Exemple :**
+
+```php
+use Bow\Http\Client\HttpClient;
+
+$client = new HttpClient('https://api.example.com');
+$response = $client->acceptJson()->patch('/users/123', [
+  'email' => 'newemail@example.com'
+]);
+
+if ($response->isSuccessful()) {
+  echo "Email mis à jour avec succès";
+}
+```
+
+### `head`
+
+Effectue une requête HEAD pour récupérer uniquement les en-têtes HTTP sans le corps de la réponse. Utile pour vérifier l'existence d'une ressource ou obtenir des métadonnées.
+
+**Paramètres :**
+- `$url` : Le chemin relatif ou l'URL complète
+- `$data` : Tableau de paramètres ajoutés à l'URL sous forme de query string
+
+**Retourne :** Une instance de `Response`
+
+**Exemple :**
+
+```php
+use Bow\Http\Client\HttpClient;
+
+$client = new HttpClient('https://api.example.com');
+$response = $client->head('/large-file.zip');
+
+if ($response->isSuccessful()) {
+  $headers = $response->getHeaders();
+  echo "Taille du fichier : " . ($headers['download_content_length'] ?? 'inconnue');
+}
+```
+
+### `options`
+
+Effectue une requête OPTIONS pour découvrir les méthodes HTTP autorisées sur une ressource. Souvent utilisé pour les requêtes CORS préliminaires.
+
+**Paramètres :**
+- `$url` : Le chemin relatif ou l'URL complète
+
+**Retourne :** Une instance de `Response`
+
+**Exemple :**
+
+```php
+use Bow\Http\Client\HttpClient;
+
+$client = new HttpClient('https://api.example.com');
+$response = $client->options('/users');
+
+// Les méthodes autorisées sont généralement dans l'en-tête Allow
+$headers = $response->getHeaders();
 ```
 
 ## Configuration avancée
@@ -167,12 +239,12 @@ $client = new HttpClient('https://api.example.com');
 
 // Upload d'un seul fichier
 $response = $client->addAttach('/path/to/document.pdf')
-    ->post('/upload');
+  ->post('/upload');
 
 // Upload de plusieurs fichiers
 $response = $client->addAttach([
-    '/path/to/image1.jpg',
-    '/path/to/image2.jpg'
+  '/path/to/image1.jpg',
+  '/path/to/image2.jpg'
 ])->post('/upload-multiple');
 ```
 
@@ -192,11 +264,11 @@ use Bow\Http\Client\HttpClient;
 
 $client = new HttpClient('https://api.example.com');
 $response = $client
-    ->withHeaders([
-        'Authorization' => 'Bearer your-api-token',
-        'X-Custom-Header' => 'custom-value'
-    ])
-    ->get('/protected-endpoint');
+  ->withHeaders([
+    'Authorization' => 'Bearer your-api-token',
+    'X-Custom-Header' => 'custom-value'
+  ])
+  ->get('/protected-endpoint');
 
 echo $response->getContent();
 ```
@@ -237,15 +309,143 @@ use Bow\Http\Client\HttpClient;
 
 $client = new HttpClient('https://api.example.com');
 $response = $client
-    ->acceptJson()
-    ->post('/users', [
-        'name' => 'John Doe',
-        'email' => 'john@example.com'
-    ]);
+  ->acceptJson()
+  ->post('/users', [
+    'name' => 'John Doe',
+    'email' => 'john@example.com'
+  ]);
 
 // Les données seront automatiquement encodées en JSON
 $result = $response->toArray();
 ```
+
+## Authentification
+
+### `basicAuth`
+
+Configure l'authentification HTTP Basic avec encodage Base64 des identifiants.
+
+**Paramètres :**
+- `$key` : Clé ou nom d'utilisateur
+- `$secret` : Secret ou mot de passe
+
+**Retourne :** L'instance du client pour un chaînage fluide
+
+**Exemple :**
+
+```php
+use Bow\Http\Client\HttpClient;
+
+$client = new HttpClient('https://api.example.com');
+$response = $client
+  ->basicAuth('api_key', 'api_secret')
+  ->get('/protected-resource');
+```
+
+### `bearerAuth`
+
+Configure l'authentification par token Bearer (OAuth2, JWT, etc.).
+
+**Paramètres :**
+- `$token` : Le token d'authentification
+
+**Retourne :** L'instance du client pour un chaînage fluide
+
+**Exemple :**
+
+```php
+use Bow\Http\Client\HttpClient;
+
+$client = new HttpClient('https://api.example.com');
+$response = $client
+  ->bearerAuth('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...')
+  ->get('/user/profile');
+```
+
+### `auth`
+
+Configure l'authentification HTTP native de cURL.
+
+**Paramètres :**
+- `$username` : Nom d'utilisateur
+- `$password` : Mot de passe
+
+**Retourne :** L'instance du client pour un chaînage fluide
+
+**Exemple :**
+
+```php
+use Bow\Http\Client\HttpClient;
+
+$client = new HttpClient('https://api.example.com');
+$response = $client
+  ->auth('username', 'password')
+  ->get('/protected');
+```
+
+## Timeouts et SSL
+
+### `timeout`
+
+Définit le temps maximum autorisé pour l'exécution de la requête complète.
+
+**Paramètres :**
+- `$seconds` : Durée en secondes
+
+**Retourne :** L'instance du client pour un chaînage fluide
+
+**Exemple :**
+
+```php
+use Bow\Http\Client\HttpClient;
+
+$client = new HttpClient('https://api.example.com');
+$response = $client
+  ->timeout(30) // 30 secondes maximum
+  ->get('/slow-endpoint');
+```
+
+### `connectTimeout`
+
+Définit le temps maximum pour établir la connexion au serveur.
+
+**Paramètres :**
+- `$seconds` : Durée en secondes
+
+**Retourne :** L'instance du client pour un chaînage fluide
+
+**Exemple :**
+
+```php
+use Bow\Http\Client\HttpClient;
+
+$client = new HttpClient('https://api.example.com');
+$response = $client
+  ->connectTimeout(5) // 5 secondes pour établir la connexion
+  ->timeout(30)
+  ->get('/endpoint');
+```
+
+### `disableSslVerification`
+
+Désactive la vérification des certificats SSL. **Attention : à utiliser uniquement en environnement de développement.**
+
+**Retourne :** L'instance du client pour un chaînage fluide
+
+**Exemple :**
+
+```php
+use Bow\Http\Client\HttpClient;
+
+$client = new HttpClient('https://localhost:8443');
+$response = $client
+  ->disableSslVerification()
+  ->get('/api/test');
+```
+
+:::warning
+Ne jamais désactiver la vérification SSL en production. Cela expose votre application à des attaques man-in-the-middle.
+:::
 
 ## La classe `Response`
 
@@ -304,7 +504,7 @@ Alias de `toJson(true)`. Retourne le contenu JSON sous forme de tableau associat
 ```php
 $users = $response->toArray();
 foreach ($users as $user) {
-    echo $user['name'];
+  echo $user['name'];
 }
 ```
 
@@ -333,7 +533,7 @@ $code = $response->getCode();
 $code = $response->statusCode();
 
 if ($code === 200) {
-    echo "Requête réussie";
+  echo "Requête réussie";
 }
 ```
 
@@ -349,8 +549,8 @@ Retourne `true` si le code de statut indique un succès (200 ou 201).
 
 ```php
 if ($response->isSuccessful()) {
-    $data = $response->toArray();
-    // Traiter les données
+  $data = $response->toArray();
+  // Traiter les données
 }
 ```
 
@@ -366,7 +566,7 @@ Retourne `true` si la requête a échoué (code différent de 200 ou 201).
 
 ```php
 if ($response->isFailed()) {
-    echo "Erreur : " . $response->getCode();
+  echo "Erreur : " . $response->getCode();
 }
 ```
 
@@ -403,7 +603,7 @@ echo "Vitesse : " . $response->getDownloadSpeed() . " octets/s\n";
 
 ```php
 if ($response->isFailed()) {
-    echo "Erreur #{$response->getErrorNumber()}: {$response->getErrorMessage()}";
+  echo "Erreur #{$response->getErrorNumber()}: {$response->getErrorMessage()}";
 }
 ```
 
@@ -430,7 +630,7 @@ Retourne le type MIME du contenu (ex: `application/json`, `text/html`).
 ```php
 $contentType = $response->getContentType();
 if ($contentType === 'application/json') {
-    $data = $response->toArray();
+  $data = $response->toArray();
 }
 ```
 

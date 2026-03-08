@@ -1,0 +1,492 @@
+---
+id: scheduler
+title: "Planificateur de tâches"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Le planificateur de Bow Framework offre une manière simple et élégante de définir des tâches planifiées. Il vous permet d'automatiser des tâches récurrentes comme les sauvegardes de bases de données, l'envoi d'emails, le nettoyage de cache, et bien plus encore.
+
+:::info À propos du Scheduler
+Le planificateur utilise les expressions cron en interne, mais vous permet de les définir avec une API fluide en PHP, plus lisible et maintenable.
+:::
+
+## Méthodes principales
+
+Le planificateur fournit quatre méthodes principales pour planifier différents types de tâches :
+
+| **Méthode** | **Description** |
+|-------------|-----------------|
+| `command()` | Exécute des commandes console Bow |
+| `task()` | Exécute des classes QueueTask |
+| `exec()` | Exécute des commandes shell/bash |
+| `call()` | Exécute des closures/callbacks |
+
+## Définition des tâches
+
+Les tâches planifiées sont définies dans la méthode `schedules()` de votre classe `App\Kernel`. Cette approche offre une meilleure intégration avec le framework et une configuration centralisée :
+
+```php title="app/Kernel.php"
+<?php
+
+namespace App;
+
+use Bow\Scheduler\Scheduler;
+use Bow\Configuration\Loader as ApplicationLoader;
+
+class Kernel extends ApplicationLoader
+{
+    /**
+     * Define your scheduled tasks
+     *
+     * @param Scheduler $schedule
+     * @return void
+     */
+    public function schedules(Scheduler $schedule): void
+    {
+        // Planifier une commande console Bow
+        $schedule->command('cache:clear')
+            ->daily()
+            ->at('02:00')
+            ->description('Nettoyer le cache de l\'application');
+
+        // Planifier une commande shell
+        $schedule->exec('mysqldump -u root mydb > /backups/db.sql')
+            ->daily()
+            ->at('03:00')
+            ->description('Sauvegarder la base de données')
+            ->runInBackground();
+
+        // Planifier une closure
+        $schedule->call(function () {
+            logger('Tâche de nettoyage exécutée...');
+        })
+            ->hourly()
+            ->description('Tâche de nettoyage');
+
+        // Planifier un QueueTask
+        $schedule->task(App\Tasks\SendWeeklyReportTask::class)
+            ->weekly()
+            ->sundays()
+            ->at('10:00')
+            ->description('Envoyer les rapports hebdomadaires');
+    }
+
+    // ... autres méthodes du Kernel
+}
+```
+
+:::tip Configuration centralisée
+La méthode `schedules()` est automatiquement appelée lors de l'exécution des commandes du planificateur. Toutes vos tâches sont définies au même endroit que vos autres configurations d'application.
+:::
+
+## Planifier des commandes console
+
+La méthode `command()` permet de planifier une commande console Bow :
+
+```php
+// Commande simple
+$schedule->command('migration:migrate')->daily();
+
+// Commande avec paramètres
+$schedule->command('email:send', ['--to' => 'admin@example.com'])->hourly();
+
+// Commande avec description
+$schedule->command('cache:clear')
+  ->daily()
+  ->at('02:00')
+  ->description('Vider le cache quotidiennement');
+```
+
+## Planifier des QueueTask
+
+La méthode `task()` permet de planifier l'exécution de classes QueueTask :
+
+```php
+// Par nom de classe
+$schedule->task(App\Tasks\ProcessReportsTask::class)->daily();
+
+// Avec paramètres de constructeur
+$schedule->task(App\Tasks\SendNotificationTask::class, ['user', 'message'])->hourly();
+
+// Avec une instance
+$task = new App\Tasks\GenerateStats($config);
+$schedule->task($task)->weekly();
+```
+
+:::info File d'attente
+Les QueueTask planifiées sont automatiquement poussées vers la file d'attente configurée.
+:::
+
+### Spécifier la connexion de la file d'attente
+
+Vous pouvez spécifier quelle connexion de file d'attente utiliser :
+
+```php
+$schedule->task(App\Tasks\ProcessReportsTask::class)
+  ->daily()
+  ->onConnection('redis');
+```
+
+## Planifier des commandes shell
+
+La méthode `exec()` permet d'exécuter des commandes shell/bash :
+
+```php
+// Commande simple
+$schedule->exec('rm -rf /tmp/cache/*')->daily()->at('04:00');
+
+// Avec paramètres (automatiquement échappés)
+$schedule->exec('tar -czf backup.tar.gz', ['/var/www/files'])->weekly();
+
+// En arrière-plan
+$schedule->exec('php process-heavy-task.php')
+  ->daily()
+  ->runInBackground();
+```
+
+## Planifier des closures
+
+La méthode `call()` permet d'exécuter des closures ou callbacks :
+
+```php
+// Closure simple
+$schedule->call(function () {
+  // Votre code ici
+})->everyFiveMinutes();
+
+// Avec paramètres
+$schedule->call(function ($name, $email) {
+  logger("Traitement: {$name} ({$email})");
+}, ['John', 'john@example.com'])->hourly();
+```
+
+## Fréquences de planification
+
+Le planificateur propose de nombreuses méthodes pour définir la fréquence d'exécution :
+
+### Intervalles en minutes
+
+| **Méthode** | **Description** |
+|-------------|-----------------|
+| `everyMinute()` | Exécuter chaque minute |
+| `everyTwoMinutes()` | Exécuter toutes les 2 minutes |
+| `everyFiveMinutes()` | Exécuter toutes les 5 minutes |
+| `everyTenMinutes()` | Exécuter toutes les 10 minutes |
+| `everyFifteenMinutes()` | Exécuter toutes les 15 minutes |
+| `everyThirtyMinutes()` | Exécuter toutes les 30 minutes |
+
+### Intervalles en heures
+
+| **Méthode** | **Description** |
+|-------------|-----------------|
+| `hourly()` | Exécuter chaque heure |
+| `hourlyAt(17)` | Exécuter chaque heure à 17 minutes |
+| `everyTwoHours()` | Exécuter toutes les 2 heures |
+| `everyThreeHours()` | Exécuter toutes les 3 heures |
+| `everyFourHours()` | Exécuter toutes les 4 heures |
+| `everySixHours()` | Exécuter toutes les 6 heures |
+
+### Intervalles quotidiens et hebdomadaires
+
+| **Méthode** | **Description** |
+|-------------|-----------------|
+| `daily()` | Exécuter quotidiennement à minuit |
+| `dailyAt('13:00')` | Exécuter quotidiennement à 13h00 |
+| `twiceDaily(1, 13)` | Exécuter quotidiennement à 1h00 et 13h00 |
+| `weekly()` | Exécuter hebdomadairement le dimanche |
+| `weeklyOn(1, '8:00')` | Exécuter hebdomadairement le lundi à 8h00 |
+
+### Intervalles mensuels et annuels
+
+| **Méthode** | **Description** |
+|-------------|-----------------|
+| `monthly()` | Exécuter mensuellement le 1er à minuit |
+| `monthlyOn(15, '15:00')` | Exécuter mensuellement le 15 à 15h00 |
+| `twiceMonthly(1, 16, '13:00')` | Exécuter deux fois par mois |
+| `quarterly()` | Exécuter trimestriellement |
+| `yearly()` | Exécuter annuellement |
+| `yearlyOn(6, 1, '17:00')` | Exécuter le 1er juin à 17h00 |
+
+### Heure spécifique
+
+```php
+// Définir une heure spécifique
+$schedule->command('report:generate')
+  ->daily()
+  ->at('09:00');
+
+// Avec dailyAt
+$schedule->command('report:generate')
+  ->dailyAt('09:00');
+```
+
+### Expression cron personnalisée
+
+Si vous avez besoin d'une expression plus complexe, utilisez la méthode `cron()` :
+
+```php
+$schedule->command('custom:task')
+  ->cron('0 */4 * * 1-5');  // Toutes les 4 heures, du lundi au vendredi
+```
+
+## Contraintes de jours
+
+Vous pouvez restreindre l'exécution à certains jours :
+
+```php
+// Seulement en semaine
+$schedule->command('report:generate')
+  ->daily()
+  ->weekdays();
+
+// Seulement le week-end
+$schedule->command('cleanup')
+  ->daily()
+  ->weekends();
+
+// Jours spécifiques
+$schedule->command('backup')
+  ->daily()
+  ->mondays();
+
+$schedule->command('reports')
+  ->daily()
+  ->fridays();
+```
+
+### Méthodes de jours disponibles
+
+| **Méthode** | **Description** |
+|-------------|-----------------|
+| `mondays()` | Seulement le lundi |
+| `tuesdays()` | Seulement le mardi |
+| `wednesdays()` | Seulement le mercredi |
+| `thursdays()` | Seulement le jeudi |
+| `fridays()` | Seulement le vendredi |
+| `saturdays()` | Seulement le samedi |
+| `sundays()` | Seulement le dimanche |
+| `weekdays()` | Du lundi au vendredi |
+| `weekends()` | Samedi et dimanche |
+| `days(1, 3, 5)` | Jours personnalisés (lundi, mercredi, vendredi) |
+
+## Options avancées
+
+### Exécution en arrière-plan
+
+Pour les commandes de longue durée, exécutez-les en arrière-plan :
+
+```php
+$schedule->exec('php process-heavy-task.php')
+  ->daily()
+  ->runInBackground();
+```
+
+### Prévention du chevauchement
+
+Empêchez une tâche planifiée de s'exécuter si une instance précédente est toujours en cours :
+
+```php
+$schedule->command('slow:process')
+  ->hourly()
+  ->withoutOverlapping(60);  // Le verrou expire après 60 minutes
+```
+
+:::warning Attention
+Assurez-vous que le cache est configuré pour que la prévention du chevauchement fonctionne correctement.
+:::
+
+### Planification conditionnelle
+
+Exécutez des tâches uniquement lorsque certaines conditions sont remplies :
+
+```php
+// Exécuter seulement si la condition est vraie
+$schedule->command('send:emails')
+    ->daily()
+    ->when(function () {
+        return app()->environment('production');
+    });
+
+// Sauter si la condition est vraie
+$schedule->command('debug:task')
+    ->daily()
+    ->skip(function () {
+        return app()->environment('production');
+    });
+```
+
+### Fuseau horaire
+
+Définissez un fuseau horaire spécifique pour la planification :
+
+```php
+$schedule->command('report:generate')
+  ->daily()
+  ->at('09:00')
+  ->timezone('Europe/Paris');
+```
+
+### Description
+
+Ajoutez une description pour identifier facilement vos tâches :
+
+```php
+$schedule->command('cache:clear')
+  ->daily()
+  ->description('Nettoyer le cache quotidiennement');
+```
+
+## Commandes console
+
+### Exécuter les tâches en attente
+
+Exécute toutes les tâches qui sont dues :
+
+```bash
+php bow schedule:run
+```
+
+### Démarrer le démon du planificateur
+
+Démarre le planificateur en mode continu (recommandé en production) :
+
+```bash
+php bow schedule:work
+```
+
+### Lister les tâches planifiées
+
+Affiche toutes les tâches planifiées enregistrées :
+
+```bash
+php bow schedule:list
+```
+
+### Afficher les prochaines exécutions
+
+Affiche quand chaque tâche sera prochainement exécutée :
+
+```bash
+php bow schedule:next
+```
+
+### Tester une tâche
+
+Exécute manuellement une tâche par son index (basé sur 0) :
+
+```bash
+php bow schedule:test 0
+```
+
+## Configuration en production
+
+### Avec cron
+
+En production, ajoutez une entrée cron qui exécute le planificateur chaque minute :
+
+```bash
+* * * * * cd /path-to-your-project && php bow schedule:run >> /dev/null 2>&1
+```
+
+:::tip Conseil
+Cette unique entrée cron permet au planificateur de gérer toutes vos tâches planifiées.
+:::
+
+### Avec le mode démon
+
+Utilisez le mode démon pour une meilleure performance :
+
+```bash
+php bow schedule:work
+```
+
+### Avec Supervisor
+
+Pour le mode démon, utilisez un gestionnaire de processus comme Supervisor :
+
+```ini title="/etc/supervisor/conf.d/scheduler.conf"
+[program:scheduler]
+process_name=%(program_name)s
+directory=/var/www/your-app
+command=php bow schedule:work
+autostart=true
+autorestart=true
+user=www-data
+redirect_stderr=true
+stdout_logfile=/var/log/scheduler.log
+```
+
+Ensuite, rechargez Supervisor :
+
+```bash
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start scheduler
+```
+
+## Exemple complet
+
+Voici un exemple complet de configuration du planificateur dans le Kernel :
+
+```php title="app/Kernel.php"
+<?php
+
+namespace App;
+
+use Bow\Scheduler\Scheduler;
+use Bow\Configuration\Loader as ApplicationLoader;
+
+class Kernel extends ApplicationLoader
+{
+    public function schedules(Scheduler $schedule): void
+    {
+        // Sauvegarde quotidienne de la base de données
+        $schedule->exec('mysqldump mydb > /backups/daily.sql')
+            ->daily()
+            ->at('01:00')
+            ->description('Sauvegarde quotidienne de la base de données')
+            ->runInBackground();
+
+        // Vider le cache chaque dimanche
+        $schedule->command('cache:clear')
+            ->weekly()
+            ->sundays()
+            ->at('02:00')
+            ->description('Nettoyage hebdomadaire du cache');
+
+        // Traiter les rapports en attente chaque heure
+        $schedule->task(\App\Tasks\ProcessPendingReportsTask::class)
+            ->hourly()
+            ->withoutOverlapping()
+            ->description('Traiter les rapports en attente');
+
+        // Vérifier l'état du système toutes les 5 minutes
+        $schedule->call(function () {
+            $health = \App\Services\HealthChecker::check();
+            if (!$health->isHealthy()) {
+                \App\Services\AlertService::notify($health);
+            }
+        })
+            ->everyFiveMinutes()
+            ->description('Vérification de l\'état du système');
+
+        // Envoyer les rapports hebdomadaires (seulement en production)
+        $schedule->task(\App\Tasks\SendWeeklyReportTask::class)
+            ->weekly()
+            ->fridays()
+            ->at('17:00')
+            ->timezone('Europe/Paris')
+            ->when(function () {
+                return app()->environment('production');
+            })
+            ->description('Envoi des rapports hebdomadaires');
+    }
+
+    // ... autres méthodes
+}
+```
+
+<SuggestionFeature />
