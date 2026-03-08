@@ -47,6 +47,7 @@
       "cqrs",
       "csv",
       "console",
+      "scheduler",
       "package"
     ]
   }
