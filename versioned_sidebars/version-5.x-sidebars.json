@@ -16,7 +16,6 @@
       "storage",
       "mail",
       "messaging",
-      "pagination",
       "i18n",
       "testing"
     ],
@@ -24,15 +23,16 @@
       "database",
       "query-builder",
       "orm",
+      "pagination",
       "migration",
       "seeding"
     ],
     "Http": [
       "http-request",
-      "validation",
       "http-response",
       "http-session",
-      "http-client"
+      "http-client",
+      "validation"
     ],
     "Sécurités": [
       "auth",
@@ -47,6 +47,7 @@
       "cqrs",
       "csv",
       "console",
+      "scheduler",
       "package"
     ]
   }
