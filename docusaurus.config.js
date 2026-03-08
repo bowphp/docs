@@ -257,7 +257,8 @@ module.exports = {
       hideOnScroll: true,
       title: "Bow Framework",
       logo: {
-        src: "img/bow.png",
+        src: "img/bow-logo.svg",
+        alt: "Bow Framework",
       },
       items: [
         {
