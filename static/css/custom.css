@@ -1,146 +1,387 @@
 @import 'react-medium-image-zoom/dist/styles.css';
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+/* ============================================
+   Laravel-Style Documentation Theme
+   ============================================ */
 
 :root {
-  /* Typography - Optimized for readability */
-  --ifm-font-family-base: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", 
-    Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  --ifm-font-family-monospace: "JetBrains Mono", "Fira Code", "Cascadia Code", "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* Bow Framework teal/green color palette */
+  --ifm-color-primary: #1DB9A6;
+  --ifm-color-primary-dark: #1AA695;
+  --ifm-color-primary-darker: #189D8D;
+  --ifm-color-primary-darkest: #148274;
+  --ifm-color-primary-light: #20CCB7;
+  --ifm-color-primary-lighter: #2DD4BF;
+  --ifm-color-primary-lightest: #5EDECE;
+  
+  /* Typography - Laravel-style fonts */
+  --ifm-font-family-base: "Figtree", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ifm-font-family-monospace: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --ifm-font-size-base: 16px;
-  --ifm-line-height-base: 1.8;
+  --ifm-line-height-base: 1.75;
   --ifm-font-weight-normal: 400;
-  --ifm-font-weight-semibold: 600;
-  --ifm-font-weight-bold: 700;
+  --ifm-font-weight-semibold: 500;
+  --ifm-font-weight-bold: 600;
   
-  /* Heading sizes for better hierarchy */
-  --ifm-h1-font-size: 2.5rem;
-  --ifm-h2-font-size: 2rem;
-  --ifm-h3-font-size: 1.5rem;
-  --ifm-h4-font-size: 1.25rem;
-  --ifm-h5-font-size: 1.125rem;
-  --ifm-h6-font-size: 1rem;
+  /* Heading sizes */
+  --ifm-h1-font-size: 2.25rem;
+  --ifm-h2-font-size: 1.5rem;
+  --ifm-h3-font-size: 1.25rem;
+  --ifm-h4-font-size: 1.125rem;
+  --ifm-h5-font-size: 1rem;
+  --ifm-h6-font-size: 0.875rem;
   
-  /* Letter spacing for better readability */
-  --ifm-heading-letter-spacing: -0.02em;
-  --ifm-body-letter-spacing: 0.01em;
+  /* Clean background colors */
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #f9fafb;
   
-  /* Colors - HSL based for better manipulation */
-  --site-primary-hue-saturation: 167 68%;
-  --site-primary-hue-saturation-light: 167 56%;
-  --site-color-favorite-background: #f6fdfd;
-  --site-color-tooltip: #fff;
-  --site-color-tooltip-background: #353738;
-  --site-color-svg-icon-favorite: #e9669e;
-  --site-color-checkbox-checked-bg: hsl(167deg 56% 73% / 25%);
-  --site-color-feedback-background: #fff;
+  /* Text colors */
+  --ifm-font-color-base: #1b1b18;
+  --ifm-font-color-secondary: #706f6c;
   
-  /* Syntax highlighting */
-  --docusaurus-highlighted-code-line-bg: rgb(0 0 0 / 10%);
+  /* Border colors */
+  --ifm-color-emphasis-200: #e3e3e0;
+  --ifm-color-emphasis-300: #d1d1cd;
   
-  /* Active states */
-  --ifm-breadcrumb-color-active: var(--ifm-color-primary-darker);
-  --ifm-menu-color-active: var(--ifm-color-primary-darker);
+  /* Link styling */
+  --ifm-link-color: var(--ifm-color-primary);
+  --ifm-link-hover-color: var(--ifm-color-primary-dark);
+  --ifm-link-hover-decoration: none;
+  
+  /* Code block styling */
+  --ifm-code-background: #f4f4f2;
+  --ifm-code-padding-horizontal: 0.4rem;
+  --ifm-code-padding-vertical: 0.2rem;
+  --ifm-code-border-radius: 4px;
+  --ifm-pre-background: #1e1e1e;
+  --ifm-pre-padding: 1.25rem;
+  --ifm-pre-border-radius: 8px;
+  
+  /* Navbar */
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-navbar-shadow: 0 1px 0 0 #e3e3e0;
+  --ifm-navbar-height: 4rem;
+  --ifm-navbar-padding-horizontal: 1.5rem;
+  
+  /* Sidebar */
+  --ifm-menu-color: #706f6c;
+  --ifm-menu-color-active: var(--ifm-color-primary);
+  --ifm-menu-color-background-active: transparent;
+  --ifm-menu-color-background-hover: transparent;
+  
+  /* Table of contents */
+  --ifm-toc-border-color: #e3e3e0;
+  --ifm-toc-link-color: #706f6c;
   
   /* Transitions */
   --ifm-transition-fast: 150ms;
-  --ifm-transition-slow: 300ms;
+  --ifm-transition-slow: 200ms;
+  
+  /* Spacing */
+  --ifm-spacing-horizontal: 1.5rem;
+  --doc-sidebar-width: 280px;
+  
+  /* Code highlighting */
+  --docusaurus-highlighted-code-line-bg: rgba(29, 185, 166, 0.1);
+  
+  /* Breadcrumbs */
+  --ifm-breadcrumb-color-active: var(--ifm-color-primary);
 }
 
-/* Base typography improvements */
+/* ============================================
+   Base Typography
+   ============================================ */
 body {
   font-family: var(--ifm-font-family-base);
   font-size: var(--ifm-font-size-base);
   line-height: var(--ifm-line-height-base);
-  letter-spacing: var(--ifm-body-letter-spacing);
+  color: var(--ifm-font-color-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* Headings */
 h1, h2, h3, h4, h5, h6 {
-  letter-spacing: var(--ifm-heading-letter-spacing);
   font-weight: var(--ifm-font-weight-bold);
-  line-height: 1.3;
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+  color: var(--ifm-font-color-base);
 }
 
-/* Paragraphs */
+h1 {
+  font-size: var(--ifm-h1-font-size);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: var(--ifm-h2-font-size);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+h3 {
+  font-size: var(--ifm-h3-font-size);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
 p {
   margin-bottom: 1.25rem;
-  line-height: 1.8;
+  line-height: 1.75;
+  color: var(--ifm-font-color-base);
 }
 
-/* Code blocks */
+article p,
+article li {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+a {
+  color: var(--ifm-link-color);
+  text-decoration: none;
+  transition: color var(--ifm-transition-fast) ease;
+}
+
+a:hover {
+  color: var(--ifm-link-hover-color);
+  text-decoration: underline;
+}
+
+/* ============================================
+   Code Blocks - Laravel Style
+   ============================================ */
 code {
   font-family: var(--ifm-font-family-monospace);
-  font-size: 0.9em;
-  letter-spacing: -0.01em;
+  font-size: 0.875em;
+  background: var(--ifm-code-background);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  color: var(--ifm-color-primary);
+  font-weight: 400;
 }
 
-/* Better readability for article content */
-article p {
-  font-size: 1.0625rem;
-  line-height: 1.8;
-  color: var(--ifm-color-emphasis-800);
+pre {
+  background: var(--ifm-pre-background) !important;
+  border-radius: var(--ifm-pre-border-radius);
+  padding: var(--ifm-pre-padding);
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-/* Responsive typography */
+pre code {
+  font-size: 13px;
+  line-height: 1.7;
+  background: transparent;
+  padding: 0;
+  color: #e8e6e3;
+}
+
+/* Syntax highlighting in code blocks */
+.prism-code {
+  background: #1e1e1e !important;
+}
+
+/* ============================================
+   Navbar - Clean Laravel Style
+   ============================================ */
+.navbar {
+  box-shadow: var(--ifm-navbar-shadow);
+  background-color: var(--ifm-navbar-background-color);
+  backdrop-filter: none;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.navbar__title {
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--ifm-font-color-base);
+}
+
+.navbar__link {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--ifm-font-color-secondary);
+  transition: color var(--ifm-transition-fast) ease;
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  color: var(--ifm-color-primary);
+}
+
+/* ============================================
+   Sidebar - Minimal Laravel Style
+   ============================================ */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.menu {
+  padding: 1rem 0.75rem;
+}
+
+.menu__link {
+  font-size: 0.875rem;
+  font-weight: 400;
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  color: var(--ifm-menu-color);
+  transition: all var(--ifm-transition-fast) ease;
+}
+
+.menu__link:hover {
+  color: var(--ifm-color-primary);
+  background: transparent;
+}
+
+.menu__link--active {
+  color: var(--ifm-color-primary);
+  font-weight: 500;
+  background: transparent;
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background: rgba(29, 185, 166, 0.08);
+}
+
+.menu__list-item-collapsible .menu__link {
+  font-weight: 500;
+  color: var(--ifm-font-color-base);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.menu__list-item-collapsible:hover {
+  background: transparent;
+}
+
+/* ============================================
+   Table of Contents - Clean Style
+   ============================================ */
+.table-of-contents {
+  font-size: 0.8125rem;
+}
+
+.table-of-contents__left-border {
+  border-left: 1px solid var(--ifm-toc-border-color);
+}
+
+.table-of-contents__link {
+  color: var(--ifm-toc-link-color);
+  transition: color var(--ifm-transition-fast) ease;
+}
+
+.table-of-contents__link:hover,
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary);
+}
+
+/* ============================================
+   Breadcrumbs
+   ============================================ */
+.breadcrumbs {
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumbs__link {
+  font-size: 0.8125rem;
+  color: var(--ifm-font-color-secondary);
+}
+
+.breadcrumbs__link:hover {
+  color: var(--ifm-color-primary);
+}
+
+/* ============================================
+   Admonitions (Alerts)
+   ============================================ */
+.admonition {
+  border-radius: 8px;
+  border: none;
+  box-shadow: none;
+  margin: 1.5rem 0;
+}
+
+.admonition-heading h5 {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   Pagination
+   ============================================ */
+.pagination-nav__link {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  transition: all var(--ifm-transition-fast) ease;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary);
+  background: rgba(29, 185, 166, 0.04);
+}
+
+.pagination-nav__sublabel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ifm-font-color-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.pagination-nav__label {
+  font-weight: 500;
+  color: var(--ifm-font-color-base);
+}
+
+/* ============================================
+   Responsive Typography
+   ============================================ */
 @media screen and (max-width: 996px) {
   :root {
     --ifm-font-size-base: 15px;
-    --ifm-h1-font-size: 2rem;
-    --ifm-h2-font-size: 1.75rem;
-    --ifm-h3-font-size: 1.375rem;
-  }
-  
-  article p {
-    font-size: 1rem;
+    --ifm-h1-font-size: 1.875rem;
+    --ifm-h2-font-size: 1.375rem;
+    --ifm-h3-font-size: 1.125rem;
   }
 }
 
 @media screen and (max-width: 768px) {
   :root {
-    --ifm-font-size-base: 14px;
-    --ifm-h1-font-size: 1.75rem;
-    --ifm-h2-font-size: 1.5rem;
-    --ifm-h3-font-size: 1.25rem;
-  }
-  
-  article p {
-    font-size: 0.9375rem;
+    --ifm-font-size-base: 15px;
+    --ifm-h1-font-size: 1.625rem;
+    --ifm-h2-font-size: 1.25rem;
+    --ifm-h3-font-size: 1.125rem;
   }
 }
 
-.navbar {
-  box-shadow: none;
-  background-color: rgb(0 0 0 / 10%);
-  backdrop-filter: blur(10px);
-  transition: background-color var(--ifm-transition-fast) ease;
-}
-
-.theme-doc-sidebar-container {
-  border-right: none;
-}
-
-.table-of-contents__left-border {
-  border-left: none;
-}
-
-/* Sponsors Section */
+/* ============================================
+   Sponsors Section
+   ============================================ */
 .sponsors {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
-  justify-content: space-around;
-  gap: 2rem;
+  justify-content: center;
+  gap: 2.5rem;
   width: 100%;
-  padding: 2rem;
+  padding: 2.5rem;
 }
 
 .sponsors a {
-  flex: 0 0 120px;
-  width: 120px;
+  flex: 0 0 100px;
+  width: 100px;
   filter: grayscale(100%);
-  opacity: 0.8;
+  opacity: 0.6;
   text-align: center;
   transition: all var(--ifm-transition-slow) ease;
 }
@@ -161,73 +402,63 @@ article p {
   object-fit: contain;
 }
 
-:root {
-  /*
-  See css var + hsl color palette technique:
-  https://blog.maximeheckel.com/posts/the-power-of-composition-with-css-variables/
-   */
-  --site-primary-hue-saturation: 167 68%;
-  --site-primary-hue-saturation-light: 167 56%;
-  /* do we really need this extra one? */
-  --site-color-favorite-background: #f6fdfd;
-  --site-color-tooltip: #fff;
-  --site-color-tooltip-background: #353738;
-  --site-color-svg-icon-favorite: #e9669e;
-  --site-color-checkbox-checked-bg: hsl(167deg 56% 73% / 25%);
-  --site-color-feedback-background: #fff;
-  --docusaurus-highlighted-code-line-bg: rgb(0 0 0 / 10%);
-  /* Use a darker color to ensure contrast, ideally we don't need important */
-  --ifm-breadcrumb-color-active: var(--ifm-color-primary-darker) !important;
-  --ifm-menu-color-active: var(--ifm-color-primary-darker) !important;
-}
-
-/* Dark Theme Variables */html[data-theme='dark'] {
-  --site-color-feedback-background: #f0f8ff;
-  --site-color-favorite-background: #1d1e1e;
-  --site-color-checkbox-checked-bg: hsl(167deg 56% 73% / 10%);
-  --docusaurus-highlighted-code-line-bg: rgb(66 66 66 / 35%);
+/* ============================================
+   Dark Theme - Laravel Style
+   ============================================ */
+html[data-theme='dark'] {
+  --ifm-background-color: #171717;
+  --ifm-background-surface-color: #1f1f1f;
   
-  /* Optimized dark colors for eye comfort - Darker theme */
-  --ifm-background-color: #141414;
-  --ifm-background-surface-color: #1a1a1a;
-  --ifm-color-emphasis-0: #1f1f1f;
-  --ifm-color-emphasis-100: #242424;
-  --ifm-color-emphasis-200: #2a2a2a;
-  --ifm-color-emphasis-300: #323232;
-  --ifm-color-emphasis-400: #3e3e3e;
-  --ifm-color-emphasis-600: #5a5a5a;
-  --ifm-color-emphasis-700: #757575;
-  --ifm-color-emphasis-800: #9e9e9e;
-  --ifm-color-emphasis-900: #b8b8b8;
-  --ifm-color-emphasis-1000: #d4d4d4;
+  /* Text colors - high contrast for readability */
+  --ifm-font-color-base: #f5f5f4;
+  --ifm-font-color-base-inverse: #171717;
+  --ifm-font-color-secondary: #a8a8a6;
   
-  /* Slightly warmer text color to reduce eye strain */
-  --ifm-font-color-base: #b8b8b8;
-  --ifm-font-color-base-inverse: #151515;
-  --ifm-font-color-secondary: #757575;
+  /* Emphasis scale */
+  --ifm-color-emphasis-0: #171717;
+  --ifm-color-emphasis-100: #1f1f1f;
+  --ifm-color-emphasis-200: #2d2d2d;
+  --ifm-color-emphasis-300: #3d3d3d;
+  --ifm-color-emphasis-400: #525252;
+  --ifm-color-emphasis-500: #737373;
+  --ifm-color-emphasis-600: #a3a3a3;
+  --ifm-color-emphasis-700: #d4d4d4;
+  --ifm-color-emphasis-800: #e5e5e5;
+  --ifm-color-emphasis-900: #f5f5f4;
+  --ifm-color-emphasis-1000: #ffffff;
   
-  /* Card and content backgrounds */
-  --ifm-card-background-color: #1a1a1a;
-  --ifm-code-background: #1a1a1a;
-  --ifm-pre-background: #151515;
+  /* Code styling */
+  --ifm-code-background: #2d2d2d;
+  --ifm-pre-background: #0d0d0d;
   
-  /* Navbar with subtle backdrop */
-  --ifm-navbar-background-color: rgba(21, 21, 21, 0.98);
-  --ifm-navbar-shadow: 0 1px 0 0 rgba(36, 36, 36, 0.6);
+  /* Navbar */
+  --ifm-navbar-background-color: #171717;
+  --ifm-navbar-shadow: 0 1px 0 0 #2d2d2d;
   
-  /* Sidebar */
-  --ifm-menu-color-background-active: rgba(36, 36, 36, 0.7);
-  --ifm-menu-color-background-hover: rgba(36, 36, 36, 0.5);
+  /* Menu colors */
+  --ifm-menu-color: #a8a8a6;
+  --ifm-menu-color-background-active: rgba(29, 185, 166, 0.1);
+  --ifm-menu-color-background-hover: rgba(255, 255, 255, 0.05);
+  
+  /* TOC */
+  --ifm-toc-border-color: #2d2d2d;
+  --ifm-toc-link-color: #a8a8a6;
+  
+  /* Card backgrounds */
+  --ifm-card-background-color: #1f1f1f;
   
   /* Footer */
-  --ifm-footer-background-color: #151515;
-  --ifm-footer-color: #757575;
-  --ifm-footer-link-color: #b8b8b8;
+  --ifm-footer-background-color: #171717;
+  --ifm-footer-color: #a8a8a6;
+  --ifm-footer-link-color: #d4d4d4;
   
-  /* Scrollbar (for webkit browsers) */
-  --ifm-scrollbar-track-background-color: #1a1a1a;
-  --ifm-scrollbar-thumb-background-color: #242424;
-  --ifm-scrollbar-thumb-hover-background-color: #323232;
+  /* Highlighted code */
+  --docusaurus-highlighted-code-line-bg: rgba(29, 185, 166, 0.15);
+  
+  /* Scrollbar */
+  --ifm-scrollbar-track-background-color: #1f1f1f;
+  --ifm-scrollbar-thumb-background-color: #3d3d3d;
+  --ifm-scrollbar-thumb-hover-background-color: #525252;
 }
 
 /* Custom scrollbar for dark mode */
