@@ -6,14 +6,14 @@ title: "Envoi de fichiers dans Bow Framework"
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Traiter les fichiers envoyés](#traiter-les-fichiers-envoyés)
-- [Determiner si un fichier existe](#determiner-si-un-fichier-existe)
+- [Déterminer si un fichier existe](#determiner-si-un-fichier-existe)
 - [Validation des téléchargements réussis](#validation-des-téléchargements-réussis)
-- [Savegarder le fichier](#savegarder-le-fichier)
+- [Sauvegarder le fichier](#savegarder-le-fichier)
 - [Il manque quelque chose ?](#il-manque-quelque-chose-)
 
 ## Traiter les fichiers envoyés
 
-Souvent les requêtes sont associés à des fichiers envoyés par l'utilisateur, vous pouvez traiter ces fichiers sur [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html) les méthodes `file` et le helper du même nom.
+Souvent les requêtes sont associées à des fichiers envoyés par l'utilisateur, vous pouvez traiter ces fichiers avec [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html) via la méthode `file` et le helper du même nom.
 
 Considérons le formulaire suivant:
 
@@ -53,7 +53,7 @@ UploadFile {#92 ▼
 }
 ```
 
-## Determiner si un fichier existe
+## Déterminer si un fichier existe
 
 Vous pouvez déterminer si un fichier est présent sur la requête en utilisant la méthode `hasFile`:
 

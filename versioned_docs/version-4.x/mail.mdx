@@ -36,7 +36,7 @@ Envoyer des emails dans une application est monnaie courante. Bow Framework int�
 
 ## Configuration
 
-Vous trouverez la configuration dans le fichier `config/mail.php` qui est rélativement simple, les options sont toutes commentés.
+Vous trouverez la configuration dans le fichier `config/mail.php` qui est relativement simple, les options sont toutes commentées.
 
 Installez les packages supplémentaire
 
@@ -89,7 +89,7 @@ $data = [
 Mail::send('email-view', $data, function (Message $message) {
   $message->to('info@exemple.com');
   $message->subject("Paiement !");
-  $messate->from("Bow <info@exemple.com>");
+  $message->from("Bow <info@exemple.com>");
 });
 ```
 

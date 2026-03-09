@@ -6,7 +6,7 @@ title: "SQL Builder"
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
-- [Recupéré les informations](#recupéré-les-informations)
+- [Récupérer les informations](#recupéré-les-informations)
   - [Exemple avec `get`](#exemple-avec-get)
   - [Exemple avec `first`](#exemple-avec-first)
   - [Exemple avec `last`](#exemple-avec-last)
@@ -30,7 +30,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Bow fourni un api lié à la construction de requête. Avec la méthode `table` permet de construire une requête `sql` en se basant sur la nom de la table et retour une instance de [`Bow\Database\QueryBuilder::class`](https://bowphp.com/api/master/Bow/Database/QueryBuilder.html).
+Bow fournit une API liée à la construction de requêtes. La méthode `table` permet de construire une requête `sql` en se basant sur le nom de la table et retourne une instance de [`Bow\Database\QueryBuilder::class`](https://bowphp.com/api/master/Bow/Database/QueryBuilder.html).
 
 ```php
 use Bow\Database\Database
@@ -45,17 +45,17 @@ Vous pouvez aussi utiliser le helper `table`:
 $builder = table('users');
 ```
 
-Sur l'instance de la `QueryBuilder` de Bow, il y a plusieurs méthodes qui vont vous permettre de construire une requête SQL.
-Par exemple la methode `toSql` qui permet d'affichez la requête construite.
+Sur l'instance de `QueryBuilder` de Bow, il y a plusieurs méthodes qui vont vous permettre de construire une requête SQL.
+Par exemple la méthode `toSql` qui permet d'afficher la requête construite.
 
 ```php
 $builder->toSql();
 // select * from `users`
 ```
 
-## Recupéré les informations
+## Récupérer les informations
 
-Pour recupérer les informations avec le builder, vous devez utiliser le méthode `get` qui retourne une collection, `first` qui lui retourne `null` ou un objet `stdclass` et `last` qui se comporte comme `first` sauf qu'il retourne plutôt le dernier élément du résultat de l'exécution de la requête.
+Pour récupérer les informations avec le builder, vous devez utiliser la méthode `get` qui retourne une collection, `first` qui retourne `null` ou un objet `stdclass` et `last` qui se comporte comme `first` sauf qu'il retourne plutôt le dernier élément du résultat de l'exécution de la requête.
 
 ### Exemple avec `get`
 

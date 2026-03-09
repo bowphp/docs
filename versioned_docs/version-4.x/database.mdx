@@ -8,7 +8,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 - [Introduction](#introduction)
 - [Configuration](#configuration)
 - [SQLite Configuration](#sqlite-configuration)
-- [Connexion à plusieur Base de donnée](#connexion-à-plusieur-base-de-donnée)
+- [Connexion à plusieurs bases de données](#connexion-à-plusieur-base-de-donnée)
 - [Utilisation de requête SQL Brute](#utilisation-de-requête-sql-brute)
   - [Execution de requête Select](#execution-de-requête-select)
   - [Sélection conditionnel](#sélection-conditionnel)
@@ -32,7 +32,7 @@ Actuellement, Bow prend en charge deux bases de données:
 
 ## Configuration
 
-La configuration de la base donnée de votre application se localise dans le fihcier `config/database.php`. Dans ce fichier, vous pouvez définir tous les connections de votre base de donnée et un exemple en plus pour tous les supports de base de donnée est defini dans ce fichier.
+La configuration de la base donnée de votre application se localise dans le fichier `config/database.php`. Dans ce fichier, vous pouvez définir toutes les connexions de votre base de donnée et un exemple est défini pour tous les types de base de donnée supportés.
 
 ## SQLite Configuration
 
@@ -45,9 +45,9 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 }
 ```
 
-## Connexion à plusieur Base de donnée
+## Connexion à plusieurs bases de données
 
-Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode static de `connexion` sur la classe [Bow\Database\Database::class](https://bowphp.com/api/master/Bow/Database/Database.html). Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/database.php`:
+Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode statique `connection` sur la classe [Bow\Database\Database::class](https://bowphp.com/api/master/Bow/Database/Database.html). Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/database.php`:
 
 ```php
 use Bow\Database\Database;
@@ -61,7 +61,7 @@ Ou via le helper `db`:
 $users = db('mysql')->select(...);
 ```
 
-Une fois la configuration changé, elle est directement appliquer sur la connexion des modèles. [Cliquer ici](./orm) pour plus d'information sur les models.
+Une fois la configuration changée, elle est directement appliquée sur la connexion des modèles. [Cliquez ici](./orm) pour plus d'information sur les modèles.
 
 ## Utilisation de requête SQL Brute
 
@@ -90,9 +90,9 @@ Alors notre table à comme colonne:
 
 ### Execution de requête Select
 
-Pour executer une requête brute de type `SELECT` nous devrez utiliser la méthode `Database::select` ou le helper `select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
+Pour exécuter une requête brute de type `SELECT` vous devrez utiliser la méthode `Database::select` ou le helper `select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
 
-Execution d'un requête pour optenir tous les informations de la table `pets`:
+Exécution d'une requête pour obtenir toutes les informations de la table `pets`:
 
 ```php
 use Bow\Database\Database;

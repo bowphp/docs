@@ -31,9 +31,9 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le routing vous permet de maper une URL sur un controlleur ou une action particulière.
+Le routing vous permet de mapper une URL sur un contrôleur ou une action particulière.
 Le système de routing de Bow est greffé directement sur l'instance de l'application,
-donc sur la variable `$app` qui est une variable super global.
+donc sur la variable `$app` qui est une variable super globale.
 
 Les routes de l'application sont dans le fichier `app.php` du dossier `routing`
 de votre application.
@@ -44,7 +44,7 @@ de votre application.
 
 ### Avec le méthode `route`
 
-C'est méthode permet de faire un mappage rélativement simple.
+Cette méthode permet de faire un mappage relativement simple.
 
 ```php
 $app->route([
@@ -58,11 +58,11 @@ $app->route([
 
 | Paramètre | Type | Description |
 |----------|------|------|
-| path | `String` | Le parten d'url à matcher |
+| path | `String` | Le pattern d'URL à matcher |
 | method | `String`, `Array` | méthode Http |
 | handler | `String`, `Array` | L'action à lancer |
 | middleware | `String`, `Array` | Middleware |
-| where  | `String`, `Array` | Contrainte appliqué sur l'URL |
+| where  | `String`, `Array` | Contrainte appliquée sur l'URL |
 | name | `String`, `Array` | Le nom de la route |
 
 `method` correspond au verbe `http` à associer à la route, soit `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`.
@@ -79,7 +79,7 @@ $app->route([
 ]);
 ```
 
-- Avec le nom d'un controlleur.
+- Avec le nom d'un contrôleur.
 
 ```php
 $app->route([
@@ -89,9 +89,9 @@ $app->route([
 ]);
 ```
 
-> Plus d'information sur les controlleurs [ici](./controllers)
+> Plus d'information sur les contrôleurs [ici](./controllers)
 
-- Avec le nom d'un controlleur et un middelware.
+- Avec le nom d'un contrôleur et un middleware.
 
 ```php
 $app->route([
@@ -104,7 +104,7 @@ $app->route([
 
 > Plus d'information sur les middlewares [ici](./middleware)
 
-- Avec le nom d'un controlleur, un middelware et une restriction.
+- Avec le nom d'un contrôleur, un middleware et une restriction.
 
 ```php
 $app->route([
@@ -130,7 +130,7 @@ $app->[method](url, action);
 
 | Paramètre | Type | Description |
 |----------|------|------|
-| url      | `String` | Le parten d'url a matcher |
+| url      | `String` | Le pattern d'URL à matcher |
 | action   | `String`, `Array` | Closure ou Callable |
 
 - Avec une clourse
@@ -164,15 +164,15 @@ $callables[] = function ()
 $app->get('/', $callables);
 ```
 
-> Notez que dans la première fonction il y a à la fin une instruction `return true`, cette instruction est indispensable si vous voulez lancer la prochaine fonction. Alors ce qui veut dire que si c'est aussi un `return false` la fonctione suivante ne sera pas exécutée.
+> Notez que dans la première fonction il y a à la fin une instruction `return true`, cette instruction est indispensable si vous voulez lancer la prochaine fonction. Cela veut dire que si c'est un `return false`, la fonction suivante ne sera pas exécutée.
 
-- Avec le nom d'un controlleur
+- Avec le nom d'un contrôleur
 
 ```php
 $app->[method]('/', 'ClassController::action');
 ```
 
-- Avec le nom d'un controlleur et un middelware
+- Avec le nom d'un contrôleur et un middleware
 
 ```php
 $app->[method]('/', ['middleware' => 'ip', 'controller' => 'ClassController::action']);
@@ -191,7 +191,7 @@ $app->option($url, $action);
 $app->patch($url, $action);
 ```
 
-## Les methods de mapping
+## Les méthodes de mapping
 
 La mise en place du routage se faire donc via les méthodes suivants:
 

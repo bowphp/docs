@@ -7,9 +7,9 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
 - [Accéder à la requête](#accéder-à-la-requête)
-- [Recupération des données](#recupération-des-données)
+- [Récupération des données](#récupération-des-données)
   - [Via des Closures de route](#via-des-closures-de-route)
-  - [Via un controlleur](#via-un-controlleur)
+  - [Via un contrôleur](#via-un-contrôleur)
 - [Chemin de requête et méthode](#chemin-de-requête-et-méthode)
   - [Récupérer le chemin de requête](#récupérer-le-chemin-de-requête)
   - [Récupérer la méthode de requête](#récupérer-la-méthode-de-requête)
@@ -37,7 +37,7 @@ Ce message est traité par Bow à travers la classe [`Bow\Http\Request`](https:/
 
 Pour capturer un message ou requête HTTP, vous pouvez premièrement utiliser le helper `request()` qui vous donne une instance de [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html), deuxièmement vous pouvez passer par l'injecteur de dépendance via une action de contrôleur.
 
-## Recupération des données
+## Récupération des données
 
 En utilisant quelques méthodes simples, vous pouvez accéder à toutes les entrées utilisateur de votre application.
 
@@ -66,9 +66,9 @@ $app->get('/', function (Request $request)
 });
 ```
 
-### Via un controlleur
+### Via un contrôleur
 
-Si votre méthode de contrôleur attend également une entrée d'un paramètre de route, vous devez répertorier les paramètres de votre route après vos autres dépendances. Par exemple, si votre route est défini comme suit:
+Si votre méthode de contrôleur attend également une entrée d'un paramètre de route, vous devez répertorier les paramètres de votre route après vos autres dépendances. Par exemple, si votre route est définie comme suit:
 
 ```php
 $app->get('/users/:id', 'UserController::show');

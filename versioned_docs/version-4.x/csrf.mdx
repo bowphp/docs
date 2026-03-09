@@ -26,7 +26,7 @@ Chaque fois que vous définissez un formulaire HTML dans votre application, vous
 </form>
 ```
 
-Le middleware `App\Middlewares\ClientCsrfMiddleware::class`, qui est inclus dans le groupe de middleware Web, vérifie automatiquement que le jéton dans l'entrée de la requête correspond au jeton stocké dans la session.
+Le middleware `App\Middlewares\ClientCsrfMiddleware::class`, qui est inclus dans le groupe de middleware Web, vérifie automatiquement que le jeton dans l'entrée de la requête correspond au jeton stocké dans la session.
 
 ### Jetons CSRF & JavaScript
 
@@ -54,7 +54,7 @@ $.ajaxSetup({
 
 ## X-XSRF-TOKEN
 
-Bow stock le jéton CSRF actuel dans un cookie `XSRF-TOKEN` inclus dans chaque réponse générée par le Framework. Vous pouvez utiliser la valeur de cookie pour définir l'en-tête de demande `X-XSRF-TOKEN`.
+Bow stocke le jeton CSRF actuel dans un cookie `XSRF-TOKEN` inclus dans chaque réponse générée par le Framework. Vous pouvez utiliser la valeur de cookie pour définir l'en-tête de requête `X-XSRF-TOKEN`.
 
 Ce cookie est principalement envoyé par commodité, car certains Frameworks et bibliothèques JavaScript, comme Angular et Axios, placent automatiquement sa valeur dans l'en-tête X-XSRF-TOKEN.
 

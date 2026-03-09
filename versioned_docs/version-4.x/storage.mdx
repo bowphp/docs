@@ -20,8 +20,8 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
   - [Créer un dossier](#créer-un-dossier)
     - [Prototype](#prototype)
   - [Vérifier si un fichier existe](#vérifier-si-un-fichier-existe)
-  - [Vérifier si le paramêtre est un fichier](#vérifier-si-le-paramêtre-est-un-fichier)
-  - [Vérifier si le paramêtre est un dossier](#vérifier-si-le-paramêtre-est-un-dossier)
+  - [Vérifier si le paramètre est un fichier](#vérifier-si-le-paramètre-est-un-fichier)
+  - [Vérifier si le paramètre est un dossier](#vérifier-si-le-paramètre-est-un-dossier)
   - [Obtenir le chemin absolu d'un fichier ou dossier](#obtenir-le-chemin-absolu-dun-fichier-ou-dossier)
 
 ## Introduction
@@ -68,7 +68,7 @@ Storage::mount("public");
 Storage::mount();
 ```
 
-> Si la méthode `mount` est appelé sans paramêtre, elle utilisera par défaut la valeur de la clé `mount`.
+> Si la méthode `mount` est appelée sans paramètre, elle utilisera par défaut la valeur de la clé `mount`.
 
 Vous pouvez aussi utiliser le helper `mount()` qui fonctionne exactement de la même manière:
 
@@ -80,7 +80,7 @@ mount()->get('app.js');
 
 ### Les services S3 et FTP
 
-Pour utiliser un système de stockage externe. Cela se fait via la méthode `service`. Cette méthode, vous permet de séléctionner le type de stockage externe que vous voulez utiliser. Vous trouverez la configuration nécessaire des services dans le fichier de configuration section `services` du fichier `config/resource.php`.
+Pour utiliser un système de stockage externe, cela se fait via la méthode `service`. Cette méthode vous permet de sélectionner le type de stockage externe que vous voulez utiliser. Vous trouverez la configuration nécessaire des services dans la section `services` du fichier `config/resource.php`.
 
 Exemple avec le service `ftp`:
 

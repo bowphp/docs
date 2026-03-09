@@ -25,7 +25,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
     - [Exemple d'inclusion](#exemple-dinclusion)
 - [Héritage avec #extends, #block et #inject](#héritage-avec-extends-block-et-inject)
   - [Explication](#explication)
-- [Directive personnelisée](#directive-personnelisée)
+- [Directive personnalisée](#directive-personnelisee)
   - [Ajouter vos directive de la configuration](#ajouter-vos-directive-de-la-configuration)
   - [Exemple de création de directive](#exemple-de-création-de-directive)
   - [Utilisation des directives](#utilisation-des-directives)
@@ -47,14 +47,14 @@ Les vues contiennent le code HTML fourni par votre application et séparent votr
 
 ## Configuration
 
-Bow Framework implémente 2 moteurs de template et le template par defaut est **[Tintin](./tintin)**.
-La configuration des vues ce trouve dans le fichier `view.php` du dossier `config/`.
+Bow Framework implémente 2 moteurs de template et le template par défaut est **[Tintin](./tintin)**.
+La configuration des vues se trouve dans le fichier `view.php` du dossier `config/`.
 
-Spécifiez le nom du template à utiliser avec option `engine` de la configuration, cette option peut prendre le valeur suivant `tintin`, `twig` et `php`. Par défaut Bow utilise `tintin`.
+Spécifiez le nom du template à utiliser avec l'option `engine` de la configuration, cette option peut prendre les valeurs suivantes: `tintin`, `twig` et `php`. Par défaut Bow utilise `tintin`.
 
 > Notez que si vous définissez `php`, le rendu des vues se fera sans moteur de template
 
-Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entré `extension`. Vous verez également que les vues sont stockées dans le répertoire `templates` par defaut.
+Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entrée `extension`. Vous verrez également que les vues sont stockées dans le répertoire `templates` par défaut.
 
 ## Création de vue
 
@@ -69,7 +69,7 @@ Une simple vue peut ressembler à ceci
 </html>
 ```
 
-Apres avoir modifier et sauvegarde votre vue dans `templates/greeting.tintin.php`. Vous pouvez maintenant l'envoyer au utilisateur avec le helper view comme ceci:
+Après avoir modifié et sauvegardé votre vue dans `templates/greeting.tintin.php`, vous pouvez maintenant l'envoyer aux utilisateurs avec le helper view comme ceci:
 
 ```php
 $app->get('/', function() {
