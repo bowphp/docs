@@ -8,18 +8,24 @@
       "container",
       "contribution"
     ],
-    "Guide": [
+    "Fondamentaux": [
       "routing",
       "controller",
       "views",
-      "middleware",
+      "middleware"
+    ],
+    "Services": [
       "storage",
       "mail",
       "messaging",
-      "i18n",
-      "testing"
+      "i18n"
     ],
-    "Base de donnée": [
+    "Console": [
+      "console",
+      "scheduler",
+      "task"
+    ],
+    "Base de données": [
       "database",
       "query-builder",
       "orm",
@@ -40,15 +46,13 @@
       "soauth",
       "csrf"
     ],
-    "Misc": [
+    "Outils": [
       "assets",
       "service",
       "helpers",
       "cqrs",
       "csv",
-      "console",
-      "scheduler",
-      "task",
+      "testing",
       "package"
     ]
   }

@@ -46,32 +46,32 @@ class Kernel extends ApplicationLoader
    */
   public function schedules(Scheduler $schedule): void
   {
-  // Planifier une commande console Bow
-  $schedule->command('cache:clear')
-    ->daily()
-    ->at('02:00')
-    ->description('Nettoyer le cache de l\'application');
+    // Planifier une commande console Bow
+    $schedule->command('cache:clear')
+      ->daily()
+      ->at('02:00')
+      ->description('Nettoyer le cache de l\'application');
 
-  // Planifier une commande shell
-  $schedule->exec('mysqldump -u root mydb > /backups/db.sql')
-    ->daily()
-    ->at('03:00')
-    ->description('Sauvegarder la base de données')
-    ->runInBackground();
+    // Planifier une commande shell
+    $schedule->exec('mysqldump -u root mydb > /backups/db.sql')
+      ->daily()
+      ->at('03:00')
+      ->description('Sauvegarder la base de données')
+      ->runInBackground();
 
-  // Planifier une closure
-  $schedule->call(function () {
-    logger('Tâche de nettoyage exécutée...');
-  })
-    ->hourly()
-    ->description('Tâche de nettoyage');
+    // Planifier une closure
+    $schedule->call(function () {
+      logger('Tâche de nettoyage exécutée...');
+    })
+      ->hourly()
+      ->description('Tâche de nettoyage');
 
-  // Planifier un QueueTask
-  $schedule->task(App\Tasks\SendWeeklyReportTask::class)
-    ->weekly()
-    ->sundays()
-    ->at('10:00')
-    ->description('Envoyer les rapports hebdomadaires');
+    // Planifier un QueueTask
+    $schedule->task(App\Tasks\SendWeeklyReportTask::class)
+      ->weekly()
+      ->sundays()
+      ->at('10:00')
+      ->description('Envoyer les rapports hebdomadaires');
   }
 
   // ... autres méthodes du Kernel
