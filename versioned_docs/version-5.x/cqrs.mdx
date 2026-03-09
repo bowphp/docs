@@ -1,224 +1,221 @@
 ---
 id: cqrs
-title: "Séparation des responsabilités des requêtes de commande (CQRS)"
+title: "CQRS - Command Query Responsibility Segregation"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-**CQRS** (*Command Query Responsibility Segregation*) est un modèle d'architecture qui sépare les responsabilités des commandes et des requêtes. L'idée principale est d'utiliser un modèle différent pour les opérations d'écriture (commandes) et de lecture (requêtes).
+**CQRS** (*Command Query Responsibility Segregation*) est un pattern architectural qui sépare les opérations de lecture (Queries) des opérations d'écriture (Commands).
+
+| Type | Description | Exemple |
+|------|-------------|---------|
+| **Command** | Modifie l'état du système | Créer, modifier, supprimer |
+| **Query** | Lit les données sans modification | Lister, afficher, rechercher |
 
 :::info Quand utiliser CQRS ?
-Cette approche peut être utile dans des situations complexes, bien que pour la plupart des systèmes, **CQRS** puisse introduire une certaine complexité supplémentaire. Privilégiez CQRS pour les systèmes où les besoins en lecture et en écriture sont très différents.
+CQRS est utile pour les systèmes complexes où les besoins en lecture et écriture diffèrent. Pour les applications simples, ce pattern peut ajouter une complexité inutile.
 :::
 
-[Pour plus d'informations sur CQRS, consultez cet article de Martin Fowler](https://www.martinfowler.com/bliki/CQRS.html).
-
 ## Installation
-
-Ajoutez le package CQRS à votre projet avec la commande suivante :
 
 ```bash
 composer require bowphp/cqrs
 ```
 
-## Utilisation des commandes (Commands)
+## Commands
 
-Les commandes représentent des intentions d'effectuer des opérations d'écriture ou des actions qui modifient l'état de votre système.
+Les Commands représentent des intentions de modification de l'état du système.
 
-### Étape 1 : Créer une commande
-
-Créez une commande en implémentant l'interface `Bow\CQRS\Command\CommandInterface`. Par exemple, pour créer un utilisateur :
+### Créer une Command
 
 ```php title="app/Commands/CreateUserCommand.php"
+namespace App\Commands;
+
 use Bow\CQRS\Command\CommandInterface;
 
 class CreateUserCommand implements CommandInterface
 {
   public function __construct(
-    public string $username,
-    public string $email
+    public readonly string $name,
+    public readonly string $email,
+    public readonly string $password
   ) {}
 }
 ```
 
-### Étape 2 : Créer un handler pour la commande
+### Créer un Handler
 
-Créez un handler qui exécutera la logique associée à la commande. Ce handler doit implémenter l'interface `Bow\CQRS\Command\CommandHandlerInterface` :
+```php title="app/CommandHandlers/CreateUserCommandHandler.php"
+namespace App\CommandHandlers;
 
-```php {7} title="app/CommandHandlers/CreateUserCommandHandler.php"
+use App\Commands\CreateUserCommand;
+use App\Models\User;
+use App\Services\UserService;
 use Bow\CQRS\Command\CommandHandlerInterface;
+use Bow\CQRS\Command\CommandInterface;
+use Bow\Security\Hash;
 
 class CreateUserCommandHandler implements CommandHandlerInterface
 {
-  public function __construct(public UserService $userService) {}
+  public function __construct(
+    private UserService $userService
+  ) {}
 
   public function process(CommandInterface $command): mixed
   {
-    if ($this->userService->exists($command->email)) {
-      throw new UserServiceException(
-        "The user already exists"
-      );
+    if ($this->userService->emailExists($command->email)) {
+      throw new \RuntimeException("L'email existe déjà");
     }
 
-    return $this->userService->create([
-      "username" => $command->username,
-      "email" => $command->email
+    return User::create([
+      'name' => $command->name,
+      'email' => $command->email,
+      'password' => Hash::make($command->password),
     ]);
   }
 }
 ```
 
-:::tip Bonnes pratiques
-Le handler doit contenir la logique métier associée à la commande. Il est recommandé d'injecter les dépendances (comme les services) via le constructeur.
-:::
-
-### Étape 3 : Enregistrer la commande et son handler
-
-Ajoutez la commande et son handler dans le registre des commandes dans `App\Configurations\ApplicationConfiguration::class` :
+### Enregistrer le Handler
 
 ```php title="app/Configurations/ApplicationConfiguration.php"
+namespace App\Configurations;
+
+use App\Commands\CreateUserCommand;
+use App\CommandHandlers\CreateUserCommandHandler;
+use Bow\Configuration\Configuration;
 use Bow\CQRS\Registration as CQRSRegistration;
 
-public function run()
+class ApplicationConfiguration extends Configuration
 {
-  CQRSRegistration::commands([
-    CreateUserCommand::class => CreateUserCommandHandler::class
-  ]);
-}
-```
-
-### Étape 4 : Exécuter la commande dans un contrôleur
-
-Dans un contrôleur, utilisez le `CommandBus` pour exécuter la commande :
-
-```php {3,9,15-18,20} title="app/Controllers/UserController.php"
-namespace App\Controllers;
-
-use Bow\CQRS\Command\CommandBus;
-use App\Controllers\Controller;
-use App\Commands\CreateUserCommand;
-
-class UserController extends Controller
-{
-  public function __construct(private CommandBus $commandBus) {}
-
-  public function __invoke(Request $request)
+  public function run(): void
   {
-    $payload = $request->only(['username', 'email']);
-
-    $command = new CreateUserCommand(
-      $payload['username'],
-      $payload['email']
-    );
-
-    $result = $this->commandBus->execute($command);
-
-    return redirect()
-      ->back()
-      ->withFlash("message", "User created");
+    CQRSRegistration::commands([
+      CreateUserCommand::class => CreateUserCommandHandler::class,
+    ]);
   }
 }
 ```
 
-Ajoutez une route pour appeler cette méthode :
+### Exécuter la Command
 
-```php
-$app->post("/users/create", UserController::class);
+```php title="app/Controllers/UserController.php"
+namespace App\Controllers;
+
+use App\Commands\CreateUserCommand;
+use Bow\CQRS\Command\CommandBus;
+use Bow\Http\Request;
+
+class UserController
+{
+  public function __construct(
+    private CommandBus $commandBus
+  ) {}
+
+  public function store(Request $request)
+  {
+    $command = new CreateUserCommand(
+      name: $request->get('name'),
+      email: $request->get('email'),
+      password: $request->get('password')
+    );
+
+    $user = $this->commandBus->execute($command);
+
+    return redirect('/users')->withFlash('message', 'Utilisateur créé');
+  }
+}
 ```
 
-## Utilisation des requêtes (Queries)
+## Queries
 
-Les requêtes sont utilisées pour récupérer des données sans modifier l'état de votre système. Elles doivent être en lecture seule.
+Les Queries récupèrent des données sans modifier l'état du système.
 
-### Étape 1 : Créer une requête
-
-Créez une requête en implémentant l'interface `Bow\CQRS\Query\QueryInterface`. Par exemple, pour récupérer un utilisateur par son ID :
+### Créer une Query
 
 ```php title="app/Queries/GetUserByIdQuery.php"
+namespace App\Queries;
+
 use Bow\CQRS\Query\QueryInterface;
 
 class GetUserByIdQuery implements QueryInterface
 {
-  public function __construct(public int $userId) {}
+  public function __construct(
+    public readonly int $userId
+  ) {}
 }
 ```
 
-### Étape 2 : Créer un handler pour la requête
+### Créer un Handler
 
-Créez un handler pour exécuter la logique de récupération des données. Ce handler doit implémenter l'interface `Bow\CQRS\Query\QueryHandlerInterface` :
+```php title="app/QueryHandlers/GetUserByIdQueryHandler.php"
+namespace App\QueryHandlers;
 
-```php {7} title="app/QueryHandlers/GetUserByIdQueryHandler.php"
+use App\Models\User;
+use App\Queries\GetUserByIdQuery;
 use Bow\CQRS\Query\QueryHandlerInterface;
+use Bow\CQRS\Query\QueryInterface;
 
 class GetUserByIdQueryHandler implements QueryHandlerInterface
 {
-  public function __construct(public UserService $userService) {}
-
   public function process(QueryInterface $query): mixed
   {
-    return $this->userService->findById($query->userId);
+    return User::find($query->userId);
   }
 }
 ```
 
-:::note Lecture seule
-Les handlers de requête ne doivent jamais modifier l'état du système. Ils sont exclusivement dédiés à la récupération de données.
-:::
-
-### Étape 3 : Enregistrer la requête et son handler
-
-Ajoutez la requête et son handler dans le registre des requêtes dans `App\Configurations\ApplicationConfiguration::class` :
+### Enregistrer le Handler
 
 ```php title="app/Configurations/ApplicationConfiguration.php"
+use App\Queries\GetUserByIdQuery;
+use App\QueryHandlers\GetUserByIdQueryHandler;
 use Bow\CQRS\Registration as CQRSRegistration;
 
-public function run()
+public function run(): void
 {
   CQRSRegistration::queries([
-    GetUserByIdQuery::class => GetUserByIdQueryHandler::class
+    GetUserByIdQuery::class => GetUserByIdQueryHandler::class,
   ]);
 }
 ```
 
-### Étape 4 : Exécuter la requête dans un contrôleur
+### Exécuter la Query
 
-Dans un contrôleur, utilisez le `QueryBus` pour exécuter la requête :
-
-```php {3,9,15-18,20} title="app/Controllers/UserController.php"
+```php title="app/Controllers/UserController.php"
 namespace App\Controllers;
 
-use Bow\CQRS\Query\QueryBus;
-use App\Controllers\Controller;
 use App\Queries\GetUserByIdQuery;
+use Bow\CQRS\Query\QueryBus;
 
-class UserController extends Controller
+class UserController
 {
-  public function __construct(private QueryBus $queryBus) {}
+  public function __construct(
+    private QueryBus $queryBus
+  ) {}
 
-  public function show(int $userId)
+  public function show(int $id)
   {
-    $query = new GetUserByIdQuery($userId);
-
+    $query = new GetUserByIdQuery($id);
     $user = $this->queryBus->execute($query);
 
-    return view("user.profile", ["user" => $user]);
+    return view('users/show', compact('user'));
   }
 }
 ```
 
-Ajoutez une route pour appeler cette méthode :
+## Attributs PHP
 
-```php
-$app->get("/users/{id}", [UserController::class, 'show']);
-```
+Utilisez les attributs PHP 8 pour lier automatiquement les handlers.
 
-## Enregistrement avec les attributs PHP
-
-Vous pouvez aussi lier automatiquement les handlers à leurs commandes/requêtes avec des attributs PHP et une seule déclaration de registre.
+### CommandHandler Attribute
 
 ```php title="app/CommandHandlers/CreateUserCommandHandler.php"
+namespace App\CommandHandlers;
+
+use App\Commands\CreateUserCommand;
 use Bow\CQRS\Attribute\CommandHandler;
 use Bow\CQRS\Command\CommandHandlerInterface;
 use Bow\CQRS\Command\CommandInterface;
@@ -226,16 +223,19 @@ use Bow\CQRS\Command\CommandInterface;
 #[CommandHandler(CreateUserCommand::class)]
 class CreateUserCommandHandler implements CommandHandlerInterface
 {
-  public function __construct(public UserService $userService) {}
-
   public function process(CommandInterface $command): mixed
   {
-    // ...
+    // Logique de création
   }
 }
 ```
 
+### QueryHandler Attribute
+
 ```php title="app/QueryHandlers/GetUserByIdQueryHandler.php"
+namespace App\QueryHandlers;
+
+use App\Queries\GetUserByIdQuery;
 use Bow\CQRS\Attribute\QueryHandler;
 use Bow\CQRS\Query\QueryHandlerInterface;
 use Bow\CQRS\Query\QueryInterface;
@@ -243,21 +243,21 @@ use Bow\CQRS\Query\QueryInterface;
 #[QueryHandler(GetUserByIdQuery::class)]
 class GetUserByIdQueryHandler implements QueryHandlerInterface
 {
-  public function __construct(public UserService $userService) {}
-
   public function process(QueryInterface $query): mixed
   {
-    // ...
+    // Logique de récupération
   }
 }
 ```
 
-Enregistrez ensuite tous les handlers annotés en une fois :
+### Enregistrement avec handlers()
 
 ```php title="app/Configurations/ApplicationConfiguration.php"
+use App\CommandHandlers\CreateUserCommandHandler;
+use App\QueryHandlers\GetUserByIdQueryHandler;
 use Bow\CQRS\Registration as CQRSRegistration;
 
-public function run()
+public function run(): void
 {
   CQRSRegistration::handlers([
     CreateUserCommandHandler::class,
@@ -266,16 +266,53 @@ public function run()
 }
 ```
 
-## Conclusion
+## Routes
 
-Avec **CQRS**, vous pouvez structurer vos applications pour séparer clairement les préoccupations entre la lecture et l'écriture, tout en conservant un code organisé et maintenable.
+```php title="routes/app.php"
+// Commands (POST, PUT, DELETE)
+$app->post('/users', 'UserController::store');
+$app->put('/users/{id}', 'UserController::update');
+$app->delete('/users/{id}', 'UserController::destroy');
 
-:::tip Avantages de CQRS
-- **Séparation des responsabilités** : Les opérations de lecture et d'écriture sont isolées
-- **Scalabilité** : Possibilité d'optimiser indépendamment les lectures et les écritures
-- **Maintenabilité** : Code plus facile à tester et à maintenir
-- **Flexibilité** : Permet d'utiliser différents modèles de données pour les lectures et les écritures
-:::
+// Queries (GET)
+$app->get('/users', 'UserController::index');
+$app->get('/users/{id}', 'UserController::show');
+```
 
+## Structure recommandée
+
+```
+app/
+├── Commands/
+│   ├── CreateUserCommand.php
+│   └── UpdateUserCommand.php
+├── CommandHandlers/
+│   ├── CreateUserCommandHandler.php
+│   └── UpdateUserCommandHandler.php
+├── Queries/
+│   ├── GetAllUsersQuery.php
+│   └── GetUserByIdQuery.php
+├── QueryHandlers/
+│   ├── GetAllUsersQueryHandler.php
+│   └── GetUserByIdQueryHandler.php
+└── Controllers/
+    └── UserController.php
+```
+
+## Interfaces
+
+| Interface | Méthode | Description |
+|-----------|---------|-------------|
+| `CommandInterface` | - | Marqueur pour les commands |
+| `CommandHandlerInterface` | `process(CommandInterface): mixed` | Traite une command |
+| `QueryInterface` | - | Marqueur pour les queries |
+| `QueryHandlerInterface` | `process(QueryInterface): mixed` | Traite une query |
+
+## Bus
+
+| Classe | Méthode | Description |
+|--------|---------|-------------|
+| `CommandBus` | `execute(CommandInterface): mixed` | Exécute une command |
+| `QueryBus` | `execute(QueryInterface): mixed` | Exécute une query |
 
 <SuggestionFeature />

@@ -11,245 +11,383 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 Les migrations sont un moyen de versionner votre base de données qui évolue souvent avec les modifications de l'application.
 :::
 
-Les migrations sont sauvegardées dans le dossier `migration`.
+Les migrations sont sauvegardées dans le dossier `migrations`.
 
 ## Ajouter une migration
 
-Pour ajouter une migration, il faut passer par `php bow` avec la commande `add:migration` ensuite le nom de la migration (ex: `createTodosTable`). Bow créera un fichier du même nom précédé d'une date de création.
+Pour ajouter une migration, il faut passer par `php bow` avec la commande `add:migration` ensuite le nom de la migration (ex: `create_todos_table`). Bow créera un fichier du même nom précédé d'une date de création.
 
 ```bash
 php bow add:migration create_todos_table
 ```
 
-Les options `--table` et `--create` peuvent également être utilisées pour indiquer le nom de la table et indiquer si la migration créera une nouvelle table. Ces options pré-remplissent le fichier de raccord de migration généré avec la table spécifiée:
-
-Si vous voulez ajouter directement le nom de table dans la migration, ajouter le flag `--create=nom_de_la_table` ou `--table=nom_de_la_table`.
+Les options `--table` et `--create` peuvent également être utilisées pour indiquer le nom de la table et indiquer si la migration créera une nouvelle table:
 
 ```bash
+# Créer une nouvelle table
 php bow add:migration create_todos_table --create=todos
 
-php bow add:migration create_todos_table --table=todos
+# Modifier une table existante
+php bow add:migration add_status_to_todos_table --table=todos
 ```
 
 ## Structure de migration
 
 Une classe de migration contient deux méthodes: `up` et `rollback`. La méthode `up` sert à ajouter de nouvelles tables, colonnes ou index à votre base de données, tandis que la méthode `rollback` doit inverser les opérations effectuées par la méthode `up`.
 
-:::tip Structure d'une migration
-Voici un exemple de la migration créée précédemment :
-:::
-
-Par exemple, la migration créée précédemment :
-
 ```php
 use Bow\Database\Migration\Migration;
 use Bow\Database\Migration\Table;
 
-class Version20190929153939CreatTodosTable extends Migration
+class Version20190929153939CreateTodosTable extends Migration
 {
   /**
-   * Create Table
+   * Exécuter la migration
    */
-  public function up()
+  public function up(): void
   {
-    $this->create("users", function (Table $table) {
+    $this->create("todos", function (Table $table) {
       $table->addIncrement('id');
+      $table->addString('title');
+      $table->addInteger('status', ['default' => 1]);
       $table->addTimestamps();
     });
   }
 
   /**
-   * Drop Table
+   * Annuler la migration
    */
-  public function rollback()
+  public function rollback(): void
   {
-    $this->dropIfExists("users");
+    $this->dropIfExists("todos");
   }
 }
 ```
 
 ## Exécuter des migrations
 
-Pour exécuter toutes vos migrations en attente, exécutez la commande `migration:migrate` de la commande Bow:
+Pour exécuter toutes vos migrations en attente:
 
 ```bash
 php bow migration:migrate
-```
 
-:::tip Raccourci
-Vous pouvez aussi utiliser le raccourci `migrate`.
-:::
-
-```bash
+# Raccourci
 php bow migrate
 ```
 
-## Faire reculer les migrations
+## Annuler les migrations
 
-Pour annuler la dernière opération de migration, vous pouvez utiliser la commande d'annulation. Cette commande annule le dernier "lot" de migrations, qui peut inclure plusieurs fichiers de migration:
-
-```bash
-php artisan migration:rollback
-```
-
-La commande `migration:reset` annule toutes les migrations de votre application:
+Pour annuler la dernière opération de migration:
 
 ```bash
-php artisan migration:reset
+php bow migration:rollback
 ```
 
-## Création de table
+Pour annuler toutes les migrations:
 
-Pour créer une nouvelle table de base de données, utilisez la méthode `create`. La méthode `create` accepte deux arguments. Le premier est le nom de la table, tandis que le second est une clôture qui reçoit un objet `\Bow\Database\Migration\Table::class` pouvant être utilisé pour définir la nouvelle table:
+```bash
+php bow migration:reset
+```
+
+## Gestion des tables
+
+### Créer une table
 
 ```php
 $this->create("users", function (Table $table) {
   $table->addIncrement('id');
+  $table->addString('name');
+  $table->addString('email', ['unique' => true]);
   $table->addTimestamps();
 });
 ```
 
-## Connexion à la base de données et options de table
-
-:::info Connexion personnalisée
-Si vous souhaitez effectuer une opération de schéma sur une connexion à une base de données autre que la connexion par défaut, utilisez la méthode `connection`.
-:::
+### Créer une table si elle n'existe pas
 
 ```php
-$this->connection('name')->create("users", function (Table $table) {
+$this->createIfNotExists("users", function (Table $table) {
   $table->addIncrement('id');
+  $table->addString('name');
   $table->addTimestamps();
 });
 ```
 
-Vous pouvez utiliser les commandes suivantes dans le générateur de schéma pour définir les options de la table:
-
-| Paramètre | Description |
-|----------|------|
-| **$table->withEngine('InnoDB')** | Ici, on modifie le système de storage |
-| **$table->withCharset('utf8')** | Ici, on modifie l'encodage |
-| **$table->withCollation('utf8_unicode_ci')** | Ici, Spécifier un classement par défaut pour la table |
-
-## Renommer / Supprimer des tables
-
-Pour renommer une table de base de données existante, utilisez la méthode `renameTable`:
+### Modifier une table
 
 ```php
-public function up()
-{
-  $this->renameTable($from, $to);
-}
+$this->alter('users', function (Table $table) {
+  $table->addString('phone', ['nullable' => true]);
+});
 ```
 
-Pour supprimer une table existante, vous pouvez utiliser les méthodes drop ou `dropIfExists`:
+### Renommer une table
 
 ```php
-public function rollback()
-{
-  $this->drop('users');
+$this->renameTable('old_table', 'new_table');
+
+// Renommer si existe
+$this->renameTableIfExists('old_table', 'new_table');
+```
+
+### Supprimer une table
+
+```php
+$this->drop('users');
+
+// Supprimer si existe
+$this->dropIfExists('users');
+```
+
+### Connexion personnalisée
+
+```php
+$this->connection('mysql_secondary')->create("logs", function (Table $table) {
+  $table->addIncrement('id');
+  $table->addText('message');
+  $table->addTimestamps();
+});
+```
+
+### Options de table
+
+```php
+$this->create("users", function (Table $table) {
+  $table->withEngine('InnoDB');
+  $table->withCharset('utf8mb4');
+  $table->withCollation('utf8mb4_unicode_ci');
   
-  $this->dropIfExists('users');
-}
+  $table->addIncrement('id');
+  $table->addString('name');
+});
 ```
 
-> Avant de renommer une table, vous devez vérifier que toutes les contraintes de clé étrangère sur la table ont un nom explicite dans vos fichiers de migration au lieu de laisser BowPHP attribuer un nom basé sur une convention. Sinon, le nom de la contrainte de clé étrangère fera référence à l'ancien nom de la table.
-
-## Créer des colonnes
-
-La méthode de `alter` sur `Bow\Database\Migration\Migration::class` peut être utilisée pour mettre à jour des tables existantes. Comme la méthode `create`, la méthode `alter` accepte deux arguments: le nom de la table et une clôture qui reçoit une instance de `\Bow\Database\Migration\Table::class` que vous pouvez utiliser pour ajouter des colonnes à la table:
+### SQL brut
 
 ```php
+// Exécuter du SQL brut dans la migration
+$this->sql('ALTER TABLE users ADD INDEX idx_email (email)');
+
+// Alternative
+$this->addSql('CREATE INDEX idx_name ON users (name)');
+```
+
+## Types de colonnes
+
+### Colonnes numériques
+
+| Méthode | Description |
+|---------|-------------|
+| `addIncrement('id')` | INTEGER auto-incrémenté (clé primaire) |
+| `addBigIncrement('id')` | BIGINT auto-incrémenté (clé primaire) |
+| `addMediumIncrement('id')` | MEDIUMINT auto-incrémenté (clé primaire) |
+| `addSmallIntegerIncrement('id')` | SMALLINT auto-incrémenté (clé primaire) |
+| `addInteger('column', $attr)` | INTEGER |
+| `addIntegerPrimary('column')` | INTEGER (clé primaire) |
+| `addBigInteger('column', $attr)` | BIGINT |
+| `addMediumInteger('column', $attr)` | MEDIUMINT |
+| `addSmallInteger('column', $attr)` | SMALLINT |
+| `addTinyInteger('column', $attr)` | TINYINT |
+| `addFloat('column', $attr)` | FLOAT |
+| `addFloatPrimary('column')` | FLOAT (clé primaire) |
+| `addDouble('column', $attr)` | DOUBLE |
+| `addDoublePrimary('column')` | DOUBLE (clé primaire) |
+| `addBoolean('column')` | BOOLEAN |
+
+### Colonnes texte
+
+| Méthode | Description |
+|---------|-------------|
+| `addString('column', $attr)` | VARCHAR (255 par défaut) |
+| `addChar('column', $attr)` | CHAR |
+| `addText('column', $attr)` | TEXT |
+| `addLongtext('column', $attr)` | LONGTEXT |
+| `addJson('column', $attr)` | JSON |
+
+### Colonnes date/heure
+
+| Méthode | Description |
+|---------|-------------|
+| `addDatetime('column', $attr)` | DATETIME |
+| `addDate('column', $attr)` | DATE |
+| `addTime('column', $attr)` | TIME |
+| `addTimestamp('column', $attr)` | TIMESTAMP |
+| `addYear('column', $attr)` | YEAR |
+| `addTimestamps()` | Ajoute `created_at` et `updated_at` |
+| `addSoftDelete()` | Ajoute `deleted_at` pour soft delete |
+
+### Colonnes spéciales
+
+| Méthode | Description |
+|---------|-------------|
+| `addUuid('column', $attr)` | UUID |
+| `addUuidPrimary('column', $attr)` | UUID (clé primaire) |
+| `addBinary('column', $attr)` | BINARY |
+| `addBlob('column', $attr)` | BLOB |
+| `addTinyBlob('column', $attr)` | TINYBLOB |
+| `addMediumBlob('column', $attr)` | MEDIUMBLOB |
+| `addLongBlob('column', $attr)` | LONGBLOB |
+| `addIpAddress('column', $attr)` | IP address |
+| `addMacAddress('column', $attr)` | MAC address |
+| `addEnum('column', $attr)` | ENUM |
+| `addCheck('column', $attr)` | CHECK constraint |
+
+## Attributs de colonne
+
+Toutes les méthodes `add*` acceptent un tableau d'attributs:
+
+```php
+$table->addString('email', [
+  'size' => 100,        // Taille de la colonne
+  'nullable' => true,   // Peut être NULL
+  'default' => 'N/A',   // Valeur par défaut
+  'unique' => true,     // Contrainte UNIQUE
+  'index' => true,      // Ajouter un INDEX
+  'unsigned' => true,   // Non signé (pour nombres)
+  'primary' => true,    // Clé primaire
+  'increment' => true,  // Auto-incrément
+]);
+```
+
+### Méthode addColumn
+
+Toutes les méthodes helpers utilisent `addColumn` en interne:
+
+```php
+$table->addColumn('price', 'decimal', [
+  'size' => '10,2',
+  'unsigned' => true,
+  'default' => 0.00
+]);
+```
+
+### SQL brut dans une colonne
+
+```php
+$table->addRaw('FULLTEXT INDEX idx_content (title, body)');
+```
+
+## Modification de colonnes
+
+### Renommer une colonne
+
+```php
+$this->alter('users', function (Table $table) {
+  $table->renameColumn('name', 'full_name');
+});
+```
+
+### Modifier le type d'une colonne
+
+Utilisez les méthodes `change*` correspondantes:
+
+```php
+$this->alter('users', function (Table $table) {
+  $table->changeString('name', ['size' => 500]);
+  $table->changeInteger('status', ['default' => 0]);
+});
+```
+
+### Supprimer une colonne
+
+```php
+$this->alter('users', function (Table $table) {
+  $table->dropColumn('temporary_field');
+});
+```
+
+## Contraintes
+
+### Clés étrangères
+
+```php
+$this->create("posts", function (Table $table) {
+  $table->addIncrement('id');
+  $table->addInteger('user_id', ['unsigned' => true]);
+  $table->addString('title');
+  $table->addTimestamps();
+  
+  // Définir la clé étrangère
+  $table->addForeign('user_id', [
+    'references' => 'id',
+    'on' => 'users',
+    'onDelete' => 'CASCADE',
+    'onUpdate' => 'CASCADE'
+  ]);
+});
+```
+
+### Index
+
+```php
+$this->alter('users', function (Table $table) {
+  $table->addIndex('email');
+});
+```
+
+### Contrainte UNIQUE
+
+```php
+$this->alter('users', function (Table $table) {
+  $table->addUnique('email');
+});
+```
+
+## Exemple complet
+
+```php
+use Bow\Database\Migration\Migration;
 use Bow\Database\Migration\Table;
 
-public function up()
+class Version20240101120000CreateBlogTables extends Migration
 {
-  $this->alter('users', function (Table $table) {
-    $table->addString('name');
-  });
+  public function up(): void
+  {
+    // Table des catégories
+    $this->create("categories", function (Table $table) {
+      $table->addIncrement('id');
+      $table->addString('name');
+      $table->addString('slug', ['unique' => true]);
+      $table->addTimestamps();
+    });
+
+    // Table des articles
+    $this->create("posts", function (Table $table) {
+      $table->withEngine('InnoDB');
+      $table->withCharset('utf8mb4');
+      
+      $table->addIncrement('id');
+      $table->addInteger('category_id', ['unsigned' => true]);
+      $table->addInteger('author_id', ['unsigned' => true]);
+      $table->addString('title');
+      $table->addString('slug', ['unique' => true]);
+      $table->addText('content');
+      $table->addEnum('status', ['values' => ['draft', 'published', 'archived']]);
+      $table->addBoolean('featured', ['default' => false]);
+      $table->addTimestamps();
+      $table->addSoftDelete();
+      
+      $table->addForeign('category_id', [
+        'references' => 'id',
+        'on' => 'categories',
+        'onDelete' => 'CASCADE'
+      ]);
+      
+      $table->addForeign('author_id', [
+        'references' => 'id',
+        'on' => 'users',
+        'onDelete' => 'CASCADE'
+      ]);
+      
+      $table->addIndex('status');
+    });
+  }
+
+  public function rollback(): void
+  {
+    $this->dropIfExists("posts");
+    $this->dropIfExists("categories");
+  }
 }
 ```
-
-## Api de migration
-
-Notons pour l'instant que tous ces méthodes sont en réalité des helpers de la méthode `addColumn` de `\Bow\Database\Migration\Table::class`.
-
-### Examinons ensemble
-
-Prototype de la méthode `addColumn`.
-
-```php
-$table->addColumn(string $column_name, string $column_type, array $column_attributes);
-```
-
-| Paramètre | Type | Description |
-|----------|------|------|
-| $column_name  | **String** | Le nom de la colonne de la table |
-| $column_type  | **String** | Le type de la colonne de la table |
-| $column_attributes   | **Array** | Les différents attributes de la colonne en fonction du type |
-
-Liste des attributes: **unique**, **primary**, **index**, **increment**, **default**, **size**, **nullable**, **unsigned**.
-
-| Paramètre | Type | Description |
-|----------|------|------|
-| unique  | **Boolean** | Ajout UNIQUE sur la description de la colonne |
-| primary  | **Boolean** | Définit la colonne comme une clé primaire. Ajout PRIMARY AUTO sur la description de la colonne |
-| index  | **Boolean** | Définit la colonne comme une INDEX |
-| increment  | **Boolean** | Définit la colonne comme une AUTO INCREMENT |
-| size  | **Integer** | Définit la taille de la colonne |
-| nullable  | **Boolean** | La colonne pourra avoir une valeur nulle |
-| unsigned  | **Boolean** | Seulement pour les colonnes de type nombre. Elle définit la colonne comme non signée |
-| default  | **Mixed** | Ajoute une valeur par défaut à la colonne si une valeur n'est pas ajoutée |
-
-Regardons ensemble cet exemple :
-
-```php
-$table->addColumn('id', 'int', [
-  'primary' => true,
-  'increment' => true,
-  'size' => 11
-]);
-
-$table->addColumn('price', 'int', [
-  'size' => 11,
-  'unsigned' => true
-]);
-
-$table->addColumn('name', 'string', [
-  'nullable' => true,
-  'default' => 'Franck DAKIA',
-  'size' => 200
-]);
-```
-
-### Liste des helpers
-
-Bien entendu, le générateur de schéma contient divers types de colonnes que vous pouvez spécifier lors de la construction de vos tables:
-
-| Commande | Description |
-|----------|------|
-| $table->addIncrement('id') | Incrémentation automatique de la colonne équivalente à INTEGER (clé primaire). |
-| $table->addBigIncrement('id') | Incrémentation automatique de la colonne équivalente à BIGINT (clé primaire). |
-| $table->addMediumIncrement('id') | Incrémentation automatique de la colonne équivalente à MEDIUMINT (clé primaire). |
-| $table->addString('name', $attr = []) | Colonne équivalente à VARCGAR. |
-| $table->addInteger('price', $attr = []) | Colonne équivalente à INTEGER. |
-| $table->addBigInteger('price', $attr = []) | Colonne équivalente à BIGINT. |
-| $table->addDouble('price', $attr = []) | Colonne équivalente à DOUBLE. |
-| $table->addTinyInteger('status', $attr = []) | Colonne équivalente à TINYINT |
-| $table->addMediumInteger('status', $attr = []) | Colonne équivalente à MEDIUMINT |
-| $table->addBoolean('column') | Colonne équivalente à BOOLEAN |
-| $table->addFloat('column') | Colonne équivalente à FLOAT |
-| $table->addFloatPrimary('column') | Colonne équivalente à FLOAT (clé primaire) |
-| $table->addDouble('column') | Colonne équivalente à DOUBLE |
-| $table->addDoublePrimary('column') | Colonne équivalente à DOUBLE (clé primaire) |
-| $table->addUuid('uuid') | Colonne équivalente à UUID |
-| $table->addBinary('uuid') | Colonne équivalente à BINARY |
-| $table->addIpAddress('uuid') | Colonne équivalente à IP |
-| $table->addMacAddress('uuid') | Colonne équivalente à MAC |
-| $table->addDatetime('date_column') | Colonne équivalente à DATETIME |
-| $table->addDate('date_column') | Colonne équivalente à DATE |
-| $table->addTime('date_column') | Colonne équivalente à TIME |
-| $table->addYear('date_column') | Colonne équivalente à YEAR |
-| $table->addTimestamp('date_column') | Colonne équivalente à TIMESTAMP |
-| $table->addTimestamps() | Ajout les colonnes `updated_at` et `created_at` en TIMESTAMP |
 
 <SuggestionFeature />

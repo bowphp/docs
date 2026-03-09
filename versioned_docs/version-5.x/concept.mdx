@@ -76,19 +76,19 @@ Ce fichier contient les paramètres nécessaires pour se connecter à la base de
 
 ```php title="config/database.php"
 return [
-    'default' => 'mysql',
-    'connections' => [
-        'mysql' => [
-            'driver' => 'mysql',
-            'host' => '127.0.0.1',
-            'port' => 3306,
-            'database' => 'bowphp_app',
-            'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-        ],
+  'default' => 'mysql',
+  'connections' => [
+    'mysql' => [
+      'driver' => 'mysql',
+      'host' => '127.0.0.1',
+      'port' => 3306,
+      'database' => 'bowphp_app',
+      'username' => 'root',
+      'password' => '',
+      'charset' => 'utf8mb4',
+      'collation' => 'utf8mb4_unicode_ci',
     ],
+  ],
 ];
 ```
 
@@ -104,26 +104,35 @@ Au démarrage, le Kernel charge le fichier `config/database.php` à l'aide de `D
 
 Voici une représentation visuelle pour mieux comprendre le cycle de vie d'une requête et l'intégration modulaire (exemple avec **Database**) :
 
-```mermaid
-graph TB
-    A[Requête HTTP] -->|Entrée utilisateur| B[Request]
-    B -->|Passe la requête| C[Kernel]
-    C -->|Charge les modules| D[Routeur]
-    D -->|Vérifie la route et<br>appelle le contrôleur| E[Middleware]
-    E -->|Valide la requête<br>et continue| F[Contrôleur]
-    F -->|Exécute la logique métier| G[Modèle]
-    G -->|Interaction avec| H[(Base de données)]
-    F -->|Retourne les données| I[Vue]
-    I -->|Génère la réponse HTML/JSON| J[Réponse HTTP]
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              Framework Bow                                  │
+│                                                                             │
+│  ┌─────────────┐    ┌──────────┐    ┌────────────┐    ┌─────────────────┐   │
+│  │   Request   │───▶│  Kernel  │───▶│  Routeur   │───▶│   Middleware    │   │
+│  └─────────────┘    └──────────┘    └────────────┘    └─────────────────┘   │
+│        ▲                 │                                     │            │
+│        │                 │ Charge les                          │            │
+│        │                 │ modules                             ▼            │
+│        │                 │                            ┌─────────────────┐   │
+│        │                 ▼                            │   Contrôleur    │   │
+│        │          ┌────────────┐                      └─────────────────┘   │
+│        │          │   Config   │                               │            │
+│        │          └────────────┘                               │            │
+│        │                                                       ▼            │
+│  ┌─────────────┐                                      ┌─────────────────┐   │
+│  │   Réponse   │◀───────────────────────────────────▶│     Modèle       │   │
+│  │    HTTP     │                                      └─────────────────┘   │
+│  └─────────────┘                                               │            │
+│        ▲                                                       │            │
+│        │                                                       ▼            │
+│        │         ┌─────────────┐                      ┌─────────────────┐   │
+│        └─────────│     Vue     │◀─────────────────────│ Base de données │   │
+│                  └─────────────┘                      └─────────────────┘   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
 
-    subgraph Framework Bow
-        C
-        D
-        E
-        F
-        G
-        I
-    end
+Flux : Request → Kernel → Routeur → Middleware → Contrôleur → Modèle → Vue → Réponse
 ```
 
 ### Résumé des points importants

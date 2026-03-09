@@ -7,82 +7,220 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Bow est préconfiguré avec un environnement Frontend moderne, incluant [React](https://reactjs.org), [Vue.js](https://vuejs.org) et [Sass](https://sass-lang.com), basé sur le package [Laravel Mix](https://laravel-mix.com). Cette configuration permet d'accélérer considérablement le développement d'applications web.
+Bow est préconfiguré avec un environnement Frontend moderne basé sur [Vite](https://vitejs.dev), incluant :
 
-## Installation des dépendances
+- [React](https://react.dev) 19
+- [Vue.js](https://vuejs.org) 3
+- [Tailwind CSS](https://tailwindcss.com) 3
+- [Sass/SCSS](https://sass-lang.com)
 
-Pour lancer la compilation, rendez-vous dans la racine de votre application et tapez `npm install` ou `yarn install` dans votre console, selon le gestionnaire de packages que vous utilisez.
+Cette configuration offre un rechargement instantané (HMR) et une compilation ultra-rapide.
+
+## Installation
 
 ```bash
 npm install
-# ou
-yarn install
 ```
 
-## Commandes de compilation
+## Commandes
 
-### Compilation en mode développement
+| Commande | Description |
+|----------|-------------|
+| `npm run dev` | Lance le serveur de développement Vite avec HMR |
+| `npm run build` | Compile et optimise pour la production |
 
-Lance la compilation des fichiers définis dans `webpack.mix.js` sans optimisation.
+### Développement
 
 ```bash
 npm run dev
 ```
 
-### Compilation en mode production
+Lance le serveur Vite avec rechargement à chaud. Les modifications sont reflétées instantanément sans recharger la page.
 
-Compile et minifie les sources définies dans `webpack.mix.js` pour optimiser les performances.
-
-```bash
-npm run prod
-```
-
-### Surveiller les changements
-
-Surveille automatiquement les changements des fichiers définis dans `webpack.mix.js` et relance la compilation à chaque modification.
+### Production
 
 ```bash
-npm run watch
+npm run build
 ```
 
-:::tip Mode watch
-Cette commande est particulièrement utile pendant le développement, car elle recompile automatiquement vos assets dès que vous sauvegardez un fichier.
-:::
+Compile et minifie les assets dans le dossier `public/`.
 
-### Formatage et validation du code
+## Structure des fichiers
 
-Code Sniffer est un outil qui permet de formater le code, valider sa qualité et réorganiser votre code selon les standards de développement (ici le standard PSR-2).
-
-Cette commande lance également `format`, un outil de validation syntaxique pour PHP.
-
-```bash
-npm run format
+```
+assets/
+├── js/
+│   ├── app.js          # Point d'entrée principal
+│   ├── Example.jsx     # Composant React
+│   └── Example.vue     # Composant Vue
+├── sass/
+│   ├── app.scss        # Styles principaux
+│   └── variables.scss  # Variables SCSS
+└── css/
+    └── app.css         # CSS/Tailwind
 ```
 
-## Configuration avec Webpack Mix
+## Configuration Vite
 
-Le fichier `webpack.mix.js` vous permet de définir les fichiers JavaScript, JSX et Sass à compiler. Voici la configuration par défaut :
+```js title="vite.config.js"
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    react(),
+    tailwindcss(),
+  ],
+  root: path.resolve(__dirname, 'assets'),
+  build: {
+    outDir: path.resolve(__dirname, 'public'),
+    emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        app: path.resolve(__dirname, 'assets/js/app.js'),
+      },
+      output: {
+        entryFileNames: 'js/[name].js',
+        assetFileNames: (assetInfo) => {
+          if (/\.(css|scss)$/.test(assetInfo.name)) {
+            return 'css/[name]-[hash][extname]';
+          }
+          if (/\.(png|jpe?g|gif|svg|webp)$/.test(assetInfo.name)) {
+            return 'img/[name]-[hash][extname]';
+          }
+          return '[ext]/[name]-[hash][extname]';
+        },
+      },
+    },
+  },
+});
+```
+
+## Tailwind CSS
+
+### Configuration
+
+```js title="tailwind.config.js"
+import defaultTheme from "tailwindcss/defaultTheme";
+
+export default {
+  content: [
+    "./templates/**/*.{blade,tintin}.php",
+    "./templates/**/*.twig",
+    "./templates/**/*.{js,jsx,ts,tsx,vue}",
+    "./assets/js/**/*.{js,jsx,ts,tsx,vue}",
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+      },
+    },
+  },
+  plugins: [],
+};
+```
+
+### Utilisation
+
+```css title="assets/css/app.css"
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles personnalisés */
+.btn-primary {
+  @apply bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600;
+}
+```
+
+## Composants React
+
+```jsx title="assets/js/Example.jsx"
+import React, { useState } from 'react';
+
+export default function Example() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold">Compteur: {count}</h1>
+      <button
+        className="btn-primary mt-4"
+        onClick={() => setCount(count + 1)}
+      >
+        Incrémenter
+      </button>
+    </div>
+  );
+}
+```
+
+## Composants Vue
+
+```vue title="assets/js/Example.vue"
+<script setup>
+import { ref } from 'vue';
+
+const count = ref(0);
+</script>
+
+<template>
+  <div class="p-4">
+    <h1 class="text-2xl font-bold">Compteur: {{ count }}</h1>
+    <button class="btn-primary mt-4" @click="count++">
+      Incrémenter
+    </button>
+  </div>
+</template>
+```
+
+## Intégration dans les templates
+
+### Avec Tintin
+
+```html title="templates/app.tintin.php"
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
+```
+
+### Helper asset
+
+```php
+<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+<script src="{{ asset('js/app.js') }}"></script>
+```
+
+## Variables d'environnement
+
+Vite expose les variables préfixées par `VITE_` :
+
+```json title=".env.json"
+{
+  "VITE_APP_NAME": "Mon App",
+  "VITE_API_URL": "https://api.example.com"
+}
+```
 
 ```js
-const mix = require('laravel-mix');
-
-mix.react('assets/js/app.js', 'public/js')
-   .sass('assets/sass/app.scss', 'public/css');
-```
-
-### Personnalisation
-
-Vous pouvez facilement ajouter d'autres fichiers à compiler :
-
-```js
-mix.react('assets/js/app.js', 'public/js')
-   .sass('assets/sass/app.scss', 'public/css')
-   .js('assets/js/custom.js', 'public/js')
-   .version(); // Active le versioning des assets
+// Accès dans le code
+const appName = import.meta.env.VITE_APP_NAME;
 ```
 
 :::info Documentation
-Pour plus d'informations sur toutes les fonctionnalités de Laravel Mix, consultez la [documentation officielle](https://laravel-mix.com/docs).
+Pour plus d'informations, consultez la [documentation Vite](https://vitejs.dev/guide/).
 :::
 
 <SuggestionFeature />

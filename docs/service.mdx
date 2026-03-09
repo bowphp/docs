@@ -8,63 +8,313 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 ## Introduction
 
 :::info À propos des services
-Les services sont des classes simples que vous pouvez injecter dans vos controllers, dans d'autres services, qui peuvent vous permettre de découpler la logique et donc optimiser votre code source.
+Les services sont des classes qui encapsulent la logique métier de votre application. Ils permettent de découpler le code des contrôleurs et de rendre votre application plus testable et maintenable.
 :::
 
-Vous pouvez aussi injecter des modèles dans vos services.
+Les services sont automatiquement injectés par le conteneur d'injection de dépendances de Bow Framework.
 
-## Utilisation
+## Création d'un service
 
-:::tip Création d'un service
-Pour ajouter un service, rien de plus simple que d'utiliser la commande suivante :
-:::
+Pour créer un service, utilisez la commande `add:service` :
 
 ```bash
 php bow add:service UserService
 ```
 
-Un service `UserService` sera créé par défaut dans le dossier `app/Services`. Nous allons ajouter la méthode suivante `fetchAllUsers` pour récupérer tous les utilisateurs enregistrés dans la base de données.
+Le service sera créé dans le dossier `app/Services` :
 
-```php title="app/Services/UserService"
+```php title="app/Services/UserService.php"
 namespace App\Services;
-
-use App\Models\User;
 
 class UserService
 {
-  public function fetchAllUsers()
+  //
+}
+```
+
+## Exemple pratique
+
+Créons un service complet pour gérer les utilisateurs :
+
+```php title="app/Services/UserService.php"
+namespace App\Services;
+
+use App\Models\User;
+use Bow\Support\Collection;
+
+class UserService
+{
+  /**
+   * Récupère tous les utilisateurs
+   */
+  public function getAllUsers(): Collection
   {
     return User::all();
+  }
+
+  /**
+   * Récupère un utilisateur par son ID
+   */
+  public function findById(int $id): ?User
+  {
+    return User::find($id);
+  }
+
+  /**
+   * Crée un nouvel utilisateur
+   */
+  public function create(array $data): User
+  {
+    return User::create([
+      "name" => $data["name"],
+      "email" => $data["email"],
+      "password" => app_hash($data["password"]),
+    ]);
+  }
+
+  /**
+   * Met à jour un utilisateur
+   */
+  public function update(int $id, array $data): bool
+  {
+    $user = User::find($id);
+
+    if (!$user) {
+      return false;
+    }
+
+    return $user->update($data);
+  }
+
+  /**
+   * Supprime un utilisateur
+   */
+  public function delete(int $id): bool
+  {
+    return User::destroy($id) > 0;
   }
 }
 ```
 
-## Utilisation du service
+## Injection dans un contrôleur
 
-Pour utiliser le service, nous allons l'injecter là où nous voulons l'utiliser, dans notre cas dans un controller.
+Le service peut être injecté via le constructeur ou directement dans les méthodes :
 
-Lancez la commande suivante pour créer un nouveau controller :
+### Via le constructeur
 
-```bash
-php bow add:controller UserController
+```php title="app/Controllers/UserController.php"
+namespace App\Controllers;
+
+use App\Controllers\Controller;
+use App\Services\UserService;
+use Bow\Http\Request;
+
+class UserController extends Controller
+{
+  public function __construct(
+    private UserService $userService
+  ) {}
+
+  public function index()
+  {
+    $users = $this->userService->getAllUsers();
+
+    return view("users.index", ["users" => $users]);
+  }
+
+  public function show(int $id)
+  {
+    $user = $this->userService->findById($id);
+
+    if (!$user) {
+      return app_abort(404, "Utilisateur non trouvé");
+    }
+
+    return view("users.show", ["user" => $user]);
+  }
+
+  public function store(Request $request)
+  {
+    $user = $this->userService->create($request->all());
+
+    return redirect("/users/" . $user->id);
+  }
+}
 ```
 
-Dans le controller, nous allons maintenant injecter le service :
+### Via les paramètres de méthode
+
+```php
+public function index(UserService $userService)
+{
+  $users = $userService->getAllUsers();
+
+  return view("users.index", ["users" => $users]);
+}
+```
+
+## Injection de dépendances dans un service
+
+Les services peuvent eux-mêmes avoir des dépendances injectées :
+
+```php title="app/Services/NotificationService.php"
+namespace App\Services;
+
+class NotificationService
+{
+  public function __construct(
+    private UserService $userService
+  ) {}
+
+  public function notifyAllUsers(string $message): void
+  {
+    $users = $this->userService->getAllUsers();
+
+    foreach ($users as $user) {
+      email("emails.notification", ["message" => $message], function ($mail) use ($user) {
+        $mail->to($user->email)->subject("Notification");
+      });
+    }
+  }
+}
+```
+
+## Services avec interface (Repository Pattern)
+
+Pour une architecture plus flexible, utilisez des interfaces :
+
+```php title="app/Contracts/UserRepositoryInterface.php"
+namespace App\Contracts;
+
+use App\Models\User;
+use Bow\Support\Collection;
+
+interface UserRepositoryInterface
+{
+  public function all(): Collection;
+  public function find(int $id): ?User;
+  public function create(array $data): User;
+  public function update(int $id, array $data): bool;
+  public function delete(int $id): bool;
+}
+```
+
+```php title="app/Services/UserRepository.php"
+namespace App\Services;
+
+use App\Contracts\UserRepositoryInterface;
+use App\Models\User;
+use Bow\Support\Collection;
+
+class UserRepository implements UserRepositoryInterface
+{
+  public function all(): Collection
+  {
+    return User::all();
+  }
+
+  public function find(int $id): ?User
+  {
+    return User::find($id);
+  }
+
+  public function create(array $data): User
+  {
+    return User::create($data);
+  }
+
+  public function update(int $id, array $data): bool
+  {
+    return User::find($id)?->update($data) ?? false;
+  }
+
+  public function delete(int $id): bool
+  {
+    return User::destroy($id) > 0;
+  }
+}
+```
+
+### Enregistrer le binding dans Kernel
+
+```php title="app/Kernel.php"
+public function boot(): void
+{
+  app()->bind(
+    \App\Contracts\UserRepositoryInterface::class,
+    \App\Services\UserRepository::class
+  );
+}
+```
+
+### Utilisation
 
 ```php
 class UserController extends Controller
 {
   public function __construct(
-    private UserService $userService 
+    private UserRepositoryInterface $users
   ) {}
 
-  public function showIndex()
+  public function index()
   {
-    $users = $this->userService->fetchAllUsers();
-
-    // do something
+    return view("users.index", ["users" => $this->users->all()]);
   }
 }
 ```
+
+## Tester un service
+
+Les services sont faciles à tester unitairement :
+
+```php title="tests/Services/UserServiceTest.php"
+namespace Tests\Services;
+
+use App\Services\UserService;
+use App\Models\User;
+use PHPUnit\Framework\TestCase;
+
+class UserServiceTest extends TestCase
+{
+  private UserService $service;
+
+  protected function setUp(): void
+  {
+    parent::setUp();
+    $this->service = new UserService();
+  }
+
+  public function test_create_user(): void
+  {
+    $data = [
+      "name" => "John Doe",
+      "email" => "john@example.com",
+      "password" => "secret123"
+    ];
+
+    $user = $this->service->create($data);
+
+    $this->assertInstanceOf(User::class, $user);
+    $this->assertEquals("John Doe", $user->name);
+  }
+
+  public function test_find_user_by_id(): void
+  {
+    $user = $this->service->findById(1);
+
+    $this->assertInstanceOf(User::class, $user);
+  }
+}
+```
+
+## Bonnes pratiques
+
+:::tip Recommandations
+- **Un service = une responsabilité** : Chaque service doit avoir un seul domaine de responsabilité.
+- **Injection de dépendances** : Préférez l'injection via le constructeur pour les dépendances obligatoires.
+- **Interfaces** : Utilisez des interfaces pour les services complexes afin de faciliter les tests et les changements.
+- **Nommage** : Utilisez des noms explicites comme `UserService`, `PaymentService`, `NotificationService`.
+- **Tests** : Les services permettent d'isoler la logique métier et de la tester indépendamment.
+:::
 
 <SuggestionFeature />

@@ -1,115 +1,158 @@
 ---
 id: contribution
-title: "Guide de Contribution"
+title: "Contribution"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Contribuer à un projet open source est une excellente manière de s'améliorer en tant que développeur et d'aider une communauté. Toutes les contributions sont les bienvenues et seront reconnues.
+Toutes les contributions sont les bienvenues ! Contribuer à Bow Framework est une excellente façon de s'améliorer et d'aider la communauté.
 
 :::info Discussion préalable
-Avant de soumettre une modification, discutez-en d'abord avec les mainteneurs via e-mail ou en créant une issue sur GitHub. Cela permet de valider l'orientation de votre proposition avant de commencer le travail.
+Avant de commencer un travail conséquent, créez une issue sur GitHub pour discuter de votre proposition avec les mainteneurs.
 :::
 
-Veuillez respecter le [code de conduite](https://github.com/bowphp/framework/blob/5.x/CODE_OF_CONDUCT.md) du projet lors de vos interactions.
+## Dépôts principaux
 
-## Comment contribuer
+| Dépôt | Description |
+|-------|-------------|
+| [bowphp/framework](https://github.com/bowphp/framework) | Core du framework |
+| [bowphp/app](https://github.com/bowphp/app) | Application squelette |
+| [bowphp/docs](https://github.com/bowphp/docs) | Documentation |
 
-Le projet accepte les contributions via des Pull Requests sur [Framework](https://github.com/bowphp/framework) ou [App](https://github.com/bowphp/app). Voici les étapes pour bien contribuer :
+## Processus de contribution
 
-1. **Forker le projet** :
-- Rendez-vous sur la page du projet sur GitHub.
-- Cliquez sur le bouton "Fork" pour copier le projet dans votre compte.
-
-2. **Créer une branche** :
-- Donnez un nom descriptif à votre branche reflétant les modifications apportées.
-- Exemple :
+### 1. Fork et clone
 
 ```bash
-git checkout -b fix-login-bug
+# Forker le projet sur GitHub, puis cloner
+git clone https://github.com/VOTRE-USERNAME/framework.git
+cd framework
+
+# Ajouter le dépôt upstream
+git remote add upstream https://github.com/bowphp/framework.git
 ```
 
-3. **Coder et documenter** :
-- Implémentez vos changements avec des messages de commit clairs (voir la section « Format des messages de commit »).
-- Si vos modifications impactent la logique ou l'utilisation, mettez à jour la documentation du projet.
+### 2. Créer une branche
 
-4. **Ajouter des tests unitaires** :
-- Assurez-vous que vos changements sont accompagnés de tests qui garantissent leur fonctionnement.
-- Exemple : si vous ajoutez une nouvelle fonctionnalité, écrivez des tests pour vérifier les scénarios principaux et les cas limites.
+```bash
+# Synchroniser avec upstream
+git fetch upstream
+git checkout -b feat/ma-fonctionnalite upstream/5.x
+```
 
-:::tip Tests
-Exécutez `composer test --testdox` pour vérifier que tous les tests passent avant de soumettre votre Pull Request.
+Conventions de nommage :
+- `feat/description` - Nouvelle fonctionnalité
+- `fix/description` - Correction de bug
+- `docs/description` - Documentation
+- `refactor/description` - Refactoring
+
+### 3. Développer
+
+```bash
+# Installer les dépendances
+composer install
+
+# Lancer les tests pendant le développement
+composer test --testdox
+```
+
+### 4. Commiter
+
+Utilisez la convention [Conventional Commits](https://www.conventionalcommits.org) :
+
+```bash
+# Format: type(scope): description
+git commit -m "feat(auth): add OAuth2 support for Google"
+git commit -m "fix(session): resolve token expiration issue"
+git commit -m "docs(readme): update installation instructions"
+```
+
+Types disponibles :
+- `feat` - Nouvelle fonctionnalité
+- `fix` - Correction de bug
+- `docs` - Documentation
+- `refactor` - Refactoring sans changement fonctionnel
+- `test` - Ajout/modification de tests
+- `chore` - Maintenance (dépendances, CI, etc.)
+
+:::note
+Les messages de commit doivent être en anglais.
 :::
 
-5. **Soumettre une Pull Request** :
-- Poussez vos modifications sur votre répertoire forké :
+### 5. Soumettre la Pull Request
+
 ```bash
-git push origin fix-login-bug
+# Pousser la branche
+git push origin feat/ma-fonctionnalite
 ```
 
-- Allez sur la page GitHub du projet et créez une Pull Request en veillant à décrire clairement les modifications apportées.
+Sur GitHub, créez une Pull Request avec :
+- Un titre clair suivant Conventional Commits
+- Une description des changements
+- Référence à l'issue associée (ex: `Fixes #123`)
 
-## Règles pour les Pull Requests
+## Règles
 
-- **Un Pull Request par fonctionnalité** : Si vous souhaitez contribuer à plusieurs aspects du projet, créez une Pull Request distincte pour chaque modification.
-- **Mise à jour de version** : Si votre contribution modifie de manière significative le comportement du projet, indiquez comment elle affecte la version en suivant le schéma [SemVer](https://semver.org).
+### Pull Requests
 
-## Format des messages de commit
+- **Une PR par fonctionnalité** : Séparez les modifications indépendantes
+- **Tests requis** : Toute nouvelle fonctionnalité doit être testée
+- **Documentation** : Mettez à jour la doc si nécessaire
+- **Versioning** : Suivez [SemVer](https://semver.org) pour les changements majeurs
 
-Pour garantir une bonne maintenance du projet, utilisez un format standardisé pour vos messages de commit suivant la convention [Conventional Commits](https://www.conventionalcommits.org).
+### Qualité du code
 
-### Préfixes recommandés
-
-- **refactor** : Changement interne qui n'affecte pas le comportement utilisateur.
-- **fix** : Corrige un bug existant.
-- **feat** : Ajoute une nouvelle fonctionnalité.
-- **test** : Ajoute ou met à jour des tests unitaires.
-- **docs** : Modifications de la documentation.
-- **chore** : Tâches de maintenance (dépendances, configuration, etc.).
-
-### Exemple de message de commit
-
-1. **Changement général** :
 ```bash
-git commit -m "fix: correct login issue when using special characters"
+# Formater le code
+composer format
+
+# Analyser statiquement
+composer analyse
+
+# Lancer tous les tests
+composer test
 ```
 
-2. **Changement dans une section spécifique** :
-```bash
-git commit -m "fix(session): resolve token expiration bug"
-```
+### Standards
 
-3. **Changement touchant plusieurs sections** :
-Si votre modification affecte plusieurs parties, ajoutez une description plus détaillée :
+- PHP 8.1+
+- PSR-12 pour le style de code
+- PHPDoc pour les méthodes publiques
+- Tests unitaires avec PHPUnit
+
+## Exemples de commits
+
 ```bash
+# Fonctionnalité simple
+git commit -m "feat(http): add support for PATCH requests"
+
+# Correction de bug
+git commit -m "fix(routing): handle trailing slashes correctly"
+
+# Commit avec description détaillée
 git commit
 ```
 
-Dans l'éditeur :
 ```
-feat(auth): implement OAuth2 login
+feat(auth): implement JWT authentication
 
-- Added OAuth2 support for Google and Facebook.
-- Updated session handling for third-party logins.
+- Add JwtGuard for token-based authentication
+- Support token refresh and revocation
+- Add middleware for protected routes
+
+Closes #42
 ```
 
-:::note Langue
-Les messages de commit doivent être rédigés en anglais pour faciliter la collaboration internationale.
-:::
+## Code de conduite
 
-## Bonnes pratiques
+Respectez le [code de conduite](https://github.com/bowphp/framework/blob/5.x/CODE_OF_CONDUCT.md) dans toutes vos interactions.
 
-- **Qualité du code** : Respectez les standards de codage du projet. Consultez le fichier [CONTRIBUTING.md](https://github.com/bowphp/framework/blob/5.x/CONTRIBUTING.md) pour plus de détails.
-- **Relecture** : Révisez vos modifications avant de soumettre le Pull Request pour éviter les erreurs.
-- **Collaborer** : Soyez ouvert aux retours et prêt à ajuster vos contributions en fonction des commentaires des mainteneurs.
-- **Tests** : Assurez-vous que tous les tests passent et que votre code est couvert par des tests.
+## Ressources
 
-:::tip
-Utilisez `composer format` pour formater automatiquement votre code selon les standards PSR-2.
-:::
-
-En suivant ces étapes, vous contribuez à la croissance et à la stabilité du projet tout en gagnant de précieuses compétences en développement collaboratif !
+- [CONTRIBUTING.md](https://github.com/bowphp/framework/blob/5.x/CONTRIBUTING.md)
+- [Issues ouvertes](https://github.com/bowphp/framework/issues)
+- [Discussions](https://github.com/bowphp/framework/discussions)
 
 <SuggestionFeature />

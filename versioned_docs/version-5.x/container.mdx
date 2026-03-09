@@ -1,252 +1,414 @@
 ---
 id: container
-title: "Conteneur de services Bow Framework - Injection de dépendances"
+title: "Conteneur de services"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-### Qu'est-ce que l'Injection de Dépendances (DI) ?
+Le conteneur d'injection de dépendances (DIC) de Bow Framework, appelé **Capsule**, est un outil puissant pour gérer les dépendances de votre application.
 
-L'**injection de dépendances** est un concept qui permet de **fournir** les objets dont une classe a besoin plutôt que de les créer elle-même. Cela permet de rendre le code plus modulaire et plus facile à tester. Plutôt que d'instancier directement des objets dans une classe, vous les **injectez** via son constructeur ou une autre méthode.
+### Injection de dépendances (DI)
 
-### Qu'est-ce que l'Inversion de Contrôle (IoC) ?
+L'**injection de dépendances** permet de fournir les objets dont une classe a besoin plutôt que de les créer elle-même. Cela rend le code plus modulaire et testable.
 
-L'**inversion de contrôle** est un principe qui consiste à **déléguer** la gestion des objets et de leurs dépendances à un autre composant appelé **conteneur**. Cela signifie que le conteneur crée et gère les objets nécessaires pour vous, au lieu que votre code les crée manuellement.
+### Inversion de contrôle (IoC)
 
-Dans Bow Framework, cette gestion est faite par un conteneur appelé **Capsule**.
+L'**inversion de contrôle** délègue la gestion des objets et de leurs dépendances à un conteneur. Le conteneur crée et gère les objets nécessaires pour vous.
 
-## Pourquoi utiliser un conteneur DIC ?
+## Accéder au conteneur
 
-Le conteneur DIC de Bow Framework vous permet de gérer facilement toutes les dépendances de votre application. Voici quelques avantages :
+### Via le helper `app()`
 
-1. **Facilite la gestion des objets** : Plus besoin de créer des objets partout dans votre code.
-2. **Modularité et réutilisabilité** : Votre code devient plus facile à maintenir et à tester.
-3. **Flexibilité** : Vous pouvez facilement changer la façon dont les objets sont créés et gérés.
-
-## Comment utiliser le conteneur DIC dans Bow Framework ?
-
-### 1. Accéder au conteneur
-
-Le conteneur est l'endroit où toutes les dépendances sont stockées. Voici comment y accéder :
-
-#### Via un helper :
 ```php
-$container = app();  // Retourne l'instance du conteneur
+// Obtenir l'instance du conteneur
+$container = app();
+
+// Résoudre directement une classe
+$service = app(App\Services\UserService::class);
 ```
 
-#### Via la classe `Capsule` :
+### Via la classe Capsule
 
 ```php
 use Bow\Container\Capsule;
-$container = Capsule::getInstance();  // Accède au conteneur de façon plus explicite
+
+$container = Capsule::getInstance();
 ```
 
-Les deux méthodes vous permettent de travailler avec le même conteneur.
+## Enregistrer des liaisons
 
-### 2. Enregistrer des liaisons dans le conteneur
+### Liaison simple (bind)
 
-Lorsque vous avez une classe ou un service que vous souhaitez utiliser dans plusieurs endroits de votre application, vous devez **enregistrer** cette classe dans le conteneur.
-
-#### Exemple de liaison simple :
-
-Vous voulez dire au conteneur : "Lorsque quelqu'un demandera un service, voici comment le créer" :
+Enregistre un service qui sera instancié une seule fois, puis mis en cache:
 
 ```php
-use App\Services\Service;
+use App\Services\PaymentService;
 
-app()->bind('service', function() {
-  return new Service();  // Retourne une nouvelle instance du service
+app()->bind('payment', function (Capsule $container) {
+  return new PaymentService();
 });
+
+// Ou avec une classe
+app()->bind(PaymentServiceInterface::class, PaymentService::class);
 ```
 
-#### Exemple de liaison d'une instance unique (singleton) :
+### Instance (singleton)
 
-Dans certains cas, vous ne voulez créer qu'une seule instance d'une classe (par exemple, pour la configuration). Vous pouvez utiliser un **singleton** :
+Enregistre une instance déjà créée:
 
 ```php
-app()->instance('config', new Config());  // Une seule instance de Config sera utilisée
+use App\Services\Config;
+
+$config = new Config(['debug' => true]);
+app()->instance('config', $config);
 ```
 
-#### Exemple de liaison d'une fabrique :
+### Fabrique (factory)
 
-Si vous voulez que le conteneur crée une nouvelle instance chaque fois qu'une dépendance est demandée, mais avec un contrôle spécifique sur la création, vous pouvez utiliser une **fabrique** :
+Crée une nouvelle instance à chaque résolution:
 
 ```php
-app()->factory('user', function() {
-  return new User();  // Crée une nouvelle instance de User à chaque fois
+app()->factory('uuid', function (Capsule $container) {
+  return new UuidGenerator();
 });
+
+// Chaque appel crée une nouvelle instance
+$uuid1 = app()->make('uuid');
+$uuid2 = app()->make('uuid'); // Instance différente
 ```
 
-### 3. Résoudre des dépendances
+## Résoudre des dépendances
 
-Une fois qu'un objet est enregistré dans le conteneur, vous pouvez facilement le récupérer (ou **le résoudre**) à tout moment dans votre application. Le conteneur crée et fournit l'objet pour vous.
-
-#### Résolution simple :
+### Résolution simple
 
 ```php
-$service = app()->make('service');  // Récupère l'objet enregistré sous la clé 'service'
+// Via make()
+$service = app()->make('payment');
+
+// Via le helper
+$service = app('payment');
+
+// Via une classe
+$service = app(App\Services\PaymentService::class);
 ```
 
-#### Résolution avec paramètres :
-Si la classe que vous voulez récupérer a des **paramètres** (comme des arguments dans son constructeur), vous pouvez les fournir facilement :
+### Résolution avec paramètres
 
 ```php
-$service = app()->makeWith('service', ['param' => 'value']);  // Passe des paramètres à la classe
+$service = app()->makeWith(App\Services\ReportService::class, [
+  'startDate' => '2024-01-01',
+  'endDate' => '2024-12-31'
+]);
 ```
 
-#### Via la fonction helper :
+### Accès par tableau
+
+Le conteneur implémente `ArrayAccess`:
+
 ```php
-$service = app(Service::class);  // Récupère l'objet directement en utilisant la classe
+// Vérifier l'existence
+if (isset(app()['payment'])) {
+  // Le service existe
+}
+
+// Récupérer un service
+$service = app()['payment'];
+
+// Enregistrer un service
+app()['cache'] = function () {
+  return new CacheService();
+};
+
+// Supprimer un service
+unset(app()['cache']);
 ```
 
-### 4. Injection automatique des dépendances
+## Injection automatique
 
-Si une classe dépend d'une autre (par exemple, un service qui utilise un repository), le conteneur peut automatiquement créer les objets nécessaires et les injecter. Cela vous évite de devoir créer manuellement les objets.
-
-#### Exemple :
-
-Imaginons que vous ayez une classe `UserService` qui a besoin de `UserRepository` :
+Le conteneur résout automatiquement les dépendances des constructeurs:
 
 ```php
+namespace App\Services;
+
+use App\Repositories\UserRepository;
+use App\Services\EmailService;
+
 class UserService
 {
-  private $repository;
-  
-  public function __construct(UserRepository $repository)
+  public function __construct(
+    private UserRepository $repository,
+    private EmailService $emailService
+  ) {
+  }
+
+  public function register(array $data): User
   {
-    $this->repository = $repository;  // Le conteneur injecte UserRepository ici
+    $user = $this->repository->create($data);
+    $this->emailService->sendWelcome($user);
+    return $user;
   }
 }
 ```
 
-Le conteneur peut automatiquement **injecter** `UserRepository` lorsque vous demandez une instance de `UserService` :
+Lorsque vous demandez `UserService`, le conteneur:
+
+1. Détecte les dépendances du constructeur
+2. Résout `UserRepository` et `EmailService`
+3. Instancie `UserService` avec ces dépendances
 
 ```php
-$userService = app(UserService::class);  // Le conteneur crée UserService et injecte UserRepository
+// Le conteneur crée automatiquement toutes les dépendances
+$userService = app(App\Services\UserService::class);
 ```
 
-### 5. Liaisons de types simples et complexes
+## Liaison d'interfaces
 
-#### Liaison simple
-
-Chaque fois que vous demandez l'objet, une **nouvelle instance** est créée :
+Liez une interface à son implémentation concrète:
 
 ```php
-app()->bind('logger', function() {
-  return new Logger();  // Crée un nouvel objet Logger chaque fois
-});
+// Enregistrement
+app()->bind(
+  App\Contracts\PaymentGatewayInterface::class,
+  App\Services\StripePaymentGateway::class
+);
+
+// Utilisation dans une classe
+class OrderService
+{
+  public function __construct(
+    private PaymentGatewayInterface $gateway
+  ) {
+  }
+}
+
+// Le conteneur injecte StripePaymentGateway
+$orderService = app(OrderService::class);
 ```
 
-#### Liaison singleton
+## Utilisation dans les contrôleurs
 
-Une **seule instance** est utilisée à travers toute l'application :
-
-```php
-app()->instance('config', new Config());  // Utilise la même instance partout
-```
-
-#### Liaison fabrique
-
-Chaque demande génère **une nouvelle instance** :
+Les dépendances sont automatiquement injectées dans les contrôleurs:
 
 ```php
-app()->factory('user', function() {
-  return new User();  // Crée une nouvelle instance à chaque fois
-});
-```
+namespace App\Http\Controllers;
 
-### 6. Vérification de l'existence d'une liaison
+use App\Services\UserService;
+use Bow\Http\Request;
 
-Avant de résoudre une dépendance, vous pouvez vérifier si le conteneur contient déjà l'objet demandé.
+class UserController
+{
+  public function __construct(
+    private UserService $userService
+  ) {
+  }
 
-#### Exemple :
+  public function index(Request $request)
+  {
+    return $this->userService->getAllUsers();
+  }
 
-```php
-if (isset(app('service'))) {
-  // Le service existe dans le conteneur
+  // Injection par méthode
+  public function show(Request $request, UserService $service)
+  {
+    return $service->find($request->get('id'));
+  }
 }
 ```
-
-## Bonnes pratiques à suivre
-
-:::tip Recommandations
-1. **Utilisez l'injection par constructeur** : Cela permet de déclarer clairement les dépendances d'une classe et facilite les tests.
-2. **Privilégiez les interfaces aux classes concrètes** : Utilisez des interfaces pour les dépendances afin de garder votre code flexible et facile à maintenir.
-3. **Limitez l'utilisation des singletons** : Les singletons sont utiles pour certaines situations, mais il est préférable de ne pas en abuser, car cela peut rendre le code difficile à tester.
-:::
 
 ## Exemple complet
 
-Voici un exemple complet pour comprendre comment tout cela fonctionne ensemble :
-
-### Définir une interface
-
-Une interface définit ce que doit faire un service, mais pas comment il le fait :
+### Définir les interfaces
 
 ```php
+namespace App\Contracts;
+
 interface UserRepositoryInterface
 {
-  public function find($id);
+  public function find(int $id): ?User;
+  public function create(array $data): User;
+  public function update(int $id, array $data): bool;
+  public function delete(int $id): bool;
+}
+
+interface NotificationServiceInterface
+{
+  public function send(User $user, string $message): void;
 }
 ```
 
-### Implémentation de l'interface
-
-Une classe qui implémente cette interface fournit l'implémentation réelle :
+### Implémenter les interfaces
 
 ```php
+namespace App\Repositories;
+
+use App\Contracts\UserRepositoryInterface;
+use App\Models\User;
+
 class UserRepository implements UserRepositoryInterface
 {
-  public function find($id) {
-    return "Utilisateur avec l'ID : " . $id;
+  public function find(int $id): ?User
+  {
+    return User::retrieve($id);
+  }
+
+  public function create(array $data): User
+  {
+    return User::create($data);
+  }
+
+  public function update(int $id, array $data): bool
+  {
+    return (bool) User::where('id', $id)->update($data);
+  }
+
+  public function delete(int $id): bool
+  {
+    return (bool) User::deleteBy('id', $id);
   }
 }
 ```
 
-### Service utilisant le repository
+```php
+namespace App\Services;
 
-`UserService` a besoin de `UserRepository` pour fonctionner :
+use App\Contracts\NotificationServiceInterface;
+use App\Models\User;
+
+class EmailNotificationService implements NotificationServiceInterface
+{
+  public function send(User $user, string $message): void
+  {
+    // Envoyer un email
+    mail($user->email, 'Notification', $message);
+  }
+}
+```
+
+### Créer le service
 
 ```php
+namespace App\Services;
+
+use App\Contracts\UserRepositoryInterface;
+use App\Contracts\NotificationServiceInterface;
+
 class UserService
 {
-  private $repository;
-  
-  public function __construct(UserRepositoryInterface $repository)
-  {
-    $this->repository = $repository;
+  public function __construct(
+    private UserRepositoryInterface $repository,
+    private NotificationServiceInterface $notifier
+  ) {
   }
-  
-  public function getUser($id)
+
+  public function register(array $data): User
+  {
+    $user = $this->repository->create($data);
+    $this->notifier->send($user, 'Bienvenue sur notre plateforme!');
+    return $user;
+  }
+
+  public function getUser(int $id): ?User
   {
     return $this->repository->find($id);
   }
 }
 ```
 
-### Enregistrement dans le conteneur
-
-Enregistrez l'interface et l'implémentation dans le conteneur :
+### Enregistrer dans un ServiceProvider
 
 ```php
-app()->bind(UserRepositoryInterface::class, UserRepository::class);
+namespace App\Configurations;
+
+use Bow\Configuration\Configuration;
+use Bow\Configuration\Loader;
+use App\Contracts\UserRepositoryInterface;
+use App\Contracts\NotificationServiceInterface;
+use App\Repositories\UserRepository;
+use App\Services\EmailNotificationService;
+
+class AppServiceProvider extends Configuration
+{
+  public function create(Loader $config): void
+  {
+    // Lier les interfaces aux implémentations
+    $this->container->bind(
+      UserRepositoryInterface::class,
+      UserRepository::class
+    );
+
+    $this->container->bind(
+      NotificationServiceInterface::class,
+      EmailNotificationService::class
+    );
+  }
+
+  public function run(): void
+  {
+    //
+  }
+}
 ```
 
-### Utilisation dans le code
-
-Le conteneur crée automatiquement le service et ses dépendances :
+### Utiliser dans un contrôleur
 
 ```php
-$userService = app(UserService::class);
+namespace App\Http\Controllers;
 
-echo $userService->getUser(1);  // Affiche : "Utilisateur avec l'ID : 1"
+use App\Services\UserService;
+use Bow\Http\Request;
+
+class UserController
+{
+  public function __construct(
+    private UserService $userService
+  ) {
+  }
+
+  public function show(int $id)
+  {
+    $user = $this->userService->getUser($id);
+
+    if (!$user) {
+      return response()->json(['error' => 'User not found'], 404);
+    }
+
+    return response()->json($user);
+  }
+
+  public function store(Request $request)
+  {
+    $user = $this->userService->register(
+      $request->only(['name', 'email', 'password'])
+    );
+
+    return response()->json($user, 201);
+  }
+}
 ```
 
-## Conclusion
+## Bonnes pratiques
 
-Le conteneur d'injection de dépendances de Bow Framework rend votre code plus **modulaire**, **flexible** et **testable**. En utilisant l'IoC, vous déléguez la gestion des objets et des dépendances à un conteneur, ce qui simplifie la création et l'utilisation des objets dans votre application.
+:::tip Recommandations
+1. **Injection par constructeur**: Déclarez clairement les dépendances d'une classe
+2. **Interfaces plutôt que classes concrètes**: Gardez votre code flexible et testable
+3. **Un service, une responsabilité**: Chaque service doit avoir une seule raison de changer
+4. **Évitez les singletons abusifs**: Utilisez `bind()` par défaut, `instance()` uniquement si nécessaire
+5. **Enregistrez dans les ServiceProviders**: Centralisez la configuration du conteneur
+:::
+
+## Méthodes du conteneur
+
+| Méthode | Description |
+|---------|-------------|
+| `bind($key, $value)` | Enregistre un service (singleton après première résolution) |
+| `factory($key, $value)` | Enregistre une fabrique (nouvelle instance à chaque fois) |
+| `instance($key, $object)` | Enregistre une instance existante |
+| `make($key)` | Résout un service |
+| `makeWith($key, $params)` | Résout avec des paramètres personnalisés |
+
+<SuggestionFeature />
 
 :::info Avantages
 Grâce à ces principes, vous pouvez créer des applications plus propres, plus faciles à maintenir et plus robustes.

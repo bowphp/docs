@@ -7,290 +7,259 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Les contrôleurs sont des moyens pour simplifier l'organisation de votre projet.
+Les contrôleurs organisent la logique de gestion des requêtes en classes dédiées, plutôt que de définir des closures dans les fichiers de routes.
 
-Au lieu de définir toute la logique de gestion de la requête en tant que `closure` dans les fichiers de routage, vous pouvez organiser ce comportement à l'aide de classe de contrôleur. Les contrôleurs peuvent regrouper la logique de traitement des requêtes associée en une seule classe.
+Les contrôleurs sont stockés dans `app/Controllers/`.
 
-Les contrôleurs sont stockés dans le répertoire `app/Controllers`.
-
-[![asciicast](https://asciinema.org/a/1r0hZPnP5wY5fCPcxNXtLTQ4r.svg)](https://asciinema.org/a/1r0hZPnP5wY5fCPcxNXtLTQ4r)
-
-## Configuration
-
-Vous avez la possibilité de modifier le `namespace` des contrôleurs et des middlewares. Pour ce faire, ouvrez le fichier `app\Kernel.php`. La méthode `namespaces` permet à Bow de savoir quel est le bon `namespace` à ajouter sur le contrôleur lors de l'exécution de la requête ou lors de la génération de contrôleur ou de middleware par le lanceur de tâche `php bow`.
-
-Imaginez que vous avez une application pour la gestion des bus d'une école et que vous voulez grouper tous vos contrôleurs dans le namespace `App\Bus\Controllers`. Alors comment faire ça ?
-
-Voici le code que cela pourrait donner :
-
-```php title="app\Kernel.php"
-public function namespaces()
-{
-  return [
-    "controller" => "App\\Bus\\Controllers",
-    ...
-  ]
-}
-```
-
-Ensuite, il faudra aussi changer un peu la configuration du lanceur de tâche :
-
-```php title="Dans le fichier bow"
-$command = new Bow\Console\Command(__DIR__);
-$command->setControllerDirectory(__DIR__.'/app/Bus/Controllers');
-```
-
-> Visitez ce [lien](./structure) pour plus d'information sur la personnalisation de la structure de l'application.
-
-## Contrôleur de base
-
-### Définir un contrôleur
-
-Voici un exemple de classe de contrôleur de base. Notez que le contrôleur hérite de la classe `App\Controllers\Controller` de base. Cette classe de base fournit quelques méthodes pratiques telles que la méthode du `render`, qui peut être utilisée pour compiler une vue.
-
-```php
-namespace App\Controllers;
-
-use App\Controllers\Controller;
-use App\Models\User;
-
-class UserController extends Controller
-{
-  /**
-   * Afficher le profil pour l'utilisateur donné.
-   *
-   * @param int $id
-   * @return mixed
-   */
-  public function show($id)
-  {
-    return $this->render('user/profile', ['user' => User::findOrFail($id)]);
-  }
-}
-```
-
-Vous pouvez définir une route dans le fichier `routes/app.php` vers cette méthode de contrôleur comme suit :
-
-```php
-$app->get('user/:id', 'UserController::show');
-```
-
-Désormais, lorsqu'une demande correspond à l'URI de la route spécifiée, la méthode `show` de la classe `UserController` sera exécutée. Bien entendu, les paramètres de la route seront également transmis à la méthode.
-
-Vous pouvez générer un contrôleur en utilisant la commande `add:controller` de `php bow`:
+## Créer un contrôleur
 
 ```bash
 php bow add:controller UserController
 ```
 
-### Contrôleur et espaces de noms
+## Contrôleur simple
 
-Il est très important de noter que nous n'avons pas eu besoin de spécifier le `namespace` complet du contrôleur lors de la définition de la route. Étant donné que `public/index.php` charge vos fichiers de route dans un groupe de routage contenant le `namespace`, nous avons uniquement spécifié la partie du nom de classe qui vient après la partie `App\Controllers` du `namespace`.
-
-Si vous choisissez d'imbriquer vos contrôleurs plus profondément dans le répertoire `App\Controllers`, utilisez le nom de classe spécifique relatif au `namespace` racine `App\Controllers`. Donc, si votre classe de contrôleur complète est `App\Controllers\Photo\AdminController`, vous devez enregistrer les routes sur le contrôleur comme suit :
-
-```php
-$app->get('/foo', 'Photo\AdminController::action');
-```
-
-Vous pouvez générer un contrôleur en utilisant la commande `add:controller` de `php bow`:
-
-```bash
-php bow add:controller Photo/AdminController
-```
-
-:::note
-Remarquez bien le nom du dossier : il est en camel case. Le framework créera le namespace approprié pour la classe `AdminController` qui sera `namespace App\Controllers\Photo;`. Vous trouverez le contrôleur dans le dossier `app/Controllers/Photo/AdminController.php`.
-:::
-
-Plus d'information sur le [routing](./routing).
-
-### Contrôleur et middleware
-
-Les middlewares peuvent être assignés à la route du contrôleur dans vos fichiers de route. Le middleware est stocké dans le dossier `app\Middlewares`. Pour plus d'informations sur les middlewares, visitez ce [lien](./middleware).
-
-Exemple :
-
-```php
-$app->get('profile', 'UserController::show')->middleware('auth');
-```
-
-## Contrôleur REST
-
-Les contrôleurs REST sont un moyen simple pour mettre en place une API Rest. Cette approche vous permet de vous concentrer sur votre logique et de laisser le framework gérer le routage pour vous.
-
-### Définir un contrôleur REST
-
-Pour définir un nouveau contrôleur REST, vous devez utiliser le lanceur de tâche `php bow` avec la commande `generate:resource` dans votre console :
-
-```bash
-php bow generate:resource PetController
-```
-
-Un contrôleur nommé `PetController` sera donc créé. Ce qui fait sa particularité, c'est qu'il y a déjà des méthodes prédéfinies et ces méthodes doivent rester telles quelles.
-
-```php
+```php title="app/Controllers/UserController.php"
 namespace App\Controllers;
 
-use App\Controllers\Controller;
-use App\Models\Pet;
+use App\Models\User;
+use Bow\Http\Request;
 
-class PetController extends Controller
+class UserController
 {
-  /**
-   * Point d'entrée
-   *
-   * @return void
-   */
   public function index()
   {
-    // Codez Ici
+    $users = User::all();
+
+    return view('users/index', compact('users'));
   }
 
-  /**
-   * Permet d'afficher la vue permettant de créer une résource.
-   *
-   * @return void
-   */
-  public function create()
+  public function show(Request $request, int $id)
   {
-    // Codez Ici
+    $user = User::retrieve($id);
+
+    return view('users/show', compact('user'));
   }
 
-  /**
-   * Permet d'ajouter une nouvelle ressource dans la base de données
-   *
-   * @return void
-   */
-  public function store()
+  public function store(Request $request)
   {
-    // Codez Ici
-  }
+    $user = User::create([
+      'name' => $request->get('name'),
+      'email' => $request->get('email'),
+    ]);
 
-  /**
-   * Permet de récupérer une information précise avec un identifiant
-   *
-   * @param mixed $id
-   * @return void
-   */
-  public function show($id)
-  {
-    // Codez Ici
-  }
-
-  /**
-   * Mise à jour d'une ressource en utilisant les paramètres GET
-   *
-   * @param mixed $id
-   * @return void
-   */
-  public function edit($id)
-  {
-    // Codez Ici
-  }
-
-  /**
-   * Mise à jour d'une résource
-   *
-   * @param mixed $id
-   * @return void
-   */
-  public function update($id)
-  {
-    // Codez Ici
-  }
-
-  /**
-   * Permet de supprimer une ressource
-   *
-   * @param mixed $id
-   * @return void
-   */
-  public function destroy($id)
-  {
-    // Codez Ici
+    return redirect('/users/' . $user->id);
   }
 }
 ```
 
-### Utiliser le contrôleur REST
+## Définir les routes
 
-Pour utiliser le contrôleur REST, vous devez utiliser la méthode `rest` sur la variable globale `$app` dans vos fichiers de [routing](./routing).
-
-#### Prototype de la méthode `rest`
-
-```php
-$app->rest(url, action, where = []);
+```php title="routes/app.php"
+$app->get('/users', 'UserController::index');
+$app->get('/users/:id', 'UserController::show');
+$app->post('/users', 'UserController::store');
 ```
 
-| Paramètre | Type |
-|----------|------|
-| `url` | `String`, `Array` - Le nom de la route |
-| `action` | `String` - Le nom du contrôleur |
-| `where` | `Array` - Contrainte sur la variable `id` |
+## Injection de dépendances
 
-#### Utilisation simple
+Les dépendances sont automatiquement injectées dans les constructeurs et méthodes :
 
-Et ça donne ceci :
+```php title="app/Controllers/OrderController.php"
+namespace App\Controllers;
 
-```php
-$app->rest('pets', 'PetController');
+use App\Services\PaymentService;
+use App\Services\NotificationService;
+use Bow\Http\Request;
+
+class OrderController
+{
+  public function __construct(
+    private PaymentService $paymentService,
+    private NotificationService $notificationService
+  ) {
+  }
+
+  public function store(Request $request)
+  {
+    $order = $this->paymentService->processOrder(
+      $request->only(['product_id', 'quantity'])
+    );
+
+    $this->notificationService->sendOrderConfirmation($order);
+
+    return response()->json($order, 201);
+  }
+}
 ```
 
-#### Utilisation avec les contraintes
+## Contrôleur invocable
 
-Avec une contrainte ça donne ceci:
+Pour les contrôleurs à action unique, utilisez `__invoke` :
 
-```php
-$app->rest('pets', 'PetController', ['id' => '\d+']);
+```php title="app/Controllers/ShowDashboardController.php"
+namespace App\Controllers;
+
+use App\Services\DashboardService;
+use Bow\Http\Request;
+
+class ShowDashboardController
+{
+  public function __construct(
+    private DashboardService $dashboard
+  ) {
+  }
+
+  public function __invoke(Request $request)
+  {
+    return view('dashboard', [
+      'stats' => $this->dashboard->getStats(),
+    ]);
+  }
+}
 ```
 
-Ici la contrainte s'applique sur toutes les méthodes. Mais, vous avez aussi la possibilité de restreindre les contraintes sur des méthodes comme ceci :
+```php title="routes/app.php"
+$app->get('/dashboard', ShowDashboardController::class);
+```
+
+## Espaces de noms
+
+Pour les contrôleurs imbriqués, utilisez le chemin relatif :
 
 ```php
-$app->rest('pets', 'PetController', [
+// Contrôleur: App\Controllers\Admin\UserController
+$app->get('/admin/users', 'Admin\UserController::index');
+```
+
+Générer un contrôleur imbriqué :
+
+```bash
+php bow add:controller Admin/UserController
+```
+
+## Middleware
+
+Appliquez des middlewares sur les routes :
+
+```php
+$app->get('/profile', 'ProfileController::show')->middleware('auth');
+
+// Plusieurs middlewares
+$app->get('/admin', 'AdminController::index')->middleware(['auth', 'admin']);
+```
+
+## Contrôleur REST
+
+Les contrôleurs REST facilitent la création d'APIs RESTful.
+
+### Générer un contrôleur REST
+
+```bash
+php bow generate:resource ArticleController
+```
+
+### Structure générée
+
+```php title="app/Controllers/ArticleController.php"
+namespace App\Controllers;
+
+use Bow\Http\Request;
+
+class ArticleController
+{
+  /**
+   * GET /articles
+   */
+  public function index(): void
+  {
+    // Liste des articles
+  }
+
+  /**
+   * POST /articles
+   */
+  public function store(Request $request): void
+  {
+    // Créer un article
+  }
+
+  /**
+   * GET /articles/:id
+   */
+  public function show(Request $request, mixed $id): void
+  {
+    // Afficher un article
+  }
+
+  /**
+   * PUT /articles/:id
+   */
+  public function update(Request $request, mixed $id): void
+  {
+    // Mettre à jour un article
+  }
+
+  /**
+   * DELETE /articles/:id
+   */
+  public function destroy(Request $request, mixed $id): void
+  {
+    // Supprimer un article
+  }
+}
+```
+
+### Enregistrer les routes REST
+
+```php title="routes/app.php"
+$app->rest('articles', 'ArticleController');
+```
+
+### Routes générées
+
+| URL | Méthode | Action | Nom |
+|-----|---------|--------|-----|
+| `/articles` | GET | `index` | `articles.index` |
+| `/articles` | POST | `store` | `articles.store` |
+| `/articles/:id` | GET | `show` | `articles.show` |
+| `/articles/:id` | PUT/PATCH | `update` | `articles.update` |
+| `/articles/:id` | DELETE | `destroy` | `articles.destroy` |
+
+### Contraintes sur les paramètres
+
+```php
+// Contrainte globale
+$app->rest('articles', 'ArticleController', ['id' => '\d+']);
+
+// Contraintes par méthode
+$app->rest('articles', 'ArticleController', [
   'show' => ['id' => '\d+'],
-  'edit' => ['id' => '[a-z]+'],
+  'update' => ['id' => '\d+'],
 ]);
 ```
 
-#### Utilisation via un tableau comme action
-
-Dans le cas ou `action` est un `array` voici les clés/valeurs possibles.
+### Ignorer des méthodes
 
 ```php
-$action = [
-  'controller' => 'PetController',
-  'ignores' => ['index', 'create'],
-];
-
-$app->rest('pets', $action, ['id' => '\d+']);
+$app->rest('articles', [
+  'controller' => 'ArticleController',
+  'ignores' => ['destroy'],
+], ['id' => '\d+']);
 ```
 
-#### Ignorer des méthodes
+## Configuration du namespace
 
-La valeur de `ignores` sera une liste de méthodes/URLs qui seront ignorées par le routeur. Ainsi, dans l'exemple précédent, les méthodes `index` et `create` seront indisponibles.
+Personnalisez le namespace des contrôleurs dans `app/Kernel.php` :
 
-#### URL et action
-
-En considérant la définition REST suivante :
-
-```php
-$action = [
-  'controller' => 'PetController',
-  'ignores' => ['index', 'create'],
-];
-
-$app->rest('pets', $action, ['id' => '\d+']);
+```php title="app/Kernel.php"
+public function namespaces(): array
+{
+  return [
+    'controller' => 'App\\Controllers',
+    'middleware' => 'App\\Middlewares',
+  ];
+}
 ```
-
-| URL | Méthode HTTP | Nom de la route | Description |
-|----------|------|------|------|
-| `/pets` | `GET` | `pets.index` | Retourne la liste des pets |
-| `/pets` | `POST` | `pets.store` | Permet d'ajouter un autre pet |
-| `/pets/:id` | `GET` | `pets.show` | Afficher un seul pet |
-| `/pets/:id` | `PUT/PATCH` | `pets.update` | Permet de mettre à jour les informations d'un pet |
-| `/pets/:id` | `DELETE` | `pets.delete` | Ceci va supprimer un pet |
-| `/pets/create` | `GET` | `pets.create` | Permet d'afficher le formulaire d'ajout |
 
 <SuggestionFeature />
