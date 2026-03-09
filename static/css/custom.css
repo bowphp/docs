@@ -6,14 +6,14 @@
    ============================================ */
 
 :root {
-  /* Bow Framework teal/green color palette */
-  --ifm-color-primary: #1DB9A6;
-  --ifm-color-primary-dark: #1AA695;
-  --ifm-color-primary-darker: #189D8D;
-  --ifm-color-primary-darkest: #148274;
-  --ifm-color-primary-light: #20CCB7;
-  --ifm-color-primary-lighter: #2DD4BF;
-  --ifm-color-primary-lightest: #5EDECE;
+  /* Bow Framework modern red color palette */
+  --ifm-color-primary: #EF4444;
+  --ifm-color-primary-dark: #DC2626;
+  --ifm-color-primary-darker: #B91C1C;
+  --ifm-color-primary-darkest: #991B1B;
+  --ifm-color-primary-light: #F87171;
+  --ifm-color-primary-lighter: #FCA5A5;
+  --ifm-color-primary-lightest: #FECACA;
   
   /* Typography - Laravel-style fonts */
   --ifm-font-family-base: "Figtree", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 
@@ -61,7 +61,7 @@
   
   /* Navbar */
   --ifm-navbar-background-color: #ffffff;
-  --ifm-navbar-shadow: 0 1px 0 0 #e3e3e0;
+  --ifm-navbar-shadow: none;
   --ifm-navbar-height: 4rem;
   --ifm-navbar-padding-horizontal: 1.5rem;
   
@@ -84,7 +84,7 @@
   --doc-sidebar-width: 280px;
   
   /* Code highlighting */
-  --docusaurus-highlighted-code-line-bg: rgba(29, 185, 166, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(239, 68, 68, 0.1);
   
   /* Breadcrumbs */
   --ifm-breadcrumb-color-active: var(--ifm-color-primary);
@@ -171,7 +171,6 @@ pre {
   border-radius: var(--ifm-pre-border-radius);
   padding: var(--ifm-pre-padding);
   margin: 1.5rem 0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--ifm-color-emphasis-200);
 }
 
@@ -253,7 +252,6 @@ pre code {
    Navbar - Clean Laravel Style
    ============================================ */
 .navbar {
-  box-shadow: var(--ifm-navbar-shadow);
   background-color: var(--ifm-navbar-background-color);
   backdrop-filter: none;
   border-bottom: 1px solid var(--ifm-color-emphasis-200);
@@ -275,6 +273,22 @@ pre code {
 .navbar__link:hover,
 .navbar__link--active {
   color: var(--ifm-color-primary);
+}
+
+/* Remove all Docusaurus shadows */
+.dropdown__menu,
+.navbar__item.dropdown .dropdown__menu,
+.navbar-sidebar,
+.card,
+table,
+.alert,
+.admonition,
+.pagination-nav__link,
+.tabs-container,
+.theme-code-block,
+.DocSearch-Modal,
+.DocSearch-SearchBar {
+  box-shadow: none !important;
 }
 
 /* ============================================
@@ -309,7 +323,7 @@ pre code {
 }
 
 .menu__link--active:not(.menu__link--sublist) {
-  background: rgba(29, 185, 166, 0.08);
+  background: rgba(239, 68, 68, 0.08);
 }
 
 .menu__list-item-collapsible .menu__link {
@@ -389,7 +403,7 @@ pre code {
 
 .pagination-nav__link:hover {
   border-color: var(--ifm-color-primary);
-  background: rgba(29, 185, 166, 0.04);
+  background: rgba(239, 68, 68, 0.04);
 }
 
 .pagination-nav__sublabel {
@@ -495,11 +509,11 @@ html[data-theme='dark'] {
   
   /* Navbar */
   --ifm-navbar-background-color: #171717;
-  --ifm-navbar-shadow: 0 1px 0 0 #2d2d2d;
+  --ifm-navbar-shadow: none;
   
   /* Menu colors */
   --ifm-menu-color: #a8a8a6;
-  --ifm-menu-color-background-active: rgba(29, 185, 166, 0.1);
+  --ifm-menu-color-background-active: rgba(239, 68, 68, 0.1);
   --ifm-menu-color-background-hover: rgba(255, 255, 255, 0.05);
   
   /* TOC */
@@ -515,7 +529,7 @@ html[data-theme='dark'] {
   --ifm-footer-link-color: #d4d4d4;
   
   /* Highlighted code */
-  --docusaurus-highlighted-code-line-bg: rgba(29, 185, 166, 0.15);
+  --docusaurus-highlighted-code-line-bg: rgba(239, 68, 68, 0.15);
   
   /* Scrollbar */
   --ifm-scrollbar-track-background-color: #1f1f1f;
@@ -556,7 +570,6 @@ html[data-theme='dark'] {
 /* Better code block contrast in dark mode */
 [data-theme='dark'] pre code {
   color: #e8e6e3;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme='dark'] pre {
@@ -799,11 +812,6 @@ html[data-theme='dark'] {
   background: var(--ifm-color-primary);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-[data-theme='dark'] .footer__social-link:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Responsive Footer */
