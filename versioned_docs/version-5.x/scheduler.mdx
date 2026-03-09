@@ -38,43 +38,43 @@ use Bow\Configuration\Loader as ApplicationLoader;
 
 class Kernel extends ApplicationLoader
 {
-    /**
-     * Define your scheduled tasks
-     *
-     * @param Scheduler $schedule
-     * @return void
-     */
-    public function schedules(Scheduler $schedule): void
-    {
-        // Planifier une commande console Bow
-        $schedule->command('cache:clear')
-            ->daily()
-            ->at('02:00')
-            ->description('Nettoyer le cache de l\'application');
+  /**
+   * Define your scheduled tasks
+   *
+   * @param Scheduler $schedule
+   * @return void
+   */
+  public function schedules(Scheduler $schedule): void
+  {
+  // Planifier une commande console Bow
+  $schedule->command('cache:clear')
+    ->daily()
+    ->at('02:00')
+    ->description('Nettoyer le cache de l\'application');
 
-        // Planifier une commande shell
-        $schedule->exec('mysqldump -u root mydb > /backups/db.sql')
-            ->daily()
-            ->at('03:00')
-            ->description('Sauvegarder la base de données')
-            ->runInBackground();
+  // Planifier une commande shell
+  $schedule->exec('mysqldump -u root mydb > /backups/db.sql')
+    ->daily()
+    ->at('03:00')
+    ->description('Sauvegarder la base de données')
+    ->runInBackground();
 
-        // Planifier une closure
-        $schedule->call(function () {
-            logger('Tâche de nettoyage exécutée...');
-        })
-            ->hourly()
-            ->description('Tâche de nettoyage');
+  // Planifier une closure
+  $schedule->call(function () {
+    logger('Tâche de nettoyage exécutée...');
+  })
+    ->hourly()
+    ->description('Tâche de nettoyage');
 
-        // Planifier un QueueTask
-        $schedule->task(App\Tasks\SendWeeklyReportTask::class)
-            ->weekly()
-            ->sundays()
-            ->at('10:00')
-            ->description('Envoyer les rapports hebdomadaires');
-    }
+  // Planifier un QueueTask
+  $schedule->task(App\Tasks\SendWeeklyReportTask::class)
+    ->weekly()
+    ->sundays()
+    ->at('10:00')
+    ->description('Envoyer les rapports hebdomadaires');
+  }
 
-    // ... autres méthodes du Kernel
+  // ... autres méthodes du Kernel
 }
 ```
 
@@ -305,17 +305,17 @@ Exécutez des tâches uniquement lorsque certaines conditions sont remplies :
 ```php
 // Exécuter seulement si la condition est vraie
 $schedule->command('send:emails')
-    ->daily()
-    ->when(function () {
-        return app()->environment('production');
-    });
+  ->daily()
+  ->when(function () {
+  return app()->environment('production');
+  });
 
 // Sauter si la condition est vraie
 $schedule->command('debug:task')
-    ->daily()
-    ->skip(function () {
-        return app()->environment('production');
-    });
+  ->daily()
+  ->skip(function () {
+  return app()->environment('production');
+  });
 ```
 
 ### Fuseau horaire
@@ -383,48 +383,63 @@ php bow schedule:test 0
 
 ## Configuration en production
 
-### Avec cron
+### Cron
 
-En production, ajoutez une entrée cron qui exécute le planificateur chaque minute :
-
-```bash
-* * * * * cd /path-to-your-project && php bow schedule:run >> /dev/null 2>&1
-```
-
-:::tip Conseil
-Cette unique entrée cron permet au planificateur de gérer toutes vos tâches planifiées.
-:::
-
-### Avec le mode démon
-
-Utilisez le mode démon pour une meilleure performance :
+Ajoutez cette entrée cron pour exécuter le planificateur chaque minute :
 
 ```bash
-php bow schedule:work
+* * * * * cd /var/www/bow-app && php bow schedule:run >> /var/log/bow-scheduler.log 2>&1
 ```
 
-### Avec Supervisor
+### Supervisor
 
-Pour le mode démon, utilisez un gestionnaire de processus comme Supervisor :
-
-```ini title="/etc/supervisor/conf.d/scheduler.conf"
-[program:scheduler]
-process_name=%(program_name)s
-directory=/var/www/your-app
+```ini title="/etc/supervisor/conf.d/bow-scheduler.conf"
+[program:bow-scheduler]
+directory=/var/www/bow-app
 command=php bow schedule:work
 autostart=true
 autorestart=true
 user=www-data
-redirect_stderr=true
-stdout_logfile=/var/log/scheduler.log
+stdout_logfile=/var/log/bow-scheduler.log
 ```
 
-Ensuite, rechargez Supervisor :
+```bash
+sudo supervisorctl reread && sudo supervisorctl update && sudo supervisorctl start bow-scheduler
+```
+
+### systemd
+
+```ini title="/etc/systemd/system/bow-scheduler.service"
+[Unit]
+Description=Bow Scheduler
+After=network.target
+
+[Service]
+User=www-data
+WorkingDirectory=/var/www/bow-app
+ExecStart=/usr/bin/php bow schedule:work
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
 
 ```bash
-sudo supervisorctl reread
-sudo supervisorctl update
-sudo supervisorctl start scheduler
+sudo systemctl daemon-reload && sudo systemctl enable bow-scheduler && sudo systemctl start bow-scheduler
+```
+
+### Docker
+
+```yaml title="docker-compose.yml"
+services:
+  scheduler:
+    build: .
+    command: php bow schedule:work
+    restart: unless-stopped
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
 ```
 
 ## Exemple complet
@@ -441,51 +456,51 @@ use Bow\Configuration\Loader as ApplicationLoader;
 
 class Kernel extends ApplicationLoader
 {
-    public function schedules(Scheduler $schedule): void
-    {
-        // Sauvegarde quotidienne de la base de données
-        $schedule->exec('mysqldump mydb > /backups/daily.sql')
-            ->daily()
-            ->at('01:00')
-            ->description('Sauvegarde quotidienne de la base de données')
-            ->runInBackground();
+  public function schedules(Scheduler $schedule): void
+  {
+  // Sauvegarde quotidienne de la base de données
+  $schedule->exec('mysqldump mydb > /backups/daily.sql')
+    ->daily()
+    ->at('01:00')
+    ->description('Sauvegarde quotidienne de la base de données')
+    ->runInBackground();
 
-        // Vider le cache chaque dimanche
-        $schedule->command('cache:clear')
-            ->weekly()
-            ->sundays()
-            ->at('02:00')
-            ->description('Nettoyage hebdomadaire du cache');
+  // Vider le cache chaque dimanche
+  $schedule->command('cache:clear')
+    ->weekly()
+    ->sundays()
+    ->at('02:00')
+    ->description('Nettoyage hebdomadaire du cache');
 
-        // Traiter les rapports en attente chaque heure
-        $schedule->task(\App\Tasks\ProcessPendingReportsTask::class)
-            ->hourly()
-            ->withoutOverlapping()
-            ->description('Traiter les rapports en attente');
+  // Traiter les rapports en attente chaque heure
+  $schedule->task(\App\Tasks\ProcessPendingReportsTask::class)
+    ->hourly()
+    ->withoutOverlapping()
+    ->description('Traiter les rapports en attente');
 
-        // Vérifier l'état du système toutes les 5 minutes
-        $schedule->call(function () {
-            $health = \App\Services\HealthChecker::check();
-            if (!$health->isHealthy()) {
-                \App\Services\AlertService::notify($health);
-            }
-        })
-            ->everyFiveMinutes()
-            ->description('Vérification de l\'état du système');
-
-        // Envoyer les rapports hebdomadaires (seulement en production)
-        $schedule->task(\App\Tasks\SendWeeklyReportTask::class)
-            ->weekly()
-            ->fridays()
-            ->at('17:00')
-            ->timezone('Europe/Paris')
-            ->when(function () {
-                return app()->environment('production');
-            })
-            ->description('Envoi des rapports hebdomadaires');
+  // Vérifier l'état du système toutes les 5 minutes
+  $schedule->call(function () {
+    $health = \App\Services\HealthChecker::check();
+    if (!$health->isHealthy()) {
+    \App\Services\AlertService::notify($health);
     }
+  })
+    ->everyFiveMinutes()
+    ->description('Vérification de l\'état du système');
 
-    // ... autres méthodes
+  // Envoyer les rapports hebdomadaires (seulement en production)
+  $schedule->task(\App\Tasks\SendWeeklyReportTask::class)
+    ->weekly()
+    ->fridays()
+    ->at('17:00')
+    ->timezone('Europe/Paris')
+    ->when(function () {
+    return app()->environment('production');
+    })
+    ->description('Envoi des rapports hebdomadaires');
+  }
+
+  // ... autres méthodes
 }
 ```
 

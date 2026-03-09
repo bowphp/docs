@@ -40,7 +40,7 @@ Si vous découvrez Composer, prenez le temps de parcourir sa [documentation](htt
 
 [![asciicast](https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z.svg)](https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z)
 
-## 🚀 Démarrer votre projet
+## Démarrer votre projet
 
 Rendez-vous à la racine de votre projet et démarrez le serveur de développement :
 
@@ -60,7 +60,7 @@ php bow run:server
 ```
 :::
 
-## ⚙️ Configuration
+## Configuration
 
 ### Dossier public
 
@@ -119,31 +119,235 @@ RewriteRule ^ index.php [L]
 
 ### Nginx
 
-Pour Nginx, ajoutez cette configuration dans votre bloc `server` :
+Pour Nginx, ajoutez cette configuration dans votre fichier de site :
 
-```nginx
+```nginx title="/etc/nginx/sites-available/bow-app"
 server {
-    listen 80;
-    server_name example.com;
-    root /path/to/your/project/public;
-    
-    index index.php index.html;
-    
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-    
-    location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        include fastcgi_params;
-    }
-    
-    location ~ /\.(?!well-known).* {
-        deny all;
-    }
+  listen 80;
+  server_name example.com www.example.com;
+  root /var/www/bow-app/public;
+  index index.php;
+
+  # Logs
+  access_log /var/log/nginx/bow-app.access.log;
+  error_log /var/log/nginx/bow-app.error.log;
+
+  # Sécurité - Headers
+  add_header X-Frame-Options "SAMEORIGIN" always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header X-XSS-Protection "1; mode=block" always;
+  add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+  # Gzip compression
+  gzip on;
+  gzip_vary on;
+  gzip_min_length 1024;
+  gzip_types text/plain text/css text/xml text/javascript 
+             application/javascript application/json application/xml;
+
+  # Front Controller
+  location / {
+    try_files $uri $uri/ /index.php?$query_string;
+  }
+
+  # PHP-FPM
+  location ~ \.php$ {
+    fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+    include fastcgi_params;
+    fastcgi_hide_header X-Powered-By;
+  }
+
+  # Cache des assets statiques
+  location ~* \.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot)$ {
+    expires 1y;
+    add_header Cache-Control "public, immutable";
+    access_log off;
+  }
+
+  # Bloquer l'accès aux fichiers sensibles
+  location ~ /\.(env|git|htaccess) {
+    deny all;
+  }
+
+  location ~ ^/(var|vendor|config|migrations|seeders)/ {
+    deny all;
+  }
 }
+```
+
+#### Nginx avec SSL (HTTPS)
+
+```nginx title="/etc/nginx/sites-available/bow-app-ssl"
+server {
+  listen 80;
+  server_name example.com www.example.com;
+  return 301 https://$server_name$request_uri;
+}
+
+server {
+  listen 443 ssl http2;
+  server_name example.com www.example.com;
+  root /var/www/bow-app/public;
+  index index.php;
+
+  # Certificats SSL (Let's Encrypt)
+  ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+
+  # Configuration SSL moderne
+  ssl_protocols TLSv1.2 TLSv1.3;
+  ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256;
+  ssl_prefer_server_ciphers off;
+  ssl_session_timeout 1d;
+  ssl_session_cache shared:SSL:50m;
+  ssl_stapling on;
+  ssl_stapling_verify on;
+
+  # Headers de sécurité
+  add_header Strict-Transport-Security "max-age=63072000" always;
+  add_header X-Frame-Options "SAMEORIGIN" always;
+  add_header X-Content-Type-Options "nosniff" always;
+
+  location / {
+    try_files $uri $uri/ /index.php?$query_string;
+  }
+
+  location ~ \.php$ {
+    fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+    include fastcgi_params;
+  }
+
+  location ~ /\.(env|git|htaccess) {
+    deny all;
+  }
+}
+```
+
+#### Activer le site Nginx
+
+```bash
+# Créer le lien symbolique
+sudo ln -s /etc/nginx/sites-available/bow-app /etc/nginx/sites-enabled/
+
+# Tester la configuration
+sudo nginx -t
+
+# Recharger Nginx
+sudo systemctl reload nginx
+```
+
+### Docker
+
+Pour développer avec Docker, créez les fichiers suivants à la racine du projet :
+
+```dockerfile title="Dockerfile"
+FROM php:8.2-fpm-alpine
+
+# Extensions PHP
+RUN apk add --no-cache \
+  libpng-dev libjpeg-turbo-dev freetype-dev \
+  oniguruma-dev libxml2-dev zip unzip git curl \
+  && docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-install pdo pdo_mysql mbstring xml gd opcache
+
+# Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+COPY . .
+
+RUN composer install --no-dev --optimize-autoloader \
+  && chown -R www-data:www-data var/
+
+EXPOSE 9000
+
+CMD ["php-fpm"]
+```
+
+```yaml title="docker-compose.yml"
+services:
+  app:
+    build: .
+    volumes:
+      - .:/var/www/html
+      - ./var:/var/www/html/var
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - bow-network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - bow-network
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: bow_app
+      MYSQL_USER: bow
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - bow-network
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - bow-network
+
+networks:
+  bow-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+```
+
+```nginx title="docker/nginx.conf"
+server {
+  listen 80;
+  root /var/www/html/public;
+  index index.php;
+
+  location / {
+    try_files $uri $uri/ /index.php?$query_string;
+  }
+
+  location ~ \.php$ {
+    fastcgi_pass app:9000;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+    include fastcgi_params;
+  }
+}
+```
+
+```bash
+# Démarrer les conteneurs
+docker-compose up -d
+
+# Accéder à l'application
+# http://localhost:8080
 ```
 
 ### Déploiement sur serveur mutualisé
@@ -177,18 +381,18 @@ Options -indexes
 ```
 
 :::tip Gestion des assets
-Pour un hébergement mutualisé, utilisez le helper `app_assets()` pour vos fichiers statiques et modifiez la valeur de `APP_ASSET_PREFIX` à `/public` dans votre fichier `.env.json`. Bow gérera automatiquement les chemins corrects ! 🚀
+Pour un hébergement mutualisé, utilisez le helper `app_assets()` pour vos fichiers statiques et modifiez la valeur de `APP_ASSET_PREFIX` à `/public` dans votre fichier `.env.json`. Bow gérera automatiquement les chemins corrects !
 :::
 
 ## Prochaines étapes
 
 Maintenant que votre installation est terminée, découvrez comment construire votre application :
 
-- 🛣️ [Créer vos premières routes](./routing)
-- 🎮 [Utiliser les contrôleurs](./controller)
-- 💾 [Travailler avec les bases de données](./database)
-- 🔐 [Gérer les sessions utilisateur](./session)
-- 📦 [Utiliser le système de stockage](./storage)
-- 🎨 [Créer des vues avec Tintin](./views)
+- [Créer vos premières routes](./routing)
+- [Utiliser les contrôleurs](./controller)
+- [Travailler avec les bases de données](./database)
+- [Gérer les sessions utilisateur](./session)
+- [Utiliser le système de stockage](./storage)
+- [Créer des vues avec Tintin](./views)
 
 <SuggestionFeature />
