@@ -5,66 +5,231 @@ title: "Structure de l'application"
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-## Structure globale
+## Vue d'ensemble
 
-Bow Framework se conforme au modèle *MVC* (*M*odèle *V*ue *C*ontrôleur).
+Bow Framework suit le modèle **MVC** (Modèle-Vue-Contrôleur), une architecture éprouvée qui sépare clairement les responsabilités de votre application.
 
-- __app__: Contient la logique principale de votre application. Presque toutes les classes de votre application seront dans ce dossier |
-- __assets__: Contient les scripts et fichiers de styles de l'application. Il contient entre autres les dossiers `js`, `sass`, `lang`. C'est là que vous allez mettre vos fichiers statiques et ensuite les compiler |
-- __templates__: Contient les vues de votre application |
-- __config__: Contient les différents fichiers de configuration des composants de l'application. |
-- __migrations__: Dossier dans lequel seront sauvegardées les migrations de votre application |
-- __seeders__: Dossier dans lequel seront sauvegardés les seeders de votre application |
-- __public__: Le front contrôleur et les fichiers compilés sont stockés dans ce dossier. |
-- __routes__: Contient les routes de votre application |
-- __tests__: Contient les tests de l'application. |
-- __lang__: Dossier dans lequel les locales de votre application seront sauvegardés |
-- __var__: Contient le dossier dans lequel sont sauvegardés les `cache`, les `log` et le stockage de fichiers téléchargés via le système de `Storage` de Bow.|
+```
+bow-app/
+├── app/                    # Logique de l'application
+│   ├── Configurations/     # Configurations personnalisées
+│   ├── Controllers/        # Contrôleurs HTTP
+│   ├── Events/             # Gestionnaires d'événements
+│   ├── Exceptions/         # Exceptions personnalisées
+│   ├── Listeners/          # Écouteurs d'événements
+│   ├── Middlewares/        # Middlewares HTTP
+│   ├── Models/             # Modèles de données (ORM)
+│   ├── Commands/           # Commandes console personnalisées
+│   ├── Services/           # Services métier
+│   ├── Tasks/              # Tâches asynchrones (Queue)
+│   ├── Validations/        # Règles de validation
+│   └── Kernel.php          # Configuration du noyau
+├── assets/                 # Ressources frontend (sources)
+│   ├── css/                # Fichiers CSS
+│   ├── js/                 # Fichiers JavaScript
+│   └── sass/               # Fichiers SCSS
+├── config/                 # Fichiers de configuration
+│   ├── app.php             # Configuration générale
+│   ├── database.php        # Configuration base de données
+│   ├── mail.php            # Configuration email
+│   ├── storage.php         # Configuration stockage
+│   └── view.php            # Configuration des vues
+├── lang/                   # Fichiers de traduction
+│   ├── en/                 # Traductions anglaises
+│   └── fr/                 # Traductions françaises
+├── migrations/             # Migrations de base de données
+├── public/                 # Point d'entrée web (documentroot)
+│   ├── index.php           # Front controller
+│   ├── css/                # CSS compilés
+│   └── js/                 # JS compilés
+├── routes/                 # Définition des routes
+│   └── app.php             # Routes de l'application
+├── seeders/                # Seeders de données
+├── templates/              # Vues Tintin
+│   ├── layouts/            # Layouts partagés
+│   └── partials/           # Composants réutilisables
+├── tests/                  # Tests unitaires et fonctionnels
+├── var/                    # Fichiers générés
+│   ├── cache/              # Cache de l'application
+│   ├── logs/               # Journaux d'erreurs
+│   ├── session/            # Sessions utilisateurs
+│   ├── storage/            # Fichiers uploadés
+│   └── view/               # Cache des vues compilées
+├── .env.json               # Variables d'environnement
+├── bow                     # CLI Bow Console
+├── composer.json           # Dépendances PHP
+└── package.json            # Dépendances Node.js
+```
 
-## Dossier app
+## Dossier app/
 
-C'est votre répertoire de travail sur bow. C'est là que vous allez insérer tous les fichiers de votre application.
+Le cœur de votre application. C'est ici que vous écrivez la logique métier.
 
-Ici, vous retrouverez les dossiers suivants :
+### Controllers/
 
-- __Configurations__ : Dossier dans lequel seront sauvegardées les configurations personnalisées de l'application.
-- __Controllers__ : Dossier dans lequel seront sauvegardés les contrôleurs de l'application.
-- __Middlewares__ : Dossier dans lequel seront sauvegardés les middlewares de l'application.
-- __Events__ : Dossier dans lequel seront sauvegardés les événements générés par Bow Console.
-- __Models__ : Dossier dans lequel seront sauvegardés les modèles de l'application.
-- __Validations__ : Dossier dans lequel seront sauvegardées les validations de l'application.
-- __Exceptions__ : Dossier dans lequel seront sauvegardées les exceptions personnalisées de l'application.
-- __Services__ : Dossier dans lequel seront sauvegardés les services générés par Bow Console.
-- __Jobs__ : Dossier dans lequel seront sauvegardés les jobs générés par Bow Console.
-- __Commandes__ : Dossier dans lequel seront sauvegardées les commandes générées par Bow Console.
-- __Queries__ : Dossier dans lequel seront sauvegardées les queries générées par Bow Console.
-- __Listeners__ : Dossier dans lequel seront sauvegardés les listeners générés par Bow Console.
+Les contrôleurs gèrent les requêtes HTTP et retournent des réponses.
 
-Vous trouverez aussi les fichiers suivants :
+```php title="app/Controllers/UserController.php"
+namespace App\Controllers;
 
-- __Kernel.php__ : La configuration du lanceur de l'application.
+class UserController
+{
+  public function index()
+  {
+    return view("users.index");
+  }
+}
+```
 
-## Dossier assets
+### Models/
 
-C'est là que vous allez insérer tous les fichiers qui sont utilisés dans les vues de votre application. Vous y retrouverez les dossiers suivants :
+Les modèles représentent vos tables de base de données.
 
-- __js__: Vos fichiers `JavaScript` seront sauvegardés ici.
-- __sass__: Vos fichiers scss seront sauvegardés ici.
-- __css__: Vos fichiers css seront sauvegardés ici.
+```php title="app/Models/User.php"
+namespace App\Models;
 
-## Dossiers migrations et seeders
+use Bow\Database\Barry\Model;
 
-- __migrations__: Regroupe tous les fichiers de migration de la base de données.
-- __seeders__: Regroupe tous les fichiers permettant d'entrer des données de test dans votre base de données.
+class User extends Model
+{
+  protected ?string $table = "users";
+}
+```
 
-## Dossier var
+### Services/
 
-Ici, Bow va stocker les fichiers de log et le cache de votre application. Vous y retrouverez les dossiers suivants :
+Les services encapsulent la logique métier complexe. Voir la [documentation des services](./service).
 
-- __storage__: Dossier dans lequel l'application sauvegarde les fichiers téléchargés de l'application
-- __logs__: Dossier dans lequel sont sauvegardés les logs de l'application.
-- __session__: Dossier dans lequel sont sauvegardés les fichiers de session de l'application.
-- __cache__: Dossier dans lequel l'application sauvegarde les caches de l'application
-- __view__: Dossier dans lequel l'application sauvegarde le cache de compilation des vues
+### Middlewares/
+
+Les middlewares filtrent les requêtes HTTP. Voir la [documentation des middlewares](./middleware).
+
+### Events/ et Listeners/
+
+Système d'événements pour découpler votre application. Voir la [documentation des événements](./messaging).
+
+### Tasks/
+
+Tâches asynchrones exécutées en arrière-plan via la file d'attente. Voir la [documentation des tâches](./task).
+
+### Kernel.php
+
+Configure le démarrage de l'application :
+
+```php title="app/Kernel.php"
+namespace App;
+
+class Kernel extends \Bow\Application\Kernel
+{
+  public function configurations(): array
+  {
+    return [
+      // Liste des configurations à charger
+      \Bow\Database\DatabaseConfiguration::class,
+      \Bow\Mail\MailConfiguration::class,
+    ];
+  }
+
+  public function middlewares(): array
+  {
+    return [
+      "auth" => \App\Middlewares\AuthMiddleware::class,
+    ];
+  }
+}
+```
+
+## Dossier config/
+
+Contient tous les fichiers de configuration de l'application.
+
+| Fichier | Description |
+|---------|-------------|
+| `app.php` | Configuration générale (nom, timezone, locale) |
+| `database.php` | Connexions aux bases de données |
+| `mail.php` | Configuration SMTP et drivers email |
+| `storage.php` | Disques de stockage (local, S3, FTP) |
+| `view.php` | Moteur de template et cache |
+| `session.php` | Gestion des sessions |
+| `cache.php` | Configuration du cache |
+
+## Dossier routes/
+
+Définit les points d'entrée de votre API ou application web.
+
+```php title="routes/app.php"
+$app->get("/", "HomeController::index");
+$app->get("/users", "UserController::index");
+$app->post("/users", "UserController::store");
+$app->get("/users/:id", "UserController::show");
+```
+
+## Dossier templates/
+
+Vos vues Tintin (ou Twig/Blade selon configuration).
+
+```
+templates/
+├── layouts/
+│   └── app.tintin.php      # Layout principal
+├── partials/
+│   ├── header.tintin.php   # En-tête
+│   └── footer.tintin.php   # Pied de page
+├── home.tintin.php         # Page d'accueil
+└── users/
+    ├── index.tintin.php    # Liste des utilisateurs
+    └── show.tintin.php     # Détail utilisateur
+```
+
+## Dossier public/
+
+Le seul dossier accessible depuis le web.
+
+:::warning Sécurité
+Configurez votre serveur web pour pointer vers ce dossier uniquement. Ne jamais exposer les autres dossiers.
+:::
+
+## Dossier var/
+
+Fichiers générés automatiquement par l'application.
+
+| Sous-dossier | Description |
+|--------------|-------------|
+| `cache/` | Cache de l'application (config, routes) |
+| `logs/` | Fichiers de log (erreurs, debug) |
+| `session/` | Fichiers de session (si driver file) |
+| `storage/` | Fichiers uploadés par les utilisateurs |
+| `view/` | Vues compilées (cache) |
+
+:::tip Permissions
+Assurez-vous que le serveur web a les droits d'écriture sur `var/`.
+:::
+
+## Fichier .env.json
+
+Variables d'environnement sensibles (non versionnées) :
+
+```json title=".env.json"
+{
+  "APP_NAME": "Mon Application",
+  "APP_ENV": "development",
+  "APP_DEBUG": true,
+  "APP_URL": "http://localhost:8000",
+  "DB_CONNECTION": "mysql",
+  "DB_HOST": "127.0.0.1",
+  "DB_DATABASE": "bow_app",
+  "DB_USERNAME": "root",
+  "DB_PASSWORD": ""
+}
+```
+
+## Bonnes pratiques
+
+:::info Organisation du code
+- **Un fichier = une classe** : Suivez les conventions PSR-4.
+- **Nommage explicite** : `UserController`, `PaymentService`, `OrderCreatedEvent`.
+- **Séparation des responsabilités** : Contrôleurs légers, logique dans les services.
+- **Configuration centralisée** : Utilisez `config/` et `.env.json`.
+:::
 
 <SuggestionFeature />

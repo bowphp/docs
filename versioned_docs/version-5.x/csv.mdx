@@ -7,7 +7,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le module `bowphp/csv` permet d'exporter ou d'importer facilement des modèles (type Eloquent) au format CSV en s'appuyant sur [league/csv](https://csv.thephpleague.com/).
+Le module `bowphp/csv` permet d'exporter ou d'importer facilement des modèles au format CSV. Il s'appuie sur [league/csv](https://csv.thephpleague.com/) pour un traitement robuste des fichiers CSV.
 
 ## Installation
 
@@ -15,75 +15,220 @@ Le module `bowphp/csv` permet d'exporter ou d'importer facilement des modèles (
 composer require bowphp/csv
 ```
 
-## Exporter un modèle en CSV
+## Configuration du modèle
 
-Ajoutez le trait `Bow\Csv\Csv` à votre modèle :
+Ajoutez le trait `Bow\Csv\Csv` à vos modèles :
 
 ```php title="app/Models/User.php"
+namespace App\Models;
+
 use Bow\Csv\Csv;
 use Bow\Database\Barry\Model;
 
 class User extends Model
 {
   use Csv;
+
+  protected ?string $table = "users";
 }
 ```
+
+## Exporter en CSV
 
 ### Export basique
 
 ```php
+use App\Models\User;
+
+// Exporter tous les utilisateurs en chaîne CSV
 $user = new User();
-$csv = $user->toCsv(); // Retourne une chaîne CSV
+$csv = $user->toCsv();
+
+// Résultat:
+// id,name,email,created_at,updated_at
+// 1,John Doe,john@example.com,2025-01-01,2025-01-01
+// 2,Jane Doe,jane@example.com,2025-01-02,2025-01-02
 ```
 
-### Export avec des colonnes spécifiques
+### Export avec colonnes spécifiques
 
 ```php
 $user = new User();
-$user->setCsvHeaders(['id', 'name']);
+$user->setCsvHeaders(["id", "name", "email"]);
 
-$csv = $user->toCsv(); // N'inclura que id et name
+$csv = $user->toCsv();
+
+// Résultat:
+// id,name,email
+// 1,John Doe,john@example.com
+// 2,Jane Doe,jane@example.com
 ```
 
-### Export vers un fichier
+### Export et téléchargement
 
 ```php
 $user = new User();
-$user->toCsv('users.csv'); // Télécharge users.csv
+$user->setCsvHeaders(["id", "name", "email"]);
+
+// Télécharge le fichier CSV directement
+$user->toCsv("users-export.csv");
 ```
 
-## Importer un CSV dans un modèle
+### Export dans un contrôleur
+
+```php title="app/Controllers/ExportController.php"
+namespace App\Controllers;
+
+use App\Models\User;
+
+class ExportController
+{
+  public function exportUsers()
+  {
+    $user = new User();
+    $user->setCsvHeaders(["id", "name", "email", "created_at"]);
+
+    // Force le téléchargement
+    return $user->toCsv("users-" . date("Y-m-d") . ".csv");
+  }
+
+  public function exportAllColumns()
+  {
+    // Exporter toutes les colonnes (headers par défaut: ["*"])
+    $user = new User();
+    return $user->toCsv("users-full.csv");
+  }
+}
+```
+
+## Importer depuis un CSV
+
+### Import via le service
 
 ```php
 use Bow\Csv\CsvService;
+use App\Models\User;
 
 $service = new CsvService();
-$service->import(new User(), '/chemin/vers/fichier.csv', ['id', 'name', 'email']);
+$service->import(
+  new User(),
+  "/chemin/vers/users.csv",
+  ["name", "email", "password"]
+);
 ```
 
-### Importer directement via le modèle (`importCsv`)
+:::info Format du fichier CSV
+Le fichier CSV doit contenir une ligne d'en-tête correspondant aux noms des colonnes. Les headers passés en paramètre doivent correspondre aux colonnes du fichier CSV.
+:::
+
+### Import via le modèle
 
 ```php
-$user = new User();
-$user->setCsvHeaders(['id', 'name', 'email']);
+use App\Models\User;
 
-// Importe chaque ligne du fichier CSV dans le modèle User
-$user->importCsv('/chemin/vers/fichier.csv');
+$user = new User();
+$user->setCsvHeaders(["name", "email", "password"]);
+
+// Importe chaque ligne du CSV comme nouvel enregistrement
+$user->importCsv("/chemin/vers/users.csv");
+```
+
+### Import dans un contrôleur
+
+```php title="app/Controllers/ImportController.php"
+namespace App\Controllers;
+
+use App\Models\User;
+use Bow\Http\Request;
+
+class ImportController
+{
+  public function importUsers(Request $request)
+  {
+    // Récupérer le fichier uploadé
+    $file = $request->file("csv_file");
+
+    if (!$file || !$file->isUploaded()) {
+      return response_json(["error" => "Aucun fichier uploadé"], 400);
+    }
+
+    // Valider l'extension
+    if ($file->getExtension() !== "csv") {
+      return response_json(["error" => "Le fichier doit être au format CSV"], 400);
+    }
+
+    // Sauvegarder temporairement
+    $tempPath = "/tmp/" . str_uuid() . ".csv";
+    $file->moveTo($tempPath);
+
+    try {
+      $user = new User();
+      $user->setCsvHeaders(["name", "email", "password"]);
+      $user->importCsv($tempPath);
+
+      // Supprimer le fichier temporaire
+      unlink($tempPath);
+
+      return response_json(["message" => "Import réussi"]);
+    } catch (\Exception $e) {
+      return response_json(["error" => $e->getMessage()], 500);
+    }
+  }
+}
 ```
 
 ## Helpers globaux
 
-Deux fonctions sont exposées si vous préférez un appel fonctionnel :
+Deux fonctions globales sont disponibles :
 
 ```php
-app_export_model_to_csv(new User(), null, ['id', 'name']);
-app_import_csv_to_model(new User(), '/chemin/vers/fichier.csv', ['id', 'name', 'email']);
+// Exporter un modèle en CSV (retourne une chaîne)
+$csv = app_export_model_to_csv(new User(), null, ["id", "name", "email"]);
+
+// Exporter vers un fichier (force le téléchargement)
+app_export_model_to_csv(new User(), "users.csv", ["id", "name", "email"]);
+
+// Exporter toutes les colonnes
+$csv = app_export_model_to_csv(new User(), null, ["*"]);
+
+// Importer un CSV dans un modèle
+app_import_csv_to_model(
+  new User(),
+  "/chemin/vers/users.csv",
+  ["name", "email", "password"]
+);
 ```
+
+## Référence API
+
+### Trait Csv
+
+| Méthode | Description |
+|---------|-------------|
+| `setCsvHeaders(array $headers)` | Définit les colonnes à exporter/importer |
+| `toCsv(?string $filename = null)` | Exporte en CSV (chaîne ou téléchargement) |
+| `importCsv(string $filename)` | Importe depuis un fichier CSV |
+
+### CsvService
+
+| Méthode | Description |
+|---------|-------------|
+| `export(Model $model, ?string $filename, array $headers = ['*'])` | Exporte un modèle en CSV |
+| `import(Model $model, string $filename, array $headers)` | Importe un CSV dans un modèle |
 
 ## Bonnes pratiques
 
-- Définissez les headers via `setCsvHeaders()` pour contrôler l'ordre et la liste des colonnes.
-- Vérifiez/validez les données entrantes avant `import()` (formats, valeurs attendues).
-- Les modèles doivent exposer `toArray()` de manière cohérente pour que les lignes soient correctement sérialisées.
+:::tip Recommandations
+- **Définissez les headers** : Utilisez `setCsvHeaders()` pour contrôler précisément les colonnes exportées.
+- **Validez les fichiers** : Vérifiez l'extension et le contenu avant d'importer.
+- **Nettoyez les fichiers temporaires** : Supprimez les fichiers uploadés après traitement.
+- **Gérez les erreurs** : Entourez les imports d'un try/catch pour gérer les échecs.
+:::
+
+:::warning Attention
+- Le modèle doit utiliser le trait `Bow\Csv\Csv` pour les méthodes `toCsv()` et `importCsv()`.
+- Les headers du fichier CSV doivent correspondre aux noms de colonnes attendus.
+- L'import crée de nouveaux enregistrements pour chaque ligne du CSV.
+:::
 
 <SuggestionFeature />

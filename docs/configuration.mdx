@@ -1,170 +1,230 @@
 ---
 id: configuration
-title: "Configuration de l'application"
+title: "Configuration"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Dans Bow Framework, tous les fichiers de configuration sont centralisés dans le dossier `config`. Chaque fichier est bien documenté, ce qui vous permet de comprendre facilement les options disponibles et de les adapter à vos besoins.
+Tous les fichiers de configuration de Bow Framework sont centralisés dans le dossier `config/`. Chaque fichier est documenté pour faciliter la personnalisation.
 
-## Configuration
-
-Bow fournit un helper pratique nommé `config` pour accéder et modifier les options de configuration. Ce helper utilise un système de [notation à point](#explication-de-la-notation-a-point) qui simplifie la navigation dans les fichiers de configuration.
+## Accéder à la configuration
 
 ### Récupérer une valeur
 
-Voici comment récupérer une valeur d'un fichier de configuration :
-
 ```php
-echo config('app.public_path');
+// Récupérer une valeur
+$appName = config('app.name');
+
+// Avec une valeur par défaut
+$timezone = config('app.timezone', 'UTC');
+
+// Récupérer tout un fichier
+$appConfig = config('app');
 ```
 
 ### Modifier une valeur
-
-Vous pouvez aussi modifier une valeur directement dans le code :
 
 ```php
 config('view.engine', 'twig');
 config('view.extension', '.twig');
 ```
 
-### Explication de la notation à point
+### Notation à point
 
-La notation à point permet d'accéder facilement aux valeurs dans les fichiers de configuration. Le premier segment de la notation correspond au nom du fichier, et les segments suivants accèdent aux clés ou sous-clés d'un tableau.
+La notation à point navigue dans les fichiers de configuration :
 
-#### Exemple
+- Premier segment = nom du fichier
+- Segments suivants = clés imbriquées
 
-Supposons que vous ayez un fichier `bow.php` avec le contenu suivant :
-
-```php
+```php title="config/app.php"
 return [
-  'name' => 'Bow',
-  'skill' => [
-    'level' => 'easiest',
-    'orm' => true,
-    'preset' => [
-      'reactjs', 'vue'
+  'name' => 'Mon Application',
+  'settings' => [
+    'debug' => true,
+    'cache' => [
+      'driver' => 'file',
+      'ttl' => 3600
     ]
   ]
 ];
 ```
 
-Avec `config`, vous pouvez accéder aux différentes valeurs :
-
 ```php
-config('bow.name'); // Retourne "Bow"
-config('bow'); // Retourne tout le tableau
-config('bow.skill.orm'); // Retourne true
-config('bow.skill.preset.0'); // Retourne "reactjs"
+config('app.name');                    // "Mon Application"
+config('app.settings.debug');          // true
+config('app.settings.cache.driver');   // "file"
+config('app.settings.cache.ttl');      // 3600
 ```
 
-:::tip Astuce
-Le premier segment de la notation correspond toujours au nom du fichier de configuration (dans cet exemple, `bow`).
-:::
+## Variables d'environnement
 
-## Fichier `.env.json`
+### Fichier `.env.json`
 
-Pour adapter votre application à différents environnements (développement, production, etc.), Bow utilise un fichier de configuration spécifique : `.env.json`. Ce fichier contient des paramètres sensibles ou variables selon l'environnement, comme les clés d'API ou les paramètres de base de données.
+Bow utilise `.env.json` pour les paramètres sensibles et variables selon l'environnement :
 
-### Pourquoi utiliser `.env.json` ?
-
-1. **Sécurité** : Ce fichier ne doit pas être versionné pour éviter d'exposer des informations sensibles.
-2. **Flexibilité** : Chaque développeur ou serveur peut avoir une configuration personnalisée.
-
-:::warning Important
-Ajoutez `.env.json` dans votre fichier `.gitignore` pour ne jamais le versionner. Cela évite d'exposer vos clés secrètes et mots de passe.
-:::
-
-Pour aider les nouveaux développeurs, vous pouvez créer un fichier de base `.env.example.json` qui servira de modèle pour configurer leur propre environnement.
-
-:::info Documentation
-Notez que vous pouvez utiliser aussi le fichier traditionnel `.env` si vous le souhaitez. Bow supporte les deux formats.
-:::
-
-### Récupérer des informations depuis `.env.json`
-
-Toutes les variables définies dans `.env.json` sont automatiquement chargées lorsque l'application est exécutée. Pour y accéder dans vos fichiers de configuration, utilisez le helper `app_env`.
-
-#### Exemple simple
-
-```php
-'database' => app_env('DB_HOSTNAME'),
-```
-
-Si la variable n'est pas définie, `app_env` retournera `null`. Vous pouvez également fournir une valeur par défaut :
-
-```php
-'database' => app_env('DB_HOSTNAME', 'localhost'),
-```
-
-### Utilisation de valeurs imbriquées
-
-Le fichier `.env.json` supporte des objets imbriqués. Voici un exemple :
-
-```json
+```json title=".env.json"
 {
-  "WEBHOOK_GATEWAY": {
-    "VISA": "http://localhost:8080/execute-visa-webhook",
-    "MASTERCARD": "http://localhost:8080/execute-mastercard-webhook"
+  "APP_NAME": "Mon Application",
+  "APP_ENV": "development",
+  "APP_DEBUG": true,
+
+  "DB_CONNECTION": "mysql",
+  "DB_HOST": "localhost",
+  "DB_PORT": 3306,
+  "DB_DATABASE": "app_db",
+  "DB_USERNAME": "root",
+  "DB_PASSWORD": "secret",
+
+  "MAIL_HOST": "smtp.example.com",
+  "MAIL_PORT": 587,
+  "MAIL_USERNAME": "user@example.com",
+  "MAIL_PASSWORD": "password"
+}
+```
+
+:::warning Sécurité
+Ajoutez `.env.json` dans `.gitignore` pour ne jamais versionner vos secrets. Créez un `.env.example.json` comme modèle.
+:::
+
+### Récupérer les variables
+
+```php
+// Récupérer une variable
+$dbHost = app_env('DB_HOST');
+
+// Avec une valeur par défaut
+$dbHost = app_env('DB_HOST', 'localhost');
+```
+
+### Valeurs imbriquées
+
+```json title=".env.json"
+{
+  "SERVICES": {
+    "STRIPE": {
+      "KEY": "pk_test_xxx",
+      "SECRET": "sk_test_xxx"
+    },
+    "PAYPAL": {
+      "CLIENT_ID": "xxx",
+      "SECRET": "xxx"
+    }
   }
 }
 ```
 
-Pour accéder à ces valeurs :
-
 ```php
-echo app_env('WEBHOOK_GATEWAY.VISA');
-// Retourne : http://localhost:8080/execute-visa-webhook
+$stripeKey = app_env('SERVICES.STRIPE.KEY');
+$paypalId = app_env('SERVICES.PAYPAL.CLIENT_ID');
 ```
 
 ### Réutiliser des variables
 
-Vous pouvez réutiliser une variable déjà définie dans le fichier `.env.json` avec la syntaxe `${KEY}` :
-
 ```json title=".env.json"
 {
-  "BASE_URL": "http://localhost:8080",
-  "WEBHOOK_GATEWAY": {
-    "VISA": "${BASE_URL}/execute-visa-webhook",
-    "MASTERCARD": "${BASE_URL}/execute-mastercard-webhook"
+  "BASE_URL": "https://api.example.com",
+  "WEBHOOKS": {
+    "PAYMENT": "${BASE_URL}/webhooks/payment",
+    "ORDER": "${BASE_URL}/webhooks/order"
   }
 }
 ```
 
-:::note
-Ici, `${BASE_URL}` fait référence à la variable définie précédemment.
-:::
-
-Cela permet de centraliser certaines valeurs pour plus de cohérence :
-
 ```php
-echo app_env('WEBHOOK_GATEWAY.VISA');
-// Retourne : http://localhost:8080/execute-visa-webhook
+app_env('WEBHOOKS.PAYMENT');
+// https://api.example.com/webhooks/payment
+```
+
+### Format `.env` classique
+
+Bow supporte aussi le format `.env` traditionnel :
+
+```bash title=".env"
+APP_NAME="Mon Application"
+APP_ENV=development
+APP_DEBUG=true
+
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_DATABASE=app_db
+```
+
+## Fichiers de configuration
+
+| Fichier | Description |
+|---------|-------------|
+| `app.php` | Configuration générale (nom, timezone, chemins, debug) |
+| `database.php` | Connexions base de données |
+| `cache.php` | Configuration du cache |
+| `session.php` | Sessions (driver, durée, cookies) |
+| `storage.php` | Stockage de fichiers |
+| `mail.php` | Configuration email |
+| `view.php` | Moteur de templates |
+| `queue.php` | File d'attente |
+| `auth.php` | Authentification |
+| `security.php` | CORS, headers de sécurité |
+| `translate.php` | Internationalisation |
+
+### Configuration `app.php`
+
+```php title="config/app.php"
+return [
+  // Nom de l'application
+  'name' => app_env('APP_NAME', 'Bow Application'),
+
+  // Protection CSRF automatique
+  'auto_csrf' => (bool) app_env('APP_AUTO_CSRF', true),
+
+  // Préfixe d'URL (ex: '/api')
+  'root' => app_env('APP_URI_PREFIX', ''),
+
+  // Fuseau horaire
+  'timezone' => 'Africa/Abidjan',
+
+  // Chemins
+  'env_file' => realpath(__DIR__ . '/../.env.json'),
+  'frontend_path' => dirname(__DIR__) . '/assets',
+  'seeder_path' => dirname(__DIR__) . '/seeders',
+  'public_path' => dirname(__DIR__) . '/public',
+  'storage_path' => dirname(__DIR__) . '/var/storage',
+
+  // Mode debug: development | production
+  'debug' => app_env('APP_ENV', 'development'),
+
+  // Gestionnaire d'erreurs personnalisé
+  'error_handle' => \App\Exceptions\ErrorHandle::class,
+
+  // Afficher les traces d'erreur en JSON
+  'error_trace' => true,
+];
 ```
 
 ## Helpers personnalisés
 
-Bow inclut de nombreuses fonctions PHP pratiques appelées "helpers". Ces fonctions sont utilisées par le framework pour simplifier les opérations courantes. Vous pouvez également les utiliser dans vos projets.
-
-### Ajouter vos propres helpers
-
-Dans le fichier `config/helpers.php`, vous trouverez des helpers supplémentaires qui ne sont pas directement intégrés au framework. Vous pouvez modifier ce fichier pour y ajouter vos propres fonctions personnalisées afin de répondre aux besoins spécifiques de votre application.
+Ajoutez vos fonctions personnalisées dans `config/helpers.php` :
 
 ```php title="config/helpers.php"
 <?php
 
 if (!function_exists('format_price')) {
-    function format_price(float $price): string
-    {
-        return number_format($price, 2, ',', ' ') . ' €';
-    }
+  function format_price(float $price, string $currency = '€'): string
+  {
+    return number_format($price, 2, ',', ' ') . ' ' . $currency;
+  }
+}
+
+if (!function_exists('slugify')) {
+  function slugify(string $text): string
+  {
+    return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $text), '-'));
+  }
 }
 ```
 
 :::info Documentation
-Consultez la [documentation des helpers](/docs/helper) pour découvrir toutes les fonctions disponibles dans Bow Framework.
+Consultez la [documentation des helpers](./helper) pour toutes les fonctions disponibles.
 :::
 
 <SuggestionFeature />

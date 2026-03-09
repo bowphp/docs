@@ -1,104 +1,202 @@
 ---
 id: seeding
-title: "Seeding dans Bow Framework"
+title: "Seeding"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le seeding est un mécanisme qui vous permettra d'hydrater votre base de donnée pour pouvoir l'utiliser dans votre développement. Le seeding dans Bow est associé à une table lors de la création.
+Le seeding permet d'hydrater votre base de données avec des données de test pour le développement. Chaque seeder est associé à une table et génère des données via la librairie Faker.
 
-## Ajouter un seeder
-
-Pour ajouter un seeder, on passe par `php bow` avec la commande `add:seeder` ensuite le nom de la table.
+## Créer un seeder
 
 ```bash
-php bow add:seeder pets
+php bow add:seeder users
 ```
 
-Un fichier avec un timestamp sera créé dans le dossier `seeders` (par exemple `20251220174703-pets-seeder.php`). En voici le contenu :
+Un fichier sera créé dans le dossier `seeders/` avec un timestamp :
 
-```php
+```php title="seeders/20260309120000-users.php"
 <?php
 
-use App\Models\Pet;
 use Faker\Factory as FakerFactory;
 
-class PetsSeeder20251220174703
+class Users20260309120000
 {
-    public function run()
-    {
-        $faker = FakerFactory::create();
+  public function run()
+  {
+    $faker = FakerFactory::create();
 
-        foreach (range(1, 5) as $value) {
-            $pet = [
-                'name' => $faker->name,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ];
+    // Write the seeding here
+  }
 
-            Pet::create($pet);
-        }
-    }
+  /**
+   * Return the list of depended seeder
+   *
+   * @return array
+   */
+  public function depends()
+  {
+    return [];
+  }
 }
 ```
 
-:::note
-Le seeder est maintenant une classe avec une méthode `run()`. Le nom de la classe inclut un timestamp pour éviter les conflits. Vous pouvez utiliser le modèle correspondant (`Pet::create()`) pour insérer les données.
-Voir la [documentation](./orm) sur les modèles pour plus d'informations.
-:::
+## Exemple complet
 
-## Lancer le seeding
-
-Pour lancer le seeding, on utilise la commande `seed:file` suivie du nom de la classe du seeder.
-
-```bash
-php bow seed:file PetsSeeder20251220174703
-```
-
-Le seeder correspondant sera exécuté et les données seront insérées dans la base de données via la méthode `create()` du modèle.
-
-Vous avez la possibilité de lancer tous les seeding avec la commande `seed:all`. Cela exécutera tous les seeders dans le dossier `seeders`.
-
-```bash
-php bow seed:all
-```
-
-## Personnalisation du seeder
-
-Vous pouvez personnaliser le seeder selon vos besoins. Voici un exemple plus complet avec le modèle User :
-
-```php
+```php title="seeders/20260309120000-users.php"
 <?php
 
 use App\Models\User;
 use Faker\Factory as FakerFactory;
 
-class UserSeeder20251220174703
+class Users20260309120000
 {
-    public function run()
-    {
-        $faker = FakerFactory::create();
+  public function run()
+  {
+    $faker = FakerFactory::create();
 
-        foreach (range(1, 10) as $value) {
-            $user = [
-                'name' => $faker->name,
-                'description' => $faker->text(100),
-                'email' => $faker->unique()->email,
-                'password' => app_hash('password'),
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ];
-
-            User::create($user);
-        }
+    foreach (range(1, 50) as $i) {
+      $user = User::create([
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'password' => app_hash('password'),
+        'avatar' => $faker->imageUrl(200, 200, 'people'),
+        'bio' => $faker->paragraph,
+        'is_active' => $faker->boolean(80),
+        'created_at' => $faker->dateTimeBetween('-1 year')->format('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s'),
+      ]);
+      $user->persist();
     }
+  }
+
+  public function depends()
+  {
+    return [];
+  }
 }
 ```
 
-:::tip
-Utilisez `$faker->unique()` pour garantir l'unicité des valeurs comme les emails. Consultez la [documentation Faker](https://github.com/fzaninotto/Faker) pour voir toutes les possibilités de génération de données.
+## Dépendances entre seeders
+
+La méthode `depends()` permet de définir les seeders qui doivent être exécutés avant celui-ci :
+
+```php title="seeders/20260309130000-posts.php"
+<?php
+
+use App\Models\Post;
+use App\Models\User;
+use Faker\Factory as FakerFactory;
+
+class Posts20260309130000
+{
+  public function run()
+  {
+    $faker = FakerFactory::create();
+    $userIds = User::pluck('id')->toArray();
+
+    foreach (range(1, 100) as $i) {
+      $post = Post::create([
+        'user_id' => $faker->randomElement($userIds),
+        'title' => $faker->sentence,
+        'slug' => $faker->slug,
+        'content' => $faker->paragraphs(5, true),
+        'published_at' => $faker->optional(0.7)->dateTimeBetween('-6 months')?->format('Y-m-d H:i:s'),
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s'),
+      ]);
+      $post->persist();
+    }
+  }
+
+  public function depends()
+  {
+    return [
+      Users20260309120000::class,
+    ];
+  }
+}
+```
+
+## Exécuter les seeders
+
+### Un seeder spécifique
+
+```bash
+php bow seed:file Users20260309120000
+```
+
+### Tous les seeders
+
+```bash
+php bow seed:all
+```
+
+## Données de référence
+
+Pour les données de référence (rôles, statuts, etc.), utilisez un seeder dédié :
+
+```php title="seeders/20260309100000-roles.php"
+<?php
+
+use Bow\Database\Database;
+
+class Roles20260309100000
+{
+  public function run()
+  {
+    $roles = [
+      ['name' => 'admin', 'display_name' => 'Administrateur'],
+      ['name' => 'moderator', 'display_name' => 'Modérateur'],
+      ['name' => 'user', 'display_name' => 'Utilisateur'],
+    ];
+
+    foreach ($roles as $role) {
+      $role = Database::table('roles')->insert(array_merge($role, [
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s'),
+      ]));
+      $role->persist();
+    }
+  }
+
+  public function depends()
+  {
+    return [];
+  }
+}
+```
+
+## Méthodes Faker utiles
+
+| Méthode | Description | Exemple |
+|---------|-------------|---------|
+| `$faker->name` | Nom complet | Jean Dupont |
+| `$faker->email` | Email | jean@example.com |
+| `$faker->unique()->email` | Email unique | - |
+| `$faker->safeEmail` | Email de test | user@example.org |
+| `$faker->password` | Mot de passe | a3$kLm9x |
+| `$faker->phoneNumber` | Téléphone | +33 6 12 34 56 78 |
+| `$faker->address` | Adresse complète | - |
+| `$faker->city` | Ville | Paris |
+| `$faker->country` | Pays | France |
+| `$faker->text(200)` | Texte (200 car.) | - |
+| `$faker->paragraph` | Paragraphe | - |
+| `$faker->sentence` | Phrase | - |
+| `$faker->boolean(70)` | Boolean (70% true) | true/false |
+| `$faker->numberBetween(1, 100)` | Nombre | 42 |
+| `$faker->randomFloat(2, 0, 1000)` | Décimal | 123.45 |
+| `$faker->dateTimeBetween('-1 year')` | Date | DateTime |
+| `$faker->optional(0.8)->name` | Nullable (80%) | Jean ou null |
+| `$faker->randomElement(['a', 'b'])` | Choix aléatoire | a |
+| `$faker->imageUrl(200, 200)` | URL d'image | https://... |
+| `$faker->uuid` | UUID | 550e8400-... |
+| `$faker->slug` | Slug | mon-article |
+
+:::tip Localisation
+Utilisez `FakerFactory::create('fr_FR')` pour des données en français.
 :::
 
 <SuggestionFeature />

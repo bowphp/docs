@@ -139,14 +139,26 @@ foreach ($todos as $todo) {
 }
 ```
 
-La méthode `find` et `findBy` permet aussi de récupérer les informations:
+La méthode `retrieve` et `retrieveBy` permet aussi de récupérer les informations:
 
 ```php
-// Avec find
-$todo = Todo::find(1);
+// Avec retrieve
+$todo = Todo::retrieve(1);
 
-// Avec findBy
-$todo = Todo::findBy('id', 1);
+// Avec retrieveBy (retourne une Collection)
+$todos = Todo::retrieveBy('status', 'pending');
+```
+
+Vous pouvez aussi utiliser `retrieveOrFail` pour lancer une exception si l'enregistrement n'existe pas:
+
+```php
+use Bow\Database\Exception\NotFoundException;
+
+try {
+  $todo = Todo::retrieveOrFail(1);
+} catch (NotFoundException $e) {
+  // L'enregistrement n'existe pas
+}
 ```
 
 :::tip Remarque
@@ -163,6 +175,172 @@ $flights = App\Models\Todo::where('status', 'done')
             ->take(10)
             ->get();
 ```
+
+## Méthodes du Query Builder
+
+Grâce à la méthode magique `__callStatic`, tous les modèles Barry ont accès aux méthodes du Query Builder. Ces méthodes peuvent être chaînées pour construire des requêtes complexes.
+
+### Conditions WHERE
+
+```php
+use App\Models\Todo;
+
+// Condition simple
+Todo::where('status', 'done')->get();
+
+// Avec opérateur de comparaison
+Todo::where('budget', '>', 1000)->get();
+
+// OU condition
+Todo::where('status', 'done')
+  ->orWhere('status', 'pending')
+  ->get();
+
+// WHERE avec valeur NULL
+Todo::whereNull('deleted_at')->get();
+Todo::whereNotNull('completed_at')->get();
+
+// WHERE BETWEEN
+Todo::whereBetween('budget', [100, 500])->get();
+Todo::whereNotBetween('budget', [100, 500])->get();
+
+// WHERE IN
+Todo::whereIn('status', ['done', 'pending'])->get();
+Todo::whereNotIn('status', ['cancelled', 'expired'])->get();
+
+// WHERE RAW (requête brute)
+Todo::whereRaw('budget > 100 AND status = "done"')->get();
+Todo::orWhereRaw('created_at > NOW() - INTERVAL 7 DAY')->get();
+```
+
+### Tri et limitation
+
+```php
+use App\Models\Todo;
+
+// Tri par colonne
+Todo::orderBy('created_at', 'desc')->get();
+Todo::orderBy('title', 'asc')->get();
+
+// Limiter les résultats
+Todo::take(10)->get();
+
+// Sauter des enregistrements (offset)
+Todo::jump(5)->take(10)->get();
+
+// Obtenir le premier enregistrement
+Todo::where('status', 'done')->first();
+
+// Obtenir le dernier enregistrement
+Todo::where('status', 'done')->last();
+```
+
+### Sélection de colonnes
+
+```php
+use App\Models\Todo;
+
+// Sélectionner des colonnes spécifiques
+Todo::select(['id', 'title', 'status'])->get();
+
+// Valeurs distinctes
+Todo::distinct('status');
+```
+
+### Groupement
+
+```php
+use App\Models\Todo;
+
+// GROUP BY
+Todo::groupBy('status')->get();
+
+// GROUP BY avec HAVING
+Todo::groupBy('status')
+  ->having('count', '>', 5)
+  ->get();
+```
+
+### Jointures
+
+```php
+use App\Models\Todo;
+
+// INNER JOIN
+Todo::join('users', 'todos.user_id', '=', 'users.id')->get();
+
+// LEFT JOIN
+Todo::leftJoin('categories', 'todos.category_id', '=', 'categories.id')->get();
+
+// RIGHT JOIN
+Todo::rightJoin('projects', 'todos.project_id', '=', 'projects.id')->get();
+
+// Jointures multiples avec AND ON / OR ON
+Todo::join('users', 'todos.user_id', '=', 'users.id')
+  ->andOn('todos.team_id', '=', 'users.team_id')
+  ->orOn('todos.owner_id', '=', 'users.id')
+  ->get();
+```
+
+### Opérations d'écriture
+
+```php
+use App\Models\Todo;
+
+// Mise à jour avec conditions
+Todo::where('status', 'pending')
+  ->update(['status' => 'done']);
+
+// Suppression avec conditions
+Todo::where('status', 'cancelled')->delete();
+
+// Incrémenter une valeur
+Todo::where('id', 1)->increment('view_count');
+Todo::where('id', 1)->increment('view_count', 5); // +5
+
+// Décrémenter une valeur
+Todo::where('id', 1)->decrement('stock');
+Todo::where('id', 1)->decrement('stock', 3); // -3
+
+// Insertion directe
+Todo::insert([
+  'title' => 'Nouvelle tâche',
+  'status' => 'pending'
+]);
+
+// Insertion et récupération de l'ID
+$id = Todo::insertAndGetLastId([
+  'title' => 'Nouvelle tâche',
+  'status' => 'pending'
+]);
+```
+
+### Vérification d'existence
+
+```php
+use App\Models\Todo;
+
+// Vérifier si des enregistrements existent
+$exists = Todo::where('status', 'done')->exists();
+
+// Vérifier par colonne et valeur
+$exists = Todo::exists('email', 'user@example.com');
+```
+
+### Génération SQL
+
+```php
+use App\Models\Todo;
+
+// Obtenir la requête SQL générée
+$sql = Todo::where('status', 'done')
+  ->orderBy('created_at', 'desc')
+  ->toSql();
+```
+
+:::tip Pour aller plus loin
+Cette section présente les méthodes les plus courantes du Query Builder. Pour une documentation complète avec toutes les options avancées, consultez la page [Query Builder](./query-builder).
+:::
 
 ## Récupération d'agrégats
 
@@ -186,11 +364,10 @@ Pour créer un nouvel enregistrement dans la base de données, créez une nouvel
 
 namespace App\Http\Controllers;
 
-use App\Controllers\Controller;
 use App\Models\Todo;
 use Bow\Http\Request;
 
-class TodoController extends Controller
+class TodoController
 {
   /**
    * Créez une nouvelle instance de todo.
@@ -208,12 +385,12 @@ class TodoController extends Controller
     $todo->budget = $request->get('budget', 0);
     $todo->status = 'pending';
 
-    $todo->save();
+    $todo->persist();
   }
 }
 ```
 
-Dans cet exemple, nous affectons le paramètre de nom de la requête HTTP entrante à les attributs `title`, `budget` de l'instance de modèle `App\Models\Todo`. Lorsque nous appelons la méthode `save`, un enregistrement sera inséré dans la base de données. Les horodatages `created_at` et `updated_at` seront automatiquement définis lorsque la méthode de sauvegarde sera appelée, il n'est donc pas nécessaire de les définir manuellement.
+Dans cet exemple, nous affectons le paramètre de nom de la requête HTTP entrante aux attributs `title`, `budget` de l'instance de modèle `App\Models\Todo`. Lorsque nous appelons la méthode `persist`, un enregistrement sera inséré dans la base de données. Les horodatages `created_at` et `updated_at` seront automatiquement définis lorsque la méthode de persistance sera appelée, il n'est donc pas nécessaire de les définir manuellement.
 
 ### Insert via CREATE
 
@@ -233,16 +410,16 @@ $user = Todo::create([
 
 ### UPDATE
 
-La méthode `save` peut également être utilisée pour mettre à jour des modèles qui existent déjà dans la base de données. Pour mettre à jour un modèle, vous devez le récupérer, définir les attributs que vous souhaitez mettre à jour, puis appeler la méthode `save`. Encore une fois, l'horodatage `updated_at` sera automatiquement mis à jour, il n'est donc pas nécessaire de définir manuellement sa valeur:
+La méthode `persist` peut également être utilisée pour mettre à jour des modèles qui existent déjà dans la base de données. Pour mettre à jour un modèle, vous devez le récupérer, définir les attributs que vous souhaitez mettre à jour, puis appeler la méthode `persist`. Encore une fois, l'horodatage `updated_at` sera automatiquement mis à jour, il n'est donc pas nécessaire de définir manuellement sa valeur:
 
 ```php
 use App\Models\Todo;
 
-$todo = Todo::find(1);
+$todo = Todo::retrieve(1);
 
 $todo->title = 'Shopping pour Franck';
 
-$todo->save();
+$todo->persist();
 ```
 
 Vous pouvez aussi utiliser la méthode `update`. Cependant, vous devez définir les conditions pour limiter l'impact de la mise à jour.
@@ -263,18 +440,184 @@ De même, une fois récupéré, un objet Active Record peut être détruit, ce q
 ```php
 use App\Models\Todo;
 
-$todo = Todo::find(1);
+$todo = Todo::retrieve(1);
 $todo->delete();
 ```
 
-Si vous souhaitez supprimer plusieurs enregistrements en masse, vous pouvez utiliser la méthode `destroyBy` ou `truncate`:
+Si vous souhaitez supprimer plusieurs enregistrements en masse, vous pouvez utiliser la méthode `deleteBy` ou `truncate`:
 
 ```php
-// Delete all todo by id
-Todo::deleteBy('id', 'David');
+// Supprimer un todo par colonne
+Todo::deleteBy('status', 'done');
 
-// delete all todo
+// Supprimer tous les todos
 Todo::truncate();
+```
+
+## Propriétés de configuration
+
+Barry offre plusieurs propriétés de configuration pour personnaliser le comportement du modèle:
+
+### Timestamps
+
+Par défaut, Barry gère automatiquement les colonnes `created_at` et `updated_at`. Vous pouvez désactiver ce comportement:
+
+```php
+class Todo extends Model
+{
+  /**
+   * Indique si le modèle doit gérer les timestamps.
+   *
+   * @var bool
+   */
+  protected bool $timestamps = false;
+}
+```
+
+Vous pouvez personnaliser les noms des colonnes de timestamp:
+
+```php
+class Todo extends Model
+{
+  protected string $created_at = 'date_creation';
+  protected string $updated_at = 'date_modification';
+}
+```
+
+### Champs cachés
+
+Pour exclure certains attributs lors de la sérialisation JSON ou de la conversion en tableau:
+
+```php
+class User extends Model
+{
+  /**
+   * Les attributs qui doivent être cachés.
+   *
+   * @var array
+   */
+  protected array $hidden = ['password', 'remember_token'];
+}
+```
+
+### Casting des attributs
+
+Pour convertir automatiquement les types d'attributs:
+
+```php
+class Todo extends Model
+{
+  /**
+   * Les conversions de type d'attributs.
+   *
+   * @var array
+   */
+  protected array $casts = [
+    'status' => 'int',
+    'budget' => 'float',
+    'is_active' => 'bool',
+    'due_date' => 'date',
+  ];
+}
+```
+
+### Soft Delete
+
+Barry supporte la suppression douce (soft delete) qui marque les enregistrements comme supprimés sans les supprimer physiquement:
+
+```php
+class Todo extends Model
+{
+  /**
+   * Active la suppression douce.
+   *
+   * @var bool
+   */
+  protected bool $soft_delete = true;
+}
+```
+
+## Événements de modèle
+
+Barry vous permet d'intercepter diverses opérations sur les modèles via des événements:
+
+```php
+use App\Models\Todo;
+
+// Avant la création
+Todo::creating(function ($model) {
+  // Exécuté avant l'insertion
+});
+
+// Après la création
+Todo::created(function ($model) {
+  // Exécuté après l'insertion
+});
+
+// Avant la mise à jour
+Todo::updating(function ($model) {
+  // Exécuté avant la mise à jour
+});
+
+// Après la mise à jour
+Todo::updated(function ($model) {
+  // Exécuté après la mise à jour
+});
+
+// Avant la suppression
+Todo::deleting(function ($model) {
+  // Exécuté avant la suppression
+});
+
+// Après la suppression
+Todo::deleted(function ($model) {
+  // Exécuté après la suppression
+});
+```
+
+## Pagination
+
+Pour paginer les résultats de vos requêtes:
+
+```php
+use App\Models\Todo;
+
+// Récupère 15 éléments par page, page 1
+$todos = Todo::paginate(15, 1);
+
+// Avec le troisième paramètre pour le chunk
+$todos = Todo::paginate(15, 1, 50);
+```
+
+## Méthodes utilitaires
+
+### Touch
+
+Pour mettre à jour uniquement le timestamp `updated_at`:
+
+```php
+$todo = Todo::retrieve(1);
+$todo->touch();
+```
+
+### Récupérer et supprimer
+
+Pour récupérer un enregistrement et le supprimer en une seule opération:
+
+```php
+$todo = Todo::retrieveAndDelete(1);
+```
+
+### Conversion en tableau ou JSON
+
+```php
+$todo = Todo::retrieve(1);
+
+// Conversion en tableau
+$array = $todo->toArray();
+
+// Conversion en JSON
+$json = $todo->toJson();
 ```
 
 <SuggestionFeature />

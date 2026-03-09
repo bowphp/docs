@@ -50,6 +50,10 @@ La classe `Pagination` fournit plusieurs méthodes pour naviguer entre les pages
 ### Informations sur la page courante
 
 ```php
+use App\Models\User;
+
+$pagination = User::paginate(15);
+
 // Obtenir le numéro de la page courante
 $pagination->current(); // Ex: 2
 
@@ -330,12 +334,12 @@ $json = $pagination->toJson(JSON_PRETTY_PRINT);
 ### Contrôleur
 
 ```php
-namespace App\Controllers;
+namespace App\Http\Controllers;
 
 use App\Models\User;
 use Bow\Http\Request;
 
-class UserController extends Controller
+class UserController
 {
   public function index(Request $request)
   {
@@ -354,8 +358,8 @@ class UserController extends Controller
     // Configurer les URLs de pagination
     $users->setBaseUrl(url('/users'))
       ->withQueryParams([
-          'search' => $search,
-          'per_page' => $perPage,
+        'search' => $search,
+        'per_page' => $perPage,
       ]);
 
     return view('users.index', compact('users', 'search'));
