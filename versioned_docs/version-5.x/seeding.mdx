@@ -1,6 +1,6 @@
 ---
 id: seeding
-title: "Seeding"
+title: "Seeders"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
@@ -98,7 +98,7 @@ class Posts20260309130000
     $userIds = User::pluck('id')->toArray();
 
     foreach (range(1, 100) as $i) {
-      Post::create([
+      $post = Post::create([
         'user_id' => $faker->randomElement($userIds),
         'title' => $faker->sentence,
         'slug' => $faker->slug,
@@ -107,6 +107,7 @@ class Posts20260309130000
         'created_at' => date('Y-m-d H:i:s'),
         'updated_at' => date('Y-m-d H:i:s'),
       ]);
+      $post->persist();
     }
   }
 
@@ -153,10 +154,11 @@ class Roles20260309100000
     ];
 
     foreach ($roles as $role) {
-      Database::table('roles')->insert(array_merge($role, [
+      $role = Database::table('roles')->insert(array_merge($role, [
         'created_at' => date('Y-m-d H:i:s'),
         'updated_at' => date('Y-m-d H:i:s'),
       ]));
+      $role->persist();
     }
   }
 
