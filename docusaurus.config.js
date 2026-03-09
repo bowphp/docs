@@ -39,7 +39,7 @@ module.exports = {
     },
     "static/js/script.js",
   ],
-  favicon: "img/bow.png",
+  favicon: "img/favicon.svg",
   markdown: {
     mermaid: true,
     hooks: {
