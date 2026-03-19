@@ -351,8 +351,8 @@ module.exports = {
               to: "https://discord.gg/u8aAaCnyGn",
             },
             {
-              label: "Code Learning Club",
-              to: "https://codelearningclub.com",
+              label: "Papac Dev",
+              to: "https://papac.dev",
             },
           ],
         },
