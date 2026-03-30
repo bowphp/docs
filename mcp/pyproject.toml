@@ -1,0 +1,16 @@
+[project]
+name = "bowphp-docs-mcp"
+version = "1.0.0"
+description = "MCP server for Bow Framework documentation"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "mcp>=1.0.0",
+]
+
+[project.scripts]
+bowphp-docs-mcp = "server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
