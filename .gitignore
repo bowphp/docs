@@ -14,3 +14,7 @@ node_modules
 .docusaurus
 .DS_Store
 Writerside/
+mcp/__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
