@@ -11,7 +11,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy MCP server files
 COPY server.py .
-COPY types.py .
+COPY models.py .
 
 # Documentation will be mounted as volume
 # Mount points:
