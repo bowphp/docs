@@ -297,3 +297,50 @@ composer install --no-dev --optimize-autoloader
 :::tip Configuration du Document Root
 Si vous ne pouvez pas modifier le document root, déplacez le contenu de `public/` à la racine et ajustez les chemins dans `index.php`.
 :::
+
+## SSL/HTTPS
+
+### Let's Encrypt avec Certbot
+
+```bash
+# Installation de Certbot
+sudo apt install certbot python3-certbot-nginx
+
+# Génération du certificat
+sudo certbot --nginx -d domain.com -d www.domain.com
+
+# Renouvellement automatique
+sudo certbot renew --dry-run
+```
+
+## Surveillance et Logs
+
+### Logs de l'application
+
+Les logs de Bow Framework se trouvent dans `var/logs/` :
+
+```bash
+# Suivre les logs en temps réel
+tail -f var/logs/bow.log
+
+# Rechercher les erreurs
+grep -i "error" var/logs/bow.log
+```
+
+### Rotation des logs
+
+Configurez logrotate pour éviter que les fichiers de logs ne grossissent indéfiniment :
+
+```bash title="/etc/logrotate.d/bow-app"
+/var/www/domain/var/logs/*.log {
+    daily
+    missingok
+    rotate 14
+    compress
+    delaycompress
+    notifempty
+    create 0640 www-data www-data
+}
+```
+
+<SuggestionFeature />

@@ -7,9 +7,18 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Les contrôleurs organisent la logique de gestion des requêtes en classes dédiées, plutôt que de définir des closures dans les fichiers de routes.
+Les contrôleurs organisent la logique de gestion des requêtes en classes dédiées,
+plutôt que de définir des closures dans les fichiers de routes. Les contrôleurs
+sont stockés dans `app/Controllers/`.
 
-Les contrôleurs sont stockés dans `app/Controllers/`.
+Bow prend en charge deux styles de déclaration :
+
+- **Routes définies dans `routes/app.php`** — les routes pointent vers un
+  contrôleur via la syntaxe `Controller::action` (style décrit dans la majeure
+  partie de ce document).
+- **Routage par attributs PHP 8** — les routes sont déclarées directement sur
+  la classe avec `#[Controller]`, `#[Get]`, `#[Post]`, etc. (voir
+  [Routage par attributs](./routing#routage-par-attributs)).
 
 ## Créer un contrôleur
 
@@ -223,8 +232,25 @@ $app->rest('articles', 'ArticleController');
 | `/articles` | GET | `index` | `articles.index` |
 | `/articles` | POST | `store` | `articles.store` |
 | `/articles/:id` | GET | `show` | `articles.show` |
-| `/articles/:id` | PUT/PATCH | `update` | `articles.update` |
+| `/articles/:id` | PUT | `update` | `articles.update` |
 | `/articles/:id` | DELETE | `destroy` | `articles.destroy` |
+
+:::note PUT uniquement (pas PATCH)
+La méthode `update` est enregistrée en **PUT** seulement. Si vous voulez
+exposer aussi PATCH (mise à jour partielle), ajoutez une route dédiée :
+
+```php
+$app->patch('/articles/:id', 'ArticleController::update')
+    ->where('id', '\d+');
+```
+:::
+
+:::note Nom des routes et URL imbriquée
+Le nom est construit à partir de `str_replace('/', '.', $url) . '.' . $action`.
+Avec une URL avec slash de tête comme `'/api/v1/articles'`, vous obtiendrez
+des noms comme `.api.v1.articles.index` (point de tête). Passez l'URL **sans**
+slash de tête (`'api/v1/articles'`) pour des noms propres.
+:::
 
 ### Contraintes sur les paramètres
 
@@ -248,9 +274,57 @@ $app->rest('articles', [
 ], ['id' => '\d+']);
 ```
 
+## Contrôleurs avec attributs
+
+Pour éviter de maintenir un fichier de routes central, vous pouvez déclarer
+les routes directement sur la classe avec les attributs PHP 8 :
+
+```php title="app/Controllers/ArticleController.php"
+namespace App\Controllers;
+
+use Bow\Http\Request;
+use Bow\Router\Attributes\{Controller, Get, Post, Put, Delete};
+
+#[Controller(prefix: '/articles', middleware: ['auth'], name: 'articles.')]
+final class ArticleController
+{
+    #[Get('/', name: 'index')]
+    public function index() { /* ... */ }
+
+    #[Get('/:id', name: 'show', where: ['id' => '\d+'])]
+    public function show(Request $request, int $id) { /* ... */ }
+
+    #[Post('/', name: 'store', middleware: ['validate'])]
+    public function store(Request $request) { /* ... */ }
+
+    #[Put('/:id', name: 'update')]
+    public function update(Request $request, int $id) { /* ... */ }
+
+    #[Delete('/:id', name: 'destroy')]
+    public function destroy(Request $request, int $id) { /* ... */ }
+}
+```
+
+Il suffit ensuite d'enregistrer la classe dans le fichier de routes :
+
+```php title="routes/app.php"
+$app->register(\App\Controllers\ArticleController::class);
+
+// Ou un lot de contrôleurs
+$app->register([
+    \App\Controllers\ArticleController::class,
+    \App\Controllers\CommentController::class,
+]);
+```
+
+Le préfixe `name:` du `#[Controller]` est concaténé **verbatim** au nom de
+chaque route — choisissez `'articles.'` (avec point) pour obtenir
+`articles.index`, `articles.show`, etc. Voir [Routage > Routage par attributs](./routing)
+pour la liste complète des attributs (`#[Patch]`, `#[Options]`, `#[Route]`…).
+
 ## Configuration du namespace
 
-Personnalisez le namespace des contrôleurs dans `app/Kernel.php` :
+Personnalisez les namespaces des composants dans `app/Kernel.php` :
 
 ```php title="app/Kernel.php"
 public function namespaces(): array
@@ -258,8 +332,15 @@ public function namespaces(): array
   return [
     'controller' => 'App\\Controllers',
     'middleware' => 'App\\Middlewares',
+    'listener'   => 'App\\Listeners',
   ];
 }
 ```
+
+| Clé | Utilisée par |
+|-----|--------------|
+| `controller` | Résolution `'UserController::action'` → `App\Controllers\UserController`, `php bow add:controller`, `generate:resource` |
+| `middleware` | `php bow add:middleware` |
+| `listener`   | `php bow add:listener` |
 
 <SuggestionFeature />

@@ -95,7 +95,9 @@ class Posts20260309130000
   public function run()
   {
     $faker = FakerFactory::create();
-    $userIds = User::pluck('id')->toArray();
+
+    // Récupère les IDs des utilisateurs déjà semés
+    $userIds = User::all()->map(fn ($user) => $user->id)->toArray();
 
     foreach (range(1, 100) as $i) {
       $post = Post::create([
@@ -154,11 +156,10 @@ class Roles20260309100000
     ];
 
     foreach ($roles as $role) {
-      $role = Database::table('roles')->insert(array_merge($role, [
+      Database::table('roles')->insert(array_merge($role, [
         'created_at' => date('Y-m-d H:i:s'),
         'updated_at' => date('Y-m-d H:i:s'),
       ]));
-      $role->persist();
     }
   }
 

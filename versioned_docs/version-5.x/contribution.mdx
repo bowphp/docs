@@ -55,7 +55,10 @@ Conventions de nommage :
 composer install
 
 # Lancer les tests pendant le développement
-composer test --testdox
+composer test
+
+# Format lisible avec testdox (les noms de méthode comme phrases)
+composer testdox
 ```
 
 ### 4. Commiter
@@ -105,22 +108,25 @@ Sur GitHub, créez une Pull Request avec :
 ### Qualité du code
 
 ```bash
-# Formater le code
-composer format
+# Vérifier le style (lecture seule, échoue en cas d'écart PSR-12)
+composer phpcs
 
-# Analyser statiquement
-composer analyse
+# Corriger automatiquement les écarts de style
+composer phpcbf
 
 # Lancer tous les tests
 composer test
+
+# Analyse statique (PHPStan est dans require-dev)
+vendor/bin/phpstan analyse src
 ```
 
 ### Standards
 
 - PHP 8.1+
-- PSR-12 pour le style de code
+- PSR-12 pour le style de code (vérifié par `phpcs`, corrigé par `phpcbf`)
 - PHPDoc pour les méthodes publiques
-- Tests unitaires avec PHPUnit
+- Tests unitaires avec PHPUnit (configuration : `phpunit.dist.xml`)
 
 ## Exemples de commits
 

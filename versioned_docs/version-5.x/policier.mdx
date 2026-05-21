@@ -115,10 +115,14 @@ La valeur d'action doit être l'une de ces valeurs : `encode`, `decode`, `parse`
 
 #### Mise à jour de la Configuration
 
-Vous pouvez mettre à jour la configuration de base avec la méthode `setConfig`:
+Vous pouvez mettre à jour la configuration de base avec la méthode `setConfig`.
+Elle prend un **tableau** de clés à fusionner avec la configuration existante :
 
 ```php
-$policier->setConfig('exp', time() + 72000);
+$policier->setConfig([
+  'exp' => time() + 72000,
+  'iss' => 'api.example.com',
+]);
 ```
 
 #### Récupération de la Configuration
@@ -163,14 +167,15 @@ policier('encode', $id, $claims);
 
 ### Décoder un Token
 
-Même chose pour le décodage de token:
+`decode()` retourne une instance de `Policier\Token`. Utilisez ses méthodes
+`getHeaders()` / `getHeader($name)` / `getClaim($name)` / `getClaims()` pour
+en extraire les informations :
 
 ```php
 $result = $policier->decode($token);
-$result['headers'];
 
-echo $result['claims']['name'];
-//=> Franck
+$result->getHeaders();          // array
+echo $result->getClaim('name'); // => Franck
 ```
 
 Via l'assistant:
@@ -226,35 +231,39 @@ policier('verify', $token);
 
 ### Valider un Token
 
-Validez le jeton avec les informations de réclamation et les informations `exp`.
+Vérifiez à la fois la signature du jeton et qu'il appartient bien à un sujet
+donné (le même `$id` que vous avez passé à `encode()`). La méthode `validate`
+prend en deuxième argument cet identifiant — **pas** un tableau de claims.
 
 ```php
-$claims = [
-  "name" => "Franck",
-  "nickname" => "papac",
-  "logged" => true
-];
+$id = $token->getClaim('jti'); // ou tout autre identifiant que vous avez utilisé
 
-$validated = $policier->validate($token, $claims);
+$validated = $policier->validate((string) $token, $id);
 
 if ($validated) {
-  echo "Les informations sont valides";
+  echo "Token valide pour le sujet {$id}";
 } else {
-  echo "Les informations ne sont pas valides";
+  echo "Token invalide ou expiré";
 }
 ```
 
 Via l'assistant:
 
 ```php
-$claims = [
-  "name" => "Franck",
-  "nickname" => "papac",
-  "logged" => true
-];
-
-policier('validate', $token, $claims);
+policier('validate', $token, $id);
 ```
+
+:::tip Vérification des claims arbitraires
+Si vous voulez aussi confronter des claims côté application (nom, rôle, etc.),
+faites la comparaison vous-même après `decode()` :
+
+```php
+$decoded = $policier->decode($token);
+if ($decoded->getClaim('nickname') !== 'papac') {
+  // claim inattendu
+}
+```
+:::
 
 ## Bow Framework et Policier
 

@@ -42,8 +42,8 @@ Le routeur examine l'URL de la requête et détermine quelle route correspond. L
 Exemple de définition de route :
 
 ```php title="routes/app.php"
-$app->get('/users/:id', ['UserController', 'show']);
-$app->post('/api/login', ['AuthController', 'login']);
+$app->get('/users/:id', 'UserController::show');
+$app->post('/api/login', 'AuthController::login');
 ```
 
 :::tip
@@ -51,6 +51,27 @@ Ici :
 - La requête `GET /users/42` est associée à la méthode `show` du `UserController`.
 - La requête `POST /api/login` est associée à la méthode `login` du `AuthController`.
 :::
+
+Bow supporte aussi le **routage par attributs PHP 8**, qui permet de déclarer
+les routes directement sur la classe contrôleur sans fichier de routes
+centralisé :
+
+```php
+use Bow\Router\Attributes\{Controller, Get};
+
+#[Controller(prefix: '/api/users', middleware: ['auth'])]
+final class UserController
+{
+    #[Get('/:id', name: 'show', where: ['id' => '\d+'])]
+    public function show(int $id) { /* ... */ }
+}
+
+// Dans routes/app.php
+$app->register(UserController::class);
+```
+
+Voir [Routage > Routage par attributs](./routing) pour le détail des attributs
+disponibles.
 
 #### Association au contrôleur
 
@@ -63,12 +84,30 @@ Une fois la route détectée, le routeur :
 ### Une architecture modulaire
 
 :::tip
-Bow Framework repose sur une architecture modulaire. Chaque module est indépendant, possédant sa propre configuration et remplit un rôle spécifique. Cela rend l'application facile à gérer et à étendre. Le routeur est un exemple de cette approche modulaire. Un autre exemple est le module database, qui gère les connexions à la base de données.
+Bow Framework repose sur une architecture modulaire. Chaque module est
+indépendant, possède sa propre configuration et remplit un rôle spécifique.
+Cela rend l'application facile à gérer et à étendre. Le routeur en est un
+exemple ; le module Database, qui gère les connexions à la base de données,
+en est un autre.
 :::
+
+#### Le contrat : `Bow\Configuration\Configuration`
+
+Tous les modules suivent le **même contrat** : chacun expose une classe qui
+étend `Bow\Configuration\Configuration` et implémente deux méthodes :
+
+- `create(Loader $config)` — déclare les liaisons dans le container
+- `run()` — démarre le module (utile pour les ressources eager)
+
+Le Kernel (votre `app/Kernel.php`, qui étend `Bow\Configuration\Loader`)
+liste ces providers dans sa méthode `configurations()`. Au démarrage, le
+Kernel les instancie, charge les fichiers `config/*.php`, puis appelle
+`create()` puis `run()` sur chacun.
 
 #### Exemple : Le module Database
 
-Prenons le cas du module **Database**, qui gère les connexions à la base de données :
+Prenons le cas du module **Database**, qui gère les connexions à la base de
+données :
 
 **Fichier de configuration : `config/database.php`**
 
@@ -92,13 +131,35 @@ return [
 ];
 ```
 
-#### Classe `Bow\Database\DatabaseConfiguration::class`
+**Classe `Bow\Database\DatabaseConfiguration`**
 
-Cette classe est chargée de lire les paramètres du fichier `config/database.php` et d'établir une connexion à la base de données.
+Cette classe (qui étend `Bow\Configuration\Configuration`) lit `config/database.php`,
+configure les connexions PDO et expose `db` / `database` dans le container.
 
-#### Rôle du Kernel
+**Enregistrement dans le Kernel**
 
-Au démarrage, le Kernel charge le fichier `config/database.php` à l'aide de `DatabaseConfiguration` défini dans `app/Kernel.php` et initialise une connexion à la base de données, prête à être utilisée par d'autres composants.
+```php title="app/Kernel.php"
+namespace App;
+
+use Bow\Configuration\Loader;
+use Bow\Database\DatabaseConfiguration;
+
+class Kernel extends Loader
+{
+    public function configurations(): array
+    {
+        return [
+            DatabaseConfiguration::class,
+            // ... d'autres providers (Cache, Mail, Queue, etc.)
+        ];
+    }
+}
+```
+
+Au démarrage, le Kernel charge `config/database.php`, instancie
+`DatabaseConfiguration` puis appelle ses méthodes `create()` et `run()`. La
+connexion est alors prête à être utilisée par les contrôleurs, les modèles
+Barry et les autres composants.
 
 ### Visualisation avec un diagramme
 

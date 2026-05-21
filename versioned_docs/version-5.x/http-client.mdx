@@ -297,8 +297,9 @@ echo $response->getContent();
 
 ### `acceptJson`
 
-Configure le client pour envoyer et accepter des données au format JSON.
-Ajoute automatiquement l'en-tête `Content-Type: application/json`.
+Configure le client pour envoyer **et** accepter des données au format JSON.
+Ajoute automatiquement les en-têtes `Content-Type: application/json` et
+`Accept: application/json`.
 
 **Retourne :** L'instance du client pour un chaînage fluide
 
@@ -317,6 +318,50 @@ $response = $client
 
 // Les données seront automatiquement encodées en JSON
 $result = $response->toArray();
+```
+
+### `withJson`
+
+Configure le client pour **envoyer** des données au format JSON, sans imposer
+le format de la réponse. Ajoute uniquement l'en-tête `Content-Type: application/json`.
+
+Utilisez `withJson` lorsque l'API distante accepte du JSON en entrée mais
+renvoie un autre format (XML, HTML, texte brut). Utilisez `acceptJson` quand
+l'échange est JSON dans les deux sens.
+
+**Retourne :** L'instance du client pour un chaînage fluide
+
+**Exemple :**
+
+```php
+use Bow\Http\Client\HttpClient;
+
+$client = new HttpClient('https://api.example.com');
+$response = $client
+  ->withJson()
+  ->post('/webhook', ['event' => 'order.created', 'order_id' => 42]);
+```
+
+### `hasHeader`
+
+Vérifie si un en-tête spécifique (clé **et** valeur) a déjà été ajouté à la
+requête. Pratique pour éviter d'ajouter deux fois le même en-tête conditionnel.
+
+**Paramètres :**
+- `$key` : Nom de l'en-tête
+- `$value` : Valeur attendue
+
+**Retourne :** `bool`
+
+**Exemple :**
+
+```php
+$client = new HttpClient('https://api.example.com');
+$client->withHeaders(['X-Trace-Id' => 'abc-123']);
+
+if (!$client->hasHeader('X-Trace-Id', 'abc-123')) {
+    $client->withHeaders(['X-Trace-Id' => 'abc-123']);
+}
 ```
 
 ## Authentification
@@ -514,7 +559,16 @@ foreach ($users as $user) {
 public function getHeaders(): array
 ```
 
-Retourne les en-têtes HTTP de la réponse sous forme de tableau. Ce tableau contient des informations telles que le code de statut HTTP, le type de contenu, le temps d'exécution, etc.
+Retourne le tableau de métadonnées produit par `curl_getinfo()` pour la requête.
+Ce tableau **n'est pas** la liste brute des en-têtes HTTP de réponse : il
+contient des clés cURL telles que `http_code`, `content_type`, `total_time`,
+`connect_time`, `size_upload`, `size_download`, `download_content_length`, etc.
+
+:::note
+Si vous avez besoin d'un en-tête HTTP brut spécifique (par ex. `Location`,
+`X-Request-Id`), parsez-le via `CURLOPT_HEADERFUNCTION` ou utilisez l'option
+de configuration cURL adéquate côté serveur distant.
+:::
 
 #### `getCode` / `statusCode`
 
@@ -576,11 +630,11 @@ Le client HTTP fournit plusieurs méthodes pour analyser les performances des re
 
 | Méthode | Description | Retour |
 |---------|-------------|--------|
-| `getExecutionTime()` | Temps total d'exécution de la requête | `?int` (secondes) |
+| `getExecutionTime()` | Temps total d'exécution de la requête (clé cURL `total_time`) | `mixed` (généralement `?float`, secondes) |
 | `getConnexionTime()` | Temps d'établissement de la connexion | `?float` (secondes) |
-| `getUploadSize()` | Taille des données envoyées | `?int` (octets) |
+| `getUploadSize()` | Taille des données envoyées | `?float` (octets) |
 | `getUploadSpeed()` | Vitesse d'upload | `?float` (octets/sec) |
-| `getDownloadSize()` | Taille des données reçues | `?int` (octets) |
+| `getDownloadSize()` | Taille des données reçues | `?float` (octets) |
 | `getDownloadSpeed()` | Vitesse de download | `?float` (octets/sec) |
 
 **Exemple d'utilisation :**
@@ -608,14 +662,6 @@ if ($response->isFailed()) {
 ```
 
 ### Autres méthodes
-
-#### `getHeaders`
-
-```php
-public function getHeaders(): array
-```
-
-Retourne tous les en-têtes HTTP de la réponse sous forme de tableau.
 
 #### `getContentType`
 
