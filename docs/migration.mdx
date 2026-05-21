@@ -278,7 +278,9 @@ $this->alter('users', function (Table $table) {
 
 ### Modifier le type d'une colonne
 
-Utilisez les méthodes `change*` correspondantes:
+Chaque méthode `add*` du tableau ci-dessus a une jumelle `change*` qui modifie
+le type ou les attributs d'une colonne existante (`changeString`, `changeInteger`,
+`changeFloat`, `changeBoolean`, `changeEnum`, `changeJson`, etc.) :
 
 ```php
 $this->alter('users', function (Table $table) {
@@ -286,6 +288,9 @@ $this->alter('users', function (Table $table) {
   $table->changeInteger('status', ['default' => 0]);
 });
 ```
+
+Pour les cas non couverts par les helpers, la méthode générique
+`changeColumn($name, $type, $attr)` est disponible.
 
 ### Supprimer une colonne
 
@@ -332,6 +337,26 @@ $this->alter('users', function (Table $table) {
 });
 ```
 
+### Supprimer une contrainte (rollback)
+
+Pour défaire les contraintes — utile dans la méthode `rollback()` :
+
+```php
+$this->alter('posts', function (Table $table) {
+  $table->dropForeign('user_id');          // ou un tableau de colonnes
+  $table->dropIndex('idx_title');
+  $table->dropUnique('email');
+  $table->dropPrimary();
+});
+```
+
+| Méthode | Description |
+|---------|-------------|
+| `dropForeign($name)` | Supprime une clé étrangère (chaîne ou tableau) |
+| `dropIndex($name)` | Supprime un index |
+| `dropUnique($name)` | Supprime une contrainte UNIQUE |
+| `dropPrimary()` | Supprime la clé primaire |
+
 ## Exemple complet
 
 ```php
@@ -361,7 +386,7 @@ class Version20240101120000CreateBlogTables extends Migration
       $table->addString('title');
       $table->addString('slug', ['unique' => true]);
       $table->addText('content');
-      $table->addEnum('status', ['values' => ['draft', 'published', 'archived']]);
+      $table->addEnum('status', ['size' => ['draft', 'published', 'archived']]);
       $table->addBoolean('featured', ['default' => false]);
       $table->addTimestamps();
       $table->addSoftDelete();

@@ -17,7 +17,7 @@ Que vous ayez besoin d'envoyer des emails de bienvenue, des notifications d'acti
 
 ### Préparation du Modèle
 
-Pour commencer, votre modèle doit implémenter le trait `WithNotifier`. Ce trait ajoute toutes les méthodes nécessaires pour envoyer des notifications.
+Pour commencer, votre modèle doit utiliser le trait `WithNotifier`. Ce trait ajoute toutes les méthodes nécessaires pour envoyer des notifications.
 
 ```php
 use Bow\Notifier\WithNotifier;
@@ -222,6 +222,21 @@ $user->sendMessageLaterOn(
 
 ## Canaux de Notification
 
+Bow Framework livre cinq canaux par défaut. Chacun correspond à une méthode
+`to<Canal>()` que vous pouvez (ou non) implémenter dans votre notification :
+
+| Canal       | Clé         | Méthode à implémenter | Adaptateur livré |
+|-------------|-------------|-----------------------|------------------|
+| Email       | `mail`      | `toMail(Model)`       | `MailChannelAdapter` |
+| Base de données | `database` | `toDatabase(Model)` | `DatabaseChannelAdapter` |
+| SMS         | `sms`       | `toSms(Model)`        | `SmsChannelAdapter` |
+| Slack       | `slack`     | `toSlack(Model)`      | `SlackChannelAdapter` |
+| Telegram    | `telegram`  | `toTelegram(Model)`   | `TelegramChannelAdapter` |
+
+La méthode `channels(Model)` de votre notification décide quels canaux activer
+pour un contexte donné. Seuls les canaux retournés appellent leur méthode
+`to<Canal>()` ; les autres `to*` héritées du `Notifier` restent inutilisées.
+
 ### Email
 
 Le canal email est parfait pour les communications importantes. Exemple complet d'une notification par email :
@@ -294,23 +309,28 @@ Vous pouvez créer vos propres canaux personnalisés pour envoyer des notificati
 
 ### Création d'un Nouveau Canal
 
-Exemple de création d'un canal pour les notifications Log :
+Un canal personnalisé est une classe qui implémente
+`Bow\Notifier\Contracts\ChannelAdapterInterface` et expose une méthode
+`send(Model $context, Notifier $notifier): void`.
+
+Exemple de canal pour journaliser les notifications :
 
 ```php
 namespace App\Notifier\Channels;
 
-use Bow\Notifier\Contracts\ChannelInterface;
 use Bow\Database\Barry\Model;
+use Bow\Notifier\Contracts\ChannelAdapterInterface;
+use Bow\Notifier\Notifier;
 
-class LogChannel implements ChannelInterface
+class LogChannel implements ChannelAdapterInterface
 {
-  public function send(Model $context, Notifier $message): void
+  public function send(Model $context, Notifier $notifier): void
   {
-    if (!method_exists($message, 'toLog')) {
-      throw new \InvalidArgumentException('The message must have a toLog method.');
+    if (!method_exists($notifier, 'toLog')) {
+      throw new \InvalidArgumentException('The notifier must define a toLog method.');
     }
 
-    $log = $message->toLog($context);
+    $log = $notifier->toLog($context);
 
     logger()->log($log);
   }
@@ -354,8 +374,8 @@ Log::info('Envoi de notification', [
   'channels' => $notification->channels($context)
 ]);
 
-// Tester en environnement local
-config(['mail.default' => 'log']);
+// Tester en environnement local (le second argument écrit dans la config)
+config('mail.default', 'log');
 ```
 
 <SuggestionFeature />

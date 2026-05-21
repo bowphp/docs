@@ -48,13 +48,16 @@ La classe `Storage` expose la méthode statique `local` qui permet la manipulati
 ```php
 use Bow\Storage\Storage;
 
-Storage::local("public");
-// Ou
-Storage::local();
+Storage::local('public');     // disque nommé
+Storage::local();             // disque par défaut (clé `mount`)
+
+// `Storage::disk()` est un alias de `Storage::local()`
+Storage::disk('public');
 ```
 
 :::info Information
-Si la méthode `local` est appelée sans paramètre, elle utilisera par défaut la valeur de la clé `mount`.
+Si la méthode `local` (ou son alias `disk`) est appelée sans paramètre, elle
+utilisera par défaut la valeur de la clé `mount`.
 :::
 
 Vous pouvez aussi utiliser le helper `app_storage()` qui fonctionne exactement de la même manière :
@@ -124,7 +127,7 @@ $local_storage->put('app.js', $content );
 
 ### Ajouter du contenu au début ou à la fin d'un fichier
 
-Les méthodes `preprend` et `append` vous permettent d'ajouter respectivement du contenu au début ou à la fin d'un fichier :
+Les méthodes `prepend` et `append` vous permettent d'ajouter respectivement du contenu au début ou à la fin d'un fichier :
 
 ```php
 $local_storage = app_storage('public');
@@ -143,12 +146,35 @@ $local_storage = app_storage('public');
 $local_storage->delete('app.js');
 ```
 
-### Copier un fichier
+### Copier ou déplacer un fichier
 
 ```php
 $local_storage = app_storage('public');
 
 $local_storage->copy('app.txt', 'sous-dossier/app.txt');
+$local_storage->move('app.txt', 'archive/app.txt'); // copie + supprime la source
+```
+
+### Lister les fichiers et dossiers
+
+Pour énumérer le contenu d'un dossier :
+
+```php
+$local_storage = app_storage('public');
+
+$files = $local_storage->files('uploads');         // fichiers d'un dossier
+$subdirs = $local_storage->directories('uploads'); // sous-dossiers
+```
+
+### Stocker un fichier uploadé
+
+Pour persister un fichier provenant de `$request->file(...)` :
+
+```php
+$file = request()->file('avatar');
+
+$path = app_storage('public')->store($file, 'avatars');
+// path : chemin relatif du fichier stocké
 ```
 
 ### Créer un dossier
@@ -158,29 +184,26 @@ Vous pouvez créer un nouveau dossier à l'aide de la méthode `makeDirectory`:
 #### Prototype
 
 ```php
-$local_storage = app_storage('public');
-
-$local_storage->makeDirectory($dirname, $mode = 0777, $recursive = false);
+makeDirectory(string $dirname, int $mode = 0777): bool
 ```
 
-| Paramètre | Type |
-|------|-----|
-| path | `String` - le dossier à créer |
-| mode | `Int` - Le mode du dossier par défaut 777 |
-| recursive | `Boolean` - Permet de créer récursivement |
+| Paramètre | Type | Description |
+|-----------|------|-------------|
+| `dirname` | `string` | Le chemin du dossier à créer |
+| `mode`    | `int`    | Mode UNIX, par défaut `0777` |
+
+:::note Création récursive automatique
+Bow appelle `mkdir($dirname, $mode, true)` en interne — la création
+récursive est **toujours active**. Pas besoin d'un drapeau dédié pour
+créer une arborescence comme `chemin/vers/un/dossier`.
+:::
 
 ```php
 $local_storage = app_storage('public');
 
 $local_storage->makeDirectory('dossier');
-```
-
-:::tip Remarque
-Notez que vous pouvez changer le mode du dossier et choisir de le créer de manière récursive.
-:::
-
-```php
-$local_storage->makeDirectory('chemin/vers/un/dossier', 777, true);
+$local_storage->makeDirectory('chemin/vers/un/dossier'); // récursif
+$local_storage->makeDirectory('private', 0750);          // mode personnalisé
 ```
 
 ### Vérifier si un fichier existe

@@ -50,18 +50,16 @@ $app->get('/', function() {
 
 ### Utilisation
 
-Exemple d'utilisation (avec la classe `View`).
-Cette méthode utilise `parse`.
+Exemple d'utilisation avec la classe statique `View::parse` :
 
 ```php
-View::parse(view, data, status)
+View::parse(string $view, array $data = []): View
 ```
 
-| Paramètre | type | description|
-|-----------|------|------------|
-| `view`      | `String` | Le chemin de la vue sachant que le moteur se base sur le dossier des vues|
-| `data`      | `Array`, `Object` | Les données à passer à la vue|
-| `status`    | `Integer` | Le code http |
+| Paramètre | Type     | Description |
+|-----------|----------|-------------|
+| `$view`   | `string` | Le nom de la vue, sans extension, relatif au dossier des vues |
+| `$data`   | `array`  | Les données passées au template |
 
 ```php
 use Bow\View\View;
@@ -69,16 +67,20 @@ use Bow\View\View;
 echo View::parse('nom-de-la-vue-sans-extension');
 ```
 
-Pour passer des variables à la vue
+Pour passer des variables à la vue :
 
 ```php
 use Bow\View\View;
 
-echo View::parse('nom-de-la-vue-sans-extension', ['name' => 'bow'], 200);
+echo View::parse('nom-de-la-vue-sans-extension', ['name' => 'bow']);
 ```
 
 :::tip Helper
 Vous pouvez utiliser le helper `view` qui s'utilise de la même façon.
+
+Pour fixer un code de statut HTTP, utilisez plutôt
+`response()->render('vue', $data, $code)` (voir la documentation des
+[réponses HTTP](./http-response)). `View::parse()` ne prend pas de code.
 :::
 
 Avec la vue suivante :
@@ -187,7 +189,7 @@ Pour faire simple, voici un exemple:
 ```t
 %unless ($user->isAdmin())
   // do something else
-$endunless
+%endunless
 ```
 
 En plus des directives conditionnelles déjà discutées, les directives `%isset`, `%empty`, `%notempty` peuvent être utilisées comme raccourcis pratiques pour leurs fonctions PHP respectives :
@@ -203,10 +205,10 @@ En plus des directives conditionnelles déjà discutées, les directives `%isset
 
 %notempty($records)
   // $records is not "empty"...
-%notendempty
+%endnotempty
 ```
 
-> Vous pouvez ajouter `%esle` pour effectuer une action contraire
+> Vous pouvez ajouter `%else` pour effectuer une action contraire.
 
 ## Les directives `%loop` / `%for` / `%while`
 
@@ -548,23 +550,22 @@ Sortie après compilation:
 </form>
 ```
 
-### Ajouter vos directives de la configuration
+### Ajouter vos directives via la configuration
 
-Dans le cas ou vous utilisez la configuration Tintin pour Bow Framework.
-Changer le vos configuration dans le `ApplicationController::class` dans le dossier `app/Configurations`.
+Pour enregistrer vos directives au démarrage de Bow Framework, créez (ou
+modifiez) un provider dans `app/Configurations/` qui étend
+`Bow\Configuration\Configuration` :
 
-```php
+```php title="app/Configurations/ApplicationConfiguration.php"
 namespace App\Configurations;
 
+use Bow\Configuration\Configuration;
 use Bow\Configuration\Loader as Config;
 
 class ApplicationConfiguration extends Configuration
 {
   /**
    * Launch configuration
-   *
-   * @param Config $config
-   * @return void
    */
   public function create(Config $config): void
   {
@@ -574,8 +575,16 @@ class ApplicationConfiguration extends Configuration
       return "Super !";
     });
   }
+
+  public function run(): void
+  {
+    //
+  }
 }
 ```
+
+N'oubliez pas d'enregistrer ce provider dans `Kernel::configurations()` pour
+qu'il soit exécuté au boot.
 
 Maintenant la directive `%super` est disponible et vous pouvez l'utiliser.
 

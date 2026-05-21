@@ -162,7 +162,7 @@ class GetUserByIdQueryHandler implements QueryHandlerInterface
 {
   public function process(QueryInterface $query): mixed
   {
-    return User::find($query->userId);
+    return User::retrieve($query->userId);
   }
 }
 ```
@@ -271,12 +271,12 @@ public function run(): void
 ```php title="routes/app.php"
 // Commands (POST, PUT, DELETE)
 $app->post('/users', 'UserController::store');
-$app->put('/users/{id}', 'UserController::update');
-$app->delete('/users/{id}', 'UserController::destroy');
+$app->put('/users/:id', 'UserController::update');
+$app->delete('/users/:id', 'UserController::destroy');
 
 // Queries (GET)
 $app->get('/users', 'UserController::index');
-$app->get('/users/{id}', 'UserController::show');
+$app->get('/users/:id', 'UserController::show');
 ```
 
 ## Structure recommandée

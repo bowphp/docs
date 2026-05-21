@@ -10,7 +10,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 Bow fournit une API liée à la construction de requêtes. La méthode `table` permet de construire une requête SQL en se basant sur le nom de la table et retourne une instance de [`Bow\Database\QueryBuilder::class`](https://bowphp.com/api/master/Bow/Database/QueryBuilder.html).
 
 ```php
-use Bow\Database\Database
+use Bow\Database\Database;
 
 $builder = Database::table('users');
 // => Instance \Bow\Database\QueryBuilder::class
@@ -87,11 +87,29 @@ Vous pouvez enchainer la restriction en ajoutant un `or` dans votre requête. La
 $users = app_db_table('users')->where('id', 1)->orWhere('name', 'Papac')->get();
 ```
 
-Vous pouvez voir le result de la construction de la requête avec la méthode `toSql`.
+Vous pouvez voir le résultat de la construction de la requête avec la méthode `toSql`.
 
 ```php
-$sql = app_db_table('users')->where('id', 1)->orWhere('id', 1)->toSql();
-// => select * from `users` where id = 1 or id = 3;
+$sql = app_db_table('users')->where('id', 1)->orWhere('id', 3)->toSql();
+// => select * from users where id = ? or id = ?
+```
+
+:::note Placeholders
+`toSql()` retourne la requête avec des **placeholders `?`**, pas les valeurs
+littérales — la requête est exécutée comme une *prepared statement* avec
+binding des paramètres, ce qui protège des injections SQL.
+:::
+
+#### whereRaw / orWhereRaw
+
+Pour des conditions que le builder n'exprime pas nativement, utilisez les
+variantes brutes avec binding paramétré :
+
+```php
+$users = app_db_table('users')
+  ->whereRaw('LOWER(name) = ?', ['papac'])
+  ->orWhereRaw('created_at >= NOW() - INTERVAL 7 DAY')
+  ->get();
 ```
 
 ### Clauses additionnelles
@@ -136,6 +154,35 @@ La méthode `whereNotBetween` vérifie que la valeur d'une colonne se situe en d
 
 ```php
 $users = app_db_table('users')->whereNotBetween('votes', [1, 100])->get();
+```
+
+### Jointures
+
+```php
+// INNER JOIN
+$rows = app_db_table('orders')
+  ->join('users', 'orders.user_id', '=', 'users.id')
+  ->get();
+
+// LEFT JOIN
+$rows = app_db_table('orders')
+  ->leftJoin('users', 'orders.user_id', '=', 'users.id')
+  ->get();
+
+// RIGHT JOIN
+$rows = app_db_table('orders')
+  ->rightJoin('users', 'orders.user_id', '=', 'users.id')
+  ->get();
+```
+
+Pour les jointures à plusieurs conditions, chaînez `andOn` / `orOn` après
+un `join` :
+
+```php
+$rows = app_db_table('orders')
+  ->join('users', 'orders.user_id', '=', 'users.id')
+  ->andOn('orders.team_id', '=', 'users.team_id')
+  ->get();
 ```
 
 ### Ordonner, Grouper, et limiter
@@ -217,7 +264,27 @@ app_db_table('users')->insert(
 );
 ```
 
-Vous pouvez même insérer plusieurs enregistrements dans la table avec un seul appel à insérer en transmettant un tableau de tableaux. Chaque tableau représente une ligne à insérer dans la table:
+Vous pouvez insérer plusieurs enregistrements en un seul appel en passant
+un tableau de tableaux :
+
+```php
+app_db_table('users')->insert([
+  ['email' => 'a@example.com', 'age' => 27],
+  ['email' => 'b@example.com', 'age' => 31],
+  ['email' => 'c@example.com', 'age' => 24],
+]);
+```
+
+#### Récupérer le dernier identifiant inséré
+
+Pour insérer et récupérer la valeur auto-incrémentée du nouvel enregistrement
+en une seule opération, utilisez `insertAndGetLastId` :
+
+```php
+$id = app_db_table('users')->insertAndGetLastId(
+  ['email' => 'exemple@gmail.com', 'age' => 27]
+);
+```
 
 ### Mise à jour
 
@@ -247,6 +314,47 @@ Si vous souhaitez vider la table entière, ce qui supprimera toutes les lignes e
 
 ```php
 app_db_table('pets')->truncate();
+```
+
+### Incrémenter / décrémenter
+
+Les méthodes `increment` et `decrement` modifient atomiquement la valeur
+d'une colonne numérique sans charger la ligne d'abord. Le pas (`$step`) est
+optionnel et vaut `1` par défaut :
+
+```php
+// votes = votes + 1
+app_db_table('users')->where('id', 1)->increment('votes');
+
+// stock = stock - 3
+app_db_table('products')->where('id', 42)->decrement('stock', 3);
+```
+
+### DISTINCT
+
+Pour retourner uniquement les valeurs distinctes d'une colonne :
+
+```php
+$categories = app_db_table('products')->distinct('category')->get();
+```
+
+### Verrouillage de lignes
+
+Dans une transaction, vous pouvez ajouter un verrou pour empêcher les
+modifications concurrentes :
+
+```php
+use Bow\Database\Database;
+
+Database::transaction(function () {
+  // Verrou exclusif (SELECT ... FOR UPDATE)
+  $user = app_db_table('users')->where('id', 1)->lockForUpdate()->first();
+
+  // Verrou partagé (SELECT ... LOCK IN SHARE MODE)
+  $order = app_db_table('orders')->where('id', 42)->sharedLock()->first();
+
+  // ... opérations sur les lignes verrouillées
+});
 ```
 
 <SuggestionFeature />

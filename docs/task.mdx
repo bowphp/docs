@@ -48,10 +48,10 @@ class SendWelcomeEmail extends QueueTask
    */
   public function process(): void
   {
-    // Envoyer l'email de bienvenue
-    Mail::to($this->email)
-      ->subject("Bienvenue, {$this->name} !")
-      ->send("emails.welcome", ["name" => $this->name]);
+    Mail::send("emails.welcome", ["name" => $this->name], function (Envelop $envelop) {
+      $envelop->to($this->email)
+              ->subject("Bienvenue, {$this->name} !");
+    });
   }
 }
 ```
@@ -147,18 +147,20 @@ class Version_CreateQueuesTable extends Migration
   public function up(): void
   {
     $this->create("queues", function (Table $table) {
-      $table->uuid("id")->primary();
-      $table->string("queue");
-      $table->longText("payload");
-      $table->integer("attempts")->default(0);
-      $table->integer("delay")->default(0);
-      $table->enum("status", ["pending", "processing", "completed", "failed"])
-        ->default("pending");
-      $table->timestamp("available_at");
-      $table->timestamps();
-      
-      $table->index("queue");
-      $table->index("status");
+      $table->addUuidPrimary("id");
+      $table->addString("queue");
+      $table->addLongtext("payload");
+      $table->addInteger("attempts", ["default" => 0]);
+      $table->addInteger("delay", ["default" => 0]);
+      $table->addEnum("status", [
+        "size"    => ["pending", "processing", "completed", "failed"],
+        "default" => "pending",
+      ]);
+      $table->addTimestamp("available_at");
+      $table->addTimestamps();
+
+      $table->addIndex("queue");
+      $table->addIndex("status");
     });
   }
 
@@ -303,9 +305,9 @@ class ProcessDataTask extends QueueTask
     logger()->error("Échec de ProcessDataTask: " . $e->getMessage());
     
     // Notifier l'administrateur
-    Mail::to("admin@example.com")
-      ->subject("Erreur de tâche")
-      ->send("emails.task-error", ["error" => $e]);
+    Mail::send("emails.task-error", ["error" => $e], function (Envelop $envelop) {
+      $envelop->to("admin@example.com")->subject("Erreur de tâche");
+    });
   }
 }
 ```
@@ -332,18 +334,28 @@ public function process(): void
 ### Commande de base
 
 ```bash
-# Traiter toutes les queues
-php bow worker:run
+# Traiter la queue par défaut sur la connexion par défaut
+php bow run:worker
 
 # Traiter une queue spécifique
-php bow worker:run --queue=orders
+php bow run:worker --queue=orders
 
-# Spécifier une connexion
-php bow worker:run --connection=redis
+# Spécifier une connexion (argument positionnel, pas une option)
+php bow run:worker redis
 
-# Limiter le nombre de tâches
-php bow worker:run --once
+# Combiner connexion + options
+php bow run:worker beanstalkd --queue=high --tries=5 --sleep=10
 ```
+
+Options disponibles :
+
+| Option     | Défaut    | Description |
+|------------|-----------|-------------|
+| `--queue`  | `default` | Nom de la queue à consommer |
+| `--tries`  | `3`       | Nombre maximum de tentatives par job |
+| `--memory` | `126`     | Limite mémoire en Mo |
+| `--sleep`  | `3`       | Secondes à dormir quand la queue est vide |
+| `--timout` | `3`       | Timeout par job (orthographe historique du flag) |
 
 ### En production avec Supervisor
 
@@ -352,7 +364,7 @@ Créez un fichier de configuration Supervisor :
 ```ini title="/etc/supervisor/conf.d/bow-worker.conf"
 [program:bow-worker]
 process_name=%(program_name)s_%(process_num)02d
-command=php /var/www/html/bow worker:run --queue=default
+command=php /var/www/html/bow run:worker --queue=default
 autostart=true
 autorestart=true
 stopasgroup=true
@@ -403,7 +415,7 @@ class GenerateReportTask extends QueueTask
 
   public function process(): void
   {
-    $report = Report::findOrFail($this->reportId);
+    $report = Report::retrieveOrFail($this->reportId);
     
     $generator = new ReportGenerator();
     $filePath = $generator->generate($report, $this->format);
@@ -423,7 +435,7 @@ class GenerateReportTask extends QueueTask
 
   public function onException(Throwable $e): void
   {
-    $report = Report::find($this->reportId);
+    $report = Report::retrieve($this->reportId);
     
     if ($report) {
       $report->update([
@@ -484,8 +496,7 @@ public function schedules(Scheduler $schedule): void
 
   // Générer les rapports quotidiens
   $schedule->task(App\Tasks\DailyReportTask::class)
-    ->daily()
-    ->at("06:00")
+    ->dailyAt("06:00")
     ->description("Générer les rapports quotidiens");
 }
 ```

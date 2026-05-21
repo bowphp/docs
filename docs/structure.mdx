@@ -92,7 +92,7 @@ use Bow\Database\Barry\Model;
 
 class User extends Model
 {
-  protected ?string $table = "users";
+  protected string $table = "users";
 }
 ```
 
@@ -119,12 +119,14 @@ Configure le démarrage de l'application :
 ```php title="app/Kernel.php"
 namespace App;
 
-class Kernel extends \Bow\Application\Kernel
+use Bow\Configuration\Loader;
+
+class Kernel extends Loader
 {
   public function configurations(): array
   {
     return [
-      // Liste des configurations à charger
+      // Liste des providers à charger
       \Bow\Database\DatabaseConfiguration::class,
       \Bow\Mail\MailConfiguration::class,
     ];
@@ -214,7 +216,7 @@ Variables d'environnement sensibles (non versionnées) :
   "APP_NAME": "Mon Application",
   "APP_ENV": "development",
   "APP_DEBUG": true,
-  "APP_URL": "http://localhost:8000",
+  "APP_URL": "http://localhost:8080",
   "DB_CONNECTION": "mysql",
   "DB_HOST": "127.0.0.1",
   "DB_DATABASE": "bow_app",
