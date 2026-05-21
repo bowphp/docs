@@ -49,11 +49,24 @@ Bow Framework propose un large éventail de règles de validation pour couvrir l
 |-------|-------------|
 | `required` | Le champ est obligatoire |
 | `required_if:field1,field2` | Le champ est obligatoire si les champs spécifiés existent |
+| `nullable` | Le champ peut être null ou absent (court-circuite les règles suivantes) |
+| `confirmed` | Le champ doit être identique au champ `<nom>_confirmation` |
+| `different:field` | Le champ doit être différent d'un autre champ |
+| `same:value` | Le champ doit être identique à la valeur spécifiée |
+| `in:val1,val2,...` | La valeur doit faire partie de la liste donnée |
 | `email` | Le champ doit être une adresse email valide |
 | `min:value` | La longueur minimale du champ |
 | `max:value` | La longueur maximale du champ |
 | `size:value` | La longueur exacte du champ |
-| `same:value` | Le champ doit être identique à la valeur spécifiée |
+| `between:min,max` | Valeur (numérique) ou longueur (chaîne) entre `min` et `max` inclus |
+
+:::note `nullable` combiné avec `required`
+Par défaut, `nullable` interrompt l'exécution des règles suivantes dès qu'il
+matche. **Exception** : si `required` figure aussi dans la chaîne, `required`
+s'exécute quand même. Cela permet d'écrire `nullable|required` pour signifier
+« doit être présent même si vide » et garder la sémantique attendue par les
+utilisateurs.
+:::
 
 ### Règles de type
 
@@ -64,6 +77,9 @@ Bow Framework propose un large éventail de règles de validation pour couvrir l
 | `number` | Le champ doit être un nombre |
 | `int` | Le champ doit être un entier |
 | `float` | Le champ doit être un nombre décimal |
+| `boolean` / `bool` | Accepte `true`, `false`, `0`, `1`, `'0'`, `'1'`, `'true'`, `'false'` |
+| `json` | Le champ doit être une chaîne JSON valide |
+| `uuid` | Le champ doit être un UUID canonique (versions 1 à 5) |
 
 ### Règles de format
 
@@ -74,6 +90,10 @@ Bow Framework propose un large éventail de règles de validation pour couvrir l
 | `regex:pattern` | Le champ doit correspondre au pattern regex |
 | `lower` | Uniquement des lettres minuscules |
 | `upper` | Uniquement des lettres majuscules |
+| `url` | Le champ doit être une URL bien formée (`filter_var FILTER_VALIDATE_URL`) |
+| `ip` | Le champ doit être une adresse IPv4 ou IPv6 |
+| `ip:v4` | Le champ doit être une adresse IPv4 uniquement |
+| `ip:v6` | Le champ doit être une adresse IPv6 uniquement |
 
 ### Règles de base de données
 

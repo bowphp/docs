@@ -46,32 +46,29 @@ class Kernel extends ApplicationLoader
    */
   public function schedules(Scheduler $schedule): void
   {
-  // Planifier une commande console Bow
-  $schedule->command('cache:clear')
-    ->daily()
-    ->at('02:00')
-    ->description('Nettoyer le cache de l\'application');
+    // Planifier une commande console Bow
+    $schedule->command('cache:clear')
+      ->dailyAt('02:00')
+      ->description('Nettoyer le cache de l\'application');
 
-  // Planifier une commande shell
-  $schedule->exec('mysqldump -u root mydb > /backups/db.sql')
-    ->daily()
-    ->at('03:00')
-    ->description('Sauvegarder la base de données')
-    ->runInBackground();
+    // Planifier une commande shell
+    $schedule->exec('mysqldump -u root mydb > /backups/db.sql')
+      ->dailyAt('03:00')
+      ->description('Sauvegarder la base de données')
+      ->runInBackground();
 
-  // Planifier une closure
-  $schedule->call(function () {
-    logger('Tâche de nettoyage exécutée...');
-  })
-    ->hourly()
-    ->description('Tâche de nettoyage');
+    // Planifier une closure
+    $schedule->call(function () {
+      logger('Tâche de nettoyage exécutée...');
+    })
+      ->hourly()
+      ->description('Tâche de nettoyage');
 
-  // Planifier un QueueTask
-  $schedule->task(App\Tasks\SendWeeklyReportTask::class)
-    ->weekly()
-    ->sundays()
-    ->at('10:00')
-    ->description('Envoyer les rapports hebdomadaires');
+    // Planifier un QueueTask le dimanche à 10h00
+    // (1 = lundi … 7 = dimanche)
+    $schedule->task(App\Tasks\SendWeeklyReportTask::class)
+      ->weeklyOn(7, '10:00')
+      ->description('Envoyer les rapports hebdomadaires');
   }
 
   // ... autres méthodes du Kernel
@@ -95,8 +92,7 @@ $schedule->command('email:send', ['--to' => 'admin@example.com'])->hourly();
 
 // Commande avec description
 $schedule->command('cache:clear')
-  ->daily()
-  ->at('02:00')
+  ->dailyAt('02:00')
   ->description('Vider le cache quotidiennement');
 ```
 
@@ -136,7 +132,7 @@ La méthode `exec()` permet d'exécuter des commandes shell/bash :
 
 ```php
 // Commande simple
-$schedule->exec('rm -rf /tmp/cache/*')->daily()->at('04:00');
+$schedule->exec('rm -rf /tmp/cache/*')->dailyAt('04:00');
 
 // Avec paramètres (automatiquement échappés)
 $schedule->exec('tar -czf backup.tar.gz', ['/var/www/files'])->weekly();
@@ -212,15 +208,16 @@ Le planificateur propose de nombreuses méthodes pour définir la fréquence d'e
 
 ### Heure spécifique
 
-```php
-// Définir une heure spécifique
-$schedule->command('report:generate')
-  ->daily()
-  ->at('09:00');
+Pour fixer l'heure d'une exécution récurrente, utilisez la variante `*At`
+correspondante à la fréquence — il n'existe **pas** de méthode `at()`
+chaînable autonome.
 
-// Avec dailyAt
-$schedule->command('report:generate')
-  ->dailyAt('09:00');
+```php
+$schedule->command('report:generate')->dailyAt('09:00');
+$schedule->command('report:generate')->hourlyAt(15);          // chaque heure à hh:15
+$schedule->command('report:generate')->weeklyOn(1, '08:00');   // lundi 8h
+$schedule->command('report:generate')->monthlyOn(15, '15:00'); // le 15 à 15h
+$schedule->command('report:generate')->yearlyOn(6, 1, '17:00'); // 1er juin 17h
 ```
 
 ### Expression cron personnalisée
@@ -324,8 +321,7 @@ Définissez un fuseau horaire spécifique pour la planification :
 
 ```php
 $schedule->command('report:generate')
-  ->daily()
-  ->at('09:00')
+  ->dailyAt('09:00')
   ->timezone('Europe/Paris');
 ```
 
@@ -375,10 +371,10 @@ php bow schedule:next
 
 ### Tester une tâche
 
-Exécute manuellement une tâche par son index (basé sur 0) :
+Exécute manuellement une tâche planifiée par le nom complet de sa classe :
 
 ```bash
-php bow schedule:test 0
+php bow schedule:test App\\Tasks\\SendWeeklyReportTask
 ```
 
 ## Configuration en production
@@ -458,18 +454,15 @@ class Kernel extends ApplicationLoader
 {
   public function schedules(Scheduler $schedule): void
   {
-  // Sauvegarde quotidienne de la base de données
+  // Sauvegarde quotidienne de la base de données (1h00)
   $schedule->exec('mysqldump mydb > /backups/daily.sql')
-    ->daily()
-    ->at('01:00')
+    ->dailyAt('01:00')
     ->description('Sauvegarde quotidienne de la base de données')
     ->runInBackground();
 
-  // Vider le cache chaque dimanche
+  // Vider le cache chaque dimanche à 2h00 (1 = lundi, 7 = dimanche)
   $schedule->command('cache:clear')
-    ->weekly()
-    ->sundays()
-    ->at('02:00')
+    ->weeklyOn(7, '02:00')
     ->description('Nettoyage hebdomadaire du cache');
 
   // Traiter les rapports en attente chaque heure
@@ -482,20 +475,18 @@ class Kernel extends ApplicationLoader
   $schedule->call(function () {
     $health = \App\Services\HealthChecker::check();
     if (!$health->isHealthy()) {
-    \App\Services\AlertService::notify($health);
+      \App\Services\AlertService::notify($health);
     }
   })
     ->everyFiveMinutes()
     ->description('Vérification de l\'état du système');
 
-  // Envoyer les rapports hebdomadaires (seulement en production)
+  // Envoyer les rapports hebdomadaires le vendredi 17h00 (seulement en production)
   $schedule->task(\App\Tasks\SendWeeklyReportTask::class)
-    ->weekly()
-    ->fridays()
-    ->at('17:00')
+    ->weeklyOn(5, '17:00')
     ->timezone('Europe/Paris')
     ->when(function () {
-    return app()->environment('production');
+      return app()->environment('production');
     })
     ->description('Envoi des rapports hebdomadaires');
   }

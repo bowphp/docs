@@ -16,77 +16,111 @@ La classe principale pour utiliser l'API de test est `TestCase`, qui étend la c
 ### **Méthodes de la classe `TestCase`**
 
 :::tip Configuration
-Le `base_url` des appels HTTP est la valeur `APP_URL`, mais vous pouvez aussi la spécifier manuellement avec la propriété `url` dans la classe du test unitaire.
+L'URL de base des appels HTTP provient, dans cet ordre :
+1. La propriété `protected ?string $url` du test (si définie).
+2. La variable d'environnement `APP_URL`.
+3. Le fallback `http://127.0.0.1:8080` (port par défaut de `php bow run:server`).
+
+Pour personnaliser la résolution, surchargez la méthode protégée
+`getBaseUrl(): string` dans votre classe de test.
 :::
 
 #### **1. `attach(array $attach)`**
-Permet d'ajouter des pièces jointes (fichiers ou données) à vos requêtes.
 
-**Exemple d'utilisation** :
+Ajoute des fichiers / champs multipart à la **prochaine** requête. Les pièces
+jointes sont consommées après l'appel et ne fuient pas vers les requêtes
+suivantes du même test.
 
 ```php
 $test->attach([
   'file' => new \CURLFile('/path/to/file.jpg')
-]);
+])->post('/upload');
 ```
 
 #### **2. `withHeaders(array $headers)`**
-Permet de spécifier des en-têtes supplémentaires pour toutes les requêtes suivantes.
+
+Remplace les en-têtes appliqués à **toutes** les requêtes ultérieures du test.
 
 ```php
 $test->withHeaders([
   'Authorization' => 'Bearer token',
-  'Content-Type' => 'application/json'
+  'Content-Type'  => 'application/json',
 ]);
 ```
 
 #### **3. `withHeader(string $key, string $value)`**
-Ajoute un en-tête unique à vos requêtes.
+
+Ajoute (ou remplace) un seul en-tête.
 
 ```php
 $test->withHeader('X-Custom-Header', 'custom_value');
 ```
 
 #### **4. `get(string $url, array $param = [])`**
-Effectue une requête GET. Vous pouvez ajouter des paramètres supplémentaires à la requête.
+
+Requête GET. Les paramètres sont ajoutés en query string.
 
 ```php
 $response = $test->get('/api/users', ['page' => 1]);
 ```
 
 #### **5. `post(string $url, array $param = [])`**
-Effectue une requête POST. Vous pouvez ajouter des données et des fichiers en utilisant la méthode `attach()`.
+
+Requête POST. Combinez avec `attach()` pour envoyer des fichiers.
 
 ```php
 $response = $test->post('/api/users', ['name' => 'John Doe']);
 ```
 
 #### **6. `put(string $url, array $param = [])`**
-Effectue une requête PUT.
+
+Requête PUT.
 
 ```php
 $response = $test->put('/api/users/1', ['name' => 'John Updated']);
 ```
 
 #### **7. `delete(string $url, array $param = [])`**
-Effectue une requête DELETE. Cette méthode utilise `PUT` en interne avec le paramètre `_method` pour simuler une requête DELETE.
+
+Vraie requête HTTP DELETE (plus de hack `_method` POST).
 
 ```php
 $response = $test->delete('/api/users/1');
 ```
 
 #### **8. `patch(string $url, array $param = [])`**
-Effectue une requête PATCH. Comme pour `delete()`, cette méthode utilise `PUT` en interne.
+
+Vraie requête HTTP PATCH.
 
 ```php
 $response = $test->patch('/api/users/1', ['name' => 'John Modified']);
 ```
 
-#### **9. `visit(string $method, string $url, array $params = [])`**
-Effectue une requête HTTP générique en fonction de la méthode spécifiée (`get`, `post`, `put`, etc.).
+#### **9. `head(string $url, array $param = [])`**
+
+Requête HEAD : récupère uniquement les en-têtes, sans corps. Utile pour
+vérifier l'existence d'une ressource ou ses métadonnées.
 
 ```php
-$response = $test->visit('get', '/api/users');
+$response = $test->head('/api/users/1');
+$response->assertStatus(200);
+```
+
+#### **10. `options(string $url)`**
+
+Requête OPTIONS — généralement utilisée pour le preflight CORS.
+
+```php
+$response = $test->options('/api/users');
+```
+
+#### **11. `visit(string $method, string $url, array $params = [])`**
+
+Dispatcher générique selon le verbe HTTP. Accepte
+`get`, `post`, `put`, `patch`, `delete`, `head`, `options`.
+
+```php
+$response = $test->visit('patch', '/api/users/1', ['name' => 'X']);
 ```
 
 ### **Exemple complet d'utilisation**
