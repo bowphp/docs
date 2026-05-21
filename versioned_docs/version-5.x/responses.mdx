@@ -103,14 +103,14 @@ Dans les applications REST (API REST/RESTful), les informations sont généralem
 ### Prototype de la méthode `json`
 
 ```php
-$response->json($data, $code, $headers);
+json(mixed $data, int $code = 200, array $headers = []): string
 ```
 
 | Paramètre | Type | Description |
-|----------|------|------|
-| $data  | **Array**, `stdClass`, `Iterable`, `JsonSerializable` | Les données à sérialiser |
-| $code  | **Int** | Le code du statut HTTP |
-| $headers  | **Array** | Les en-têtes à ajouter à la réponse |
+|-----------|------|-------------|
+| `$data`    | `mixed` (`array`, `stdClass`, `Iterable`, `JsonSerializable`...) | Les données à sérialiser |
+| `$code`    | `int`   | Le code de statut HTTP (défaut `200`) |
+| `$headers` | `array` | Les en-têtes à ajouter à la réponse |
 
 ### Exemple d'envoi de JSON
 
@@ -145,15 +145,15 @@ Souvent, vous pouvez utiliser une instance de `Bow\Http\Response` pour faire le 
 ### Prototype de la méthode `render`
 
 ```php
-$response->render($name, $data, $code, $headers);
+render(string $template, array $data = [], int $code = 200, array $headers = []): string
 ```
 
-| Paramètre | Type | Description |
-|----------|------|
-| $name | **String** | Le nom d'une vue à rendre |
-| $data | **Array** | Les données à envoyer à la vue |
-| $code | **Int** | Le code du statut HTTP |
-| $headers | **Array** | Les en-têtes à ajouter à la réponse |
+| Paramètre   | Type     | Description |
+|-------------|----------|-------------|
+| `$template` | `string` | Le nom de la vue à rendre |
+| `$data`     | `array`  | Les données à envoyer à la vue |
+| `$code`     | `int`    | Le code de statut HTTP (défaut `200`) |
+| `$headers`  | `array`  | Les en-têtes à ajouter à la réponse |
 
 ### Exemple d'envoi de vue
 
@@ -174,21 +174,29 @@ Souvent, vous serez amené à mettre en place des systèmes de téléchargement 
 ### Prototype de la méthode `download`
 
 ```php
-$response->download($file, $filename = null, $headers, $disposition = 'attachment');
+download(string $file, ?string $filename = null, array $headers = []): string
 ```
 
 | Paramètre | Type | Description |
-|----------|------|------|
-| $file  | **String** | Le chemin absolu du fichier |
-| $filename  | **String** | Le nom du fichier (par défaut **null**) |
-| $headers  | **Array** | Les en-têtes à ajouter à la réponse |
-| $disposition  | **String** | Indiquant si le contenu devrait être affiché en ligne dans le navigateur (page Web) ou en pièce jointe téléchargée et enregistrée localement |
+|-----------|------|-------------|
+| `$file`     | `string`  | Le chemin absolu du fichier |
+| `$filename` | `?string` | Le nom proposé au téléchargement (par défaut le basename du fichier) |
+| `$headers`  | `array`   | En-têtes supplémentaires à ajouter à la réponse |
+
+:::note `Content-Disposition`
+Pour afficher le fichier en ligne dans le navigateur au lieu de le télécharger,
+passez la clé spéciale `'disposition'` dans `$headers` :
+
+```php
+return $response->download($file, 'image.png', [
+  'disposition' => 'inline',   // ou 'attachment' (défaut)
+]);
+```
 
 Plus d'informations sur l'en-tête [`Content-Disposition`](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers/Content-Disposition).
+:::
 
 ### Exemple de téléchargement
-
-Exemple :
 
 ```php
 $file = '/path/to/file.png';
@@ -196,7 +204,7 @@ $file = '/path/to/file.png';
 return $response->download($file, 'image.png');
 ```
 
-Et vous pouvez utiliser le helper `response_download`.
+Vous pouvez aussi utiliser le helper `response_download($file, $filename, $headers)`.
 
 ## Redirection
 

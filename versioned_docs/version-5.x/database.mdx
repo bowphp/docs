@@ -98,18 +98,32 @@ Voici comment récupérer un enregistrement spécifique de la table `pets` en ut
 ```php
 use Bow\Database\Database;
 
-$pet = Database::select('select * from `pets` where id = :id', ['id' => 1]);
+$pets = Database::select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
 Via helper `app_db_select`:
 
 ```php
-$pet = app_db_select('select * from `pets` where id = :id', ['id' => 1]);
+$pets = app_db_select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
 :::info
 La méthode `app_db_select` retourne un `array` d'objets `stdClass` ou un tableau vide s'il n'y a aucun résultat. Chaque élément du tableau est un objet contenant les colonnes de la table. Pour plus d'informations sur `stdClass`, consultez [la documentation PHP](http://php.net/manual/fr/language.types.object.php).
 :::
+
+### Récupérer une seule ligne
+
+Quand vous attendez exactement un résultat, `selectOne` retourne un seul
+objet (ou `null`) plutôt qu'un tableau :
+
+```php
+use Bow\Database\Database;
+
+$pet = Database::selectOne('select * from `pets` where id = :id', ['id' => 1]);
+
+// Via helper
+$pet = app_db_select_one('select * from `pets` where id = :id', ['id' => 1]);
+```
 
 ### Exécution de requêtes INSERT
 
@@ -259,76 +273,83 @@ app_db_statement('alter table `pets` add `owner` varchar(80) default null;');
 
 ## Transactions de base de données
 
-Utilisez la méthode `startTransaction` de la classe `Database` pour exécuter un ensemble d'opérations dans une transaction.
+Bow offre deux styles de transactions : **automatique** (callback) et
+**manuelle** (begin / commit / rollback).
 
-Lorsque vous passez une fonction de rappel (`Closure`), la transaction fonctionne automatiquement:
-- Si une exception est levée, la transaction est automatiquement annulée (rollback)
-- Si tout se passe bien, la transaction est automatiquement validée (commit)
+### Transaction automatique avec `Database::transaction()`
 
-Vous n'avez pas à gérer manuellement l'annulation ou la validation:
+Passez votre logique dans une closure à `Database::transaction()` : si une
+exception est levée, la transaction est annulée (rollback) ; sinon elle est
+validée (commit). C'est l'approche recommandée pour la plupart des cas.
 
 ```php
 use Bow\Database\Database;
 
-Database::startTransaction(function () {
+$result = Database::transaction(function () {
   Database::update('update users set votes = :votes', ['votes' => 1]);
-
   Database::delete('delete from posts');
+
+  return 'ok'; // valeur renvoyée par transaction()
 });
 ```
 
-Via le helper `app_db_transaction`:
+:::warning Ne pas confondre
+`Database::startTransaction()` n'accepte **pas** de callback : c'est la
+méthode bas-niveau qui démarre simplement la transaction. Pour le style
+callback, utilisez `Database::transaction($callback)`.
+:::
 
-```php
-app_db_transaction(function () {
-  update('update users set votes = :votes', ['votes' => 1]);
+### Transaction manuelle
 
-  delete('delete from posts');
-});
-```
-
-### Gestion manuelle des transactions
-
-Vous pouvez également gérer manuellement les transactions pour un contrôle plus fin.
-
-Pour démarrer une transaction:
+Pour un contrôle plus fin, vous pouvez gérer le cycle vous-même :
 
 ```php
 use Bow\Database\Database;
 
 Database::startTransaction();
-// Ou
-app_db_transaction();
+
+try {
+  Database::update('update users set votes = :votes', ['votes' => 1]);
+  Database::delete('delete from posts');
+
+  Database::commit();
+} catch (\Throwable $e) {
+  Database::rollback();
+  throw $e;
+}
 ```
 
-Vous pouvez annuler la transaction avec la méthode:
+Les helpers équivalents :
+
+```php
+app_db_transaction();           // démarre une transaction (alias de startTransaction)
+app_db_commit();                // valide
+app_db_rollback();              // annule
+app_db_transaction_started();   // bool : transaction en cours ?
+```
+
+:::note Helpers et callbacks
+Les helpers `app_db_transaction()`, `app_db_commit()`, `app_db_rollback()`
+n'acceptent pas d'arguments. Pour le style callback, appelez directement
+`Database::transaction($callback)`.
+:::
+
+## Dernier identifiant inséré
+
+Après une insertion, vous pouvez récupérer la dernière valeur auto-incrémentée :
 
 ```php
 use Bow\Database\Database;
 
-Database::rollback();
-// Ou
-app_db_rollback();
-```
+Database::insert('insert into `pets` (name, color) values (:name, :color)', [
+  'name'  => 'Médor',
+  'color' => 'Black',
+]);
 
-Vous pouvez valider la transaction avec la méthode:
+$id = Database::lastInsertId();
 
-```php
-use Bow\Database\Database;
-
-Database::commit();
-// Ou
-app_db_commit();
-```
-
-Pour vérifier si une transaction est en cours, utilisez la méthode `inTransaction`:
-
-```php
-use Bow\Database\Database;
-
-Database::inTransaction();
-// Ou
-app_db_transaction_started();
+// Pour PostgreSQL avec sequence nommée :
+$id = Database::lastInsertId('pets_id_seq');
 ```
 
 ## Jointures SQL
@@ -349,11 +370,19 @@ create table `pets` (
 );
 ```
 
-Pour effectuer une jointure dans Bow Framework, utilisez simplement la méthode `join`:
+Pour effectuer une jointure dans Bow Framework, ouvrez un Query Builder via
+`Database::table()` (ou le helper `app_db_table()`) puis chaînez `join()` :
 
 ```php
+use Bow\Database\Database;
+
+$results = Database::table('pets')
+  ->join('authors', 'authors.id', '=', 'pets.author_id')
+  ->get();
+
+// Via helper
 $results = app_db_table('pets')
-  ->join('authors', 'authors.id', 'pets.author_id')
+  ->join('authors', 'authors.id', '=', 'pets.author_id')
   ->get();
 ```
 
@@ -361,8 +390,9 @@ Vous pouvez ajouter des conditions avec la clause `WHERE` pour filtrer les résu
 
 ```php
 $results = app_db_table('pets')
-  ->join('authors', 'authors.id', 'pets.author_id')
-  ->whereRaw('pets.author_id', 1)->get();
+  ->join('authors', 'authors.id', '=', 'pets.author_id')
+  ->where('pets.author_id', 1)
+  ->get();
 ```
 
 Vous pouvez chaîner plusieurs jointures pour combiner plus de deux tables.
@@ -380,8 +410,8 @@ Notre requête avec deux jointures sera:
 
 ```php
 $results = app_db_table('pets')
-  ->join('authors', 'authors.id', 'pets.author_id')
-  ->join('countries', 'countries.id', 'authors.country_id')
+  ->join('authors',    'authors.id',    '=', 'pets.author_id')
+  ->join('countries',  'countries.id',  '=', 'authors.country_id')
   ->where('pets.author_id', 1)
   ->get();
 ```

@@ -75,6 +75,32 @@ $name = $request->get('name', fn() => User::first()->name);
 $data = $request->all();
 ```
 
+### Données par source : query string vs POST
+
+Quand vous voulez explicitement lire `$_GET` ou `$_POST` (au lieu du tableau
+fusionné renvoyé par `all()`), utilisez `query()` et `post()` :
+
+```php
+// Tableau complet de $_GET
+$queryParams = $request->query();
+
+// Une clé spécifique de $_GET (renvoie [] si absente)
+$page = $request->query('page');
+
+// Tableau complet de $_POST
+$body = $request->post();
+
+// Une clé spécifique de $_POST
+$name = $request->post('name');
+```
+
+:::tip Quand préférer `get()` ?
+`get($key)` cherche d'abord dans les routes/query/body fusionnés et offre un
+fallback par défaut (`get('name', 'Invité')`). Réservez `query()` / `post()`
+aux cas où l'origine de la donnée est importante (par ex. ne *jamais* lire
+`?admin=1` depuis l'URL).
+:::
+
 ### Filtrer les données
 
 ```php
@@ -314,14 +340,18 @@ if ($validation->fails()) {
 
 ## Bags (données partagées)
 
-Stocker des données temporaires dans la requête :
+Les *bags* permettent de stocker des valeurs au sein d'une même requête (par
+exemple des permissions résolues par un middleware, qu'un contrôleur lira
+ensuite) sans polluer les inputs.
 
 ```php
-// Définir une valeur
+// Définir / lire une valeur
 $request->setBag('user_permissions', ['read', 'write']);
-
-// Récupérer une valeur
 $permissions = $request->getBag('user_permissions');
+
+// Lire / remplacer tout le tableau de bags
+$all = $request->getBags();
+$request->setBags(['user_permissions' => ['read'], 'feature_flags' => ['v2']]);
 ```
 
 ## Temps de la requête
@@ -334,7 +364,9 @@ $timestamp = $request->time();
 
 | Méthode | Description |
 |---------|-------------|
-| `get($key, $default)` | Récupère une valeur |
+| `get($key, $default)` | Récupère une valeur (toutes sources fusionnées) |
+| `query($key = null)` | Paramètres de la query string (`$_GET`) |
+| `post($key = null)` | Données du corps POST (`$_POST`) |
 | `all()` | Toutes les données |
 | `only($keys)` | Filtre par clés |
 | `ignore($keys)` | Exclut des clés |
@@ -348,5 +380,6 @@ $timestamp = $request->time();
 | `session()` | Instance de session |
 | `user($guard)` | Utilisateur authentifié |
 | `validate($rules)` | Valide les données |
+| `setBag($name, $value)` / `getBag($name)` | Données partagées dans la requête |
 
 <SuggestionFeature />

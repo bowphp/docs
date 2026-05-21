@@ -14,17 +14,28 @@ Tous les fichiers de configuration de Bow Framework sont centralisés dans le do
 ### Récupérer une valeur
 
 ```php
-// Récupérer une valeur
+// Récupérer une valeur (retourne null si absente)
 $appName = config('app.name');
-
-// Avec une valeur par défaut
-$timezone = config('app.timezone', 'UTC');
 
 // Récupérer tout un fichier
 $appConfig = config('app');
 ```
 
+:::warning Pas de valeur par défaut dans `config()`
+Contrairement à `app_env()`, le helper `config()` **n'a pas** de paramètre
+« valeur par défaut ». Passer un second argument écrit la valeur dans la
+configuration (voir « Modifier une valeur »). Pour appliquer un fallback,
+utilisez `??` :
+
+```php
+$timezone = config('app.timezone') ?? 'UTC';
+```
+:::
+
 ### Modifier une valeur
+
+Le second argument de `config()` est un **setter** : il écrit la valeur dans
+la configuration en mémoire pour la durée de la requête.
 
 ```php
 config('view.engine', 'twig');
@@ -137,19 +148,16 @@ app_env('WEBHOOKS.PAYMENT');
 // https://api.example.com/webhooks/payment
 ```
 
-### Format `.env` classique
+### Format de fichier
 
-Bow supporte aussi le format `.env` traditionnel :
+:::info Format unique : JSON
+Bow ne charge **que** le format `.env.json`. Le format classique
+`KEY=VALUE` (dotenv) n'est pas supporté par `Bow\Support\Env` —
+`Env::configure()` appelle directement `json_decode()` sur le fichier.
 
-```bash title=".env"
-APP_NAME="Mon Application"
-APP_ENV=development
-APP_DEBUG=true
-
-DB_CONNECTION=mysql
-DB_HOST=localhost
-DB_DATABASE=app_db
-```
+Si vous arrivez d'un autre framework et avez besoin du format `.env`,
+convertissez vos variables en JSON, ou ajoutez votre propre loader.
+:::
 
 ## Fichiers de configuration
 

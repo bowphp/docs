@@ -40,7 +40,7 @@ Créons un service complet pour gérer les utilisateurs :
 namespace App\Services;
 
 use App\Models\User;
-use Bow\Support\Collection;
+use Bow\Database\Collection;
 
 class UserService
 {
@@ -57,7 +57,7 @@ class UserService
    */
   public function findById(int $id): ?User
   {
-    return User::find($id);
+    return User::retrieve($id);
   }
 
   /**
@@ -65,11 +65,15 @@ class UserService
    */
   public function create(array $data): User
   {
-    return User::create([
+    $user = User::create([
       "name" => $data["name"],
       "email" => $data["email"],
       "password" => app_hash($data["password"]),
     ]);
+
+    $user->persist();
+
+    return $user;
   }
 
   /**
@@ -77,13 +81,13 @@ class UserService
    */
   public function update(int $id, array $data): bool
   {
-    $user = User::find($id);
+    $user = User::retrieve($id);
 
     if (!$user) {
       return false;
     }
 
-    return $user->update($data);
+    return (bool) $user->update($data);
   }
 
   /**
@@ -91,7 +95,7 @@ class UserService
    */
   public function delete(int $id): bool
   {
-    return User::destroy($id) > 0;
+    return User::deleteBy('id', $id) > 0;
   }
 }
 ```
@@ -204,7 +208,7 @@ namespace App\Services;
 
 use App\Contracts\UserRepositoryInterface;
 use App\Models\User;
-use Bow\Support\Collection;
+use Bow\Database\Collection;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -215,35 +219,69 @@ class UserRepository implements UserRepositoryInterface
 
   public function find(int $id): ?User
   {
-    return User::find($id);
+    return User::retrieve($id);
   }
 
   public function create(array $data): User
   {
-    return User::create($data);
+    $user = User::create($data);
+    $user->persist();
+    return $user;
   }
 
   public function update(int $id, array $data): bool
   {
-    return User::find($id)?->update($data) ?? false;
+    return (bool) (User::retrieve($id)?->update($data) ?? false);
   }
 
   public function delete(int $id): bool
   {
-    return User::destroy($id) > 0;
+    return User::deleteBy('id', $id) > 0;
   }
 }
 ```
 
-### Enregistrer le binding dans Kernel
+### Enregistrer le binding dans un provider
+
+Les bindings se déclarent dans un provider qui étend
+`Bow\Configuration\Configuration`. La méthode `boot()` du Kernel est
+réservée au framework — **ne l'override pas** (vous court-circuiteriez le
+chargement des autres configurations).
+
+```php title="app/Configurations/AppServiceProvider.php"
+namespace App\Configurations;
+
+use App\Contracts\UserRepositoryInterface;
+use App\Services\UserRepository;
+use Bow\Configuration\Configuration;
+use Bow\Configuration\Loader;
+
+class AppServiceProvider extends Configuration
+{
+  public function create(Loader $config): void
+  {
+    $this->container->bind(
+      UserRepositoryInterface::class,
+      UserRepository::class
+    );
+  }
+
+  public function run(): void
+  {
+    //
+  }
+}
+```
+
+Puis enregistrez le provider dans `Kernel::configurations()` :
 
 ```php title="app/Kernel.php"
-public function boot(): void
+public function configurations(): array
 {
-  app()->bind(
-    \App\Contracts\UserRepositoryInterface::class,
-    \App\Services\UserRepository::class
-  );
+  return [
+    // ... autres providers
+    \App\Configurations\AppServiceProvider::class,
+  ];
 }
 ```
 
