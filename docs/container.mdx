@@ -39,18 +39,28 @@ $container = Capsule::getInstance();
 
 ## Enregistrer des liaisons
 
+Le conteneur propose trois primitives, distinguées par leur cycle de vie :
+
+| Méthode | Quand l'objet est-il créé ? | Mise en cache ? |
+|---------|-----------------------------|------------------|
+| `bind($key, $value)`     | À la **première** résolution | Oui — réutilisée ensuite |
+| `instance($key, $obj)`   | Immédiatement (vous le passez) | Oui — l'instance fournie est toujours rendue |
+| `factory($key, $value)`  | À **chaque** résolution | Non — nouvelle instance à chaque appel |
+
 ### Liaison simple (bind)
 
 Enregistre un service qui sera instancié une seule fois, puis mis en cache:
 
 ```php
+use Bow\Container\Capsule;
 use App\Services\PaymentService;
 
 app()->bind('payment', function (Capsule $container) {
   return new PaymentService();
 });
 
-// Ou avec une classe
+// Lier une interface à une implémentation : Bow utilisera la réflexion pour
+// instancier PaymentService et résoudra ses dépendances de constructeur.
 app()->bind(PaymentServiceInterface::class, PaymentService::class);
 ```
 
@@ -70,6 +80,8 @@ app()->instance('config', $config);
 Crée une nouvelle instance à chaque résolution:
 
 ```php
+use Bow\Container\Capsule;
+
 app()->factory('uuid', function (Capsule $container) {
   return new UuidGenerator();
 });
@@ -100,6 +112,13 @@ $service = app(App\Services\PaymentService::class);
 $service = app()->makeWith(App\Services\ReportService::class, [
   'startDate' => '2024-01-01',
   'endDate' => '2024-12-31'
+]);
+
+// Raccourci via le helper : si le 2e argument est non vide, app() délègue
+// automatiquement à makeWith().
+$service = app(App\Services\ReportService::class, [
+  'startDate' => '2024-01-01',
+  'endDate' => '2024-12-31',
 ]);
 ```
 
@@ -407,8 +426,6 @@ class UserController
 | `instance($key, $object)` | Enregistre une instance existante |
 | `make($key)` | Résout un service |
 | `makeWith($key, $params)` | Résout avec des paramètres personnalisés |
-
-<SuggestionFeature />
 
 :::info Avantages
 Grâce à ces principes, vous pouvez créer des applications plus propres, plus faciles à maintenir et plus robustes.

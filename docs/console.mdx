@@ -27,9 +27,11 @@ Ces commandes vous aident à créer rapidement des éléments fondamentaux pour 
 | `generate:queue-table` | Crée une migration pour la table des queues |
 
 :::info Alias
-Vous pouvez utiliser l'alias `gen` pour toutes les commandes de génération :
+`gen` est l'alias de `generate` (et **non** de `add`). Les exemples ci-dessus
+peuvent donc s'écrire :
 ```bash
-php bow gen:controller UserController
+php bow gen:resource UserController
+php bow gen:key
 ```
 :::
 
@@ -51,7 +53,7 @@ Ces commandes permettent d'ajouter rapidement des composants à votre applicatio
 | `add:model` | Crée un nouveau modèle. Exemple : `php bow add:model Product` |
 | `add:migration` | Crée une nouvelle migration. Exemple : `php bow add:migration create_orders_table` |
 | `add:seeder` | Crée un fichier de seeding. Exemple : `php bow add:seeder UsersSeeder` |
-| `add:validator` | Crée un nouveau validateur. Exemple : `php bow add:validator UserValidator` |
+| `add:validation` | Crée un nouveau validateur. Exemple : `php bow add:validation UserValidation` |
 
 ### Services et Configuration
 
@@ -73,7 +75,8 @@ Ces commandes permettent d'ajouter rapidement des composants à votre applicatio
 
 | **Commande** | **Description** |
 |--------------|-----------------|
-| `add:task` | Crée une nouvelle tâche planifiée. Exemple : `php bow add:task CleanupTask` |
+| `add:task` | Crée une nouvelle tâche en file d'attente. Exemple : `php bow add:task SendInvoiceTask` |
+| `add:scheduler` | Crée une tâche planifiée (scheduler). Exemple : `php bow add:scheduler CleanupScheduler` |
 | `add:command` | Crée une commande console personnalisée. Exemple : `php bow add:command ImportDataCommand` |
 
 ## Migrations
@@ -106,35 +109,46 @@ Gérez vos jobs en file d'attente :
 
 | **Commande** | **Description** |
 |--------------|-----------------|
-| `worker:run` | Lance le worker pour traiter les jobs |
+| `run:worker` | Lance le worker pour traiter les jobs |
+| `flush:worker` | Vide la queue (à utiliser avec précaution) |
 
-Options disponibles :
-- `--connection` : Connexion à utiliser (défaut : default)
-- `--queue` : Nom de la queue (défaut : default)
-- `--tries` : Nombre de tentatives (défaut : 3)
-- `--memory` : Limite mémoire en Mo (défaut : 126)
-- `--timeout` : Timeout en secondes (défaut : 3)
-- `--sleep` : Pause entre les jobs en secondes (défaut : 60)
+Options disponibles pour `run:worker` :
+- `--connection` : Connexion à utiliser (`beanstalkd`, `sqs`, `redis`, `database`)
+- `--queue` : Nom de la queue (défaut : `default`)
+- `--tries` : Nombre maximum de tentatives par job
+- `--timeout` : Timeout en secondes par job
+- `--sleep` : Pause entre les jobs en secondes
 
 ```bash
-php bow worker:run --queue=emails --tries=5
+php bow run:worker --queue=emails --tries=5
 ```
 
 ## Scheduler
 
-Gérez les tâches planifiées :
+Gérez les tâches planifiées. Le verbe est `schedule` (singulier), et il existe
+cinq actions :
 
 | **Commande** | **Description** |
 |--------------|-----------------|
-| `scheduler:run` | Exécute les tâches planifiées dues |
-| `scheduler:work` | Lance le scheduler en mode daemon |
+| `schedule:run` | Exécute les tâches dues une fois (idéal pour un cron toutes les minutes) |
+| `schedule:work` | Lance le scheduler en mode daemon (boucle continue) |
+| `schedule:list` | Liste toutes les tâches enregistrées |
+| `schedule:next` | Affiche le prochain horaire d'exécution pour chaque tâche |
+| `schedule:test [class]` | Exécute une tâche spécifique pour test |
 
 ```bash
 # Exécuter une fois (pour cron)
-php bow scheduler:run
+php bow schedule:run
 
 # Mode daemon (continue en boucle)
-php bow scheduler:work
+php bow schedule:work
+
+# Visualiser
+php bow schedule:list
+php bow schedule:next
+
+# Tester une tâche par nom de classe
+php bow schedule:test App\\Tasks\\CleanupTask
 ```
 
 ## Nettoyage du cache
@@ -169,7 +183,7 @@ php bow run:console
 
 ## Créer une commande personnalisée
 
-Vous pouvez créer vos propres commandes :
+### 1. Générer la classe
 
 ```bash
 php bow add:command SendReportCommand
@@ -188,33 +202,65 @@ use Bow\Console\Color;
 class SendReportCommand extends AbstractCommand
 {
   /**
-   * Exécute la commande
-   *
-   * @param string|null $param
-   * @return void
+   * Méthode appelée quand la commande est invoquée. Le premier argument est
+   * le nom brut de la commande tel que tapé par l'utilisateur.
    */
-  public function run(?string $param = null): void
+  public function process(): void
   {
-    echo Color::green("Rapport envoyé avec succès !");
+    echo Color::green("Rapport envoyé avec succès !\n");
   }
 }
 ```
 
-Enregistrez la commande dans `app/Kernel.php` :
+:::note Méthode appelée
+Pour une classe enregistrée comme commande, Bow appelle la méthode `process()`.
+Vous pouvez aussi enregistrer une closure (voir plus bas) — dans ce cas elle
+reçoit `(Argument $arg, Setting $setting)`.
+:::
+
+### 2. Enregistrer la commande
+
+L'enregistrement se fait via `Console::register()` (statique) ou
+`$console->addCommand()` (instance). Ces deux méthodes acceptent jusqu'à
+quatre arguments :
 
 ```php
-public function commands(): array
-{
-  return [
-    'send:report' => \App\Commands\SendReportCommand::class,
-  ];
-}
+use Bow\Console\Console;
+use App\Commands\SendReportCommand;
+
+Console::register(
+    'send:report',                     // Nom utilisé en ligne de commande
+    SendReportCommand::class,           // Classe ou closure
+    'Envoie le rapport quotidien',     // Description (affichée dans `php bow help`)
+    "\nUsage:\n  php bow send:report [--to=...]\n"  // Aide affichée par `php bow send:report help`
+);
 ```
 
-Utilisez votre commande :
+Vous pouvez placer ces appels dans un fichier de bootstrap dédié (déclaré dans
+`Setting::getBootstrap()`), ou dans la méthode `run()` d'un service provider
+(`Bow\Configuration\Configuration`).
+
+### 3. Exécuter
 
 ```bash
+# Lancer la commande
 php bow send:report
+
+# Voir son aide
+php bow send:report help
+
+# La commande apparaît aussi dans la section "CUSTOM" de l'aide globale
+php bow help
 ```
+
+:::tip Closures
+Pour des commandes simples vous pouvez enregistrer directement une closure :
+
+```php
+Console::register('hello', function ($arg, $setting) {
+    echo "Hello, " . ($arg->getTarget() ?? 'world') . "\n";
+});
+```
+:::
 
 <SuggestionFeature />

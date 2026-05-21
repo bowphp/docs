@@ -94,10 +94,19 @@ class Todo extends Model
 {
   /**
    * Définissez la table associée au modèle.
-   *
-   * @var string
    */
-  protected $table = 'todos';
+  protected string $table = 'todos';
+}
+```
+
+Vous pouvez aussi appliquer un préfixe par modèle (ajouté devant le nom de
+table) — utile pour cohabiter avec d'autres systèmes dans la même base :
+
+```php
+class Todo extends Model
+{
+  protected string $prefix = 'app_';
+  protected string $table = 'todos'; // résolu en "app_todos"
 }
 ```
 
@@ -114,11 +123,40 @@ class Todo extends Model
 {
   /**
    * La clé primaire associée à la table.
-   *
-   * @var string
    */
-  protected $primary_key = 'id_todo';
+  protected string $primary_key = 'id_todo';
 }
+```
+
+Vous pouvez aussi indiquer le **type** de la clé primaire et désactiver
+l'auto-incrément (par exemple pour des UUIDs ou des identifiants composés
+en chaîne) :
+
+```php
+class Todo extends Model
+{
+  protected string $primary_key = 'uuid';
+  protected string $primary_key_type = 'string'; // 'int' (défaut) | 'string' | 'float' | 'double'
+  protected bool $auto_increment = false;
+}
+```
+
+### Connexion
+
+Par défaut Barry utilise la connexion courante du framework. Pour pointer un
+modèle sur une connexion spécifique, définissez la propriété `$connection` :
+
+```php
+class Todo extends Model
+{
+  protected ?string $connection = 'reporting';
+}
+```
+
+Vous pouvez aussi changer la connexion ponctuellement :
+
+```php
+$todos = Todo::connection('reporting')->all();
 ```
 
 ## Récupérer les données
@@ -162,8 +200,21 @@ try {
 ```
 
 :::tip Remarque
-La méthode peut aussi retourner `null` dans le cas où il n'y a aucun enregistrement trouvé.
+La méthode `retrieve` peut aussi retourner `null` dans le cas où il n'y a aucun enregistrement trouvé.
 :::
+
+Pour obtenir le dernier enregistrement créé selon la colonne déclarée dans
+`$latest` (par défaut `created_at`), utilisez la méthode statique `latest()` :
+
+```php
+$todo = Todo::latest(); // ORDER BY created_at DESC LIMIT 1
+
+// Personnaliser la colonne utilisée :
+class Todo extends Model
+{
+  protected string $latest = 'updated_at';
+}
+```
 
 ## Ajout de contraintes supplémentaires
 
@@ -454,6 +505,115 @@ Todo::deleteBy('status', 'done');
 Todo::truncate();
 ```
 
+## Relations entre modèles
+
+Barry fournit quatre types de relations exposés via le trait
+`Bow\Database\Barry\Concerns\Relationship` (inclus par défaut dans la classe
+`Model`) : `hasOne`, `hasMany`, `belongsTo`, et `belongsToMany`.
+
+Vous déclarez une relation comme une méthode sur le modèle qui retourne
+l'objet de relation. Accéder à cette méthode **comme une propriété**
+déclenche la résolution et renvoie les résultats.
+
+### `hasOne` — Un à un
+
+Un utilisateur a un profil :
+
+```php
+namespace App\Models;
+
+use Bow\Database\Barry\Model;
+use Bow\Database\Barry\Relations\HasOne;
+
+class User extends Model
+{
+    public function profile(): HasOne
+    {
+        return $this->hasOne(Profile::class);
+    }
+}
+
+// Utilisation
+$profile = User::retrieve(1)->profile; // → instance de Profile
+```
+
+### `hasMany` — Un à plusieurs
+
+Un utilisateur a plusieurs posts :
+
+```php
+use Bow\Database\Barry\Relations\HasMany;
+
+class User extends Model
+{
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+}
+
+$posts = User::retrieve(1)->posts; // → Collection de Post
+```
+
+### `belongsTo` — Inverse de `hasOne` / `hasMany`
+
+Un post appartient à un utilisateur :
+
+```php
+use Bow\Database\Barry\Relations\BelongsTo;
+
+class Post extends Model
+{
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+
+$user = Post::retrieve(42)->author; // → instance de User
+```
+
+### `belongsToMany` — Plusieurs à plusieurs
+
+Un post a plusieurs tags via une table pivot :
+
+```php
+use Bow\Database\Barry\Relations\BelongsToMany;
+
+class Post extends Model
+{
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+}
+
+$tags = Post::retrieve(1)->tags; // → Collection de Tag
+```
+
+### Personnaliser les clés
+
+Toutes les méthodes acceptent deux paramètres optionnels pour préciser les
+colonnes de jointure. Les noms par défaut sont déduits du nom de la table
+liée (`users` → `user_id`) :
+
+```php
+// hasOne / hasMany : $foreign_key sur la table liée, $local_key sur cette table
+$this->hasMany(Post::class, 'author_id', 'id');
+
+// belongsTo : $foreign_key sur cette table, $local_key sur la table liée
+$this->belongsTo(User::class, 'author_id', 'id');
+
+// belongsToMany : $primary_key sur cette table, $foreign_key sur la table liée
+$this->belongsToMany(Tag::class, 'post_id', 'tag_id');
+```
+
+:::tip Différence appel-méthode / accès-propriété
+- `$post->author()` — retourne l'objet de relation (utile pour ajouter des
+  contraintes : `$post->author()->where('active', true)->first()`).
+- `$post->author` — retourne **les résultats** (instance / Collection).
+:::
+
 ## Propriétés de configuration
 
 Barry offre plusieurs propriétés de configuration pour personnaliser le comportement du modèle:
@@ -502,39 +662,128 @@ class User extends Model
 
 ### Casting des attributs
 
-Pour convertir automatiquement les types d'attributs:
+Pour convertir automatiquement les types d'attributs lors de la lecture
+(`$model->attribute`) :
 
 ```php
 class Todo extends Model
 {
   /**
    * Les conversions de type d'attributs.
-   *
-   * @var array
    */
   protected array $casts = [
-    'status' => 'int',
-    'budget' => 'float',
-    'is_active' => 'bool',
-    'due_date' => 'date',
+    'status'    => 'int',
+    'budget'    => 'float',
+    'rating'    => 'double',  // alias de float
+    'is_active' => 'bool',    // 'boolean' fonctionne aussi
+    'due_date'  => 'date',    // -> Carbon
+    'meta'      => 'array',   // JSON -> tableau associatif
+    'settings'  => 'json',    // JSON -> stdClass
   ];
 }
 ```
 
-### Soft Delete
+| Cast | Effet |
+|------|-------|
+| `int` | Cast vers `int` |
+| `float` / `double` | Cast vers `float` |
+| `bool` / `boolean` | Cast vers `bool` |
+| `date` | Instance de `Carbon\Carbon` |
+| `array` | `json_decode` en tableau associatif |
+| `json` | `json_decode` en `stdClass` |
 
-Barry supporte la suppression douce (soft delete) qui marque les enregistrements comme supprimés sans les supprimer physiquement:
+### Colonnes traitées comme des dates
+
+Toutes les colonnes listées dans `$dates` (en plus de `created_at`,
+`updated_at`, `expired_at`, `logged_at` et `signed_at` qui sont reconnues
+automatiquement) sont enveloppées dans une instance `Carbon\Carbon` à la
+lecture :
 
 ```php
 class Todo extends Model
 {
-  /**
-   * Active la suppression douce.
-   *
-   * @var bool
-   */
-  protected bool $soft_delete = true;
+  protected array $dates = ['scheduled_for', 'completed_at'];
 }
+
+$todo = Todo::retrieve(1);
+echo $todo->scheduled_for->diffForHumans(); // Carbon API disponible
+```
+
+### Suppression douce (soft delete)
+
+Bow fournit un trait `Bow\Database\Barry\Traits\SoftDelete` qui transforme
+les appels à `delete()` en mise à jour d'une colonne `deleted_at` au lieu
+d'un DELETE physique.
+
+**1. Schéma** — ajoutez la colonne `deleted_at` à votre table. La méthode
+`addSoftDelete()` est disponible dans les migrations :
+
+```php
+$this->create('todos', function (Table $table) {
+  $table->addIncrement('id');
+  $table->addString('title');
+  $table->addTimestamps();
+  $table->addSoftDelete();    // ajoute une colonne nullable `deleted_at`
+});
+```
+
+**2. Modèle** — ajoutez le trait :
+
+```php
+use Bow\Database\Barry\Model;
+use Bow\Database\Barry\Traits\SoftDelete;
+
+class Todo extends Model
+{
+  use SoftDelete;
+
+  // Optionnel : personnaliser le nom de la colonne
+  protected string $deleted_at = 'archived_on';
+}
+```
+
+**3. Utilisation**
+
+```php
+$todo = Todo::retrieve(1);
+
+$todo->delete();        // UPDATE : deleted_at = NOW()
+$todo->trashed();       // true
+$todo->restore();       // UPDATE : deleted_at = NULL
+$todo->forceDelete();   // DELETE physique
+```
+
+**4. Requêtes**
+
+```php
+// Lignes actives uniquement
+Todo::withoutTrashed()->get();
+
+// Lignes archivées uniquement
+Todo::onlyTrashed()->get();
+
+// Toutes les lignes (actives + archivées)
+Todo::withTrashed()->get();
+```
+
+:::warning Filtrage explicite
+Les requêtes globales `Todo::all()` ou `Todo::where(...)->get()` retournent
+**toutes** les lignes, y compris celles soft-deleted. C'est volontaire :
+Bow n'applique pas de scope global automatique. Utilisez toujours
+`Todo::withoutTrashed()` quand vous voulez exclure les archivés.
+:::
+
+**5. Événements**
+
+Les hooks `model.deleting` / `model.deleted` continuent de se déclencher
+sur `delete()` (la suppression douce reste une suppression du point de vue
+métier). Quatre événements supplémentaires sont disponibles :
+
+```php
+Todo::restoring(fn ($model) => /* avant restore */);
+Todo::restored(fn ($model)  => /* après restore */);
+Todo::forceDeleting(fn ($model) => /* avant forceDelete */);
+Todo::forceDeleted(fn ($model)  => /* après forceDelete */);
 ```
 
 ## Événements de modèle
@@ -606,6 +855,37 @@ Pour récupérer un enregistrement et le supprimer en une seule opération:
 
 ```php
 $todo = Todo::retrieveAndDelete(1);
+```
+
+### Accès aux attributs
+
+Au-delà du sucre syntaxique `$model->attribute`, plusieurs méthodes
+permettent de manipuler le tableau d'attributs de façon explicite — utile
+pour du code générique :
+
+```php
+$todo->getAttributes();              // tous les attributs (tableau)
+$todo->getAttribute('title');         // un attribut (null si absent)
+$todo->setAttribute('title', '...');  // assignation
+$todo->setAttributes([...]);          // remplacement complet
+```
+
+Les modèles implémentent `ArrayAccess` (via le trait `ArrayAccessTrait`) et
+`JsonSerializable`, ce qui permet :
+
+```php
+$todo['title'];                   // == $todo->title
+isset($todo['title']);            // existence
+$todo['title'] = 'Nouveau';       // assignation
+json_encode($todo);               // utilise jsonSerialize() (respecte $hidden)
+```
+
+### Métadonnées de la clé primaire
+
+```php
+$todo->getKey();      // nom de la colonne (ex. 'id')
+$todo->getKeyType();  // type configuré (ex. 'int')
+$todo->getKeyValue(); // valeur actuelle (null sur un modèle non persisté)
 ```
 
 ### Conversion en tableau ou JSON

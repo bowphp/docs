@@ -11,6 +11,18 @@ La pagination est une fonctionnalité essentielle pour afficher de grandes quant
 
 ## Utilisation de base
 
+### Signature de `paginate`
+
+```php
+paginate(int $per_page, int $current = 0, ?int $chunk = null): Pagination
+```
+
+| Paramètre   | Type      | Description                                                                 |
+|-------------|-----------|-----------------------------------------------------------------------------|
+| `per_page`  | `int`     | Nombre d'éléments par page.                                                  |
+| `current`   | `int`     | Numéro de la page demandée (1-indexé). `0` est normalisé en `1`.            |
+| `chunk`     | `?int`    | Si défini, la collection retournée est découpée en sous-tableaux de cette taille. |
+
 ### Pagination avec Query Builder
 
 Vous pouvez paginer les résultats du Query Builder en utilisant la méthode `paginate` :
@@ -19,6 +31,9 @@ Vous pouvez paginer les résultats du Query Builder en utilisant la méthode `pa
 use Bow\Database\Database;
 
 $users = Database::table('users')->paginate(15);
+
+// Page spécifique
+$users = Database::table('users')->paginate(15, $request->get('page', 1));
 ```
 
 ### Pagination avec les modèles
@@ -29,6 +44,7 @@ Avec l'ORM Barry, la pagination est tout aussi simple :
 use App\Models\User;
 
 $users = User::paginate(15);
+$users = User::paginate(15, 2); // Page 2
 ```
 
 ### Pagination avec des conditions
@@ -70,7 +86,7 @@ $pagination->totalPages(); // Ex: 10
 ### Navigation entre les pages
 
 ```php
-// Obtenir le numéro de la page suivante
+// Obtenir le numéro de la page suivante (0 sur la dernière page)
 $pagination->next(); // Ex: 3
 
 // Vérifier s'il y a une page suivante
@@ -82,6 +98,25 @@ $pagination->previous(); // Ex: 1
 // Vérifier s'il y a une page précédente
 $pagination->hasPrevious(); // true ou false
 ```
+
+:::warning Particularité de `hasPrevious()` sur la première page
+Sur la page 1, `previous()` retourne `1` (et non `0`), ce qui fait que
+`hasPrevious()` retourne **`true`** — il signale uniquement qu'un numéro de
+page « précédent » est disponible, pas qu'il y a réellement une page avant
+la courante.
+
+Pour décider si afficher un lien « Précédent » dans une vue, préférez
+`onFirstPage()` :
+
+```php
+if (!$pagination->onFirstPage()) {
+    // Afficher le lien Précédent
+}
+```
+
+Même logique côté droit : `hasNext()` est fiable, mais `onLastPage()` est
+souvent plus expressif dans un template.
+:::
 
 ### Vérifications de position
 
@@ -179,6 +214,17 @@ $pagination->withQueryParams(['sort' => 'name', 'order' => 'asc']);
 
 // Remplacer tous les paramètres
 $pagination->setQueryParams(['filter' => 'active']);
+```
+
+### Lecture de la configuration courante
+
+Trois getters permettent de récupérer la configuration URL actuelle — utile
+pour le debug ou pour relire la configuration dans une vue partagée :
+
+```php
+$pagination->getBaseUrl();      // 'https://example.com/users' ou null
+$pagination->getPageParam();    // 'page' (ou la valeur définie via setPageParam)
+$pagination->getQueryParams();  // ['sort' => 'name', 'order' => 'asc']
 ```
 
 ### Génération d'URLs
@@ -291,8 +337,9 @@ $json = $pagination->toJson(JSON_PRETTY_PRINT);
   <!-- Navigation de pagination -->
   %if($users->hasPages())
     <nav class="pagination">
-      <!-- Bouton précédent -->
-      %if($users->hasPrevious())
+      <!-- Bouton précédent (on utilise onFirstPage pour éviter un lien vers
+           soi-même : hasPrevious() reste true sur la page 1, voir Note plus haut). -->
+      %if(!$users->onFirstPage())
         <a href="{{ $users->previousPageUrl() }}">« Précédent</a>
       %else
         <span class="disabled">« Précédent</span>
@@ -310,7 +357,7 @@ $json = $pagination->toJson(JSON_PRETTY_PRINT);
       %endforeach
 
       <!-- Bouton suivant -->
-      %if($users->hasNext())
+      %if(!$users->onLastPage())
         <a href="{{ $users->nextPageUrl() }}">Suivant »</a>
       %else
         <span class="disabled">Suivant »</span>

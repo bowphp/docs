@@ -47,18 +47,19 @@ Mais d'abord, regardons le contenu du fichier `IpMiddleware`. C'est la méthode 
 namespace App\Middlewares;
 
 use Bow\Http\Request;
+use Bow\Middleware\BaseMiddleware;
 
-class IpMiddleware
+class IpMiddleware implements BaseMiddleware
 {
   /**
    * Fonction de lancement du middleware.
    *
-   * @param Request $request
-   * @param callable $next
+   * @param  Request  $request
+   * @param  callable $next
+   * @param  array    $args   Paramètres optionnels (voir « Paramètres » plus bas)
    */
-  public function process(Request $request, callable $next)
+  public function process(Request $request, callable $next, array $args = []): mixed
   {
-    //
     return $next($request);
   }
 }
@@ -67,7 +68,7 @@ class IpMiddleware
 Pour notre exemple on aura alors le `process` suivant:
 
 ```php
-public function process(Request $request, callable $next)
+public function process(Request $request, callable $next, array $args = []): mixed
 {
   if ($request->ip() == '127.0.0.1') {
     return "MODE DEV";
@@ -76,6 +77,12 @@ public function process(Request $request, callable $next)
   return $next($request);
 }
 ```
+
+:::tip Contrat `BaseMiddleware`
+L'interface `Bow\Middleware\BaseMiddleware` formalise la signature. Vos
+middlewares peuvent l'implémenter (recommandé) ou simplement définir une
+méthode `process()` compatible.
+:::
 
 ## Enregistrement de middleware
 
@@ -116,7 +123,11 @@ Après avoir défini un middleware dans le fichier `app/Kernel.php`, vous pouvez
 $app->get('/', 'HomeController::index')->middleware('ip');
 $app->get('/', 'HomeController::index')->middleware(['ip', 'autre']);
 
-// ou
+// Vous pouvez aussi passer directement un FQCN sans déclarer d'alias :
+$app->get('/', 'HomeController::index')
+    ->middleware(\App\Middlewares\IpMiddleware::class);
+
+// Via la méthode route() :
 $app->route([
   'path' => '/',
   'method' => 'GET',
@@ -124,5 +135,49 @@ $app->route([
   'middleware' => ['ip', 'autre']
 ]);
 ```
+
+## Paramètres de middleware
+
+Vous pouvez passer des paramètres à un middleware en les ajoutant après le nom,
+séparés par un `:` (puis des virgules pour plusieurs valeurs) :
+
+```php
+// Un paramètre
+$app->get('/admin', 'AdminController::index')->middleware('role:admin');
+
+// Plusieurs paramètres
+$app->get('/api/posts', 'PostController::index')->middleware('throttle:60,1');
+```
+
+Les valeurs sont disponibles dans `$args` :
+
+```php title="app/Middlewares/RoleMiddleware.php"
+namespace App\Middlewares;
+
+use Bow\Http\Request;
+use Bow\Middleware\BaseMiddleware;
+
+class RoleMiddleware implements BaseMiddleware
+{
+  public function process(Request $request, callable $next, array $args = []): mixed
+  {
+    // 'role:admin,editor'  =>  $args === ['admin', 'editor']
+    $allowed_roles = $args;
+
+    if (!in_array($request->user()?->role, $allowed_roles, true)) {
+      return response()->json(['error' => 'Forbidden'], 403);
+    }
+
+    return $next($request);
+  }
+}
+```
+
+:::note Parsing
+Le nom et les paramètres sont séparés par le premier `:` rencontré
+(`explode(':', $middleware, 2)`). Les valeurs sont ensuite séparées par
+virgules. Aucun cast n'est fait — vos paramètres arrivent toujours sous forme
+de chaînes.
+:::
 
 <SuggestionFeature />

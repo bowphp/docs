@@ -245,9 +245,11 @@ class EmailCheckerConfiguration extends Configuration
    */
   public function create(Loader $config): void
   {
-    // Les fichiers dans config/ sont chargés automatiquement
-    // Enregistrer le service comme singleton
-    $this->container->singleton(EmailCheckerService::class, function () use ($config) {
+    // Les fichiers dans config/ sont chargés automatiquement.
+    // bind() met le service en cache après la première résolution — c'est
+    // le « singleton » de Bow. Pour une nouvelle instance à chaque appel,
+    // utilisez factory() à la place.
+    $this->container->bind(EmailCheckerService::class, function () use ($config) {
       $blockedDomains = $config['email-checker.blocked_domains'] ?? [];
 
       return new EmailCheckerService($blockedDomains);
@@ -264,10 +266,10 @@ class EmailCheckerConfiguration extends Configuration
     $router = $this->container->make('router');
 
     // Route pour vérifier un email
-    $router->post('/email/check', [EmailCheckerController::class, 'check']);
+    $router->post('/email/check', 'App\\Packages\\EmailChecker\\EmailCheckerController::check');
 
     // Route pour vérifier plusieurs emails
-    $router->post('/email/check-bulk', [EmailCheckerController::class, 'checkBulk']);
+    $router->post('/email/check-bulk', 'App\\Packages\\EmailChecker\\EmailCheckerController::checkBulk');
   }
 }
 ```
@@ -279,7 +281,6 @@ Les fichiers PHP placés dans le dossier `config/` sont automatiquement chargés
 :::tip Injection de dépendances
 Le contrôleur `EmailCheckerController` reçoit automatiquement le service `EmailCheckerService` grâce à l'[injection de dépendances](./container). Le conteneur résout automatiquement les dépendances du constructeur.
 :::
-```
 
 ### Étape 6 : Enregistrer la configuration
 
@@ -307,22 +308,22 @@ Testez avec `curl` :
 
 ```bash
 # Vérifier un email valide
-curl -X POST -d "email=john@example.com" http://localhost:5000/email/check
+curl -X POST -d "email=john@example.com" http://localhost:8080/email/check
 # {"valid": true, "message": "Email valide", "email": "john@example.com"}
 
 # Vérifier un email invalide
-curl -X POST -d "email=invalid-email" http://localhost:5000/email/check
+curl -X POST -d "email=invalid-email" http://localhost:8080/email/check
 # {"valid": false, "message": "Format d'email invalide", "email": "invalid-email"}
 
 # Vérifier un domaine bloqué
-curl -X POST -d "email=user@spam.com" http://localhost:5000/email/check
+curl -X POST -d "email=user@spam.com" http://localhost:8080/email/check
 # {"valid": false, "message": "Ce domaine n'est pas autorisé", "email": "user@spam.com"}
 
 # Vérifier plusieurs emails
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"emails": ["john@example.com", "invalid", "user@spam.com"]}' \
-  http://localhost:5000/email/check-bulk
+  http://localhost:8080/email/check-bulk
 # {"total": 3, "valid": 1, "results": [...]}
 ```
 

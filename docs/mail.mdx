@@ -9,9 +9,10 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 Envoyer des emails dans une application est monnaie courante. Bow Framework intègre un système d'envoi d'email facile à utiliser. Vous pouvez utiliser ce système à travers plusieurs pilotes communément appelés drivers :
 
-- **SMTP** - Envoi direct via un serveur SMTP
-- **SES** - Vous pouvez aussi utiliser [SES](https://aws.amazon.com/fr/ses/)
-- **MAIL** - Le système utilisera la fonction `mail` native de PHP
+- **smtp** — Envoi direct via un serveur SMTP
+- **ses** — Envoi via [Amazon SES](https://aws.amazon.com/fr/ses/)
+- **mail** — Utilise la fonction `mail()` native de PHP
+- **log** — Écrit le mail dans les logs (pratique en développement)
 
 ## Configuration
 
@@ -19,37 +20,57 @@ Vous trouverez la configuration dans le fichier `config/mail.php` qui est relati
 
 :::info Driver SES
 Installez le package `aws/aws-sdk-php` si vous voulez utiliser `ses` comme driver de mail.
-:::
 
 ```bash
 composer require aws/aws-sdk-php
 ```
+:::
+
+### Changer de driver à l'exécution
+
+```php
+use Bow\Mail\Mail;
+
+Mail::setDriver('log');     // bascule tous les envois sur le log
+Mail::setDriver('smtp');    // retour au driver configuré
+```
 
 ## Utilisation
 
-Pour utiliser le service, vous devez appeler la classe [`Bow\Mail\Mail::class`](https://bowphp.com/api/master/Bow/Mail). Il y a deux méthodes statiques pour l'envoi de mail : `send` et `raw`.
+Pour utiliser le service, appelez la classe `Bow\Mail\Mail`. Elle expose les
+méthodes statiques suivantes :
 
-### La méthode send
+| Méthode | Usage |
+|---------|-------|
+| `send($view, $data, $cb)` | Envoie un email basé sur une vue |
+| `raw($to, $subject, $message, $headers = [])` | Envoie un texte brut |
+| `queue($view, $data, $cb)` | Met l'envoi en file d'attente |
+| `queueOn($queue, $view, $data, $cb)` | File d'attente nommée |
+| `later($delay, $view, $data, $cb)` | Envoi différé (en secondes) |
+| `laterOn($delay, $queue, $view, $data, $cb)` | Différé sur file nommée |
+| `setDriver($driver)` | Bascule de driver à la volée |
 
-**send** permet d'envoyer des emails en se basant sur une [vue](./views) dans l'application.
+### La méthode `send`
 
-#### Prototype send
+`send` permet d'envoyer des emails basés sur une [vue](./views).
+
+#### Prototype
 
 ```php
-send($view, array $data, callable $callable)
+Mail::send(string $view, array|callable $data, ?callable $cb = null): bool
 ```
 
-| Paramètre | Type |
-|----------|------|
-| view | `String` - Le nom de la vue à utiliser |
-| data | `Array` - Les informations à passer à la vue |
-| callable | `Closure` - Le constructeur du message |
+| Paramètre | Type | Description |
+|-----------|------|-------------|
+| `$view`   | `string` | Le nom de la vue à utiliser |
+| `$data`   | `array` ou `callable` | Données passées à la vue. Si vous l'omettez et passez le constructeur directement en 2e argument, c'est aussi valable. |
+| `$cb`     | `?callable` | Constructeur de l'enveloppe (voir `Envelop` ci-dessous) |
 
-`$callable` vous permet de construire le message et prend en paramètre une instance de [`Bow\Mail\Message`](https://bowphp.com/api/master/Bow/Mail/Message.html) qui permet d'ajouter le destinataire, l'objet, les pièces jointes, l'expéditeur.
+Le callback reçoit une instance de [`Bow\Mail\Envelop`](https://bowphp.com/api/master/Bow/Mail/Envelop.html) qui permet d'ajouter le destinataire, l'objet, les pièces jointes, l'expéditeur, etc.
 
-Exemple d'utilisation :
+#### Exemple
 
-Considérons la vue `email-view.tintin.php` qui contient les informations suivantes :
+Considérons la vue `email-view.tintin.php` :
 
 ```php title="templates/email-view.tintin.php"
 Bonjour {{ $name }},
@@ -59,124 +80,139 @@ Nous vous informons que votre compte vient d'être crédité de 100.000.000 F.
 Cordialement,
 ```
 
-Écrivons maintenant le code qui envoie le mail :
+Le code qui envoie le mail :
 
 ```php
 use Bow\Mail\Mail;
-use Bow\Mail\Message;
+use Bow\Mail\Envelop;
 
-$data = [
-  'name' => 'Franck',
-];
+$data = ['name' => 'Franck'];
 
-Mail::send('email-view', $data, function (Message $message) {
-  $message->to('info@exemple.com');
-  $message->subject("Paiement !");
-  $message->from("Bow <info@exemple.com>");
+Mail::send('email-view', $data, function (Envelop $envelop) {
+  $envelop->to('info@exemple.com');
+  $envelop->subject('Paiement !');
+  $envelop->from('info@exemple.com', 'Bow');
 });
 ```
 
-### API de Message
-
-Bow Framework va donc passer une instance de `Bow\Mail\Message::class` qui vous permettra d'ajouter des informations supplémentaires à votre email, notamment le destinataire.
-
-##### `addHeader` - Ajout d'en-têtes personnalisés
+Forme courte (sans données pour la vue) :
 
 ```php
-$message->addHeader(string $key, string $value)
+Mail::send('email-view', function (Envelop $envelop) {
+  $envelop->to('info@exemple.com')
+          ->subject('Bonjour')
+          ->from('info@exemple.com', 'Bow');
+});
 ```
 
-##### `to` - Définit le destinataire
+### API de `Envelop`
+
+L'objet `Bow\Mail\Envelop` accumule les destinataires, en-têtes et le corps
+du message. Toutes ses méthodes retournent `$this`, ce qui permet le chaînage.
+
+#### Destinataires
 
 ```php
-$message->to(string $to, string $name = null)
+$envelop->to('info@exemple.com');               // un destinataire
+$envelop->to(['a@x.com', 'b@x.com']);            // plusieurs destinataires
+$envelop->addCc('cc@x.com', 'Nom CC');
+$envelop->addBcc('bcc@x.com');
+$envelop->addReplyTo('reply@x.com');
+$envelop->addReturnPath('bounces@x.com');
 ```
 
-##### `toList` - Ajout de plusieurs destinataires
+:::note Aliases
+Les méthodes courtes `cc()`, `bcc()`, `replyTo()`, `returnPath()` sont des
+alias de leurs versions `addCc`/`addBcc`/`addReplyTo`/`addReturnPath` et ont
+la même signature.
+:::
+
+#### Sujet et expéditeur
 
 ```php
-$message->toList(array $list_desc)
+$envelop->subject('Objet du message');
+$envelop->from('noreply@x.com', 'Mon App');
 ```
 
-##### `addFile` - Permet d'ajouter une pièce jointe
+#### Corps du message
 
 ```php
-$message->addFile(string $file)
+$envelop->html('<h1>Bonjour</h1>');   // contenu HTML (type text/html)
+$envelop->text('Bonjour');             // contenu texte brut
+$envelop->view('emails.welcome', ['user' => $user]); // rend une vue
 ```
 
-##### `subject` - Définit l'objet du mail
+#### En-têtes personnalisés
 
 ```php
-$message->subject(string $subject)
+$envelop->withHeader('X-Custom-Header', 'valeur');
 ```
 
-##### `from` - Définit l'expéditeur du mail
+#### Pièces jointes
 
 ```php
-$message->from(string $from, string $name = null)
+$envelop->addFile('/chemin/vers/fichier.pdf');
 ```
 
-##### `html` - Définit le type de contenu en text/html
+#### Priorité
 
 ```php
-$message->html($html)
+// Priorité X-Priority : 1 (highest) à 5 (lowest)
+$envelop->setPriority(1);     // ou $envelop->addPriority(1)
 ```
 
-##### `text` - Définit le corps du message
+### La méthode `raw`
+
+`raw` permet d'envoyer un message brut (sans vue) :
 
 ```php
-$message->text(string $text)
+Mail::raw(string|array $to, string $subject, string $data, array $headers = []): mixed
 ```
 
-##### `addBcc` - Ajoute l'en-tête Blind Carbon Copy
-
-```php
-$message->addBcc(string $mail, string $name = null)
-```
-
-##### `addCc` - Ajoute l'en-tête Carbon Copy
-
-```php
-$message->addCc(string $mail, string $name = null)
-```
-
-##### `addReplyTo` - Ajoute l'en-tête Reply-To
-
-```php
-$message->addReplyTo(string $mail, $name = null)
-```
-
-##### `addReturnPath` - Ajoute l'en-tête Return-Path
-
-```php
-$message->addReturnPath(string $mail, $name = null)
-```
-
-### La méthode raw
-
-**raw** par contre, permet d'envoyer des emails avec un message brut.
-
-#### Prototype raw
-
-```php
-raw($to, $subject, $message, array $headers = [])
-```
-
-| Paramètre | Type |
-|----------|------|
-| to | `String` - L'email du destinataire |
-| subject | `String` - L'objet du mail |
-| message | `String` - Le message à envoyer |
-| headers | `Array` - Les en-têtes à envoyer (par défaut vide) |
+| Paramètre | Type | Description |
+|-----------|------|-------------|
+| `$to`       | `string\|array` | Email(s) du destinataire |
+| `$subject`  | `string` | Objet du mail |
+| `$data`     | `string` | Corps du message |
+| `$headers`  | `array`  | En-têtes additionnels |
 
 ```php
 use Bow\Mail\Mail;
 
-$email = "hello@exemple.com";
-$subject = "Hello, world";
-$message = "C'est juste un email de test";
-
-Mail::raw($email, $subject, $message);
+Mail::raw(
+  'hello@exemple.com',
+  'Hello, world',
+  "C'est juste un email de test"
+);
 ```
+
+## Envoi en file d'attente
+
+Pour ne pas bloquer la requête HTTP, mettez l'envoi en file d'attente.
+La signature `(view, data, cb)` est identique à `send`.
+
+```php
+use Bow\Mail\Mail;
+use Bow\Mail\Envelop;
+
+// File par défaut
+Mail::queue('email-view', ['name' => 'Franck'], function (Envelop $e) {
+  $e->to('info@exemple.com')->subject('Bonjour')->from('app@x.com');
+});
+
+// File nommée (priorité haute par exemple)
+Mail::queueOn('high', 'email-view', $data, $callback);
+
+// Envoi différé de 60 secondes
+Mail::later(60, 'email-view', $data, $callback);
+
+// Différé sur file nommée
+Mail::laterOn(3600, 'mails', 'email-view', $data, $callback);
+```
+
+:::tip Worker requis
+N'oubliez pas qu'un worker doit tourner (`php bow run:worker`) pour traiter
+les jobs en file.
+:::
 
 <SuggestionFeature />

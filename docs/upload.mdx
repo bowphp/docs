@@ -22,15 +22,13 @@ Considérons le formulaire suivant :
 Comment avoir accès au fichier envoyé ?
 :::
 
-Ici nous pouvons utiliser la méthode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadFile`](https://bowphp.com/api/master/Bow/Http/UploadFile.html).
+Ici nous pouvons utiliser la méthode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadedFile`](https://bowphp.com/api/master/Bow/Http/UploadedFile.html).
 
 ```php
 use Bow\Http\Request;
 
 $app->post('/upload', function(Request $request) {
   $file = $request->file('photo');
-  // ou
-  $file = file('photo');
 
   debug($file);
 });
@@ -40,7 +38,7 @@ Le résultat de `debug` :
 
 ```php
 // Debug output
-UploadFile {#92 ▼
+UploadedFile {#92 ▼
   -file: array:5 [▼
     "name" => "23270116.png"
     "type" => "image/png"
@@ -97,18 +95,17 @@ Souvent dans le cas où vous attendez des fichiers envoyés via un formulaire do
 </form>
 ```
 
-Dans cet exemple, la méthode `file` retournera une [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html) qui contiendra pour chaque occurrence une instance de [`Bow\Http\UploadFile`](https://bowphp.com/api/master/Bow/Http/UploadFile.html).
+Dans cet exemple, la méthode `file` retournera une [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html) qui contiendra pour chaque occurrence une instance de [`Bow\Http\UploadedFile`](https://bowphp.com/api/master/Bow/Http/UploadedFile.html).
 
 ```php
 use Bow\Http\Request;
-use Bow\Http\UploadFile;
+use Bow\Http\UploadedFile;
 
-$app->get('/upload', function (Request $request)
-{
+$app->post('/upload', function (Request $request) {
   $files = $request->file('photo');
 
   if (!$files->isEmpty()) {
-    $files->each(function(UploadFile $file) {
+    $files->each(function (UploadedFile $file) {
       $file->moveTo("/path/to/your/store/directory");
     });
   }

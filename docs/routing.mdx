@@ -239,17 +239,30 @@ $router->get('/dashboard', function () {
 
 ### Contrainte sur un groupe de routes avec `$router->domain`
 
-:::warning Fonctionnalité en développement
-La méthode `$router->domain()` est prévue pour appliquer une contrainte de domaine à un groupe de routes, mais son implémentation est actuellement incomplète dans le framework. Utilisez `withDomain()` sur chaque route individuelle en attendant.
-:::
+La méthode `$router->domain()` applique une contrainte de domaine à toutes les
+routes définies dans son callback. Pratique pour isoler une API, une zone
+admin, ou un sous-domaine tenant sans répéter `withDomain()` partout.
 
 ```php
-// Syntaxe prévue (non fonctionnelle actuellement)
 $router->domain('api.example.com', function () use ($router) {
   $router->get('/users', 'ApiController::users');
   $router->get('/posts', 'ApiController::posts');
 });
 ```
+
+Le motif accepte les paramètres dynamiques (`:tenant`, `<tenant>`) et les
+wildcards (`*`) tout comme `withDomain()` :
+
+```php
+$router->domain(':tenant.example.com', function () use ($router) {
+  $router->get('/', fn($tenant) => "Bienvenue, {$tenant}");
+});
+```
+
+:::note Réinitialisation après le callback
+Le motif de domaine n'est actif que pendant l'exécution du callback. Toute
+route définie après l'appel à `domain()` retrouve un domaine vide.
+:::
 
 ### Sous-domaine statique
 
@@ -467,6 +480,136 @@ $router->route([
 
 :::tip Avantage de la méthode route
 Cette méthode est particulièrement utile lorsque vous avez besoin d'une syntaxe plus concise et que vous souhaitez avoir plus de contrôle sur les paramètres de votre route.
+:::
+
+## Middleware au niveau du Routeur
+
+En plus de la méthode `->middleware()` chaînée sur une route, le routeur expose
+sa propre méthode `middleware()` qui retourne une nouvelle instance de routeur
+avec les middlewares déjà appliqués. Pratique pour partager des middlewares
+entre plusieurs routes sans groupe `prefix`.
+
+```php
+$router->middleware('auth')->get('/profile', 'UserController::show');
+$router->middleware(['auth', 'admin'])->prefix('/admin', function () use ($router) {
+  $router->get('/users', 'AdminController::users');
+  $router->get('/posts', 'AdminController::posts');
+});
+```
+
+Les middlewares passés à `Router::middleware()` peuvent être :
+- Une chaîne (alias enregistré dans le Kernel, ex. `'auth'`)
+- Une classe FQCN (qui sera instanciée et son `process()` appelé)
+- Un tableau combinant les deux
+
+## Gestion des codes d'erreur
+
+La méthode `code()` permet d'enregistrer un handler global pour un code HTTP
+spécifique (404, 500, etc.). Le handler est appelé lorsque le framework émet
+une réponse avec ce code.
+
+```php
+$router->code(404, function () {
+  return view('errors.404');
+});
+
+$router->code(500, ['ErrorController::serverError']);
+$router->code(403, [
+  'middleware' => 'log-forbidden',
+  'controller' => 'ErrorController::forbidden',
+]);
+```
+
+`code()` accepte les mêmes types de handler que les méthodes verbales : closure,
+chaîne `Controller::method`, ou tableau avec `controller` / `middleware`.
+
+## Routage par attributs
+
+Pour les projets en PHP 8+, Bow Framework permet de déclarer les routes
+directement sur les classes contrôleurs via des attributs. Plus besoin de
+maintenir un fichier de routes central.
+
+### Déclaration
+
+```php
+use Bow\Router\Attributes\{Controller, Get, Post, Put, Delete};
+
+#[Controller(prefix: '/api/users', middleware: ['auth'], name: 'users.')]
+final class UserController
+{
+    #[Get('/', name: 'index')]
+    public function index() { /* ... */ }
+
+    #[Get('/:id', name: 'show', where: ['id' => '\d+'])]
+    public function show(int $id) { /* ... */ }
+
+    #[Post('/', name: 'store', middleware: ['validate'])]
+    public function store(Request $request) { /* ... */ }
+
+    #[Put('/:id', name: 'update')]
+    public function update(int $id, Request $request) { /* ... */ }
+
+    #[Delete('/:id', name: 'destroy')]
+    public function destroy(int $id) { /* ... */ }
+}
+```
+
+### Enregistrement
+
+Dans votre fichier de routes, appelez `register()` avec le contrôleur (ou un
+tableau de contrôleurs) :
+
+```php
+$router->register(UserController::class);
+
+// Ou plusieurs à la fois
+$router->register([
+  UserController::class,
+  PostController::class,
+  CommentController::class,
+]);
+```
+
+### Attributs disponibles
+
+| Attribut       | Cible    | Description                                                          |
+|----------------|----------|----------------------------------------------------------------------|
+| `#[Controller]` | Classe   | Préfixe, middlewares et préfixe de nom partagés par toutes les routes |
+| `#[Get]`       | Méthode  | Route GET                                                            |
+| `#[Post]`      | Méthode  | Route POST                                                           |
+| `#[Put]`       | Méthode  | Route PUT                                                            |
+| `#[Patch]`     | Méthode  | Route PATCH                                                          |
+| `#[Delete]`    | Méthode  | Route DELETE                                                         |
+| `#[Options]`   | Méthode  | Route OPTIONS                                                        |
+| `#[Route]`     | Méthode  | Route générique multi-méthodes : `#[Route('/path', methods: ['GET', 'POST'])]` |
+
+Chaque attribut de méthode est répétable : une même méthode peut servir
+plusieurs chemins ou verbes.
+
+### Composition des noms
+
+Si le `#[Controller]` déclare un préfixe de nom (`name: 'users.'`), il est
+concaténé verbatim au nom de chaque route. Par exemple :
+
+```php
+#[Controller(name: 'users.')]
+class UserController {
+    #[Get('/', name: 'index')]        // -> nom final : "users.index"
+    public function index() { /* ... */ }
+
+    #[Get('/:id', name: 'show')]      // -> nom final : "users.show"
+    public function show() { /* ... */ }
+}
+```
+
+Le séparateur (`.`, `:`, vide) est entièrement à votre charge — ajoutez-le au
+préfixe si vous en voulez un.
+
+:::note Méthodes héritées
+Seules les méthodes déclarées sur le contrôleur lui-même sont scannées. Les
+attributs `#[Route]` portés par une classe parente ne sont **pas** réenregistrés
+sur la sous-classe — cela évite des routes en double si vous partagez du code
+via héritage.
 :::
 
 <SuggestionFeature />
