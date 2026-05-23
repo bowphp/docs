@@ -1,0 +1,440 @@
+---
+id: microservice
+title: "Microservices"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+:::info À propos du package microservice
+Le package `bowphp/microservice` fournit un client et un serveur de microservices pour Bow, inspiré du `@nestjs/microservices` de NestJS. Il permet à vos applications de communiquer entre elles via plusieurs transports&nbsp;: **TCP**, **Redis**, **RabbitMQ**, **gRPC** et **Kafka**.
+:::
+
+Deux modes de communication sont supportés&nbsp;:
+
+- **Request/Response (RPC)** — via `send()`, équivalent à `@MessagePattern` côté serveur.
+- **Fire-and-forget (Event)** — via `emit()`, équivalent à `@EventPattern` côté serveur.
+
+Le coeur du package est agnostique du framework&nbsp;; seul le fournisseur de service `Bow\Microservice\Bow\MicroserviceConfiguration` est couplé à Bow.
+
+## Installation
+
+```bash
+composer require bowphp/microservice
+```
+
+Enregistrez ensuite le fournisseur dans le kernel de votre application&nbsp;:
+
+```php
+// app/Kernel.php
+public function configurations(): array
+{
+    return [
+        \Bow\Microservice\Bow\MicroserviceConfiguration::class,
+    ];
+}
+```
+
+Publiez le fichier de configuration par défaut dans `config/microservice.php`&nbsp;:
+
+```bash
+php bow microservice:publish-config
+```
+
+## Configuration
+
+Le fichier `config/microservice.php` sélectionne le transport actif et regroupe les options de chaque transport sous une clé homonyme. Si le fichier est absent, le fournisseur retombe sur les variables d'environnement `MICROSERVICE_*`.
+
+```php
+// config/microservice.php
+return [
+    'transport' => app_env('MICROSERVICE_TRANSPORT', 'redis'),
+    'timeout'   => (float) app_env('MICROSERVICE_TIMEOUT', 5.0),
+
+    'controllers' => [
+        // \App\Consumers\OrderConsumer::class,
+    ],
+
+    'redis' => [
+        'host'     => app_env('MICROSERVICE_HOST', '127.0.0.1'),
+        'port'     => (int) app_env('MICROSERVICE_PORT', 6379),
+        'password' => app_env('MICROSERVICE_REDIS_PASSWORD', null),
+        'patterns' => [],
+    ],
+
+    'tcp'      => [/* host, port */],
+    'rabbitmq' => [/* host, port, user, password, queue */],
+    'grpc'     => [/* host, port */],
+    'kafka'    => [/* brokers, topic */],
+];
+```
+
+### Transports disponibles
+
+| Transport  | Usage                                  | Extension requise |
+| ---------- | -------------------------------------- | ----------------- |
+| `tcp`      | Socket brut, sans broker               | aucune            |
+| `redis`    | Pub/sub Redis + RPC                    | `phpredis`        |
+| `rabbitmq` | File durable                           | `php-amqplib`     |
+| `grpc`     | Client uniquement (serveur tiers)      | `grpc` (PECL)     |
+| `kafka`    | Streaming haut débit                   | `rdkafka`         |
+
+## Côté client
+
+Le fournisseur expose deux liaisons interchangeables dans le conteneur&nbsp;:
+
+- `Bow\Microservice\Client\ClientProxy::class` — à injecter par type.
+- `'microservice.client'` — alias chaîne pour `app('microservice.client')`.
+
+### Configurer le `ClientProxy`
+
+Le `ClientProxy` partagé par le conteneur est construit une seule fois, à la résolution de la liaison. Ses paramètres se définissent à cinq niveaux, du plus large au plus précis&nbsp;:
+
+#### 1. Fichier `config/microservice.php`
+
+C'est la voie recommandée pour la plupart des applications. Le fournisseur lit `transport`, `timeout` et le bloc d'options du transport actif&nbsp;:
+
+```php
+// config/microservice.php
+return [
+    'transport' => 'redis',
+    'timeout'   => 3.0,
+
+    'redis' => [
+        'host'     => 'redis.internal',
+        'port'     => 6379,
+        'password' => app_env('MICROSERVICE_REDIS_PASSWORD'),
+    ],
+];
+```
+
+#### 2. Variables d'environnement `MICROSERVICE_*`
+
+Si `config/microservice.php` est absent, le fournisseur retombe sur les variables `MICROSERVICE_*` (cf. la section [Variables d'environnement](#variables-denvironnement)). Pratique en CI / conteneur, sans avoir à publier le fichier de configuration.
+
+#### 3. Manuellement, avec `ClientFactory::create()`
+
+Pour les tests, pour ouvrir plusieurs clients vers des brokers différents, ou pour construire un proxy hors du conteneur, instanciez-le directement&nbsp;:
+
+```php
+use Bow\Microservice\Client\ClientFactory;
+
+$client = ClientFactory::create(
+    transport: ClientFactory::REDIS,
+    options: [
+        'host'     => '127.0.0.1',
+        'port'     => 6379,
+        'password' => null,
+    ],
+    defaultTimeout: 10.0,
+);
+
+$client->connect();
+$user = $client->send('user.find', ['id' => 42]);
+$client->close();
+```
+
+Les constantes `ClientFactory::TCP`, `REDIS`, `RABBITMQ`, `KAFKA`, `GRPC` couvrent les transports supportés. Chaque transport accepte ses propres clés dans `options`&nbsp;:
+
+| Transport  | Clés `options`                                                  |
+| ---------- | --------------------------------------------------------------- |
+| `tcp`      | `host`, `port`                                                  |
+| `redis`    | `host`, `port`, `password`                                      |
+| `rabbitmq` | `host`, `port`, `user`, `password`, `queue`, `vhost`            |
+| `kafka`    | `brokers`, `topic`, `reply_topic`                               |
+| `grpc`     | `host`, `port`, `channel_options`                               |
+
+#### 4. Configurer plusieurs clients
+
+Le fournisseur livré expose un seul `ClientProxy` partagé (`ClientProxy::class` + `'microservice.client'`). Pour ajouter des clients supplémentaires — par exemple un Redis pour les RPC métiers et un RabbitMQ pour la facturation —, **étendez `ClientProxy`** une fois par broker, puis enregistrez chaque sous-classe dans votre `ApplicationConfiguration`. Le bénéfice principal&nbsp;: chaque client devient injectable par type, sans clé de chaîne.
+
+##### Étape 1 — Sous-classer `ClientProxy`
+
+Une sous-classe fige le transport et le timeout du client. Instanciez directement la classe de transport (les options sont les mêmes que celles documentées plus haut)&nbsp;:
+
+```php
+namespace App\Microservice;
+
+use Bow\Microservice\Client\ClientProxy;
+use Bow\Microservice\Transport\RabbitMqClientTransport;
+
+final class BillingClient extends ClientProxy
+{
+    public function __construct()
+    {
+        parent::__construct(
+            new RabbitMqClientTransport(
+                queue:    'billing_rpc',
+                host:     'rabbit.billing.internal',
+                port:     5672,
+                user:     'guest',
+                password: 'guest',
+            ),
+            defaultTimeout: 10.0,
+        );
+    }
+}
+```
+
+Pour un second client sur un autre transport, répétez la même structure&nbsp;:
+
+```php
+namespace App\Microservice;
+
+use Bow\Microservice\Client\ClientProxy;
+use Bow\Microservice\Transport\RedisClientTransport;
+
+final class SearchClient extends ClientProxy
+{
+    public function __construct()
+    {
+        parent::__construct(
+            new RedisClientTransport(
+                host: 'redis.search.internal',
+                port: 6379,
+            ),
+            defaultTimeout: 2.0,
+        );
+    }
+}
+```
+
+Les classes de transport disponibles sont `TcpClientTransport`, `RedisClientTransport`, `RabbitMqClientTransport`, `KafkaClientTransport` et `GrpcClientTransport` — toutes sous `Bow\Microservice\Transport\`. Leurs paramètres correspondent aux clés `options` listées dans le tableau de la section précédente.
+
+##### Étape 2 — Enregistrer les clients dans `ApplicationConfiguration`
+
+Liez chaque sous-classe dans la `Configuration` de l'application hôte (souvent nommée `ApplicationConfiguration`)&nbsp;:
+
+```php
+namespace App\Configurations;
+
+use App\Microservice\BillingClient;
+use App\Microservice\SearchClient;
+use Bow\Configuration\Configuration;
+use Bow\Configuration\Loader;
+
+class ApplicationConfiguration extends Configuration
+{
+    public function create(Loader $config): void
+    {
+        $this->container->bind(BillingClient::class, static function (): BillingClient {
+            $client = new BillingClient();
+            $client->connect();
+
+            return $client;
+        });
+
+        $this->container->bind(SearchClient::class, static function (): SearchClient {
+            $client = new SearchClient();
+            $client->connect();
+
+            return $client;
+        });
+    }
+
+    public function run(): void
+    {
+        // Résolution eager : les erreurs de transport remontent au boot
+        // plutôt qu'au premier send().
+        $this->container->make(BillingClient::class);
+        $this->container->make(SearchClient::class);
+    }
+}
+```
+
+Déclarez ensuite la classe dans le kernel, après `MicroserviceConfiguration`&nbsp;:
+
+```php
+// app/Kernel.php
+public function configurations(): array
+{
+    return [
+        \Bow\Microservice\Bow\MicroserviceConfiguration::class,
+        \App\Configurations\ApplicationConfiguration::class,
+    ];
+}
+```
+
+Le conteneur met en cache la première résolution&nbsp;: chaque sous-classe renvoie la même instance connectée pour toute la durée du processus.
+
+##### Étape 3 — Consommer les clients
+
+Injectez chaque client par type, comme n'importe quel service&nbsp;:
+
+```php
+namespace App\Controllers;
+
+use App\Microservice\BillingClient;
+use App\Microservice\SearchClient;
+
+class InvoiceController
+{
+    public function __construct(
+        private BillingClient $billing,
+        private SearchClient $search,
+    ) {}
+
+    public function create(int $orderId)
+    {
+        $matches = $this->search->send('orders.lookup', ['order_id' => $orderId]);
+
+        return $this->billing->send('invoice.create', [
+            'order_id' => $orderId,
+            'lines'    => $matches,
+        ]);
+    }
+}
+```
+
+Le `ClientProxy::class` reste lié au client par défaut du package — vos sous-classes vivent à côté sans conflit.
+
+#### 5. Surcharge par appel
+
+Le timeout par défaut (`config('microservice.timeout')`) peut être surchargé sur un appel `send()` précis&nbsp;:
+
+```php
+$report = $this->client->send('reporting.generate', $payload, timeout: 30.0);
+```
+
+`emit()` n'accepte pas de timeout&nbsp;: il s'agit d'un envoi fire-and-forget.
+
+### Requête / réponse — `send()`
+
+```php
+use Bow\Microservice\Client\ClientProxy;
+
+class OrderController
+{
+    public function __construct(private ClientProxy $client) {}
+
+    public function show(string $id)
+    {
+        $order = $this->client->send('order.find', ['id' => $id]);
+
+        return response()->json($order);
+    }
+}
+```
+
+Le troisième argument optionnel surcharge le `timeout` par appel&nbsp;:
+
+```php
+$this->client->send('billing.compute', $payload, timeout: 10.0);
+```
+
+### Fire-and-forget — `emit()`
+
+```php
+$this->client->emit('user.registered', [
+    'id'    => $user->id,
+    'email' => $user->email,
+]);
+```
+
+`emit()` n'attend pas de réponse et n'applique pas de timeout&nbsp;: utilisez-le pour les événements de domaine que d'autres services consomment de manière asynchrone.
+
+## Côté serveur
+
+### Générer un consumer
+
+```bash
+php bow add:consumer OrderConsumer
+```
+
+Le fichier est créé dans `app/Consumers/OrderConsumer.php` à partir du stub bundle.
+
+### Déclarer des handlers
+
+Annotez vos méthodes avec `#[MessagePattern]` (RPC) ou `#[EventPattern]` (événement)&nbsp;:
+
+```php
+namespace App\Consumers;
+
+use Bow\Microservice\Consumer\MessagePattern;
+use Bow\Microservice\Consumer\EventPattern;
+
+class OrderConsumer
+{
+    #[MessagePattern('order.find')]
+    public function find(array $payload): array
+    {
+        return Order::find($payload['id'])->toArray();
+    }
+
+    #[EventPattern('user.registered')]
+    public function onUserRegistered(array $payload): void
+    {
+        // Effet de bord uniquement — aucune réponse renvoyée.
+    }
+}
+```
+
+Enregistrez ensuite le consumer dans `config/microservice.php`&nbsp;:
+
+```php
+'controllers' => [
+    \App\Consumers\OrderConsumer::class,
+],
+```
+
+### Démarrer l'écoute
+
+```bash
+php bow microservice:listen
+```
+
+La commande démarre un `MicroserviceServer` sur le transport configuré et bloque sur `listen()`. Plusieurs options permettent de surcharger la configuration par processus&nbsp;:
+
+```bash
+php bow microservice:listen \
+    --transport=redis \
+    --controllers="App\Consumers\OrderConsumer" \
+    --patterns="order.find,user.registered"
+```
+
+| Option                    | Transport         | Effet                                   |
+| ------------------------- | ----------------- | --------------------------------------- |
+| `--transport=...`         | tous              | Remplace `config('microservice.transport')` |
+| `--controllers=Foo,Bar`   | tous              | Liste FQCN séparée par des virgules     |
+| `--host`, `--port`, `--password` | tous       | Options de connexion du transport       |
+| `--patterns=a,b`          | redis             | Canaux pub/sub à souscrire              |
+| `--queue=name`            | rabbitmq          | File à consommer                        |
+| `--user`, `--vhost`       | rabbitmq          | Identifiants / vhost du broker          |
+| `--topics=a,b`            | kafka             | Topics à souscrire                      |
+| `--brokers`, `--group`    | kafka             | Cluster Kafka + consumer group          |
+
+## Commandes
+
+| Commande                       | Description                                                       |
+| ------------------------------ | ----------------------------------------------------------------- |
+| `microservice:publish-config`  | Copie `config/microservice.php` dans l'application hôte (`--force` pour écraser). |
+| `add:consumer <Nom>`           | Génère une classe consumer dans `app/Consumers/`.                 |
+| `microservice:listen`          | Démarre le serveur sur le transport configuré.                    |
+
+## Variables d'environnement
+
+Si `config/microservice.php` est absent, le fournisseur lit&nbsp;:
+
+| Variable                      | Description                                  |
+| ----------------------------- | -------------------------------------------- |
+| `MICROSERVICE_TRANSPORT`      | Transport actif (défaut&nbsp;: `redis`)      |
+| `MICROSERVICE_TIMEOUT`        | Timeout RPC en secondes (défaut&nbsp;: `5.0`)|
+| `MICROSERVICE_HOST`           | Hôte du transport                            |
+| `MICROSERVICE_PORT`           | Port du transport                            |
+| `MICROSERVICE_REDIS_PASSWORD` | Mot de passe Redis                           |
+| `MICROSERVICE_RABBIT_USER`    | Utilisateur RabbitMQ                         |
+| `MICROSERVICE_RABBIT_PASSWORD`| Mot de passe RabbitMQ                        |
+| `MICROSERVICE_QUEUE`          | Nom de la file RabbitMQ                      |
+| `MICROSERVICE_BROKERS`        | Liste des brokers Kafka (`host:port,…`)      |
+| `MICROSERVICE_TOPIC`          | Topic Kafka par défaut                       |
+
+## Débogage
+
+Les erreurs de configuration de transport sont délibérément levées au boot (le client est résolu de manière eager dans `MicroserviceConfiguration::run()`), pas au premier appel. Si votre application refuse de démarrer après avoir activé le package, vérifiez d'abord&nbsp;:
+
+1. Que l'extension PHP du transport choisi est installée (cf. tableau ci-dessus).
+2. Que les credentials du broker sont corrects (`MICROSERVICE_*` ou `config/microservice.php`).
+3. Que le broker est joignable depuis le conteneur / l'hôte de l'application.
+
+<SuggestionFeature />

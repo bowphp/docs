@@ -52,6 +52,7 @@
       "service",
       "helpers",
       "cqrs",
+      "microservice",
       "csv",
       "testing",
       "package"
