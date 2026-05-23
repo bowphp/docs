@@ -2,14 +2,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
 
 :root {
-  /* Bow Framework modern red color palette */
-  --ifm-color-primary: #EF4444;
-  --ifm-color-primary-dark: #DC2626;
-  --ifm-color-primary-darker: #B91C1C;
-  --ifm-color-primary-darkest: #991B1B;
-  --ifm-color-primary-light: #F87171;
-  --ifm-color-primary-lighter: #FCA5A5;
-  --ifm-color-primary-lightest: #FECACA;
+  /* Bow Framework dark metal palette (Tailwind slate) */
+  --ifm-color-primary: #334155;
+  --ifm-color-primary-dark: #1E293B;
+  --ifm-color-primary-darker: #0F172A;
+  --ifm-color-primary-darkest: #020617;
+  --ifm-color-primary-light: #475569;
+  --ifm-color-primary-lighter: #64748B;
+  --ifm-color-primary-lightest: #94A3B8;
   
   /* Typography - Laravel-style fonts */
   --ifm-font-family-base: "Figtree", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 
@@ -80,7 +80,7 @@
   --doc-sidebar-width: 280px;
   
   /* Code highlighting */
-  --docusaurus-highlighted-code-line-bg: rgba(239, 68, 68, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(51, 65, 85, 0.1);
   
   /* Breadcrumbs */
   --ifm-breadcrumb-color-active: var(--ifm-color-primary);
@@ -271,20 +271,23 @@ pre code {
   color: var(--ifm-color-primary);
 }
 
-/* Remove all Docusaurus shadows */
-.dropdown__menu,
-.navbar__item.dropdown .dropdown__menu,
-.navbar-sidebar,
-.card,
-table,
-.alert,
-.admonition,
-.pagination-nav__link,
-.tabs-container,
-.theme-code-block,
-.DocSearch-Modal,
-.DocSearch-SearchBar {
+/* Remove all shadows globally — covers Docusaurus/Infima defaults and any
+   third-party component CSS without having to maintain a selector list. */
+*,
+*::before,
+*::after {
   box-shadow: none !important;
+}
+
+/* Drop all motion globally — transitions and animations. `transform:`
+   declarations on :hover are removed at their definition sites because a
+   blanket `transform: none !important` would also wipe out layout transforms
+   (centering tricks, etc.). */
+*,
+*::before,
+*::after {
+  transition: none !important;
+  animation: none !important;
 }
 
 /* ============================================
@@ -319,7 +322,7 @@ table,
 }
 
 .menu__link--active:not(.menu__link--sublist) {
-  background: rgba(239, 68, 68, 0.08);
+  background: rgba(51, 65, 85, 0.08);
 }
 
 .menu__list-item-collapsible .menu__link {
@@ -399,7 +402,7 @@ table,
 
 .pagination-nav__link:hover {
   border-color: var(--ifm-color-primary);
-  background: rgba(239, 68, 68, 0.04);
+  background: rgba(51, 65, 85, 0.04);
 }
 
 .pagination-nav__sublabel {
@@ -461,7 +464,6 @@ table,
 .sponsors a:hover {
   filter: none;
   opacity: 1;
-  transform: scale(1.05);
 }
 
 .sponsors a:first-child img {
@@ -509,7 +511,7 @@ html[data-theme='dark'] {
   
   /* Menu colors */
   --ifm-menu-color: #a8a8a6;
-  --ifm-menu-color-background-active: rgba(239, 68, 68, 0.1);
+  --ifm-menu-color-background-active: rgba(51, 65, 85, 0.1);
   --ifm-menu-color-background-hover: rgba(255, 255, 255, 0.05);
   
   /* TOC */
@@ -525,7 +527,7 @@ html[data-theme='dark'] {
   --ifm-footer-link-color: #d4d4d4;
   
   /* Highlighted code */
-  --docusaurus-highlighted-code-line-bg: rgba(239, 68, 68, 0.15);
+  --docusaurus-highlighted-code-line-bg: rgba(51, 65, 85, 0.15);
   
   /* Scrollbar */
   --ifm-scrollbar-track-background-color: #1f1f1f;
@@ -750,7 +752,6 @@ html[data-theme='dark'] {
 
 .footer__link-item:hover {
   color: var(--ifm-color-primary);
-  transform: translateX(4px);
 }
 
 .footer__link-item:hover::before {
@@ -759,11 +760,6 @@ html[data-theme='dark'] {
 
 .footer__logo {
   margin-bottom: 1rem;
-  transition: transform 0.3s ease;
-}
-
-.footer__logo:hover {
-  transform: scale(1.05);
 }
 
 .footer__copyright {
@@ -807,7 +803,6 @@ html[data-theme='dark'] {
 .footer__social-link:hover {
   background: var(--ifm-color-primary);
   color: white;
-  transform: translateY(-2px);
 }
 
 /* Responsive Footer */
@@ -847,24 +842,6 @@ html[data-theme='dark'] {
   .footer__social-link {
     width: 32px;
     height: 32px;
-  }
-}
-
-/* Accessibility - Reduce motion */
-@media (prefers-reduced-motion: reduce) {
-  .footer__link-item,
-  .footer__logo,
-  .footer__social-link {
-    transition: none;
-  }
-  
-  .footer__link-item:hover,
-  .footer__social-link:hover {
-    transform: none;
-  }
-  
-  .footer__logo:hover {
-    transform: none;
   }
 }
 
