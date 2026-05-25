@@ -1,8 +1,8 @@
 @import 'react-medium-image-zoom/dist/styles.css';
-@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Bow Framework dark metal palette (Tailwind slate) */
+  /* BowPHP dark metal palette (Tailwind slate) */
   --ifm-color-primary: #334155;
   --ifm-color-primary-dark: #1E293B;
   --ifm-color-primary-darker: #0F172A;
@@ -15,7 +15,7 @@
   --ifm-font-family-base: "Figtree", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --ifm-font-family-monospace: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --ifm-font-size-base: 16px;
+  --ifm-font-size-base: 17px;
   --ifm-line-height-base: 1.75;
   --ifm-font-weight-normal: 400;
   --ifm-font-weight-semibold: 500;
@@ -157,17 +157,17 @@ code {
   font-size: 0.875em;
   background: var(--ifm-code-background);
   padding: 0.2rem 0.4rem;
-  border-radius: 4px;
+  /* border-radius: 4px; */
   color: var(--ifm-color-primary);
   font-weight: 400;
 }
 
 pre {
   background: var(--ifm-pre-background) !important;
-  border-radius: var(--ifm-pre-border-radius);
+  /* border-radius: var(--ifm-pre-border-radius); */
   padding: var(--ifm-pre-padding);
   margin: 1.5rem 0;
-  border: 1px solid var(--ifm-color-emphasis-200);
+  /* border: 1px solid var(--ifm-color-emphasis-200); */
 }
 
 pre {
@@ -271,6 +271,10 @@ pre code {
   color: var(--ifm-color-primary);
 }
 
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: white;
+}
+
 /* Remove all shadows globally — covers Docusaurus/Infima defaults and any
    third-party component CSS without having to maintain a selector list. */
 *,
@@ -316,8 +320,8 @@ pre code {
 }
 
 .menu__link--active {
-  color: var(--ifm-color-primary);
-  font-weight: 500;
+  /* color: var(--ifm-color-primary); */
+  font-weight: bold;
   background: transparent;
 }
 
@@ -327,7 +331,7 @@ pre code {
 
 .menu__list-item-collapsible .menu__link {
   font-weight: 500;
-  color: var(--ifm-font-color-base);
+  /* color: var(--ifm-font-color-base); */
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.05em;

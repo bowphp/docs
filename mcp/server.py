@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Bow Framework Documentation MCP Server
+BowPHP Documentation MCP Server
 
-A Model Context Protocol server that provides access to Bow Framework documentation.
+A Model Context Protocol server that provides access to BowPHP documentation.
 """
 
 import os
@@ -73,7 +73,7 @@ async def list_tools() -> list[Tool]:
   return [
     Tool(
       name="list_docs",
-      description="List all available Bow Framework documentation files",
+      description="List all available BowPHP documentation files",
       inputSchema={
         "type": "object",
         "properties": {
@@ -104,7 +104,7 @@ async def list_tools() -> list[Tool]:
     ),
     Tool(
       name="search_docs",
-      description="Search for a term across all Bow Framework documentation",
+      description="Search for a term across all BowPHP documentation",
       inputSchema={
         "type": "object",
         "properties": {
@@ -146,7 +146,7 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
     if not files:
       return [TextContent(type="text", text=f"No documentation found for version: {version or 'latest'}")]
 
-    result = f"# Bow Framework Documentation ({version or 'latest'})\n\n"
+    result = f"# BowPHP Documentation ({version or 'latest'})\n\n"
     result += f"Found {len(files)} documentation files:\n\n"
     for f in sorted(files, key=lambda x: x["name"]):
       result += f"- **{f['name']}** ({f['path']})\n"
@@ -251,7 +251,7 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
 
     sidebars = json.loads(sidebars_path.read_text(encoding="utf-8"))
 
-    output = "# Bow Framework Documentation Structure\n\n"
+    output = "# BowPHP Documentation Structure\n\n"
 
     if "docs" in sidebars:
       for category, items in sidebars["docs"].items():
@@ -284,7 +284,7 @@ async def list_resources() -> list[Resource]:
       Resource(
         uri=f"bowphp://docs/{f['name']}",
         name=title,
-        description=f"Bow Framework documentation: {title}",
+        description=f"BowPHP documentation: {title}",
         mimeType="text/markdown",
       )
     )
@@ -316,8 +316,8 @@ async def list_resource_templates() -> list[ResourceTemplate]:
   return [
     ResourceTemplate(
       uriTemplate="bowphp://docs/{name}",
-      name="Bow Framework Documentation",
-      description="Access Bow Framework documentation by name",
+      name="BowPHP Documentation",
+      description="Access BowPHP documentation by name",
     ),
   ]
 

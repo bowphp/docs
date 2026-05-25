@@ -1,6 +1,6 @@
 ---
 id: installation
-title: "Installation de Bow Framework"
+title: "Installation de BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
@@ -34,7 +34,7 @@ Pour créer une nouvelle application Bow, veuillez d'abord vous assurer que votr
 
 ## Créer un projet
 
-Bow Framework utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Donc, avant d'utiliser Bow, il vous faut d'abord installer Composer sur votre machine.
+BowPHP utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Donc, avant d'utiliser Bow, il vous faut d'abord installer Composer sur votre machine.
 
 ### Via Composer
 
@@ -64,13 +64,13 @@ Ouvrez votre navigateur et tapez `http://localhost:8000`.
 
 ### Dossier Public
 
-Après l'installation de Bow Framework, vous devez configurer le `document root` de votre serveur pour qu'il pointe vers le dossier `public`.
+Après l'installation de BowPHP, vous devez configurer le `document root` de votre serveur pour qu'il pointe vers le dossier `public`.
 
 Le fichier `index.php` qui se trouve dans le dossier public sert de point d'entrée pour toutes les requêtes HTTP (c'est le **Front Contrôleur**).
 
 ### Fichiers de configuration
 
-Tous les fichiers de configurations de Bow Framework sont stockés dans le dossier `config`. Toutes les options sont documentées pour vous permettre de vous familiariser avec les options disponibles.
+Tous les fichiers de configurations de BowPHP sont stockés dans le dossier `config`. Toutes les options sont documentées pour vous permettre de vous familiariser avec les options disponibles.
 
 ### Permissions sur les dossiers
 
@@ -106,7 +106,7 @@ location / {
 
 ### Déploiement sur un serveur mutualisé
 
-Pour deployer Bow Framework sur un serveur mutualisé. Il faut déplacer le fichier `index.php` et `.htaccess` à la racine du projet.
+Pour deployer BowPHP sur un serveur mutualisé. Il faut déplacer le fichier `index.php` et `.htaccess` à la racine du projet.
 Et assuré le bien appelé les fichiers du fichier `index.php` ensuite vous pouvez copier le code qui suit dans le fichier htaccess.
 
 ```c

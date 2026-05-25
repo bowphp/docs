@@ -16,7 +16,7 @@ const TeamFeatures = () => {
         <div className="row margin-bottom--lg">
           <div className="col col--12">
             <h2 className={styles.sectionTitle}>
-              Ceux qui utilisent Bow Framework ?
+              Ceux qui utilisent BowPHP ?
             </h2>
             <p className={styles.sectionDescription}>
               Ce projet est utilisé par toutes ces personnes influentes dans les

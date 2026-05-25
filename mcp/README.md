@@ -1,6 +1,6 @@
-# Bow Framework Docs MCP Server
+# BowPHP Docs MCP Server
 
-A Model Context Protocol (MCP) server that provides access to Bow Framework documentation.
+A Model Context Protocol (MCP) server that provides access to BowPHP documentation.
 
 ## Features
 

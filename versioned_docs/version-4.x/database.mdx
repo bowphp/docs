@@ -1,6 +1,6 @@
 ---
 id: database
-title: "Base de données dans Bow Framework"
+title: "Base de données dans BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
@@ -356,7 +356,7 @@ create table `pets` (
 );
 ```
 
-Pour faire une jointure dans Bow Framework c'est très simple en fait. Pour ce faire on utilise la méthode `join`.
+Pour faire une jointure dans BowPHP c'est très simple en fait. Pour ce faire on utilise la méthode `join`.
 
 ```php
 $results = table('pets')->join('autors', 'authors.id', 'pets.author_id')->get();

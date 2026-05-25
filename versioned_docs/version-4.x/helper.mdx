@@ -51,7 +51,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Les helpers sont des fonctions raccourcis chargées dans l'application qui permettent de faire rapidement certaines actions. Voici la liste des helpers qui existent dans l'application Bow Framework. Voici les helpers disponibles dans l'application.
+Les helpers sont des fonctions raccourcis chargées dans l'application qui permettent de faire rapidement certaines actions. Voici la liste des helpers qui existent dans l'application BowPHP. Voici les helpers disponibles dans l'application.
 
 ## Helper de gestion HTTP
 
@@ -93,7 +93,7 @@ Les helpers sont des fonctions raccourcis chargées dans l'application qui perme
 
 ### app
 
-Ce helper permet d'avoir accès au containeur de Bow Framework.
+Ce helper permet d'avoir accès au containeur de BowPHP.
 
 ```php
 app("mail");
@@ -101,7 +101,7 @@ app("mail");
 
 ### config
 
-Permet d'avoir accès au configuration de Bow Framework.
+Permet d'avoir accès au configuration de BowPHP.
 
 ```php
 config("mail")
@@ -153,7 +153,7 @@ set_status_code(404);
 
 ### view
 
-Permet de complie une vue dans Bow Framework.
+Permet de complie une vue dans BowPHP.
 
 ```php
 return view("view.name", ["name" => "papac"], $code = 200);
@@ -161,7 +161,7 @@ return view("view.name", ["name" => "papac"], $code = 200);
 
 ### session
 
-Permet de manipuler l'interface de session dans Bow Framework.
+Permet de manipuler l'interface de session dans BowPHP.
 
 ```php
 session($value, $default = null)

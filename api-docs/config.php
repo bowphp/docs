@@ -22,7 +22,7 @@ $versions = GitVersionCollection::create($directory)
 
 return new Doctum($iterator, [
     'versions'             => $versions,
-    'title'                => 'Bow Framework',
+    'title'                => 'BowPHP',
     'build_dir'            => __DIR__ . '/../build/api/%version%',
     'cache_dir'            => __DIR__. '/.cache/bow_api_buid_cache/api/%version%',
     'source_dir'           => dirname($directory) . '/',

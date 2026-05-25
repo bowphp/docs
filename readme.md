@@ -1,6 +1,6 @@
-# Bow Framework
+# BowPHP
 
-The Bow Framework documentation [web site](https://bowphp.com)
+The BowPHP documentation [web site](https://bowphp.com)
 
 ## Installation
 
@@ -24,7 +24,7 @@ Edit the content of `bowphp-docs/docs` for update documentation and save.
 
 ## Contributing
 
-Thank you for considering contributing to Bow Framework! The contribution guide is in the framework documentation.
+Thank you for considering contributing to BowPHP! The contribution guide is in the framework documentation.
 
 - [Franck DAKIA](https://github.com/papac)
 - [Thank's collaborators](https://github.com/bowphp/docs/graphs/contributors)

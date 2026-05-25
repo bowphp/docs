@@ -1,7 +1,7 @@
 FROM python:3.12-slim
 
-LABEL maintainer="Bow Framework Team"
-LABEL description="MCP Server for Bow Framework Documentation"
+LABEL maintainer="BowPHP Team"
+LABEL description="MCP Server for BowPHP Documentation"
 
 WORKDIR /app
 

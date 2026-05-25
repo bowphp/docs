@@ -9,7 +9,7 @@ const FeatureList = [
     description: (
       <>
         Simple, Rapide et Robuste. Concentrez-vous sur votre projet sans vous soucier de la complexité. 
-        Bow Framework offre une architecture claire et intuitive qui vous permet de développer rapidement 
+        BowPHP offre une architecture claire et intuitive qui vous permet de développer rapidement 
         tout en maintenant un code propre et maintenable.
       </>
     ),
@@ -31,7 +31,7 @@ const FeatureList = [
     description: (
       <>
         Structure personnalisable à l'infini. Support de plugin et composants réutilisables. 
-        Bow Framework s'adapte à vos besoins spécifiques grâce à son architecture modulaire 
+        BowPHP s'adapte à vos besoins spécifiques grâce à son architecture modulaire 
         et son système de packages, vous permettant d'étendre les fonctionnalités selon vos exigences.
       </>
     ),
@@ -80,7 +80,7 @@ export default function HomepageFeatures() {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
             }}>
-              Pourquoi choisir Bow Framework ?
+              Pourquoi choisir BowPHP ?
             </h2>
             <p className="text--center" style={{
               fontSize: '1.125rem',
