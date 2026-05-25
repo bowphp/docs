@@ -1,7 +1,7 @@
 [project]
 name = "bowphp-docs-mcp"
 version = "1.0.0"
-description = "MCP server for Bow Framework documentation"
+description = "MCP server for BowPHP documentation"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

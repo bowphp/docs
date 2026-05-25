@@ -19,9 +19,9 @@
     "message": "Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement.",
     "description": "The label of footer link with label=Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement. linking to #"
   },
-  "link.item.label.Commencer Bow Framework": {
-    "message": "Commencer Bow Framework",
-    "description": "The label of footer link with label=Commencer Bow Framework linking to https://bowphp.com/docs/installation"
+  "link.item.label.Commencer BowPHP": {
+    "message": "Commencer BowPHP",
+    "description": "The label of footer link with label=Commencer BowPHP linking to https://bowphp.com/docs/installation"
   },
   "link.item.label.Voulez-vous contribuer ?": {
     "message": "Voulez-vous contribuer ?",

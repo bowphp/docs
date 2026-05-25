@@ -1,6 +1,6 @@
 ---
 id: mail
-title: "Envoi de mail dans Bow Framework"
+title: "Envoi de mail dans BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
@@ -28,7 +28,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Envoyer des emails dans une application est monnaie courante. Bow Framework intègre un système d'envoi d'email facile à utiliser. Vous pouvez utiliser ce système à travers plusieurs pilotes communement appelés drivers:
+Envoyer des emails dans une application est monnaie courante. BowPHP intègre un système d'envoi d'email facile à utiliser. Vous pouvez utiliser ce système à travers plusieurs pilotes communement appelés drivers:
 
 - **SMTP** - Envoie direct via un serveur SMTP
 - **SES** - Vous pouvez aussi utiliser [SES](https://aws.amazon.com/fr/ses/)
@@ -95,7 +95,7 @@ Mail::send('email-view', $data, function (Message $message) {
 
 ### API de Message
 
-Bow Framework va donc passer une instance de `Bow\Mail\Message` qui vous permettra d'ajouter des informations supplémentaires à votre email, notamment le destinataire.
+BowPHP va donc passer une instance de `Bow\Mail\Message` qui vous permettra d'ajouter des informations supplémentaires à votre email, notamment le destinataire.
 
 ##### `addHeader`, ajout des entêtes personnalisés
 

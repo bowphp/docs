@@ -289,7 +289,7 @@ use Bow\Http\Client\HttpClient;
 
 $client = new HttpClient('https://api.example.com');
 $response = $client
-    ->setUserAgent('MyApp/1.0 (Bow Framework)')
+    ->setUserAgent('MyApp/1.0 (BowPHP)')
     ->get('/users');
 
 echo $response->getContent();

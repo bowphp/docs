@@ -16,7 +16,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
   - [Transformer un Token](#transformer-un-token)
   - [Vérifier un Token](#vérifier-un-token)
   - [Valider un Token](#valider-un-token)
-- [Bow Framework et Policier](#bow-framework-et-policier)
+- [BowPHP et Policier](#bow-framework-et-policier)
   - [Personnalisation du Middleware](#personnalisation-du-middleware)
     - [Publier le middleware](#publier-le-middleware)
 
@@ -265,9 +265,9 @@ $claims = [
 policier('validate', $token, $claims);
 ```
 
-## Bow Framework et Policier
+## BowPHP et Policier
 
-Si vous utilisez [Bow Framework](https://github.com/bowphp/app), vous pouvez utiliser le plugin de configuration `Policier\Bow\PolicierConfiguration::class` et le middleware `Policier\Bow\PolicierMiddleware::class`.
+Si vous utilisez [BowPHP](https://github.com/bowphp/app), vous pouvez utiliser le plugin de configuration `Policier\Bow\PolicierConfiguration::class` et le middleware `Policier\Bow\PolicierMiddleware::class`.
 
 Relier la configuration sur `app\Kernel\Loader.php`:
 

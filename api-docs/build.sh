@@ -2,7 +2,7 @@ rm -rf ./.cache/framework || {
   echo "Failed to remove cache directory"
 }
 
-# Ge the bow framework source
+# Ge the BowPHP source
 [ -d ./framework ] || mkdir .cache
 
 [ -d ./framework ] || git clone https://github.com/bowphp/framework ./.cache/framework

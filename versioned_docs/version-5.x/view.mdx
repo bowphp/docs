@@ -14,7 +14,7 @@ Les vues contiennent le code HTML fourni par votre application et séparent votr
 ## Configuration
 
 :::tip Moteurs de template
-Bow Framework implémente 2 moteurs de template et le template par défaut est **[Tintin](./tintin)**.
+BowPHP implémente 2 moteurs de template et le template par défaut est **[Tintin](./tintin)**.
 :::
 
 La configuration des vues se trouve dans le fichier `view.php` du dossier `config/`.
@@ -122,7 +122,7 @@ class HomeController extends Controller
 ## Introduction Tintin
 
 :::info Tintin
-Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP. Par défaut, Tintin est le moteur de template utilisé par Bow Framework.
+Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP. Par défaut, Tintin est le moteur de template utilisé par BowPHP.
 :::
 
 ```t
@@ -552,7 +552,7 @@ Sortie après compilation:
 
 ### Ajouter vos directives via la configuration
 
-Pour enregistrer vos directives au démarrage de Bow Framework, créez (ou
+Pour enregistrer vos directives au démarrage de BowPHP, créez (ou
 modifiez) un provider dans `app/Configurations/` qui étend
 `Bow\Configuration\Configuration` :
 

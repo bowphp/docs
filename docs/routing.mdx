@@ -1,6 +1,6 @@
 ---
 id: routing
-title: "Routage dans Bow Framework"
+title: "Routage dans BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
@@ -11,17 +11,17 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 Le routage est un élément essentiel dans le développement d'une application web. Il permet de relier une URL à une action spécifique dans le contrôleur de l'application.
 :::
 
-Dans Bow Framework, le système de routage est intégré à l'instance de l'application et exposé dans vos fichiers de routes via la variable `$router`.
+Dans BowPHP, le système de routage est intégré à l'instance de l'application et exposé dans vos fichiers de routes via la variable `$router`.
 
 Les routes de l'application se définissent dans le fichier `app.php`, qui se trouve dans le dossier `routes` de votre projet.
 
 ## Mappage d'URL
 
-Le système de routage de Bow Framework permet de faire correspondre une URL à un contrôleur ou une action. Cela se fait en associant une URL à une méthode HTTP (`GET`, `POST`, `PUT`, `DELETE`, etc.) et en définissant l'action à exécuter lorsqu'une requête correspond à cette route.
+Le système de routage de BowPHP permet de faire correspondre une URL à un contrôleur ou une action. Cela se fait en associant une URL à une méthode HTTP (`GET`, `POST`, `PUT`, `DELETE`, etc.) et en définissant l'action à exécuter lorsqu'une requête correspond à cette route.
 
 ### Structure du Routage
 
-Le routage dans Bow Framework s'écrit ainsi :
+Le routage dans BowPHP s'écrit ainsi :
 
 ```php
 $router->[method](url, action);
@@ -42,7 +42,7 @@ $router->get('/', function () {
 ```
 
 :::tip Qu'est-ce qu'une closure ?
-Une *closure* est une fonction anonyme qui peut être définie à la volée et utilisée dans le routage de Bow Framework. Pour plus d'informations, consultez la [documentation sur les closures](http://php.net/manual/fr/class.closure.php).
+Une *closure* est une fonction anonyme qui peut être définie à la volée et utilisée dans le routage de BowPHP. Pour plus d'informations, consultez la [documentation sur les closures](http://php.net/manual/fr/class.closure.php).
 :::
 
 #### Avec un tableau de fonctions (callables) :
@@ -88,7 +88,7 @@ $router->get('/', UserController::class);
 
 ## Liste des Méthodes de Mappage
 
-Voici les principales méthodes de routage dans Bow Framework :
+Voici les principales méthodes de routage dans BowPHP :
 
 ```php
 $router->get($url, $action);
@@ -158,7 +158,7 @@ Les navigateurs ne supportent pas les méthodes `DELETE`, `PUT` et `PATCH` nativ
 <input type="hidden" name="_method" value="DELETE">
 ```
 
-Ceci va permettre à Bow Framework de comprendre que vous voulez contacter la route associée à la méthode `DELETE`.
+Ceci va permettre à BowPHP de comprendre que vous voulez contacter la route associée à la méthode `DELETE`.
 :::
 
 ## Mappage Multiple
@@ -225,7 +225,7 @@ $router->prefix('/users', function () use ($router) {
 
 ## Contraintes de Sous-domaine
 
-Bow Framework permet de restreindre des routes à un domaine ou sous-domaine spécifique.
+BowPHP permet de restreindre des routes à un domaine ou sous-domaine spécifique.
 
 ### Contrainte sur une route individuelle avec `withDomain`
 
@@ -388,7 +388,7 @@ $router->get('/:name', function ($name) {
 
 ### Composition d'Actions
 
-Bow Framework permet également de combiner un contrôleur et un middleware pour une route spécifique. Voici un exemple :
+BowPHP permet également de combiner un contrôleur et un middleware pour une route spécifique. Voici un exemple :
 
 ```php
 $router->get('/:name', [
@@ -399,7 +399,7 @@ $router->get('/:name', [
 
 ## Utilisation de la méthode `route`
 
-La méthode `route` dans Bow Framework permet de définir une route de manière plus simple et flexible. Elle accepte un tableau de paramètres, ce qui vous permet de personnaliser la route de façon plus détaillée.
+La méthode `route` dans BowPHP permet de définir une route de manière plus simple et flexible. Elle accepte un tableau de paramètres, ce qui vous permet de personnaliser la route de façon plus détaillée.
 
 ### Prototype de la méthode `route`
 
@@ -525,7 +525,7 @@ chaîne `Controller::method`, ou tableau avec `controller` / `middleware`.
 
 ## Routage par attributs
 
-Pour les projets en PHP 8+, Bow Framework permet de déclarer les routes
+Pour les projets en PHP 8+, BowPHP permet de déclarer les routes
 directement sur les classes contrôleurs via des attributs. Plus besoin de
 maintenir un fichier de routes central.
 

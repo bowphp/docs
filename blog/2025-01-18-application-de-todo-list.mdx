@@ -197,7 +197,7 @@ $app->delete('/tasks/{id}', [TaskController::class, 'destroy']);
 ```
 
 :::info Note sur les méthodes HTTP
-Bow Framework gère automatiquement la méthode spoofing via le champ `_method` dans les formulaires. 
+BowPHP gère automatiquement la méthode spoofing via le champ `_method` dans les formulaires. 
 Cela permet d'utiliser PUT et DELETE même si HTML ne supporte nativement que GET et POST.
 :::
 
@@ -351,7 +351,7 @@ Créer le fichier de template `templates/tasks.tintin.php` et ajoutez-y le conte
 ```
 
 :::tip Sécurité CSRF
-Notez l'utilisation de `{{ csrf_field() }}` dans tous les formulaires. C'est une protection CSRF intégrée dans Bow Framework qui empêche les attaques de type Cross-Site Request Forgery.
+Notez l'utilisation de `{{ csrf_field() }}` dans tous les formulaires. C'est une protection CSRF intégrée dans BowPHP qui empêche les attaques de type Cross-Site Request Forgery.
 :::
 
 ### **Étape 6 : Lancer l'application**
@@ -399,13 +399,13 @@ composer dump-autoload --optimize
 - Désactivez le mode debug (`APP_DEBUG=false`)
 - Utilisez des mots de passe forts pour la base de données
 - Configurez HTTPS sur votre serveur
-- Gardez Bow Framework et ses dépendances à jour
+- Gardez BowPHP et ses dépendances à jour
 - Validez toujours les entrées utilisateur
 :::
 
 ### **Ressources utiles**
 
-- [Documentation officielle de Bow Framework](https://bowphp.com/docs)
+- [Documentation officielle de BowPHP](https://bowphp.com/docs)
 - [Guide de migration](https://bowphp.com/docs/migration)
 - [Guide ORM Barry](https://bowphp.com/docs/orm)
 - [Validation des données](https://bowphp.com/docs/validation)

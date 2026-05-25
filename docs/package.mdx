@@ -7,7 +7,7 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le système de packages de Bow Framework permet d'étendre votre application en greffant des modules externes réutilisables. Cette architecture modulaire facilite la maintenance et le partage de fonctionnalités entre projets.
+Le système de packages de BowPHP permet d'étendre votre application en greffant des modules externes réutilisables. Cette architecture modulaire facilite la maintenance et le partage de fonctionnalités entre projets.
 
 ## Création d'un package
 
@@ -275,7 +275,7 @@ class EmailCheckerConfiguration extends Configuration
 ```
 
 :::info Chargement automatique des configurations
-Les fichiers PHP placés dans le dossier `config/` sont automatiquement chargés par Bow Framework. Accédez-y avec la notation pointée : `$config['email-checker.blocked_domains']`.
+Les fichiers PHP placés dans le dossier `config/` sont automatiquement chargés par BowPHP. Accédez-y avec la notation pointée : `$config['email-checker.blocked_domains']`.
 :::
 
 :::tip Injection de dépendances
@@ -345,7 +345,7 @@ config/
 
 ## Voir aussi
 
-- [Conteneur d'injection de dépendances](./container) - Comprendre le DIC de Bow Framework
+- [Conteneur d'injection de dépendances](./container) - Comprendre le DIC de BowPHP
 - [Services](./service) - Créer et utiliser des services
 - [Configuration](./configuration) - Gérer les fichiers de configuration
 - [Routing](./routing) - Définir des routes dans votre application

@@ -16,12 +16,12 @@ const isBuildFast = !!process.env.BUILD_FAST;
 const baseUrl = process.env.BASE_URL ?? "/";
 
 function getNextVersionName() {
-  return "Canary";
+  return "CANARY";
 }
 
 module.exports = {
   baseUrl,
-  title: "Bow Framework",
+  title: "BOWPHP",
   tagline: "Simplify Your Web Development",
   url: "https://bowphp.com",
   organizationName: "bowphp",
@@ -49,7 +49,7 @@ module.exports = {
   customFields: {
     startTutorial: "/blog/installation",
     landingText:
-      "Bow Framework a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement et est apprécié par <strong>+2500</strong> Développeur(se)s",
+      "BowPHP a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement et est apprécié par <strong>+2500</strong> Développeur(se)s",
     apiUrl: "https://bowphp.com/api/master",
     users: [
       {
@@ -62,7 +62,7 @@ module.exports = {
       {
         caption: "Franck DAKIA",
         description:
-          "Principal Maintainer, Working on <a href='https://github.com/bowphp'>Bow Framework</a> and <a href='https://codelearningclub.com'>Code Learning Club</a>. Passionate about software development and DevOps lover ❤️",
+          "Principal Maintainer, Working on <a href='https://github.com/bowphp'>BowPHP</a> and <a href='https://codelearningclub.com'>Code Learning Club</a>. Passionate about software development and DevOps lover ❤️",
         image: "https://avatars1.githubusercontent.com/u/9353811?s=460&v=4",
         infoLink: "https://github.com/papac",
         pinned: true,
@@ -246,7 +246,7 @@ module.exports = {
       {
         name: "keywords",
         content:
-          "php, bowphp, bow framework, tintin, routing, i18n, request, http",
+          "php, bowphp, BowPHP, tintin, routing, i18n, request, http",
       },
       {
         name: "twitter:card",
@@ -255,25 +255,25 @@ module.exports = {
     ],
     navbar: {
       hideOnScroll: true,
-      title: "Bow Framework",
+      title: "BOWPHP",
       logo: {
         src: "img/bow-logo.svg",
-        alt: "Bow Framework",
+        alt: "BowPHP",
       },
       items: [
         {
           to: "docs/installation",
-          label: "Documentation",
+          label: "DOCUMENTATION",
           position: "left",
         },
         {
           to: "blog",
-          label: "Blog",
+          label: "BLOG",
           position: "left",
         },
         {
           href: "https://bowphp.com/api/master",
-          label: "API Reference",
+          label: "API REFERENCE",
           position: "left",
         },
         {
@@ -287,13 +287,18 @@ module.exports = {
         },
         {
           href: "https://t.me/+PiAXH-w9qLUyOTU0",
-          label: "Telegram",
+          label: "COMMUNAUTÉ",
+          position: "right",
+        },
+        {
+          href: "https://shop.papac.dev",
+          label: "SHOP",
           position: "right",
         },
         {
           href: "https://github.com/bowphp",
           className: "header-github-link",
-          "aria-label": "GitHub repository",
+          "aria-label": "GITHUB REPOSITORY",
           position: "right",
         },
       ],
@@ -326,7 +331,7 @@ module.exports = {
           title: "Documentation",
           items: [
             {
-              label: "Commencer Bow Framework",
+              label: "Commencer BowPHP",
               to: "https://bowphp.com/docs/installation",
             },
             {
@@ -383,6 +388,7 @@ module.exports = {
     },
     prism: {
       darkTheme: prismThemes.vsDark,
+      theme: prismThemes.github,
       additionalLanguages: ["php", "javascript", "css", "typescript", "bash"],
     },
   },
@@ -403,7 +409,7 @@ module.exports = {
       innerHTML: JSON.stringify({
         "@context": "https://schema.org/",
         "@type": "Organization",
-        name: "Bow Framework",
+        name: "BowPHP",
         url: "https://bowphp.com",
         logo: "https://bowphp.com/img/bow.png",
       }),
