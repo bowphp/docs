@@ -198,10 +198,62 @@ const count = ref(0);
 
 ### Helper asset
 
+Le helper `asset()` construit simplement une URL vers un fichier statique du
+dossier `public/`. Il ne connaît pas le hash de cache ajouté par Vite en
+production — réservez-le aux fichiers dont le nom ne change pas (favicon,
+images statiques, etc.).
+
 ```php
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 <script src="{{ asset('js/app.js') }}"></script>
 ```
+
+### Helper vite (assets compilés)
+
+En production, `npm run build` ajoute un hash au nom de chaque fichier
+(`app-CBsLkjX9.js`) pour le cache-busting, et enregistre la correspondance
+nom logique → fichier réel dans un **manifeste**. Le helper `vite()` lit ce
+manifeste et retourne l'URL du fichier compilé correspondant :
+
+```php title="templates/layouts/default.tintin.php"
+<link rel="stylesheet" href="{{ vite('css/app.css') }}">
+<script type="module" src="{{ vite('js/app.js') }}"></script>
+```
+
+**Signature :**
+
+```php
+vite(string $file, bool $absolute = false): string
+```
+
+- `$file` : la clé d'entrée dans le manifeste (ex. `js/app.js`). Chaque fichier
+  référencé doit être déclaré comme **entrée** (`input`) dans `vite.config.js`
+  pour apparaître dans le manifeste.
+- `$absolute` : si `true`, l'URL est préfixée par l'URL de l'application
+  (via `url()`) au lieu d'être relative.
+- Lève une `Exception` si l'entrée n'existe pas dans le manifeste.
+
+Le helper cherche le manifeste, dans l'ordre, aux emplacements suivants :
+
+```
+public/build/.vite/manifest.json
+public/build/manifest.json
+public/.vite/manifest.json
+manifest.json          (racine du projet)
+```
+
+:::warning Chemin servi
+`vite()` renvoie des URLs préfixées par `/build/` (ex.
+`/build/js/app-CBsLkjX9.js`). Les fichiers compilés doivent donc être servis
+sous `/build/` : assurez-vous que la sortie du build (`outDir` dans
+`vite.config.js`) et l'emplacement du manifeste sont cohérents avec ce préfixe.
+:::
+
+:::tip Développement vs production
+Pendant `npm run dev`, les assets sont servis par le serveur Vite avec HMR.
+Le helper `vite()` n'est utile **qu'après** un `npm run build`, quand le
+manifeste existe. Pensez à lancer le build avant de tester en mode production.
+:::
 
 ## Variables d'environnement
 

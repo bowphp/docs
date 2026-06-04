@@ -101,6 +101,27 @@ aux cas où l'origine de la donnée est importante (par ex. ne *jamais* lire
 `?admin=1` depuis l'URL).
 :::
 
+### Corps JSON et PUT
+
+Bow décode automatiquement le corps de la requête : si l'en-tête
+`Content-Type` vaut `application/json`, le JSON est décodé et fusionné dans les
+données accessibles via `get()`, `all()` et `post()`. Aucune étape manuelle
+n'est nécessaire pour consommer une API JSON :
+
+```php
+// Requête POST avec Content-Type: application/json et corps {"name": "Franck"}
+$name = $request->get('name'); // "Franck"
+$body = $request->post();       // ['name' => 'Franck']
+```
+
+Les corps de requêtes `PUT` (form-urlencoded) sont également analysés
+automatiquement et disponibles via les mêmes méthodes.
+
+:::warning JSON invalide
+Si le `Content-Type` est `application/json` mais que le corps n'est pas un JSON
+valide, Bow lève une `Bow\Http\Exception\BadRequestException`.
+:::
+
 ### Filtrer les données
 
 ```php
@@ -109,6 +130,10 @@ $data = $request->only(['name', 'email']);
 
 // Exclure certains champs
 $data = $request->ignore(['password', 'password_confirmation']);
+
+// Les deux acceptent aussi une liste d'arguments
+$data = $request->only('name', 'email');
+$data = $request->ignore('password', 'password_confirmation');
 ```
 
 ### Vérifier l'existence

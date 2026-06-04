@@ -352,6 +352,52 @@ $id = Database::lastInsertId();
 $id = Database::lastInsertId('pets_id_seq');
 ```
 
+## Événement de requête
+
+À chaque exécution d'une requête préparée d'écriture, Bow émet un événement
+`Bow\Database\QueryEvent`. C'est le point d'accroche idéal pour journaliser le
+SQL exécuté, mesurer les requêtes lentes ou débugger en développement.
+
+L'événement expose deux propriétés en **lecture seule** :
+
+| Propriété | Type | Description |
+| --------- | ---- | ----------- |
+| `$event->sql` | `string` | La requête SQL exécutée |
+| `$event->bindings` | `array` | Les valeurs liées (paramètres) |
+
+### Écouter l'événement
+
+Enregistrez un écouteur sur la classe de l'événement via le helper `event()`.
+L'instance `QueryEvent` est passée à votre callback :
+
+```php
+use Bow\Database\QueryEvent;
+
+event()->on(QueryEvent::class, function (QueryEvent $event) {
+    logger()->debug($event->sql, $event->bindings);
+});
+```
+
+Le plus souvent, on déclare cet écouteur dans la méthode `boot()` d'un
+[service provider](./service) pour qu'il soit actif sur toute l'application.
+
+:::info Requêtes concernées
+L'événement est déclenché par les requêtes d'écriture préparées :
+`Database::insert()` (avec des valeurs liées), `Database::update()` et
+`Database::delete()` — donc également par les écritures du Query Builder et de
+l'[ORM Barry](./orm) qui passent par ces méthodes.
+
+Il n'est **pas** émis par `Database::select()` / `selectOne()`, ni par
+`Database::statement()` (requêtes DDL telles que `CREATE`, `ALTER`,
+`TRUNCATE`), ni par un `insert()` sans valeurs liées.
+:::
+
+:::tip Événements de modèle
+Pour réagir aux opérations d'un modèle précis (`creating`, `updated`,
+`deleting`, etc.) plutôt qu'à toutes les requêtes SQL, utilisez les
+[événements de modèle](./orm#événements-de-modèle) de Barry.
+:::
+
 ## Jointures SQL
 
 Les jointures permettent de combiner des données de plusieurs tables. Considérons les tables suivantes:

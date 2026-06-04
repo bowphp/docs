@@ -595,23 +595,108 @@ $tags = Post::retrieve(1)->tags; // → Collection de Tag
 
 Toutes les méthodes acceptent deux paramètres optionnels pour préciser les
 colonnes de jointure. Les noms par défaut sont déduits du nom de la table
-liée (`users` → `user_id`) :
+liée (`users` → `user_id`) et de la clé primaire du modèle (`id`).
+
+:::warning Ordre des arguments
+`hasOne` et `hasMany` n'attendent **pas** leurs deux clés dans le même ordre.
+Reportez-vous aux signatures ci-dessous plutôt qu'à votre intuition.
+:::
 
 ```php
-// hasOne / hasMany : $foreign_key sur la table liée, $local_key sur cette table
-$this->hasMany(Post::class, 'author_id', 'id');
+// hasOne(related, $foreign_key [table liée], $local_key [cette table])
+$this->hasOne(Profile::class, 'user_id', 'id');
 
-// belongsTo : $foreign_key sur cette table, $local_key sur la table liée
+// hasMany(related, $local_key [cette table], $foreign_key [table liée])
+$this->hasMany(Post::class, 'id', 'author_id');
+
+// belongsTo(related, $foreign_key [cette table], $local_key [table liée])
 $this->belongsTo(User::class, 'author_id', 'id');
 
-// belongsToMany : $primary_key sur cette table, $foreign_key sur la table liée
-$this->belongsToMany(Tag::class, 'post_id', 'tag_id');
+// belongsToMany(related, $primary_key [cette table], $foreign_key [table liée])
+$this->belongsToMany(Tag::class, 'id', 'tag_id');
 ```
 
 :::tip Différence appel-méthode / accès-propriété
 - `$post->author()` — retourne l'objet de relation (utile pour ajouter des
   contraintes : `$post->author()->where('active', true)->first()`).
 - `$post->author` — retourne **les résultats** (instance / Collection).
+:::
+
+### Chargement paresseux (lazy loading)
+
+Quand vous accédez à une relation **comme une propriété**, Barry exécute la
+requête à ce moment-là. Le résultat est ensuite conservé en mémoire sur
+l'instance du modèle : les accès suivants renvoient le **même** objet déjà
+chargé sans relancer de requête.
+
+```php
+$post = Post::retrieve(42);
+
+$post->author;  // 1 requête exécutée ici
+$post->author;  // aucune requête : même instance renvoyée
+```
+
+:::warning Problème N+1
+Le chargement paresseux est pratique mais devient coûteux dans une boucle :
+chaque modèle déclenche sa propre requête.
+
+```php
+$posts = Post::all();        // 1 requête
+
+foreach ($posts as $post) {
+    echo $post->author->name; // 1 requête PAR post → N+1 requêtes
+}
+```
+
+Pour 100 posts, cela fait 101 requêtes. La section suivante montre comment
+réduire ce nombre à 2.
+:::
+
+### Chargement anticipé (eager loading)
+
+La méthode `eager()` permet de précharger une ou plusieurs relations en une
+seule requête groupée (`WHERE ... IN (...)`), évitant ainsi le problème N+1.
+Les relations sont résolues juste après la requête principale et pré-affectées
+à chaque modèle parent.
+
+```php
+use App\Models\Post;
+
+// 2 requêtes au total, quel que soit le nombre de posts :
+//   1) SELECT * FROM posts
+//   2) SELECT * FROM users WHERE id IN (...)
+$posts = Post::eager('author')->get();
+
+foreach ($posts as $post) {
+    echo $post->author->name; // aucune requête supplémentaire
+}
+```
+
+Charger plusieurs relations à la fois en passant un tableau :
+
+```php
+$posts = Post::eager(['author', 'tags'])->get();
+```
+
+`eager()` fonctionne avec les quatre types de relations (`hasOne`, `hasMany`,
+`belongsTo`, `belongsToMany`). Une fois préchargée, la relation se comporte
+exactement comme en accès-propriété, mais sans requête additionnelle :
+
+```php
+$masters = PetMaster::eager(['pets', 'firstPet'])->get();
+
+foreach ($masters as $master) {
+    $master->pets;     // Collection déjà chargée
+    $master->firstPet; // instance déjà chargée
+}
+```
+
+:::tip À retenir
+- `eager()` se chaîne sur la requête et s'applique au moment du `get()`.
+- Si aucun enregistrement lié n'existe, une relation « plusieurs » renvoie une
+  `Collection` vide et une relation « un » renvoie `null`.
+- La liste des relations à précharger est réinitialisée après chaque `get()` :
+  elle ne « fuit » pas sur la requête suivante du même modèle.
 :::
 
 ## Propriétés de configuration
