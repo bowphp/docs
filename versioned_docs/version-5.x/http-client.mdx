@@ -492,6 +492,47 @@ $response = $client
 Ne jamais désactiver la vérification SSL en production. Cela expose votre application à des attaques man-in-the-middle.
 :::
 
+## Gestion des exceptions
+
+Il faut distinguer **deux niveaux d'erreur** :
+
+1. **Erreur de transport** — la requête n'a pas pu aboutir du tout (connexion
+   refusée, hôte introuvable, timeout dépassé, échec de la négociation SSL).
+   Dans ce cas, le client lève une `Bow\Http\Client\HttpClientException`
+   portant le message et le code d'erreur cURL.
+2. **Réponse HTTP en erreur** — la requête a abouti mais le serveur répond avec
+   un statut d'erreur (`404`, `500`, …). **Aucune exception n'est levée** :
+   vous obtenez une instance `Response` et inspectez son statut via
+   `isFailed()` / `getCode()`.
+
+```php
+use Bow\Http\Client\HttpClient;
+use Bow\Http\Client\HttpClientException;
+
+$client = new HttpClient('https://api.example.com');
+
+try {
+    $response = $client->acceptJson()->get('/users');
+
+    // La requête a abouti : vérifier le statut HTTP renvoyé
+    if ($response->isFailed()) {
+        // 4xx / 5xx — pas d'exception, on lit le code
+        logger()->warning('API a répondu ' . $response->getCode());
+        return;
+    }
+
+    $users = $response->toArray();
+} catch (HttpClientException $e) {
+    // Échec réseau / SSL / timeout : la requête n'a jamais abouti
+    logger()->error('Échec HTTP: ' . $e->getMessage(), ['code' => $e->getCode()]);
+}
+```
+
+:::note Extension cURL requise
+Le client repose sur l'extension `curl`. Si elle n'est pas chargée, instancier
+`HttpClient` lève une `BadFunctionCallException`.
+:::
+
 ## La classe `Response`
 
 La classe `Response` encapsule toutes les informations retournées par une requête HTTP : contenu, en-têtes, code de statut et métriques de performance. Elle offre une interface simple et intuitive pour manipuler les réponses.
