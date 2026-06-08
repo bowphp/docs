@@ -100,28 +100,28 @@ module.exports = {
       {
         caption: "Adjemin",
         description:
-          'Adjemin est une application mobile qui vous permet de faire du e-commerce sans intermédiaire. La Startup met également à votre disposition <a href="https://smartlivraison.com">SmartLivraison</a> qui vous permet de gérer mieux votre services de livraison en temps réel.',
+          'Adjemin is a mobile application that lets you do e-commerce without intermediaries. The startup also offers <a href="https://smartlivraison.com">SmartLivraison</a>, which helps you better manage your delivery services in real time.',
         image: "/img/logoadjemin.png",
         infoLink: "https://adjemin.com",
       },
       {
         caption: "Akil Technologies",
         description:
-          "En existence depuis 2015, AKIL a la base c&rsquo;est la mise en avant du savoir faire technologique Africain et plus précisément ivoirien, depuis Abidjan où nous sommes basés. Nous sommes fiers de nos équipes, représentatives du talent formé localement aux normes de développement internationales.",
+          "In existence since 2015, AKIL is fundamentally about showcasing African — and more specifically Ivorian — technological expertise, from Abidjan where we are based. We are proud of our teams, representative of talent trained locally to international development standards.",
         image: "/img/logoakil.png",
         infoLink: "https://akiltechnologies.com",
       },
       {
         caption: "Etudesk",
         description:
-          "Améliorer l'expérience d'apprentissage pour la nouvelle génération de professionnels.",
+          "Improving the learning experience for the new generation of professionals.",
         image: "/img/logoetudesk.png",
         infoLink: "https://www.etudesk.com",
       },
       {
         caption: "Papac&Co",
         description:
-          "Nous vous aidons dans la réalisation de votre projet digital.",
+          "We help you bring your digital project to life.",
         image: "/img/papacandco.png",
         infoLink: "https://papacandco.com/services",
       },
@@ -259,25 +259,26 @@ module.exports = {
     ],
     navbar: {
       hideOnScroll: true,
-      title: "BOWPHP",
+      title: "Bowphp",
       logo: {
         src: "img/bow-logo.svg",
+        srcDark: "img/bow-logo-dark.svg",
         alt: "BowPHP",
       },
       items: [
         {
           to: "docs/installation",
-          label: "DOCUMENTATION",
+          label: "Documentation",
           position: "left",
         },
         {
           to: "blog",
-          label: "BLOG",
+          label: "Blog",
           position: "left",
         },
         {
           href: "https://bowphp.com/api/master",
-          label: "API REFERENCE",
+          label: "Api reference",
           position: "left",
         },
         {
@@ -291,12 +292,12 @@ module.exports = {
         },
         {
           href: "https://t.me/+PiAXH-w9qLUyOTU0",
-          label: "COMMUNITY",
+          label: "Community",
           position: "right",
         },
         {
           href: "https://shop.papac.dev",
-          label: "SHOP",
+          label: "Shop",
           position: "right",
         },
         {
@@ -316,7 +317,7 @@ module.exports = {
     colorMode: {
       defaultMode: "dark",
       disableSwitch: false,
-      respectPrefersColorScheme: true,
+      respectPrefersColorScheme: false,
     },
     footer: {
       style: "dark",
