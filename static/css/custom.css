@@ -1,5 +1,4 @@
-@import 'react-medium-image-zoom/dist/styles.css';
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap'); */
 
 :root {
   /* ============================================
@@ -48,6 +47,10 @@
   --cffy-theme-info-a0: #87d1ff;
   --cffy-theme-info-a10: #a1dbff;
   --cffy-theme-info-a20: #b9e4ff;
+
+  /* Hue + saturation of the primary, used by homepage hero gradients
+     as hsl(var(--site-primary-hue-saturation) <lightness>) */
+  --site-primary-hue-saturation: 217 65%;
 
   /* Primary (mapped from palette; darker shades derived) */
   --ifm-color-primary: var(--cffy-theme-primary-a0);

@@ -262,6 +262,7 @@ module.exports = {
       title: "Bowphp",
       logo: {
         src: "img/bow-logo.svg",
+        srcDark: "img/bow-logo-dark.svg",
         alt: "BowPHP",
       },
       items: [
@@ -316,7 +317,7 @@ module.exports = {
     colorMode: {
       defaultMode: "dark",
       disableSwitch: false,
-      respectPrefersColorScheme: true,
+      respectPrefersColorScheme: false,
     },
     footer: {
       style: "dark",
