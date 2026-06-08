@@ -1,20 +1,80 @@
 @import 'react-medium-image-zoom/dist/styles.css';
-@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
 
 :root {
-  /* BowPHP dark metal palette (Tailwind slate) */
-  --ifm-color-primary: #334155;
-  --ifm-color-primary-dark: #1E293B;
-  --ifm-color-primary-darker: #0F172A;
-  --ifm-color-primary-darkest: #020617;
-  --ifm-color-primary-light: #475569;
-  --ifm-color-primary-lighter: #64748B;
-  --ifm-color-primary-lightest: #94A3B8;
+  /* ============================================
+     BowPHP theme palette (source tokens)
+     ============================================ */
+  /* Theme primary colors */
+  --cffy-theme-primary-a0: #5c8cdc;
+  --cffy-theme-primary-a10: #6c98e0;
+  --cffy-theme-primary-a20: #7ca3e4;
+  --cffy-theme-primary-a30: #8cafe8;
+  --cffy-theme-primary-a40: #9cbaec;
+  --cffy-theme-primary-a50: #acc6f0;
+
+  /* Theme surface colors */
+  --cffy-theme-surface-a0: #121212;
+  --cffy-theme-surface-a10: #252525;
+  --cffy-theme-surface-a20: #393939;
+  --cffy-theme-surface-a30: #4f4f4f;
+  --cffy-theme-surface-a40: #666;
+  --cffy-theme-surface-a50: #7d7d7d;
+
+  /* Theme tonal surface colors */
+  --cffy-theme-surface-tonal-a0: #191d23;
+  --cffy-theme-surface-tonal-a10: #2c3035;
+  --cffy-theme-surface-tonal-a20: #404449;
+  --cffy-theme-surface-tonal-a30: #55585d;
+  --cffy-theme-surface-tonal-a40: #6b6e73;
+  --cffy-theme-surface-tonal-a50: #828589;
+
+  /* Success colors */
+  --cffy-theme-success-a0: #7dff95;
+  --cffy-theme-success-a10: #9dffac;
+  --cffy-theme-success-a20: #b8ffc1;
+
+  /* Warning colors */
+  --cffy-theme-warning-a0: #ffbc5e;
+  --cffy-theme-warning-a10: #ffca83;
+  --cffy-theme-warning-a20: #ffd8a4;
+
+  /* Danger colors */
+  --cffy-theme-danger-a0: #ff8080;
+  --cffy-theme-danger-a10: #ff9b99;
+  --cffy-theme-danger-a20: #ffb5b2;
+
+  /* Info colors */
+  --cffy-theme-info-a0: #87d1ff;
+  --cffy-theme-info-a10: #a1dbff;
+  --cffy-theme-info-a20: #b9e4ff;
+
+  /* Primary (mapped from palette; darker shades derived) */
+  --ifm-color-primary: var(--cffy-theme-primary-a0);
+  --ifm-color-primary-dark: #4a7fd6;
+  --ifm-color-primary-darker: #3f78d3;
+  --ifm-color-primary-darkest: #2861bd;
+  --ifm-color-primary-light: var(--cffy-theme-primary-a10);
+  --ifm-color-primary-lighter: var(--cffy-theme-primary-a20);
+  --ifm-color-primary-lightest: var(--cffy-theme-primary-a30);
+
+  /* Semantic colors (mapped from palette) */
+  --ifm-color-success: var(--cffy-theme-success-a0);
+  --ifm-color-success-light: var(--cffy-theme-success-a10);
+  --ifm-color-success-lighter: var(--cffy-theme-success-a20);
+  --ifm-color-warning: var(--cffy-theme-warning-a0);
+  --ifm-color-warning-light: var(--cffy-theme-warning-a10);
+  --ifm-color-warning-lighter: var(--cffy-theme-warning-a20);
+  --ifm-color-danger: var(--cffy-theme-danger-a0);
+  --ifm-color-danger-light: var(--cffy-theme-danger-a10);
+  --ifm-color-danger-lighter: var(--cffy-theme-danger-a20);
+  --ifm-color-info: var(--cffy-theme-info-a0);
+  --ifm-color-info-light: var(--cffy-theme-info-a10);
+  --ifm-color-info-lighter: var(--cffy-theme-info-a20);
   
   /* Typography - Laravel-style fonts */
-  --ifm-font-family-base: "Figtree", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --ifm-font-family-monospace: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --ifm-font-family-base: "Roboto", "Helvetica Neue", "Segoe UI", Arial, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --ifm-font-family-monospace: "Consolas", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --ifm-font-size-base: 17px;
   --ifm-line-height-base: 1.75;
   --ifm-font-weight-normal: 400;
@@ -484,8 +544,8 @@ pre code {
    Dark Theme - Laravel Style
    ============================================ */
 html[data-theme='dark'] {
-  --ifm-background-color: #171717;
-  --ifm-background-surface-color: #1f1f1f;
+  --ifm-background-color: var(--cffy-theme-surface-a0);
+  --ifm-background-surface-color: var(--cffy-theme-surface-a10);
   
   /* Text colors - high contrast for readability */
   --ifm-font-color-base: #f5f5f4;
@@ -510,7 +570,7 @@ html[data-theme='dark'] {
   --ifm-pre-background: #0d0d0d;
   
   /* Navbar */
-  --ifm-navbar-background-color: #171717;
+  --ifm-navbar-background-color: var(--cffy-theme-surface-a0);
   --ifm-navbar-shadow: none;
   
   /* Menu colors */
@@ -523,10 +583,10 @@ html[data-theme='dark'] {
   --ifm-toc-link-color: #a8a8a6;
   
   /* Card backgrounds */
-  --ifm-card-background-color: #1f1f1f;
-  
+  --ifm-card-background-color: var(--cffy-theme-surface-a10);
+
   /* Footer */
-  --ifm-footer-background-color: #171717;
+  --ifm-footer-background-color: var(--cffy-theme-surface-a0);
   --ifm-footer-color: #a8a8a6;
   --ifm-footer-link-color: #d4d4d4;
   
