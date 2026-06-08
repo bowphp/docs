@@ -1,28 +1,28 @@
 ---
 id: seeding
-title: "Préremplissage de la base de données dans BowPHP"
+title: "Seeding the database in BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
-- [Ajouter un seeder](#ajouter-un-seeder)
-- [Lancer le seeding](#lancer-le-seeding)
+- [Adding a seeder](#adding-a-seeder)
+- [Running the seeding](#running-the-seeding)
 - [Helper](#helper)
 
 ## Introduction
 
-Le seeding est un mécanisme qui vous permettra d'hydrater votre base de données pour pouvoir l'utiliser dans votre développement. Le seeding dans Bow est associé à une table lors de la création.
+Seeding is a mechanism that lets you hydrate your database so you can use it during development. In Bow, a seeder is associated with a table when it is created.
 
-## Ajouter un seeder
+## Adding a seeder
 
-Pour ajouter un seeder on passe par `php bow` avec la commande `add:seeder` ensuite le nom de la table.
+To add a seeder, use `php bow` with the `add:seeder` command followed by the table name.
 
 ```bash
 php bow add:seeder pets
 ```
 
-Un fichier `pets_seeder.php` sera créé dans le dossier `seeders`. En voici le contenu:
+A `pets_seeder.php` file will be created in the `seeders` folder. Here is its content:
 
 ```php
 /**
@@ -45,17 +45,17 @@ foreach (range(1, 5) as $key) {
 return $seeds;
 ```
 
-> La clé `pets` est le nom de la table du seeding.
+> The `pets` key is the name of the table being seeded.
 
-## Lancer le seeding
+## Running the seeding
 
-Pour lancer le seeding on utilise la commande `seed:table` suivi du nom de la table.
+To run the seeding, use the `seed:table` command followed by the table name.
 
 ```bash
 php bow seed:table pets
 ```
 
-Vous avez la possibilité de lancer tous les seeders avec la commande `seed:all`. Cela fera le seeding de tous les fichiers dans `seeders`.
+You can also run all seeders with the `seed:all` command. This will seed all the files in `seeders`.
 
 ```bash
 php bow seed:all
@@ -63,12 +63,12 @@ php bow seed:all
 
 ## Helper
 
-Souvent vous sera tente de faire des seedins lorsque vous testez votre application. Le helper `db_seed`, très pratique vous permettra de faire des seeding en plein test par exemlpe
+You will often be tempted to run seeders while testing your application. The `db_seed` helper is very handy and lets you seed data right in the middle of a test, for example.
 
 ```php
 db_seed("user", $overrides = ["name" => "Franck"]);
 ```
 
-Avec `$overrides` vous pouvez modifier des valeurs du seeding.
+With `$overrides` you can modify the values of the seeding.
 
 <SuggestionFeature />

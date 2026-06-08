@@ -1,24 +1,24 @@
 ---
 id: auth
-title: "Authentification"
+title: "Authentication"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-BowPHP fournit un système d'authentification flexible supportant deux méthodes : l'authentification par **session** et par **JWT** (JSON Web Token).
+BowPHP provides a flexible authentication system supporting two methods: **session** authentication and **JWT** (JSON Web Token) authentication.
 
 ## Configuration
 
-Le fichier `config/auth.php` définit les guards et leurs paramètres :
+The `config/auth.php` file defines the guards and their settings:
 
 ```php title="config/auth.php"
 return [
-  // Guard par défaut
+  // Default guard
   'default' => 'web',
 
-  // Authentification par session
+  // Session authentication
   'web' => [
     'type' => 'session',
     'model' => App\Models\User::class,
@@ -28,7 +28,7 @@ return [
     ],
   ],
 
-  // Authentification par JWT (API)
+  // JWT authentication (API)
   'api' => [
     'type' => 'jwt',
     'model' => App\Models\User::class,
@@ -40,9 +40,9 @@ return [
 ];
 ```
 
-## Modèle utilisateur
+## User model
 
-Le modèle utilisateur doit étendre `Bow\Auth\Authentication` :
+The user model must extend `Bow\Auth\Authentication`:
 
 ```php title="app/Models/User.php"
 namespace App\Models;
@@ -53,7 +53,7 @@ class User extends Authentication
 {
   protected ?string $table = 'users';
 
-  // Pour JWT: attributs personnalisés dans le token
+  // For JWT: custom attributes in the token
   public function customJwtAttributes(): array
   {
     return [
@@ -63,14 +63,14 @@ class User extends Authentication
 }
 ```
 
-## Authentification par session
+## Session authentication
 
-### Connexion
+### Login
 
 ```php
 use Bow\Auth\Auth;
 
-// Tentative de connexion
+// Login attempt
 $credentials = [
   'email' => $request->get('email'),
   'password' => $request->get('password'),
@@ -83,41 +83,41 @@ if (Auth::guard('web')->attempts($credentials)) {
 return back()->withErrors(['message' => 'Identifiants incorrects']);
 ```
 
-### Via le helper
+### Using the helper
 
 ```php
-// Helper app_auth
+// app_auth helper
 if (app_auth('web')->attempts($credentials)) {
   return redirect('/dashboard');
 }
 ```
 
-### Vérifier l'authentification
+### Checking authentication
 
 ```php
-// Utilisateur connecté ?
+// Is the user logged in?
 if (Auth::guard('web')->check()) {
-  // Connecté
+  // Logged in
 }
 
-// Utilisateur non connecté ?
+// Is the user not logged in?
 if (Auth::guard('web')->guest()) {
-  // Non connecté
+  // Not logged in
 }
 ```
 
-### Récupérer l'utilisateur
+### Retrieving the user
 
 ```php
-// Instance complète
+// Full instance
 $user = Auth::guard('web')->user();
 echo $user->name;
 
-// ID uniquement
+// ID only
 $userId = Auth::guard('web')->id();
 ```
 
-### Connexion manuelle
+### Manual login
 
 ```php
 $user = User::where('email', $email)->first();
@@ -127,7 +127,7 @@ if ($user && Hash::check($password, $user->password)) {
 }
 ```
 
-### Déconnexion
+### Logout
 
 ```php
 Auth::guard('web')->logout();
@@ -135,29 +135,29 @@ Auth::guard('web')->logout();
 return redirect('/login');
 ```
 
-## Authentification JWT
+## JWT authentication
 
-:::warning Installation requise
-Pour utiliser JWT, installez le package Policier :
+:::warning Installation required
+To use JWT, install the Policier package:
 
 ```bash
 composer require bowphp/policier
 ```
 :::
 
-### Configuration JWT
+### JWT configuration
 
 ```php title="config/policier.php"
 return [
   'signkey' => app_env('APP_JWT_SECRET'),
-  'exp' => 3600 * 24 * 7, // 7 jours
+  'exp' => 3600 * 24 * 7, // 7 days
   'iss' => app_env('APP_URL', 'http://localhost'),
   'aud' => app_env('APP_URL', 'http://localhost'),
   'alg' => 'HS512',
 ];
 ```
 
-### Connexion API
+### API login
 
 ```php
 use Bow\Auth\Auth;
@@ -198,26 +198,26 @@ class AuthController
 }
 ```
 
-### Utilisation côté client
+### Client-side usage
 
 ```bash
-# Avec le header Authorization
+# With the Authorization header
 curl -H "Authorization: Bearer TOKEN" https://api.example.com/me
 ```
 
 ## Middlewares
 
-### Middleware d'authentification
+### Authentication middleware
 
 ```php title="routes/app.php"
-// Routes protégées par session
+// Routes protected by session
 $app->get('/dashboard', 'DashboardController::index')->middleware('auth');
 
-// Routes protégées par JWT
+// Routes protected by JWT
 $app->get('/api/profile', 'Api\ProfileController::show')->middleware('api');
 ```
 
-### Grouper les routes protégées
+### Grouping protected routes
 
 ```php title="routes/app.php"
 $app->prefix('/admin')->middleware('auth')->group(function () use ($app) {
@@ -231,7 +231,7 @@ $app->prefix('/api/v1')->middleware('api')->group(function () use ($app) {
 });
 ```
 
-### Middleware personnalisé
+### Custom middleware
 
 ```php title="app/Middlewares/CustomAuthMiddleware.php"
 namespace App\Middlewares;
@@ -252,9 +252,9 @@ class CustomAuthMiddleware
 }
 ```
 
-## Exemple complet
+## Complete example
 
-### Contrôleur d'authentification
+### Authentication controller
 
 ```php title="app/Controllers/AuthController.php"
 namespace App\Controllers;
@@ -332,29 +332,29 @@ class AuthController
 ### Routes
 
 ```php title="routes/app.php"
-// Pages publiques
+// Public pages
 $app->get('/login', 'AuthController::showLogin');
 $app->post('/login', 'AuthController::login');
 $app->get('/register', 'AuthController::showRegister');
 $app->post('/register', 'AuthController::register');
 $app->post('/logout', 'AuthController::logout');
 
-// Pages protégées
+// Protected pages
 $app->get('/dashboard', 'DashboardController::index')->middleware('auth');
 ```
 
-## Méthodes disponibles
+## Available methods
 
-| Méthode | Description |
+| Method | Description |
 |---------|-------------|
-| `attempts($credentials)` | Tente d'authentifier avec les identifiants |
-| `check()` | Vérifie si l'utilisateur est connecté |
-| `guest()` | Vérifie si l'utilisateur n'est pas connecté |
-| `user()` | Retourne l'utilisateur authentifié |
-| `id()` | Retourne l'ID de l'utilisateur |
-| `login($user)` | Connecte manuellement un utilisateur |
-| `logout()` | Déconnecte l'utilisateur |
-| `getToken()` | (JWT) Retourne le token généré |
-| `guard($name)` | Change de guard |
+| `attempts($credentials)` | Attempts to authenticate with the credentials |
+| `check()` | Checks whether the user is logged in |
+| `guest()` | Checks whether the user is not logged in |
+| `user()` | Returns the authenticated user |
+| `id()` | Returns the user's ID |
+| `login($user)` | Manually logs in a user |
+| `logout()` | Logs out the user |
+| `getToken()` | (JWT) Returns the generated token |
+| `guard($name)` | Switches guard |
 
 <SuggestionFeature />

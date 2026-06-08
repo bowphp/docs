@@ -6,31 +6,31 @@ title: "SQL Builder"
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
-- [Récupérer les informations](#recupéré-les-informations)
-  - [Exemple avec `get`](#exemple-avec-get)
-  - [Exemple avec `first`](#exemple-avec-first)
-  - [Exemple avec `last`](#exemple-avec-last)
-  - [Ajoutez des restrictions](#ajoutez-des-restrictions)
-    - [Restriction simple](#restriction-simple)
-    - [La clause OR](#la-clause-or)
-  - [Clauses additionnelles](#clauses-additionnelles)
+- [Retrieving information](#retrieving-information)
+  - [Example with `get`](#example-with-get)
+  - [Example with `first`](#example-with-first)
+  - [Example with `last`](#example-with-last)
+  - [Adding restrictions](#adding-restrictions)
+    - [Simple restriction](#simple-restriction)
+    - [The OR clause](#the-or-clause)
+  - [Additional clauses](#additional-clauses)
     - [whereNull / whereNotNull](#wherenull--wherenotnull)
     - [whereIn / whereNotIn](#wherein--wherenotin)
     - [whereBetween / whereNotBetween](#wherebetween--wherenotbetween)
-  - [Ordonner, Grouper, et limiter](#ordonner-grouper-et-limiter)
+  - [Ordering, Grouping, and limiting](#ordering-grouping-and-limiting)
     - [orderBy](#orderby)
-    - [groupBy et having](#groupby-et-having)
-    - [jump et take](#jump-et-take)
+    - [groupBy and having](#groupby-and-having)
+    - [jump and take](#jump-and-take)
 - [Aggregates](#aggregates)
-  - [Déterminer si des enregistrements existent](#déterminer-si-des-enregistrements-existent)
-  - [Spécification d'une clause de sélection](#spécification-dune-clause-de-sélection)
-  - [Insertion d'information](#insertion-dinformation)
-  - [Mise à jour](#mise-à-jour)
-  - [Supprimer un enregistrement](#supprimer-un-enregistrement)
+  - [Determining if records exist](#determining-if-records-exist)
+  - [Specifying a select clause](#specifying-a-select-clause)
+  - [Inserting information](#inserting-information)
+  - [Updating](#updating)
+  - [Deleting a record](#deleting-a-record)
 
 ## Introduction
 
-Bow fournit une API liée à la construction de requêtes. La méthode `table` permet de construire une requête `sql` en se basant sur le nom de la table et retourne une instance de [`Bow\Database\QueryBuilder::class`](https://bowphp.com/api/master/Bow/Database/QueryBuilder.html).
+Bow provides an API for building queries. The `table` method allows you to build a `sql` query based on the table name and returns an instance of [`Bow\Database\QueryBuilder::class`](https://bowphp.com/api/master/Bow/Database/QueryBuilder.html).
 
 ```php
 use Bow\Database\Database
@@ -39,25 +39,25 @@ $builder = Database::table('users');
 // => Instance \Bow\Database\QueryBuilder::class
 ```
 
-Vous pouvez aussi utiliser le helper `table`:
+You can also use the `table` helper:
 
 ```php
 $builder = table('users');
 ```
 
-Sur l'instance de `QueryBuilder` de Bow, il y a plusieurs méthodes qui vont vous permettre de construire une requête SQL.
-Par exemple la méthode `toSql` qui permet d'afficher la requête construite.
+On Bow's `QueryBuilder` instance, there are several methods that let you build a SQL query.
+For example, the `toSql` method, which lets you display the built query.
 
 ```php
 $builder->toSql();
 // select * from `users`
 ```
 
-## Récupérer les informations
+## Retrieving information
 
-Pour récupérer les informations avec le builder, vous devez utiliser la méthode `get` qui retourne une collection, `first` qui retourne `null` ou un objet `stdclass` et `last` qui se comporte comme `first` sauf qu'il retourne plutôt le dernier élément du résultat de l'exécution de la requête.
+To retrieve information with the builder, you should use the `get` method, which returns a collection, `first`, which returns `null` or a `stdclass` object, and `last`, which behaves like `first` except that it returns the last element of the query execution result.
 
-### Exemple avec `get`
+### Example with `get`
 
 ```php
 $builder = Database::table('users');
@@ -69,30 +69,30 @@ foreach ($users as $user) {
 }
 ```
 
-> Notez que vous pouvez passer un tableau à `get` qui est une liste des colonnes de la projection comme ceci `$builder->get(['name'])`.
+> Note that you can pass an array to `get` that is a list of the columns for the projection, like this: `$builder->get(['name'])`.
 
-### Exemple avec `first`
+### Example with `first`
 
 ```php
 $user = table('users')->first();
 
-// Vide
+// Empty
 is_null($user)
 // Ok
 echo $user->name;
 ```
 
-### Exemple avec `last`
+### Example with `last`
 
 ```php
 $user = $builder->last();
 ```
 
-### Ajoutez des restrictions
+### Adding restrictions
 
-#### Restriction simple
+#### Simple restriction
 
-Avec le builder, vous pouvez ajouter des restrictions simple sur la construction de la requête SQL avec la méthode `where`.
+With the builder, you can add simple restrictions to the SQL query construction using the `where` method.
 
 ```php
 $users = table('users')->where('id', 1)->get();
@@ -100,32 +100,32 @@ $users = table('users')->where('id', 1)->get();
 $users = table('users')->where('id', '!=', 1)->get();
 ```
 
-#### La clause OR
+#### The OR clause
 
-Vous pouvez enchainer la restriction en ajoutant un `or` dans votre requête. La méthode `orWhere` vous permet de faire cela:
+You can chain restrictions by adding an `or` to your query. The `orWhere` method lets you do this:
 
 ```php
 $users = table('users')->where('id', 1)->orWhere('name', 'Papac')->get();
 ```
 
-Vous pouvez voir le resultat de la construction de la requête avec la méthode `toSql`.
+You can see the result of the query construction with the `toSql` method.
 
 ```php
 $sql = table('users')->where('id', 1)->orWhere('id', 1)->toSql();
 // => select * from `users` where id = 1 or id = 3;
 ```
 
-### Clauses additionnelles
+### Additional clauses
 
 #### whereNull / whereNotNull
 
-La méthode `whereNull` vérifie que la valeur de la colonne donnée est `NULL`:
+The `whereNull` method checks that the value of the given column is `NULL`:
 
 ```php
 $users = table('users')->whereNull('name')->get();
 ```
 
-La méthode `whereNotNull` vérifie que la valeur de la colonne n'est pas `NULL`:
+The `whereNotNull` method checks that the value of the column is not `NULL`:
 
 ```php
 $users = table('users')->whereNotNull('age')->get();
@@ -133,13 +133,13 @@ $users = table('users')->whereNotNull('age')->get();
 
 #### whereIn / whereNotIn
 
-La méthode `whereIn` vérifie que la valeur d'une colonne donnée est contenue dans le tableau donné:
+The `whereIn` method checks that the value of a given column is contained in the given array:
 
 ```php
 $users = table('users')->whereIn('age', [27, 30])->get();
 ```
 
-La méthode `whereNotIn` vérifie que la valeur de la colonne donnée n'est pas contenue dans le tableau donné:
+The `whereNotIn` method checks that the value of the given column is not contained in the given array:
 
 ```php
 $users = table('users')->whereNotIn('age', [27, 30])->get();
@@ -147,31 +147,31 @@ $users = table('users')->whereNotIn('age', [27, 30])->get();
 
 #### whereBetween / whereNotBetween
 
-La méthode `whereBetween` vérifie que la valeur d'une colonne est comprise entre deux valeurs:
+The `whereBetween` method checks that the value of a column is between two values:
 
 ```php
 $users = table('users')->whereBetween('votes', [1, 100])->get();
 ```
 
-La méthode `whereNotBetween` vérifie que la valeur d'une colonne se situe en dehors de deux valeurs:
+The `whereNotBetween` method checks that the value of a column lies outside two values:
 
 ```php
 $users = table('users')->whereNotBetween('votes', [1, 100])->get();
 ```
 
-### Ordonner, Grouper, et limiter
+### Ordering, Grouping, and limiting
 
 #### orderBy
 
-La méthode `orderBy` vous permet de trier le résultat de la requête en fonction d'une colonne donnée. Le premier argument de la méthode `orderBy` devrait être la colonne que vous souhaitez trier, tandis que le second argument contrôle le sens du tri et peut être `asc` ou `desc`:
+The `orderBy` method lets you sort the query result based on a given column. The first argument to the `orderBy` method should be the column you want to sort by, while the second argument controls the sort direction and may be `asc` or `desc`:
 
 ```php
 $users = table('users')->orderBy('name', 'desc')->get();
 ```
 
-#### groupBy et having
+#### groupBy and having
 
-Les méthodes `groupBy` et `having` peuvent être utilisées pour regrouper les résultats de la requête. La signature de la méthode `having` est similaire à celle de la méthode `where`:
+The `groupBy` and `having` methods can be used to group the query results. The signature of the `having` method is similar to that of the `where` method:
 
 ```php
 $users = table('orders')
@@ -180,9 +180,9 @@ $users = table('orders')
   ->get();
 ```
 
-#### jump et take
+#### jump and take
 
-Pour limiter le nombre de résultats renvoyés par la requête ou pour ignorer un nombre donné de résultats dans la requête, vous pouvez utiliser les méthodes `jump` (pour ignorer) et `take` (pour renvoyer un nombre):
+To limit the number of results returned by the query, or to skip a given number of results in the query, you can use the `jump` (to skip) and `take` (to return a number) methods:
 
 ```php
 $users = DB::table('users')->jump(10)->take(5)->get();
@@ -190,7 +190,7 @@ $users = DB::table('users')->jump(10)->take(5)->get();
 
 ## Aggregates
 
-Le générateur de requêtes fournit également une variété de méthodes d'agrégation telles que `count`, `max`, `min`, `avg` et `sum`. Vous pouvez appeler n'importe laquelle de ces méthodes après avoir construit votre requête.
+The query builder also provides a variety of aggregate methods such as `count`, `max`, `min`, `avg`, and `sum`. You can call any of these methods after building your query.
 
 ```php
 $users = table('users')->count();
@@ -200,27 +200,27 @@ $price = table('orders')->max('price');
 $avg = table('orders')->avg('price');
 ```
 
-### Déterminer si des enregistrements existent
+### Determining if records exist
 
-Au lieu d'utiliser la méthode `count` pour déterminer s'il existe des enregistrements correspondant aux contraintes de votre requête, vous pouvez utiliser la méthode `exists`:
+Instead of using the `count` method to determine whether there are any records matching your query's constraints, you can use the `exists` method:
 
 ```php
 $exists = table('users')->where('id', 1)->exists();
 ```
 
-### Spécification d'une clause de sélection
+### Specifying a select clause
 
-Bien entendu, il se peut que vous ne souhaitiez pas toujours sélectionner toutes les colonnes d'une table de base de données. À l'aide de la méthode `select`, vous pouvez spécifier une clause select personnalisée pour la requête:
+Of course, you may not always want to select all the columns of a database table. Using the `select` method, you can specify a custom select clause for the query:
 
 ```php
 $price = table('orders')->select('price')->get();
-// Ou séléctionnez plusieurs colonne
+// Or select multiple columns
 $price = table('orders')->select(['id', 'price'])->get();
 ```
 
-### Insertion d'information
+### Inserting information
 
-Le générateur de requêtes fournit également une méthode `insert` pour insérer des enregistrements dans la table de base de données. La méthode insert accepte un tableau de noms de colonnes et de valeurs:
+The query builder also provides an `insert` method for inserting records into the database table. The insert method accepts an array of column names and values:
 
 ```php
 table('users')->insert(
@@ -228,11 +228,11 @@ table('users')->insert(
 );
 ```
 
-Vous pouvez même insérer plusieurs enregistrements dans la table avec un seul appel à insérer en transmettant un tableau de tableaux. Chaque tableau représente une ligne à insérer dans la table:
+You can even insert several records into the table with a single call to insert by passing an array of arrays. Each array represents a row to be inserted into the table:
 
-### Mise à jour
+### Updating
 
-Bien entendu, en plus d'insérer des enregistrements dans la base de données, le générateur de requêtes peut également mettre à jour des enregistrements existants à l'aide de la méthode `update`. La méthode update, comme la méthode `insert`, accepte un tableau de paires de colonnes et de valeurs contenant les colonnes à mettre à jour. Vous pouvez contraindre la requête de mise à jour à l'aide de clauses `where`:
+Of course, in addition to inserting records into the database, the query builder can also update existing records using the `update` method. The update method, like the `insert` method, accepts an array of column and value pairs containing the columns to be updated. You can constrain the update query using `where` clauses:
 
 ```php
 table('users')->where('id', 1)->update(
@@ -240,9 +240,9 @@ table('users')->where('id', 1)->update(
 );
 ```
 
-### Supprimer un enregistrement
+### Deleting a record
 
-Le générateur de requêtes peut également être utilisé pour supprimer des enregistrements de la table via la méthode `delete`. Vous pouvez contraindre des instructions delete en ajoutant des clauses where avant d'appeler la méthode `delete`:
+The query builder can also be used to delete records from the table via the `delete` method. You can constrain delete statements by adding where clauses before calling the `delete` method:
 
 ```php
 table('users')->delete();
@@ -250,7 +250,7 @@ table('users')->delete();
 table('users')->where('age', '>', 27)->delete();
 ```
 
-Si vous souhaitez vider la table entière, ce qui supprimera toutes les lignes et réinitialisera l'ID d'auto-incrémentation à zéro, vous pouvez utiliser la méthode `truncate`:
+If you want to empty the entire table, which will delete all rows and reset the auto-increment ID to zero, you can use the `truncate` method:
 
 ```php
 table('pets')->truncate();

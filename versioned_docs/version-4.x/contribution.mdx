@@ -1,50 +1,50 @@
 ---
 id: contribution
-title: "Guide de Contribution"
+title: "Contribution Guide"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
-- [Processus de contribution](#processus-de-contribution)
-- [Format des messages de commit](#format-des-messages-de-commit)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
+- [Contribution process](#contribution-process)
+- [Commit message format](#commit-message-format)
+- [Is something missing?](#is-something-missing)
 
 ## Introduction
 
-Les contributions sont les bienvenues et seront entièrement créditées. Si vous voulez contribuer au projet, veuillez d'abord discuter
-des changements que vous voulez apporter via email, en créant une issue sur github, avec les responsables du dépôt avant
-de coder votre solution.
+Contributions are welcome and will be fully credited. If you want to contribute to the project, please first discuss
+the changes you want to make via email, by creating an issue on GitHub, with the repository maintainers before
+coding your solution.
 
-Veuillez s'il vous plaît vous conformer au code de conduite lors de vos interactions sur ce projet.
+Please make sure to comply with the code of conduct during your interactions on this project.
 
-Nous acceptons les contributions via Pull Request sur [GitHub](https://github.com).
+We accept contributions via Pull Request on [GitHub](https://github.com).
 
-## Processus de contribution
+## Contribution process
 
-- Fork le projet
-- Créez une branche avec un nom descriptif de vos modifications
-- Utilisez des messages de commits descriptifs
-- Ajoutez des test unitaires
-- Documentez vos modifications - Assurez vous que la documentation est mise à jour selon vos modifications
-- Un pull request par fonctionnalité - Si vous voulez faire plus d'une chose, faites plusieurs pull requests
-- Mettez à jour la version - Nous suivons le schema SemVer
+- Fork the project
+- Create a branch with a name that describes your changes
+- Use descriptive commit messages
+- Add unit tests
+- Document your changes - Make sure the documentation is updated to reflect your changes
+- One pull request per feature - If you want to do more than one thing, make several pull requests
+- Update the version - We follow the SemVer scheme
 
-## Format des messages de commit
+## Commit message format
 
-Pour faciliter la maintenance du dépôt, Bow utilise un format pour les messages de commits.
+To make maintaining the repository easier, Bow uses a format for commit messages.
 
-- `change` pour ajouter un changement sur un fonctionnement
-- `fix` pour fixer un bug
-- `feat` pour ajouter une nouvelle fonctionnalité
+- `change` to add a change to a behavior
+- `fix` to fix a bug
+- `feat` to add a new feature
 
-Veuillez vous référer à l'exemple suivant:
+Please refer to the following example:
 
 ```sh
 git commit
 ```
 
-Dans votre éditeur
+In your editor
 
 ```txt
 change(module_name): your commit message
@@ -52,20 +52,20 @@ change(module_name): your commit message
 Description
 ```
 
-Si la modification affecte une section:
+If the change affects a section:
 
 ```bash
 git commit -m "change(session): rename init variable"
 ```
 
-Si la modification affecte un élément dans une section:
+If the change affects an element within a section:
 
 ```bash
 git commit -m "fix(http:request): bug fix #40"
 ```
 
-Dans le cas où vos modifications affectent plusieurs sections, ajoutez une description avec votre commit sous forme de liste à puce.
+In case your changes affect multiple sections, add a description with your commit as a bullet list.
 
-> Notez que les messages de commit doivent être en anglais.
+> Note that commit messages must be in English.
 
 <SuggestionFeature />

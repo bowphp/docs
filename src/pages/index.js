@@ -10,6 +10,7 @@ import TeamFeatures from '../components/TeamFeatures';
 import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import Translate, { translate } from "@docusaurus/Translate";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -28,7 +29,12 @@ function HomepageHeader() {
             <div
               className={styles.heroDescription}
               dangerouslySetInnerHTML={{
-                __html: siteConfig.customFields.landingText,
+                __html: translate({
+                  id: "home.hero.landingText",
+                  message:
+                    "BowPHP was designed from the ground up to be easy to install and use, getting your application up and running quickly, and is trusted by <strong>+2500</strong> developers",
+                  description: "The hero landing description on the homepage",
+                }),
               }}
             />
             <div className={styles.buttons}>
@@ -36,14 +42,14 @@ function HomepageHeader() {
                 className="button button--primary button--lg"
                 to="/docs/installation"
               >
-                Démarrer →
+                <Translate id="home.hero.getStarted">Get started →</Translate>
               </Link>
               <Link
                 className="button button--outline button--primary button--lg"
-                to="/blog/televersement-de-fichiers-avec-bowphp"
+                to="/blog/file-uploading-with-bowphp"
                 style={{ fontWeight: 700 }}
               >
-                Téléversement de fichiers
+                <Translate id="home.hero.fileUpload">File uploading</Translate>
               </Link>
             </div>
           </div>
@@ -60,7 +66,7 @@ function CodeSnippetSection() {
         <div className="row">
           <div className="col col--12">
             <h2 className="text--center margin-bottom--lg">
-              Simple, Élégant, Puissant
+              <Translate id="home.code.title">Simple, Elegant, Powerful</Translate>
             </h2>
             <p
               className="text--center margin-bottom--xl"
@@ -69,8 +75,9 @@ function CodeSnippetSection() {
                 color: "var(--ifm-color-emphasis-700)",
               }}
             >
-              Découvrez la simplicité de BowPHP avec des exemples de code
-              concrets
+              <Translate id="home.code.subtitle">
+                Discover the simplicity of BowPHP with concrete code examples
+              </Translate>
             </p>
           </div>
         </div>
@@ -93,7 +100,7 @@ $app->prefix('api', function() use ($app) {
                 </CodeBlock>
               </TabItem>
 
-              <TabItem value="controller" label="Contrôleur">
+              <TabItem value="controller" label={translate({ id: "home.tab.controller", message: "Controller" })}>
                 <CodeBlock
                   language="php"
                   title="app/Controllers/UserController.php"
@@ -131,7 +138,7 @@ class UserController
                 </CodeBlock>
               </TabItem>
 
-              <TabItem value="database" label="Base de données">
+              <TabItem value="database" label={translate({ id: "home.tab.database", message: "Database" })}>
                 <CodeBlock language="php" title="app/Models/User.php">
                   {`namespace App\\Models;
 
@@ -193,7 +200,7 @@ $router->middleware('auth')->prefix('/', function() use ($router) {
               </TabItem>
 
               <TabItem value="validation" label="Validation">
-                <CodeBlock language="php" title="Validation des données">
+                <CodeBlock language="php" title={translate({ id: "home.code.validationTitle", message: "Data validation" })}>
                   {`// Validation simple
 $request->validate([
   'email' => 'required|email',
@@ -219,8 +226,8 @@ if ($validation->fails()) {
                 </CodeBlock>
               </TabItem>
 
-              <TabItem value="response" label="Réponses">
-                <CodeBlock language="php" title="Types de réponses">
+              <TabItem value="response" label={translate({ id: "home.tab.response", message: "Responses" })}>
+                <CodeBlock language="php" title={translate({ id: "home.code.responseTitle", message: "Response types" })}>
                   {`// JSON
 return response()->json(['message' => 'Success'], 200);
 

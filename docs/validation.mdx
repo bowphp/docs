@@ -1,20 +1,20 @@
 ---
 id: validation
-title: "Validation de donnée"
+title: "Data Validation"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-# Validation des données
+# Data Validation
 
 ## Introduction
 
-La validation des données est une partie cruciale de toute application web. BowPHP fournit un système de validation simple, élégant et puissant qui vous permet de valider facilement vos données entrantes.
+Data validation is a crucial part of any web application. BowPHP provides a simple, elegant, and powerful validation system that lets you easily validate your incoming data.
 
-## Utilisation de base
+## Basic Usage
 
-:::tip Conseil
-La façon la plus simple d'utiliser le validateur est via la fonction helper `validator()`. Voici un exemple simple :
+:::tip Tip
+The simplest way to use the validator is through the `validator()` helper function. Here is a simple example:
 :::
 
 ```php
@@ -31,82 +31,82 @@ $validation = validator($data, [
 ]);
 
 if ($validation->fails()) {
-  // La validation a échoué
+  // Validation failed
   $errors = $validation->getMessages();
-  // Gérer les erreurs
+  // Handle the errors
 }
 ```
 
-## Règles de validation disponibles
+## Available Validation Rules
 
-:::info Règles
-BowPHP propose un large éventail de règles de validation pour couvrir la plupart des besoins de validation courants.
+:::info Rules
+BowPHP offers a wide range of validation rules to cover most common validation needs.
 :::
 
-### Règles de base
+### Basic Rules
 
-| Règle | Description |
+| Rule | Description |
 |-------|-------------|
-| `required` | Le champ est obligatoire |
-| `required_if:field1,field2` | Le champ est obligatoire si les champs spécifiés existent |
-| `nullable` | Le champ peut être null ou absent (court-circuite les règles suivantes) |
-| `confirmed` | Le champ doit être identique au champ `<nom>_confirmation` |
-| `different:field` | Le champ doit être différent d'un autre champ |
-| `same:value` | Le champ doit être identique à la valeur spécifiée |
-| `in:val1,val2,...` | La valeur doit faire partie de la liste donnée |
-| `email` | Le champ doit être une adresse email valide |
-| `min:value` | La longueur minimale du champ |
-| `max:value` | La longueur maximale du champ |
-| `size:value` | La longueur exacte du champ |
-| `between:min,max` | Valeur (numérique) ou longueur (chaîne) entre `min` et `max` inclus |
+| `required` | The field is required |
+| `required_if:field1,field2` | The field is required if the specified fields exist |
+| `nullable` | The field may be null or absent (short-circuits the following rules) |
+| `confirmed` | The field must match the `<name>_confirmation` field |
+| `different:field` | The field must be different from another field |
+| `same:value` | The field must be identical to the specified value |
+| `in:val1,val2,...` | The value must be part of the given list |
+| `email` | The field must be a valid email address |
+| `min:value` | The minimum length of the field |
+| `max:value` | The maximum length of the field |
+| `size:value` | The exact length of the field |
+| `between:min,max` | Value (numeric) or length (string) between `min` and `max` inclusive |
 
-:::note `nullable` combiné avec `required`
-Par défaut, `nullable` interrompt l'exécution des règles suivantes dès qu'il
-matche. **Exception** : si `required` figure aussi dans la chaîne, `required`
-s'exécute quand même. Cela permet d'écrire `nullable|required` pour signifier
-« doit être présent même si vide » et garder la sémantique attendue par les
-utilisateurs.
+:::note `nullable` combined with `required`
+By default, `nullable` stops the execution of the following rules as soon as it
+matches. **Exception**: if `required` also appears in the chain, `required`
+runs anyway. This allows you to write `nullable|required` to mean
+"must be present even if empty" and keep the semantics expected by
+users.
 :::
 
-### Règles de type
+### Type Rules
 
-| Règle | Description |
+| Rule | Description |
 |-------|-------------|
-| `alpha` | Uniquement des caractères alphabétiques |
-| `alphanum` | Uniquement des caractères alphanumériques |
-| `number` | Le champ doit être un nombre |
-| `int` | Le champ doit être un entier |
-| `float` | Le champ doit être un nombre décimal |
-| `boolean` / `bool` | Accepte `true`, `false`, `0`, `1`, `'0'`, `'1'`, `'true'`, `'false'` |
-| `json` | Le champ doit être une chaîne JSON valide |
-| `uuid` | Le champ doit être un UUID canonique (versions 1 à 5) |
+| `alpha` | Alphabetic characters only |
+| `alphanum` | Alphanumeric characters only |
+| `number` | The field must be a number |
+| `int` | The field must be an integer |
+| `float` | The field must be a decimal number |
+| `boolean` / `bool` | Accepts `true`, `false`, `0`, `1`, `'0'`, `'1'`, `'true'`, `'false'` |
+| `json` | The field must be a valid JSON string |
+| `uuid` | The field must be a canonical UUID (versions 1 to 5) |
 
-### Règles de format
+### Format Rules
 
-| Règle | Description |
+| Rule | Description |
 |-------|-------------|
-| `date` | Format de date (YYYY-MM-DD) |
-| `datetime` | Format datetime (YYYY-MM-DD HH:MM:SS) |
-| `regex:pattern` | Le champ doit correspondre au pattern regex |
-| `lower` | Uniquement des lettres minuscules |
-| `upper` | Uniquement des lettres majuscules |
-| `url` | Le champ doit être une URL bien formée (`filter_var FILTER_VALIDATE_URL`) |
-| `ip` | Le champ doit être une adresse IPv4 ou IPv6 |
-| `ip:v4` | Le champ doit être une adresse IPv4 uniquement |
-| `ip:v6` | Le champ doit être une adresse IPv6 uniquement |
+| `date` | Date format (YYYY-MM-DD) |
+| `datetime` | Datetime format (YYYY-MM-DD HH:MM:SS) |
+| `regex:pattern` | The field must match the regex pattern |
+| `lower` | Lowercase letters only |
+| `upper` | Uppercase letters only |
+| `url` | The field must be a well-formed URL (`filter_var FILTER_VALIDATE_URL`) |
+| `ip` | The field must be an IPv4 or IPv6 address |
+| `ip:v4` | The field must be an IPv4 address only |
+| `ip:v6` | The field must be an IPv6 address only |
 
-### Règles de base de données
+### Database Rules
 
-| Règle | Description |
+| Rule | Description |
 |-------|-------------|
-| `unique:table,column` | La valeur doit être unique dans la table |
-| `exists:table,column` | La valeur doit exister dans la table |
-| `!exists:table,column` | La valeur ne doit pas exister dans la table |
+| `unique:table,column` | The value must be unique in the table |
+| `exists:table,column` | The value must exist in the table |
+| `!exists:table,column` | The value must not exist in the table |
 
-## Messages d'erreur personnalisés
+## Custom Error Messages
 
-:::tip Personnalisation
-Vous pouvez personnaliser les messages d'erreur en passant un tableau de messages comme troisième argument :
+:::tip Customization
+You can customize the error messages by passing an array of messages as the third argument:
 :::
 
 ```php
@@ -125,48 +125,48 @@ $validation = validator($data, [
 ]);
 ```
 
-## Récupération des erreurs
+## Retrieving Errors
 
-:::tip Méthodes disponibles
-Le validateur fournit plusieurs méthodes pour récupérer les informations sur les erreurs :
+:::tip Available Methods
+The validator provides several methods to retrieve information about the errors:
 :::
 
 ```php
-// Vérifie si la validation a échoué
+// Checks whether validation failed
 $validation->fails(); // bool
 
-// Récupère tous les messages d'erreur
+// Retrieves all error messages
 $validation->getMessages(); // array
 
-// Récupère le dernier message d'erreur
+// Retrieves the last error message
 $validation->getLastMessage(); // string
 
-// Récupère les champs qui ont échoué
+// Retrieves the fields that failed
 $validation->getCorruptedFields(); // array
 
-// Récupère les règles qui ont échoué
+// Retrieves the rules that failed
 $validation->getFailsRules(); // array
 ```
 
-## Validation et exceptions
+## Validation and Exceptions
 
 :::warning Exceptions
-Vous pouvez lancer une exception de validation avec la méthode `throwError()` :
+You can throw a validation exception with the `throwError()` method:
 :::
 
 ```php
 $validation = validator($data, $rules);
 
 if ($validation->fails()) {
-  $validation->throwError(); // Lance ValidationException
+  $validation->throwError(); // Throws ValidationException
 }
 ```
 
-L'exception contiendra les messages d'erreur et définira automatiquement le code de statut HTTP à 400.
+The exception will contain the error messages and will automatically set the HTTP status code to 400.
 
-## Validation dans les contrôleurs
+## Validation in Controllers
 
-Voici un exemple pratique d'utilisation du validateur dans un contrôleur:
+Here is a practical example of using the validator in a controller:
 
 ```php
 class UserController
@@ -185,25 +185,25 @@ class UserController
       ], 400);
     }
 
-    // Créer l'utilisateur
+    // Create the user
     User::create(request()->all());
 
     return response()->json([
-      "message" => "Utilisateur créé avec succès"
+      "message" => "User created successfully"
     ]);
   }
 }
 ```
 
-## Bonnes pratiques
+## Best Practices
 
-:::tip Recommandations
-Suivez ces bonnes pratiques pour une validation efficace et sécurisée :
+:::tip Recommendations
+Follow these best practices for effective and secure validation:
 :::
 
-1. **Validation précoce** : Validez les données le plus tôt possible dans le cycle de vie de la requête.
-2. **Messages clairs** : Utilisez des messages d'erreur descriptifs et compréhensibles.
-3. **Règles composées** : Combinez plusieurs règles pour une validation robuste.
-4. **Sécurité** : Utilisez toujours la validation côté serveur, même si vous avez une validation côté client.
+1. **Early validation**: Validate data as early as possible in the request lifecycle.
+2. **Clear messages**: Use descriptive and understandable error messages.
+3. **Composed rules**: Combine multiple rules for robust validation.
+4. **Security**: Always use server-side validation, even if you have client-side validation.
 
 <SuggestionFeature />

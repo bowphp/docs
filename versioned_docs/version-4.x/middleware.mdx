@@ -1,45 +1,45 @@
 ---
 id: middleware
-title: "Middlewares HTTP dans BowPHP"
+title: "HTTP Middleware in BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
-- [Comment ça marche](#comment-ça-marche)
-- [Ajouter un middleware](#ajouter-un-middleware)
-- [Enregistrement de middleware](#enregistrement-de-middleware)
-- [Utiliser le middleware](#utiliser-le-middleware)
+- [How it works](#how-it-works)
+- [Adding a middleware](#adding-a-middleware)
+- [Registering a middleware](#registering-a-middleware)
+- [Using the middleware](#using-the-middleware)
 
 ## Introduction
 
-Les middlewares constituent un mécanisme pratique pour filtrer les requêtes HTTP entrant dans votre application. Par exemple vous pouvez faire un middleware pour vérifier si un utilisateur est connecté et ensuite faire une action en fonction. Vous pouvez exécuter du code avant et après votre application Bow pour manipuler les objets `Request` et `Response` comme bon vous semble.
+Middleware provides a convenient mechanism for filtering HTTP requests entering your application. For example, you can write a middleware to check whether a user is logged in and then act accordingly. You can run code before and after your Bow application to manipulate the `Request` and `Response` objects however you like.
 
 <script id="asciicast-bfTIiqg1ew9x1QRxeMTufxJJU" src="https://asciinema.org/a/bfTIiqg1ew9x1QRxeMTufxJJU.js" data-speed="2"  async></script>
 
-## Comment ça marche
+## How it works
 
-Différents Frameworks utilisent le système de middleware différemment. Bow ajoute un middleware sous forme de file d'attente au dessus de votre application principale. Chaque nouvelle couche de middleware est ajouté la file de middleware existante. La structure de file se dilate vers l'extérieur au fur et à mesure que les couches intermédiaires supplémentaires sont ajoutées.
+Different frameworks use the middleware system in different ways. Bow adds middleware as a queue on top of your main application. Each new middleware layer is added to the existing middleware queue. The queue structure expands outward as additional intermediate layers are added.
 
-Lorsque vous exécutez l'application Bow, les objets Request traversent la structure du middleware de l'extérieur vers l'intérieur. Ils entrent d'abord dans le middleware le plus externe, puis dans le prochain middleware le plus externe (et ainsi de suite), jusqu'à ce qu'ils atteignent l'application elle-même. Une fois que l'application Bow a distribué la route approprié, l'objet Response résultant quitte l'application Bow et est sérialisé dans une réponse HTTP qui est renvoyé au client HTTP.
+When you run the Bow application, Request objects travel through the middleware structure from the outside in. They first enter the outermost middleware, then the next outermost middleware (and so on), until they reach the application itself. Once the Bow application has dispatched the appropriate route, the resulting Response object leaves the Bow application and is serialized into an HTTP response that is returned to the HTTP client.
 
-La seule condition stricte est qu'un middleware doit renvoyer une value autre de `null`. Chaque middleware devra appeler le middleware suivant et lui transmettre les objets `Request` comme arguments via la méthode `$next`.
+The only strict requirement is that a middleware must return a value other than `null`. Each middleware must call the next middleware and pass the `Request` objects to it as arguments via the `$next` method.
 
-> Bow inclut plusieurs middlewares par défaut comme le middleware `csrf` et `auth`.
+> Bow includes several middleware by default, such as the `csrf` and `auth` middleware.
 
-## Ajouter un middleware
+## Adding a middleware
 
-Pour ajouter un middleware il faut utiliser la commande `add:middleware` de `php bow`:
+To add a middleware, use the `add:middleware` command from `php bow`:
 
 ```bash
 php bow add:middleware IpMiddleware
 ```
 
-Notez que tout les middlewares sont sauvegardés par défaut dans le fichier `app/Middleware`.
+Note that all middleware is saved by default in the `app/Middleware` file.
 
-Alors, le middleware que nous venons d'ajouter, vérifira l'adresse IP du client et si son adresse est égale à `127.0.0.1` on dira que l'application est MODE DEV.
+So the middleware we just added will check the client's IP address, and if the address is equal to `127.0.0.1` we will say the application is in DEV MODE.
 
-Mais d'abort, regardons le contenu du fichier `IpMiddleware`. C'est la méthode `process` qui permet de lancer le middleware et la callable permet de lancer le prochaine middleware.
+But first, let's look at the contents of the `IpMiddleware` file. The `process` method is what runs the middleware, and the callable allows the next middleware to be run.
 
 ```php
 namespace App\Middlewares;
@@ -49,7 +49,7 @@ use Bow\Http\Request;
 class IpMiddleware
 {
   /**
-   * Fonction de lancement du middleware.
+   * Middleware entry point.
    *
    * @param Request $request
    * @param callable $next
@@ -62,7 +62,7 @@ class IpMiddleware
 }
 ```
 
-Pour notre exemple on aura alors le `process` suivant:
+For our example, we would then have the following `process`:
 
 ```php
 public function process(Request $request, callable $next)
@@ -75,9 +75,9 @@ public function process(Request $request, callable $next)
 }
 ```
 
-## Enregistrement de middleware
+## Registering a middleware
 
-Généralement l'enregistrement se fait dans le fichier `app/Kernel.php` avec une clé qui l'identifie.
+Registration is generally done in the `app/Kernel.php` file with a key that identifies it.
 
 ```php
 public function middlewares()
@@ -90,13 +90,13 @@ public function middlewares()
 }
 ```
 
-Il est aussi possible d'ajouter les middlewares de façon globale dans l'application. Cela se fait dans le fichier de `routes` avec la méthode `middleware` sur `$app` qui va nous retourner une instance de `\Bow\Router\Router::class` donc toutes les routes qui seront définies avec cette instance hériteront des middlewares spécifiés.
+It is also possible to add middleware globally across the application. This is done in the `routes` file using the `middleware` method on `$app`, which returns an instance of `\Bow\Router\Router::class`, so all routes defined with this instance will inherit the specified middleware.
 
 ```php
 $router = $app->middleware(\App\Middlewares\IpMiddleware::class);
 $router->get('/', 'HomeController::index');
 
-// Ou
+// Or
 $router = $app->middleware([
   \App\Middlewares\IpMiddleware::class,
   \App\Middlewares\OtherMiddleware::class,
@@ -104,15 +104,15 @@ $router = $app->middleware([
 $router->get('/', 'HomeController::index');
 ```
 
-## Utiliser le middleware
+## Using the middleware
 
-Après avoir défini un middleware dans le `app/Kernel.php`.
+After defining a middleware in `app/Kernel.php`.
 
 ```php
 $app->get('/', 'HomeController::index')->middleware('ip');
 $app->get('/', 'HomeController::index')->middleware(['ip', 'autre']);
 
-// ou
+// or
 $app->route([
   'path' => '/',
   'method' => 'GET',

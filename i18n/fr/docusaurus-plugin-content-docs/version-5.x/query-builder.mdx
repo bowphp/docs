@@ -1,0 +1,360 @@
+---
+id: query-builder
+title: "Construction de requêtes SQL avec Query Builder"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Bow fournit une API liée à la construction de requêtes. La méthode `table` permet de construire une requête SQL en se basant sur le nom de la table et retourne une instance de [`Bow\Database\QueryBuilder::class`](https://bowphp.com/api/master/Bow/Database/QueryBuilder.html).
+
+```php
+use Bow\Database\Database;
+
+$builder = Database::table('users');
+// => Instance \Bow\Database\QueryBuilder::class
+```
+
+Vous pouvez aussi utiliser le helper `app_db_table`:
+
+```php
+$builder = app_db_table('users');
+```
+
+Sur l'instance de la `QueryBuilder` de Bow, il y a plusieurs méthodes qui vont vous permettre de construire une requête SQL.
+Par exemple, la méthode `toSql` qui permet d'afficher la requête construite.
+
+```php
+$builder->toSql();
+// select * from `users`
+```
+
+## Récupérer les informations
+
+Pour récupérer les informations avec le builder, vous devez utiliser la méthode `get` qui retourne une collection, `first` qui retourne `null` ou un objet `stdclass` et `last` qui se comporte comme `first` sauf qu'il retourne plutôt le dernier élément du résultat de l'exécution de la requête.
+
+### Exemple avec `get`
+
+```php
+$builder = Database::table('users');
+
+$users = $builder->get();
+
+foreach ($users as $user) {
+  echo $user->name;
+}
+```
+
+:::tip Projection de colonnes
+Vous pouvez passer un tableau à `get` qui est une liste des colonnes de la projection comme ceci : `$builder->get(['name'])`.
+:::
+
+### Exemple avec `first`
+
+```php
+$user = app_db_table('users')->first();
+
+// Vide
+is_null($user)
+// Ok
+echo $user->name;
+```
+
+### Exemple avec `last`
+
+```php
+$user = $builder->last();
+```
+
+### Ajoutez des restrictions
+
+#### Restriction simple
+
+Avec le builder, vous pouvez ajouter des restrictions simples sur la construction de la requête SQL avec la méthode `where`.
+
+```php
+$users = app_db_table('users')->where('id', 1)->get();
+
+$users = app_db_table('users')->where('id', '!=', 1)->get();
+```
+
+#### La clause OR
+
+Vous pouvez enchainer la restriction en ajoutant un `or` dans votre requête. La méthode `orWhere` vous permet de faire cela:
+
+```php
+$users = app_db_table('users')->where('id', 1)->orWhere('name', 'Papac')->get();
+```
+
+Vous pouvez voir le résultat de la construction de la requête avec la méthode `toSql`.
+
+```php
+$sql = app_db_table('users')->where('id', 1)->orWhere('id', 3)->toSql();
+// => select * from users where id = ? or id = ?
+```
+
+:::note Placeholders
+`toSql()` retourne la requête avec des **placeholders `?`**, pas les valeurs
+littérales — la requête est exécutée comme une *prepared statement* avec
+binding des paramètres, ce qui protège des injections SQL.
+:::
+
+#### whereRaw / orWhereRaw
+
+Pour des conditions que le builder n'exprime pas nativement, utilisez les
+variantes brutes avec binding paramétré :
+
+```php
+$users = app_db_table('users')
+  ->whereRaw('LOWER(name) = ?', ['papac'])
+  ->orWhereRaw('created_at >= NOW() - INTERVAL 7 DAY')
+  ->get();
+```
+
+### Clauses additionnelles
+
+#### whereNull / whereNotNull
+
+La méthode `whereNull` vérifie que la valeur de la colonne donnée est `NULL`:
+
+```php
+$users = app_db_table('users')->whereNull('name')->get();
+```
+
+La méthode `whereNotNull` vérifie que la valeur de la colonne n'est pas `NULL`:
+
+```php
+$users = app_db_table('users')->whereNotNull('age')->get();
+```
+
+#### whereIn / whereNotIn
+
+La méthode `whereIn` vérifie que la valeur d'une colonne donnée est contenue dans le tableau donné:
+
+```php
+$users = app_db_table('users')->whereIn('age', [27, 30])->get();
+```
+
+La méthode `whereNotIn` vérifie que la valeur de la colonne donnée n'est pas contenue dans le tableau donné:
+
+```php
+$users = app_db_table('users')->whereNotIn('age', [27, 30])->get();
+```
+
+#### whereBetween / whereNotBetween
+
+La méthode `whereBetween` vérifie que la valeur d'une colonne est comprise entre deux valeurs:
+
+```php
+$users = app_db_table('users')->whereBetween('votes', [1, 100])->get();
+```
+
+La méthode `whereNotBetween` vérifie que la valeur d'une colonne se situe en dehors de deux valeurs:
+
+```php
+$users = app_db_table('users')->whereNotBetween('votes', [1, 100])->get();
+```
+
+### Jointures
+
+```php
+// INNER JOIN
+$rows = app_db_table('orders')
+  ->join('users', 'orders.user_id', '=', 'users.id')
+  ->get();
+
+// LEFT JOIN
+$rows = app_db_table('orders')
+  ->leftJoin('users', 'orders.user_id', '=', 'users.id')
+  ->get();
+
+// RIGHT JOIN
+$rows = app_db_table('orders')
+  ->rightJoin('users', 'orders.user_id', '=', 'users.id')
+  ->get();
+```
+
+Pour les jointures à plusieurs conditions, chaînez `andOn` / `orOn` après
+un `join` :
+
+```php
+$rows = app_db_table('orders')
+  ->join('users', 'orders.user_id', '=', 'users.id')
+  ->andOn('orders.team_id', '=', 'users.team_id')
+  ->get();
+```
+
+### Ordonner, Grouper, et limiter
+
+#### orderBy
+
+La méthode `orderBy` vous permet de trier le résultat de la requête en fonction d'une colonne donnée. Le premier argument de la méthode `orderBy` devrait être la colonne que vous souhaitez trier, tandis que le second argument contrôle le sens du tri et peut être `asc` ou `desc`:
+
+```php
+$users = app_db_table('users')->orderBy('name', 'desc')->get();
+```
+
+#### groupBy et having
+
+Les méthodes `groupBy` et `having` peuvent être utilisées pour regrouper les résultats de la requête. La signature de la méthode `having` est similaire à celle de la méthode `where`:
+
+```php
+$users = app_db_table('orders')
+  ->groupBy('price')
+  ->having('price', '>', 100)
+  ->get();
+```
+
+#### jump et take
+
+Pour limiter le nombre de résultats renvoyés par la requête ou pour ignorer un nombre donné de résultats dans la requête, vous pouvez utiliser les méthodes `jump` (pour ignorer) et `take` (pour renvoyer un nombre):
+
+```php
+use Bow\Database\Database;
+
+$users = Database::table('users')->jump(10)->take(5)->get();
+```
+
+## Aggregates
+
+:::info Méthodes d'agrégation
+Le générateur de requêtes fournit également une variété de méthodes d'agrégation telles que `count`, `max`, `min`, `avg` et `sum`.
+:::
+
+Vous pouvez appeler n'importe laquelle de ces méthodes après avoir construit votre requête.
+
+```php
+$users = app_db_table('users')->count();
+
+$price = app_db_table('orders')->max('price');
+
+$avg = app_db_table('orders')->avg('price');
+```
+
+### Vérifier si des enregistrements existent
+
+Au lieu d'utiliser la méthode `count` pour déterminer s'il existe des enregistrements correspondant aux contraintes de votre requête, vous pouvez utiliser la méthode `exists` :
+
+```php
+$exists = app_db_table('users')->where('id', 1)->exists();
+```
+
+### Spécification d'une clause de sélection
+
+Bien entendu, il se peut que vous ne souhaitiez pas toujours sélectionner toutes les colonnes d'une table de base de données. À l'aide de la méthode `select`, vous pouvez spécifier une clause select personnalisée pour la requête:
+
+```php
+$price = app_db_table('orders')->select('price')->get();
+// Ou sélectionnez plusieurs colonnes
+$price = app_db_table('orders')->select(['id', 'price'])->get();
+```
+
+### Insertion d'informations
+
+:::tip Insertion de données
+Le générateur de requêtes fournit une méthode `insert` pour insérer des enregistrements dans la table de base de données.
+:::
+
+La méthode `insert` accepte un tableau de noms de colonnes et de valeurs :
+
+```php
+app_db_table('users')->insert(
+  ['email' => 'exemple@gmail.com', 'age' => 27]
+);
+```
+
+Vous pouvez insérer plusieurs enregistrements en un seul appel en passant
+un tableau de tableaux :
+
+```php
+app_db_table('users')->insert([
+  ['email' => 'a@example.com', 'age' => 27],
+  ['email' => 'b@example.com', 'age' => 31],
+  ['email' => 'c@example.com', 'age' => 24],
+]);
+```
+
+#### Récupérer le dernier identifiant inséré
+
+Pour insérer et récupérer la valeur auto-incrémentée du nouvel enregistrement
+en une seule opération, utilisez `insertAndGetLastId` :
+
+```php
+$id = app_db_table('users')->insertAndGetLastId(
+  ['email' => 'exemple@gmail.com', 'age' => 27]
+);
+```
+
+### Mise à jour
+
+Bien entendu, en plus d'insérer des enregistrements dans la base de données, le générateur de requêtes peut également mettre à jour des enregistrements existants à l'aide de la méthode `update`. La méthode update, comme la méthode `insert`, accepte un tableau de paires de colonnes et de valeurs contenant les colonnes à mettre à jour. Vous pouvez contraindre la requête de mise à jour à l'aide de clauses `where`:
+
+```php
+app_db_table('users')->where('id', 1)->update(
+  ['email' => 'exemple@gmail.com', 'age' => 27]
+);
+```
+
+### Supprimer un enregistrement
+
+:::warning Suppression de données
+Le générateur de requêtes peut également être utilisé pour supprimer des enregistrements de la table via la méthode `delete`.
+:::
+
+Vous pouvez contraindre des instructions `delete` en ajoutant des clauses `where` avant d'appeler la méthode `delete` :
+
+```php
+app_db_table('users')->delete();
+
+app_db_table('users')->where('age', '>', 27)->delete();
+```
+
+Si vous souhaitez vider la table entière, ce qui supprimera toutes les lignes et réinitialisera l'ID d'auto-incrémentation à zéro, vous pouvez utiliser la méthode `truncate`:
+
+```php
+app_db_table('pets')->truncate();
+```
+
+### Incrémenter / décrémenter
+
+Les méthodes `increment` et `decrement` modifient atomiquement la valeur
+d'une colonne numérique sans charger la ligne d'abord. Le pas (`$step`) est
+optionnel et vaut `1` par défaut :
+
+```php
+// votes = votes + 1
+app_db_table('users')->where('id', 1)->increment('votes');
+
+// stock = stock - 3
+app_db_table('products')->where('id', 42)->decrement('stock', 3);
+```
+
+### DISTINCT
+
+Pour retourner uniquement les valeurs distinctes d'une colonne :
+
+```php
+$categories = app_db_table('products')->distinct('category')->get();
+```
+
+### Verrouillage de lignes
+
+Dans une transaction, vous pouvez ajouter un verrou pour empêcher les
+modifications concurrentes :
+
+```php
+use Bow\Database\Database;
+
+Database::transaction(function () {
+  // Verrou exclusif (SELECT ... FOR UPDATE)
+  $user = app_db_table('users')->where('id', 1)->lockForUpdate()->first();
+
+  // Verrou partagé (SELECT ... LOCK IN SHARE MODE)
+  $order = app_db_table('orders')->where('id', 42)->sharedLock()->first();
+
+  // ... opérations sur les lignes verrouillées
+});
+```
+
+<SuggestionFeature />

@@ -1,22 +1,30 @@
 {
   "title": {
-    "message": "BowPHP",
+    "message": "BOWPHP",
     "description": "The title in the navbar"
   },
-  "item.label.Documentation": {
-    "message": "Documentation",
-    "description": "Navbar item with label Documentation"
+  "logo.alt": {
+    "message": "BowPHP",
+    "description": "The alt text of navbar logo"
   },
-  "item.label.Blog": {
-    "message": "Blog",
-    "description": "Navbar item with label Blog"
+  "item.label.DOCUMENTATION": {
+    "message": "DOCUMENTATION",
+    "description": "Navbar item with label DOCUMENTATION"
   },
-  "item.label.API Reference": {
-    "message": "API Reference",
-    "description": "Navbar item with label API Reference"
+  "item.label.BLOG": {
+    "message": "BLOG",
+    "description": "Navbar item with label BLOG"
   },
-  "item.label.Telegram": {
-    "message": "Telegram",
-    "description": "Navbar item with label Telegram"
+  "item.label.API REFERENCE": {
+    "message": "API REFERENCE",
+    "description": "Navbar item with label API REFERENCE"
+  },
+  "item.label.COMMUNITY": {
+    "message": "COMMUNAUTÉ",
+    "description": "Navbar item with label COMMUNITY"
+  },
+  "item.label.SHOP": {
+    "message": "SHOP",
+    "description": "Navbar item with label SHOP"
   }
 }

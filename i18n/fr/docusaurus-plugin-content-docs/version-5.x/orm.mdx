@@ -1,0 +1,988 @@
+---
+id: orm
+title: "ORM Barry"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+<p align="center">Barry c'est l'ORM (<strong>Object Relation Mapping</strong>) intégré dans BowPHP.</p>
+
+## Introduction
+
+:::info
+Un ORM (Object Relation Mapping) est une façon de relier les tables entre elles en utilisant des classes. Chaque enregistrement d'une table représente un objet qui peut être en relation avec d'autres enregistrements.
+:::
+
+L'ORM inclus avec BowPHP fournit une implémentation ActiveRecord simple et élégante pour travailler avec votre base de données. Chaque table de base de données a un "modèle" correspondant qui est utilisé pour interagir avec cette table. Les modèles vous permettent de rechercher des données dans vos tables, ainsi que d'insérer de nouveaux enregistrements.
+
+Dans tout bon framework qui se respecte, il y a un système ORM avec un nom sympathique. Celui de Bow se nomme **Barry**.
+
+:::warning Prérequis
+Avant de commencer, assurez-vous de configurer une connexion à la base de données dans `config/database.php`.
+:::
+
+Avant de continuer, veuillez ajouter une migration :
+
+```bash
+php bow add:migration CreateTodoTable
+```
+
+Ensuite modifiez la migration:
+
+```php
+public function up()
+{
+  $this->create("todos", function (Table $table) {
+    $table->addIncrement('id');
+    $table->addString('title');
+    $table->addInteger('status', ["default" => 1]);
+    $table->addInteger('budget', ["default" => 0]);
+    $table->addTimestamps();
+  });
+}
+```
+
+Enfin, faites la migration :
+
+```bash
+php bow migration:migrate
+```
+
+:::tip Information
+Cette migration sera utilisée pour vous permettre de faire directement les tests sur le modèle `App\Models\Todo::class`.
+:::
+
+## Ajouter un modèle
+
+Pour ajouter un modèle, il faut utiliser la ligne de commande `php bow` avec la commande `add:model` suivi du nom du modèle.
+
+```bash
+php bow add:model Todo
+```
+
+Après création du modèle, un fichier du même nom sera créé, dans notre cas `Todo.php`, à la racine du dossier `app/Models`.
+
+Voici un aperçu du fichier :
+
+```php
+namespace App\Models;
+
+use Bow\Database\Barry\Model;
+
+class Todo extends Model
+{
+  //
+}
+```
+
+:::warning Important
+Avant d'utiliser le modèle, vérifiez que vous avez configuré votre base de données.
+:::
+
+### Nom de table
+
+Notez que nous n'avons pas indiqué à Barry quelle table utiliser pour notre modèle `Todo`. Par convention, en "snake_case", le nom pluriel de la classe sera utilisé comme nom de table à moins qu'un autre nom ne soit explicitement spécifié.
+
+Vous pouvez spécifier manuellement un nom de table en définissant une propriété `table` sur votre modèle :
+
+```php
+namespace App\Models;
+
+use Bow\Database\Barry\Model;
+
+class Todo extends Model
+{
+  /**
+   * Définissez la table associée au modèle.
+   */
+  protected string $table = 'todos';
+}
+```
+
+Vous pouvez aussi appliquer un préfixe par modèle (ajouté devant le nom de
+table) — utile pour cohabiter avec d'autres systèmes dans la même base :
+
+```php
+class Todo extends Model
+{
+  protected string $prefix = 'app_';
+  protected string $table = 'todos'; // résolu en "app_todos"
+}
+```
+
+### Clés primaires
+
+Barry supposera également que chaque table a une colonne de clé primaire nommée `id`. Vous pouvez définir une propriété `$primary_key` protégée pour remplacer cette convention :
+
+```php
+namespace App\Models;
+
+use Bow\Database\Barry\Model;
+
+class Todo extends Model
+{
+  /**
+   * La clé primaire associée à la table.
+   */
+  protected string $primary_key = 'id_todo';
+}
+```
+
+Vous pouvez aussi indiquer le **type** de la clé primaire et désactiver
+l'auto-incrément (par exemple pour des UUIDs ou des identifiants composés
+en chaîne) :
+
+```php
+class Todo extends Model
+{
+  protected string $primary_key = 'uuid';
+  protected string $primary_key_type = 'string'; // 'int' (défaut) | 'string' | 'float' | 'double'
+  protected bool $auto_increment = false;
+}
+```
+
+### Connexion
+
+Par défaut Barry utilise la connexion courante du framework. Pour pointer un
+modèle sur une connexion spécifique, définissez la propriété `$connection` :
+
+```php
+class Todo extends Model
+{
+  protected ?string $connection = 'reporting';
+}
+```
+
+Vous pouvez aussi changer la connexion ponctuellement :
+
+```php
+$todos = Todo::connection('reporting')->all();
+```
+
+## Récupérer les données
+
+:::info
+Une fois que vous avez créé un modèle et sa table de base de données associée, vous êtes prêt à commencer à récupérer les données. Considérez chaque modèle Barry comme un puissant [générateur de requêtes](./query-builder) vous permettant d'interroger la table de base de données associée au modèle.
+:::
+
+Par exemple:
+
+```php
+use App\Models\Todo;
+
+$todos = Todo::all();
+
+foreach ($todos as $todo) {
+  echo $todo->title;
+}
+```
+
+La méthode `retrieve` et `retrieveBy` permet aussi de récupérer les informations:
+
+```php
+// Avec retrieve
+$todo = Todo::retrieve(1);
+
+// Avec retrieveBy (retourne une Collection)
+$todos = Todo::retrieveBy('status', 'pending');
+```
+
+Vous pouvez aussi utiliser `retrieveOrFail` pour lancer une exception si l'enregistrement n'existe pas:
+
+```php
+use Bow\Database\Exception\NotFoundException;
+
+try {
+  $todo = Todo::retrieveOrFail(1);
+} catch (NotFoundException $e) {
+  // L'enregistrement n'existe pas
+}
+```
+
+:::tip Remarque
+La méthode `retrieve` peut aussi retourner `null` dans le cas où il n'y a aucun enregistrement trouvé.
+:::
+
+Pour obtenir le dernier enregistrement créé selon la colonne déclarée dans
+`$latest` (par défaut `created_at`), utilisez la méthode statique `latest()` :
+
+```php
+$todo = Todo::latest(); // ORDER BY created_at DESC LIMIT 1
+
+// Personnaliser la colonne utilisée :
+class Todo extends Model
+{
+  protected string $latest = 'updated_at';
+}
+```
+
+## Ajout de contraintes supplémentaires
+
+La méthode Barry `all` retournera tous les résultats dans le tableau du modèle. Étant donné que chaque modèle Barry sert de [générateur de requêtes](./query-builder), vous pouvez également ajouter des contraintes aux requêtes, puis utiliser la méthode `get` pour récupérer les résultats :
+
+```php
+$flights = App\Models\Todo::where('status', 'done')
+            ->orderBy('title', 'desc')
+            ->take(10)
+            ->get();
+```
+
+## Méthodes du Query Builder
+
+Grâce à la méthode magique `__callStatic`, tous les modèles Barry ont accès aux méthodes du Query Builder. Ces méthodes peuvent être chaînées pour construire des requêtes complexes.
+
+### Conditions WHERE
+
+```php
+use App\Models\Todo;
+
+// Condition simple
+Todo::where('status', 'done')->get();
+
+// Avec opérateur de comparaison
+Todo::where('budget', '>', 1000)->get();
+
+// OU condition
+Todo::where('status', 'done')
+  ->orWhere('status', 'pending')
+  ->get();
+
+// WHERE avec valeur NULL
+Todo::whereNull('deleted_at')->get();
+Todo::whereNotNull('completed_at')->get();
+
+// WHERE BETWEEN
+Todo::whereBetween('budget', [100, 500])->get();
+Todo::whereNotBetween('budget', [100, 500])->get();
+
+// WHERE IN
+Todo::whereIn('status', ['done', 'pending'])->get();
+Todo::whereNotIn('status', ['cancelled', 'expired'])->get();
+
+// WHERE RAW (requête brute)
+Todo::whereRaw('budget > 100 AND status = "done"')->get();
+Todo::orWhereRaw('created_at > NOW() - INTERVAL 7 DAY')->get();
+```
+
+### Tri et limitation
+
+```php
+use App\Models\Todo;
+
+// Tri par colonne
+Todo::orderBy('created_at', 'desc')->get();
+Todo::orderBy('title', 'asc')->get();
+
+// Limiter les résultats
+Todo::take(10)->get();
+
+// Sauter des enregistrements (offset)
+Todo::jump(5)->take(10)->get();
+
+// Obtenir le premier enregistrement
+Todo::where('status', 'done')->first();
+
+// Obtenir le dernier enregistrement
+Todo::where('status', 'done')->last();
+```
+
+### Sélection de colonnes
+
+```php
+use App\Models\Todo;
+
+// Sélectionner des colonnes spécifiques
+Todo::select(['id', 'title', 'status'])->get();
+
+// Valeurs distinctes
+Todo::distinct('status');
+```
+
+### Groupement
+
+```php
+use App\Models\Todo;
+
+// GROUP BY
+Todo::groupBy('status')->get();
+
+// GROUP BY avec HAVING
+Todo::groupBy('status')
+  ->having('count', '>', 5)
+  ->get();
+```
+
+### Jointures
+
+```php
+use App\Models\Todo;
+
+// INNER JOIN
+Todo::join('users', 'todos.user_id', '=', 'users.id')->get();
+
+// LEFT JOIN
+Todo::leftJoin('categories', 'todos.category_id', '=', 'categories.id')->get();
+
+// RIGHT JOIN
+Todo::rightJoin('projects', 'todos.project_id', '=', 'projects.id')->get();
+
+// Jointures multiples avec AND ON / OR ON
+Todo::join('users', 'todos.user_id', '=', 'users.id')
+  ->andOn('todos.team_id', '=', 'users.team_id')
+  ->orOn('todos.owner_id', '=', 'users.id')
+  ->get();
+```
+
+### Opérations d'écriture
+
+```php
+use App\Models\Todo;
+
+// Mise à jour avec conditions
+Todo::where('status', 'pending')
+  ->update(['status' => 'done']);
+
+// Suppression avec conditions
+Todo::where('status', 'cancelled')->delete();
+
+// Incrémenter une valeur
+Todo::where('id', 1)->increment('view_count');
+Todo::where('id', 1)->increment('view_count', 5); // +5
+
+// Décrémenter une valeur
+Todo::where('id', 1)->decrement('stock');
+Todo::where('id', 1)->decrement('stock', 3); // -3
+
+// Insertion directe
+Todo::insert([
+  'title' => 'Nouvelle tâche',
+  'status' => 'pending'
+]);
+
+// Insertion et récupération de l'ID
+$id = Todo::insertAndGetLastId([
+  'title' => 'Nouvelle tâche',
+  'status' => 'pending'
+]);
+```
+
+### Vérification d'existence
+
+```php
+use App\Models\Todo;
+
+// Vérifier si des enregistrements existent
+$exists = Todo::where('status', 'done')->exists();
+
+// Vérifier par colonne et valeur
+$exists = Todo::exists('email', 'user@example.com');
+```
+
+### Génération SQL
+
+```php
+use App\Models\Todo;
+
+// Obtenir la requête SQL générée
+$sql = Todo::where('status', 'done')
+  ->orderBy('created_at', 'desc')
+  ->toSql();
+```
+
+:::tip Pour aller plus loin
+Cette section présente les méthodes les plus courantes du Query Builder. Pour une documentation complète avec toutes les options avancées, consultez la page [Query Builder](./query-builder).
+:::
+
+## Récupération d'agrégats
+
+Vous pouvez également utiliser les méthodes `count`, `sum`, `max` et d'autres méthodes d'agrégation fournies par le [générateur de requêtes](./query-builder). Ces méthodes renvoient la valeur scalaire appropriée au lieu d'une instance de modèle complète:
+
+```php
+use App\Models\Todo;
+
+$count = Todo::where('status', 'done')->count();
+
+$max = Todo::where('status', 'done')->max('budget');
+```
+
+## Insertion et mise à jour de modèles
+
+### INSERT
+
+Pour créer un nouvel enregistrement dans la base de données, créez une nouvelle instance de modèle, définissez des attributs sur le modèle, puis appelez la méthode de sauvegarde:
+
+```php
+
+namespace App\Http\Controllers;
+
+use App\Models\Todo;
+use Bow\Http\Request;
+
+class TodoController
+{
+  /**
+   * Créez une nouvelle instance de todo.
+   *
+   * @param Request $request
+   * @return mixed
+   */
+  public function store(Request $request)
+  {
+    // Validez la demande...
+
+    $todo = new Todo;
+
+    $todo->title = $request->get('title');
+    $todo->budget = $request->get('budget', 0);
+    $todo->status = 'pending';
+
+    $todo->persist();
+  }
+}
+```
+
+Dans cet exemple, nous affectons le paramètre de nom de la requête HTTP entrante aux attributs `title`, `budget` de l'instance de modèle `App\Models\Todo`. Lorsque nous appelons la méthode `persist`, un enregistrement sera inséré dans la base de données. Les horodatages `created_at` et `updated_at` seront automatiquement définis lorsque la méthode de persistance sera appelée, il n'est donc pas nécessaire de les définir manuellement.
+
+### Insert via CREATE
+
+Les objets Active Record peuvent être créés à partir d'un hachage, d'un bloc ou avoir leurs attributs définis manuellement après la création. La nouvelle méthode renverra un nouvel objet tandis que `create` renverra l'objet et l'enregistrera dans la base de données.
+
+Par exemple, étant donné un utilisateur modèle avec des attributs de nom et d'occupation, l'appel de la méthode create créera et enregistrera un nouvel enregistrement dans la base de données:
+
+```php
+use App\Models\Todo;
+
+$user = Todo::create([
+  'title' => 'Acheter un ticket metro',
+  'budget' => 2000,
+  'status' => 'pending',
+]);
+```
+
+### UPDATE
+
+La méthode `persist` peut également être utilisée pour mettre à jour des modèles qui existent déjà dans la base de données. Pour mettre à jour un modèle, vous devez le récupérer, définir les attributs que vous souhaitez mettre à jour, puis appeler la méthode `persist`. Encore une fois, l'horodatage `updated_at` sera automatiquement mis à jour, il n'est donc pas nécessaire de définir manuellement sa valeur:
+
+```php
+use App\Models\Todo;
+
+$todo = Todo::retrieve(1);
+
+$todo->title = 'Shopping pour Franck';
+
+$todo->persist();
+```
+
+Vous pouvez aussi utiliser la méthode `update`. Cependant, vous devez définir les conditions pour limiter l'impact de la mise à jour.
+
+```php
+use App\Models\Todo;
+
+Todo::where('status', 'done')
+  ->update(['title' => 'Achat de ticket d\'avion']);
+```
+
+La méthode `update` attend un tableau de paires de colonnes et de valeurs représentant les colonnes à mettre à jour.
+
+## Suppression de données
+
+De même, une fois récupéré, un objet Active Record peut être détruit, ce qui le supprime de la base de données.
+
+```php
+use App\Models\Todo;
+
+$todo = Todo::retrieve(1);
+$todo->delete();
+```
+
+Si vous souhaitez supprimer plusieurs enregistrements en masse, vous pouvez utiliser la méthode `deleteBy` ou `truncate`:
+
+```php
+// Supprimer un todo par colonne
+Todo::deleteBy('status', 'done');
+
+// Supprimer tous les todos
+Todo::truncate();
+```
+
+## Relations entre modèles
+
+Barry fournit quatre types de relations exposés via le trait
+`Bow\Database\Barry\Concerns\Relationship` (inclus par défaut dans la classe
+`Model`) : `hasOne`, `hasMany`, `belongsTo`, et `belongsToMany`.
+
+Vous déclarez une relation comme une méthode sur le modèle qui retourne
+l'objet de relation. Accéder à cette méthode **comme une propriété**
+déclenche la résolution et renvoie les résultats.
+
+### `hasOne` — Un à un
+
+Un utilisateur a un profil :
+
+```php
+namespace App\Models;
+
+use Bow\Database\Barry\Model;
+use Bow\Database\Barry\Relations\HasOne;
+
+class User extends Model
+{
+    public function profile(): HasOne
+    {
+        return $this->hasOne(Profile::class);
+    }
+}
+
+// Utilisation
+$profile = User::retrieve(1)->profile; // → instance de Profile
+```
+
+### `hasMany` — Un à plusieurs
+
+Un utilisateur a plusieurs posts :
+
+```php
+use Bow\Database\Barry\Relations\HasMany;
+
+class User extends Model
+{
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+}
+
+$posts = User::retrieve(1)->posts; // → Collection de Post
+```
+
+### `belongsTo` — Inverse de `hasOne` / `hasMany`
+
+Un post appartient à un utilisateur :
+
+```php
+use Bow\Database\Barry\Relations\BelongsTo;
+
+class Post extends Model
+{
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+
+$user = Post::retrieve(42)->author; // → instance de User
+```
+
+### `belongsToMany` — Plusieurs à plusieurs
+
+Un post a plusieurs tags via une table pivot :
+
+```php
+use Bow\Database\Barry\Relations\BelongsToMany;
+
+class Post extends Model
+{
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+}
+
+$tags = Post::retrieve(1)->tags; // → Collection de Tag
+```
+
+### Personnaliser les clés
+
+Toutes les méthodes acceptent deux paramètres optionnels pour préciser les
+colonnes de jointure. Les noms par défaut sont déduits du nom de la table
+liée (`users` → `user_id`) et de la clé primaire du modèle (`id`).
+
+:::warning Ordre des arguments
+`hasOne` et `hasMany` n'attendent **pas** leurs deux clés dans le même ordre.
+Reportez-vous aux signatures ci-dessous plutôt qu'à votre intuition.
+:::
+
+```php
+// hasOne(related, $foreign_key [table liée], $local_key [cette table])
+$this->hasOne(Profile::class, 'user_id', 'id');
+
+// hasMany(related, $local_key [cette table], $foreign_key [table liée])
+$this->hasMany(Post::class, 'id', 'author_id');
+
+// belongsTo(related, $foreign_key [cette table], $local_key [table liée])
+$this->belongsTo(User::class, 'author_id', 'id');
+
+// belongsToMany(related, $primary_key [cette table], $foreign_key [table liée])
+$this->belongsToMany(Tag::class, 'id', 'tag_id');
+```
+
+:::tip Différence appel-méthode / accès-propriété
+- `$post->author()` — retourne l'objet de relation (utile pour ajouter des
+  contraintes : `$post->author()->where('active', true)->first()`).
+- `$post->author` — retourne **les résultats** (instance / Collection).
+:::
+
+### Chargement paresseux (lazy loading)
+
+Quand vous accédez à une relation **comme une propriété**, Barry exécute la
+requête à ce moment-là. Le résultat est ensuite conservé en mémoire sur
+l'instance du modèle : les accès suivants renvoient le **même** objet déjà
+chargé sans relancer de requête.
+
+```php
+$post = Post::retrieve(42);
+
+$post->author;  // 1 requête exécutée ici
+$post->author;  // aucune requête : même instance renvoyée
+```
+
+:::warning Problème N+1
+Le chargement paresseux est pratique mais devient coûteux dans une boucle :
+chaque modèle déclenche sa propre requête.
+
+```php
+$posts = Post::all();        // 1 requête
+
+foreach ($posts as $post) {
+    echo $post->author->name; // 1 requête PAR post → N+1 requêtes
+}
+```
+
+Pour 100 posts, cela fait 101 requêtes. La section suivante montre comment
+réduire ce nombre à 2.
+:::
+
+### Chargement anticipé (eager loading)
+
+La méthode `eager()` permet de précharger une ou plusieurs relations en une
+seule requête groupée (`WHERE ... IN (...)`), évitant ainsi le problème N+1.
+Les relations sont résolues juste après la requête principale et pré-affectées
+à chaque modèle parent.
+
+```php
+use App\Models\Post;
+
+// 2 requêtes au total, quel que soit le nombre de posts :
+//   1) SELECT * FROM posts
+//   2) SELECT * FROM users WHERE id IN (...)
+$posts = Post::eager('author')->get();
+
+foreach ($posts as $post) {
+    echo $post->author->name; // aucune requête supplémentaire
+}
+```
+
+Charger plusieurs relations à la fois en passant un tableau :
+
+```php
+$posts = Post::eager(['author', 'tags'])->get();
+```
+
+`eager()` fonctionne avec les quatre types de relations (`hasOne`, `hasMany`,
+`belongsTo`, `belongsToMany`). Une fois préchargée, la relation se comporte
+exactement comme en accès-propriété, mais sans requête additionnelle :
+
+```php
+$masters = PetMaster::eager(['pets', 'firstPet'])->get();
+
+foreach ($masters as $master) {
+    $master->pets;     // Collection déjà chargée
+    $master->firstPet; // instance déjà chargée
+}
+```
+
+:::tip À retenir
+- `eager()` se chaîne sur la requête et s'applique au moment du `get()`.
+- Si aucun enregistrement lié n'existe, une relation « plusieurs » renvoie une
+  `Collection` vide et une relation « un » renvoie `null`.
+- La liste des relations à précharger est réinitialisée après chaque `get()` :
+  elle ne « fuit » pas sur la requête suivante du même modèle.
+:::
+
+## Propriétés de configuration
+
+Barry offre plusieurs propriétés de configuration pour personnaliser le comportement du modèle:
+
+### Timestamps
+
+Par défaut, Barry gère automatiquement les colonnes `created_at` et `updated_at`. Vous pouvez désactiver ce comportement:
+
+```php
+class Todo extends Model
+{
+  /**
+   * Indique si le modèle doit gérer les timestamps.
+   *
+   * @var bool
+   */
+  protected bool $timestamps = false;
+}
+```
+
+Vous pouvez personnaliser les noms des colonnes de timestamp:
+
+```php
+class Todo extends Model
+{
+  protected string $created_at = 'date_creation';
+  protected string $updated_at = 'date_modification';
+}
+```
+
+### Champs cachés
+
+Pour exclure certains attributs lors de la sérialisation JSON ou de la conversion en tableau:
+
+```php
+class User extends Model
+{
+  /**
+   * Les attributs qui doivent être cachés.
+   *
+   * @var array
+   */
+  protected array $hidden = ['password', 'remember_token'];
+}
+```
+
+### Casting des attributs
+
+Pour convertir automatiquement les types d'attributs lors de la lecture
+(`$model->attribute`) :
+
+```php
+class Todo extends Model
+{
+  /**
+   * Les conversions de type d'attributs.
+   */
+  protected array $casts = [
+    'status'    => 'int',
+    'budget'    => 'float',
+    'rating'    => 'double',  // alias de float
+    'is_active' => 'bool',    // 'boolean' fonctionne aussi
+    'due_date'  => 'date',    // -> Carbon
+    'meta'      => 'array',   // JSON -> tableau associatif
+    'settings'  => 'json',    // JSON -> stdClass
+  ];
+}
+```
+
+| Cast | Effet |
+|------|-------|
+| `int` | Cast vers `int` |
+| `float` / `double` | Cast vers `float` |
+| `bool` / `boolean` | Cast vers `bool` |
+| `date` | Instance de `Carbon\Carbon` |
+| `array` | `json_decode` en tableau associatif |
+| `json` | `json_decode` en `stdClass` |
+
+### Colonnes traitées comme des dates
+
+Toutes les colonnes listées dans `$dates` (en plus de `created_at`,
+`updated_at`, `expired_at`, `logged_at` et `signed_at` qui sont reconnues
+automatiquement) sont enveloppées dans une instance `Carbon\Carbon` à la
+lecture :
+
+```php
+class Todo extends Model
+{
+  protected array $dates = ['scheduled_for', 'completed_at'];
+}
+
+$todo = Todo::retrieve(1);
+echo $todo->scheduled_for->diffForHumans(); // Carbon API disponible
+```
+
+### Suppression douce (soft delete)
+
+Bow fournit un trait `Bow\Database\Barry\Traits\SoftDelete` qui transforme
+les appels à `delete()` en mise à jour d'une colonne `deleted_at` au lieu
+d'un DELETE physique.
+
+**1. Schéma** — ajoutez la colonne `deleted_at` à votre table. La méthode
+`addSoftDelete()` est disponible dans les migrations :
+
+```php
+$this->create('todos', function (Table $table) {
+  $table->addIncrement('id');
+  $table->addString('title');
+  $table->addTimestamps();
+  $table->addSoftDelete();    // ajoute une colonne nullable `deleted_at`
+});
+```
+
+**2. Modèle** — ajoutez le trait :
+
+```php
+use Bow\Database\Barry\Model;
+use Bow\Database\Barry\Traits\SoftDelete;
+
+class Todo extends Model
+{
+  use SoftDelete;
+
+  // Optionnel : personnaliser le nom de la colonne
+  protected string $deleted_at = 'archived_on';
+}
+```
+
+**3. Utilisation**
+
+```php
+$todo = Todo::retrieve(1);
+
+$todo->delete();        // UPDATE : deleted_at = NOW()
+$todo->trashed();       // true
+$todo->restore();       // UPDATE : deleted_at = NULL
+$todo->forceDelete();   // DELETE physique
+```
+
+**4. Requêtes**
+
+```php
+// Lignes actives uniquement
+Todo::withoutTrashed()->get();
+
+// Lignes archivées uniquement
+Todo::onlyTrashed()->get();
+
+// Toutes les lignes (actives + archivées)
+Todo::withTrashed()->get();
+```
+
+:::warning Filtrage explicite
+Les requêtes globales `Todo::all()` ou `Todo::where(...)->get()` retournent
+**toutes** les lignes, y compris celles soft-deleted. C'est volontaire :
+Bow n'applique pas de scope global automatique. Utilisez toujours
+`Todo::withoutTrashed()` quand vous voulez exclure les archivés.
+:::
+
+**5. Événements**
+
+Les hooks `model.deleting` / `model.deleted` continuent de se déclencher
+sur `delete()` (la suppression douce reste une suppression du point de vue
+métier). Quatre événements supplémentaires sont disponibles :
+
+```php
+Todo::restoring(fn ($model) => /* avant restore */);
+Todo::restored(fn ($model)  => /* après restore */);
+Todo::forceDeleting(fn ($model) => /* avant forceDelete */);
+Todo::forceDeleted(fn ($model)  => /* après forceDelete */);
+```
+
+## Événements de modèle
+
+Barry vous permet d'intercepter diverses opérations sur les modèles via des événements:
+
+```php
+use App\Models\Todo;
+
+// Avant la création
+Todo::creating(function ($model) {
+  // Exécuté avant l'insertion
+});
+
+// Après la création
+Todo::created(function ($model) {
+  // Exécuté après l'insertion
+});
+
+// Avant la mise à jour
+Todo::updating(function ($model) {
+  // Exécuté avant la mise à jour
+});
+
+// Après la mise à jour
+Todo::updated(function ($model) {
+  // Exécuté après la mise à jour
+});
+
+// Avant la suppression
+Todo::deleting(function ($model) {
+  // Exécuté avant la suppression
+});
+
+// Après la suppression
+Todo::deleted(function ($model) {
+  // Exécuté après la suppression
+});
+```
+
+## Pagination
+
+Pour paginer les résultats de vos requêtes:
+
+```php
+use App\Models\Todo;
+
+// Récupère 15 éléments par page, page 1
+$todos = Todo::paginate(15, 1);
+
+// Avec le troisième paramètre pour le chunk
+$todos = Todo::paginate(15, 1, 50);
+```
+
+## Méthodes utilitaires
+
+### Touch
+
+Pour mettre à jour uniquement le timestamp `updated_at`:
+
+```php
+$todo = Todo::retrieve(1);
+$todo->touch();
+```
+
+### Récupérer et supprimer
+
+Pour récupérer un enregistrement et le supprimer en une seule opération:
+
+```php
+$todo = Todo::retrieveAndDelete(1);
+```
+
+### Accès aux attributs
+
+Au-delà du sucre syntaxique `$model->attribute`, plusieurs méthodes
+permettent de manipuler le tableau d'attributs de façon explicite — utile
+pour du code générique :
+
+```php
+$todo->getAttributes();              // tous les attributs (tableau)
+$todo->getAttribute('title');         // un attribut (null si absent)
+$todo->setAttribute('title', '...');  // assignation
+$todo->setAttributes([...]);          // remplacement complet
+```
+
+Les modèles implémentent `ArrayAccess` (via le trait `ArrayAccessTrait`) et
+`JsonSerializable`, ce qui permet :
+
+```php
+$todo['title'];                   // == $todo->title
+isset($todo['title']);            // existence
+$todo['title'] = 'Nouveau';       // assignation
+json_encode($todo);               // utilise jsonSerialize() (respecte $hidden)
+```
+
+### Métadonnées de la clé primaire
+
+```php
+$todo->getKey();      // nom de la colonne (ex. 'id')
+$todo->getKeyType();  // type configuré (ex. 'int')
+$todo->getKeyValue(); // valeur actuelle (null sur un modèle non persisté)
+```
+
+### Conversion en tableau ou JSON
+
+```php
+$todo = Todo::retrieve(1);
+
+// Conversion en tableau
+$array = $todo->toArray();
+
+// Conversion en JSON
+$json = $todo->toJson();
+```
+
+<SuggestionFeature />

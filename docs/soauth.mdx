@@ -1,15 +1,15 @@
 ---
 id: soauth
-title: "Authentification via les réseaux sociaux"
+title: "Authentication via social networks"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Package d'authentification via les réseaux sociaux pour BowPHP. Ce package utilise [`thephpleague/oauth2-client`](https://github.com/thephpleague/oauth2-client) comme wrapper.
+A social network authentication package for BowPHP. This package uses [`thephpleague/oauth2-client`](https://github.com/thephpleague/oauth2-client) as a wrapper.
 
-Actuellement, il supporte les fournisseurs suivants :
+It currently supports the following providers:
 
 - Facebook
 - Gitlab
@@ -20,7 +20,7 @@ Actuellement, il supporte les fournisseurs suivants :
 
 ## Installation
 
-Pour installer ce paquet, vous devez utiliser [composer](https://getcomposer.org). Nous vous recommandons de l'installer globalement.
+To install this package, you must use [composer](https://getcomposer.org). We recommend installing it globally.
 
 ```bash
 composer require bowphp/soauth
@@ -28,11 +28,11 @@ composer require bowphp/soauth
 
 ## Configuration
 
-Après l'installation, dans votre fichier `.env.json`, vous devez définir les informations d'accès au fournisseur comme suit :
+After installation, in your `.env.json` file, you must define the provider access credentials as follows:
 
-### Configuration Facebook
+### Facebook configuration
 
-Vous pouvez créer une nouvelle application Facebook à l'adresse [https://developers.facebook.com/fr](https://developers.facebook.com/fr).
+You can create a new Facebook application at [https://developers.facebook.com/fr](https://developers.facebook.com/fr).
 
 ```json
 {
@@ -42,7 +42,7 @@ Vous pouvez créer une nouvelle application Facebook à l'adresse [https://devel
 }
 ```
 
-### Configuration Gitlab
+### Gitlab configuration
 
 ```json
 {
@@ -52,7 +52,7 @@ Vous pouvez créer une nouvelle application Facebook à l'adresse [https://devel
 }
 ```
 
-### Configuration GitHub
+### GitHub configuration
 
 ```json
 {
@@ -62,7 +62,7 @@ Vous pouvez créer une nouvelle application Facebook à l'adresse [https://devel
 }
 ```
 
-### Configuration Google
+### Google configuration
 
 ```json
 {
@@ -72,7 +72,7 @@ Vous pouvez créer une nouvelle application Facebook à l'adresse [https://devel
 }
 ```
 
-### Configuration Instagram
+### Instagram configuration
 
 ```json
 {
@@ -82,7 +82,7 @@ Vous pouvez créer une nouvelle application Facebook à l'adresse [https://devel
 }
 ```
 
-### Configuration LinkedIn
+### LinkedIn configuration
 
 ```json
 {
@@ -92,27 +92,27 @@ Vous pouvez créer une nouvelle application Facebook à l'adresse [https://devel
 }
 ```
 
-:::tip Remarque
-La configuration suit toujours la même approche : trois clés
+:::tip Note
+The configuration always follows the same approach: three keys
 `<PROVIDER>_CLIENT_ID`, `<PROVIDER>_CLIENT_SECRET`,
 `<PROVIDER>_REDIRECT_URI`.
 :::
 
-## Utilisation
+## Usage
 
-Activez le package en l'ajoutant à `Kernel::configurations()` :
+Enable the package by adding it to `Kernel::configurations()`:
 
 ```php title="app/Kernel.php"
 public function configurations(): array
 {
   return [
     \Bow\Soauth\SoauthConfiguration::class,
-    // ... autres providers
+    // ... other providers
   ];
 }
 ```
 
-Nous considérons le contrôleur suivant :
+Consider the following controller:
 
 ```php
 namespace App\Controllers;
@@ -123,21 +123,21 @@ use Bow\Soauth\Soauth;
 class SoauthController extends Controller
 {
   /**
-   * Redirection vers le fournisseur défini
+   * Redirect to the defined provider
    *
    * @param string $provider
    * @return mixed
    */
   public function redirect(string $provider)
   {
-    // Le second argument $scope est optionnel : passez un tableau de
-    // permissions OAuth (ex. ['email', 'public_profile']) ou omettez-le
-    // pour utiliser le scope par défaut du fournisseur.
+    // The second argument $scope is optional: pass an array of
+    // OAuth permissions (e.g. ['email', 'public_profile']) or omit it
+    // to use the provider's default scope.
     return Soauth::redirect($provider, ['email']);
   }
 
   /**
-   * Gérer le retour du fournisseur OAuth
+   * Handle the return from the OAuth provider
    *
    * @param string $provider
    * @return mixed
@@ -146,16 +146,16 @@ class SoauthController extends Controller
   {
     $user = Soauth::resource($provider);
 
-    // Connectez l'utilisateur ou créez-le, puis redirigez :
+    // Log the user in or create them, then redirect:
     // session()->set('user', $user);
     return redirect('/dashboard');
   }
 }
 ```
 
-### Ajouter une route
+### Adding a route
 
-Définissez la route qui sera utilisée pour les actions d'appel Soauth :
+Define the route that will be used for the Soauth callback actions:
 
 ```php title="routes/app.php"
 $app->get('/oauth/:provider/redirect', 'SoauthController::redirect');

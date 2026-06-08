@@ -1,6 +1,6 @@
 ---
 id: database
-title: "Base de données dans BowPHP"
+title: "Database in BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
@@ -8,35 +8,35 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 - [Introduction](#introduction)
 - [Configuration](#configuration)
 - [SQLite Configuration](#sqlite-configuration)
-- [Connexion à plusieurs bases de données](#connexion-à-plusieur-base-de-donnée)
-- [Utilisation de requête SQL Brute](#utilisation-de-requête-sql-brute)
-  - [Execution de requête Select](#execution-de-requête-select)
-  - [Sélection conditionnel](#sélection-conditionnel)
-  - [Execution de requête Insert](#execution-de-requête-insert)
-    - [Insertion multiple](#insertion-multiple)
-  - [Execution de requête Update](#execution-de-requête-update)
-  - [Execution de requête Delete](#execution-de-requête-delete)
-  - [Execution de requête](#execution-de-requête)
+- [Connecting to multiple databases](#connecting-to-multiple-databases)
+- [Using raw SQL queries](#using-raw-sql-queries)
+  - [Running a Select query](#running-a-select-query)
+  - [Conditional selection](#conditional-selection)
+  - [Running an Insert query](#running-an-insert-query)
+    - [Multiple inserts](#multiple-inserts)
+  - [Running an Update query](#running-an-update-query)
+  - [Running a Delete query](#running-a-delete-query)
+  - [Running a query](#running-a-query)
 - [Database Transactions](#database-transactions)
-  - [Utilisation manuel des transaction](#utilisation-manuel-des-transaction)
-- [Les jointures](#les-jointures)
+  - [Manual use of transactions](#manual-use-of-transactions)
+- [Joins](#joins)
 
 ## Introduction
 
-Bow rend l'interaction avec les bases de données extrêmement simple sur deux backends de bases de données en utilisant le `SQL brut`, `le générateur de requêtes courant` et l'[ORM](./orm) Barry.
+Bow makes interacting with databases extremely simple across two database backends using `raw SQL`, the `fluent query builder`, and the Barry [ORM](./orm).
 
-Actuellement, Bow prend en charge deux bases de données:
+Currently, Bow supports two databases:
 
 - MySQL
 - SQLite
 
 ## Configuration
 
-La configuration de la base donnée de votre application se localise dans le fichier `config/database.php`. Dans ce fichier, vous pouvez définir toutes les connexions de votre base de donnée et un exemple est défini pour tous les types de base de donnée supportés.
+Your application's database configuration is located in the `config/database.php` file. In this file, you can define all of your database connections, and an example is provided for every supported database type.
 
 ## SQLite Configuration
 
-Après avoir créé une nouvelle base de données SQLite à l'aide d'une commande tel que `touch var/database.sqlite`, vous pouvez facilement configurer vos variables d'environnement (dans le fichier `.env.json`) pour qu'elles pointent vers cette base de données nouvellement créée à l'aide du chemin absolu de la base de données:
+After creating a new SQLite database using a command such as `touch var/database.sqlite`, you can easily configure your environment variables (in the `.env.json` file) to point to this newly created database by using the database's absolute path:
 
 ```json
 {
@@ -45,9 +45,9 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 }
 ```
 
-## Connexion à plusieurs bases de données
+## Connecting to multiple databases
 
-Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode statique `connection` sur la classe [Bow\Database\Database::class](https://bowphp.com/api/master/Bow/Database/Database.html). Le nom transmis à la méthode de connexion doit correspondre à l'une des points de connexions répertoriées dans votre fichier de configuration `config/database.php`:
+When using multiple connections, you can access each connection via the static `connection` method on the [Bow\Database\Database::class](https://bowphp.com/api/master/Bow/Database/Database.html) class. The name passed to the connection method must match one of the connection entries listed in your `config/database.php` configuration file:
 
 ```php
 use Bow\Database\Database;
@@ -55,20 +55,20 @@ use Bow\Database\Database;
 $users = Database::connection('mysql')->select(...);
 ```
 
-Ou via le helper `db`:
+Or via the `db` helper:
 
 ```php
 $users = db('mysql')->select(...);
 ```
 
-Une fois la configuration changée, elle est directement appliquée sur la connexion des modèles. [Cliquez ici](./orm) pour plus d'information sur les modèles.
+Once the configuration is changed, it is applied directly to the connection used by models. [Click here](./orm) for more information about models.
 
-## Utilisation de requête SQL Brute
+## Using raw SQL queries
 
-Les requête brute ici sont les requêtes SQL écrite littéralement sans passer par un Query Builder.
-Dans cette section nous allons utiliser une table nommer `pets` pour effectuer nos requête avec.
+Raw queries here are SQL queries written literally, without going through a Query Builder.
+In this section we'll use a table named `pets` to run our queries against.
 
-Voici la description de la table `pets`:
+Here is the description of the `pets` table:
 
 ```sql
 CREATE TABLE `pets` (
@@ -78,21 +78,21 @@ CREATE TABLE `pets` (
 );
 ```
 
-Alors notre table à comme colonne:
+So our table has the following columns:
 
-| Nom de la colonne | Description |
+| Column name | Description |
 | ----------------- | ----------- |
-| `id` | Ici la clé primaire |
-| `name` | Le nom du pet |
-| `color` | La couleur du pet |
+| `id` | The primary key |
+| `name` | The name of the pet |
+| `color` | The color of the pet |
 
-> Pour information, un `pet` c'est un animal domestique
+> For your information, a `pet` is a domestic animal
 
-### Execution de requête Select
+### Running a Select query
 
-Pour exécuter une requête brute de type `SELECT` vous devrez utiliser la méthode `Database::select` ou le helper `select`. On considère notre table `pets` et que nous sommes bien connectés à la base de donnée.
+To run a raw `SELECT` query you'll need to use the `Database::select` method or the `select` helper. We'll consider our `pets` table and assume that we are properly connected to the database.
 
-Exécution d'une requête pour obtenir toutes les informations de la table `pets`:
+Running a query to get all the information from the `pets` table:
 
 ```php
 use Bow\Database\Database;
@@ -100,15 +100,15 @@ use Bow\Database\Database;
 $pets = Database::select('select * from `pets`');
 ```
 
-Via helper `db_select`:
+Via the `db_select` helper:
 
 ```php
 $pets = db_select('select * from `pets`');
 ```
 
-### Sélection conditionnel
+### Conditional selection
 
-Execution d'un requête pour optenir tous les informations de la table `pets` quand `id` égale à 1:
+Running a query to get all the information from the `pets` table where `id` equals 1:
 
 ```php
 use Bow\Database\Database;
@@ -116,20 +116,20 @@ use Bow\Database\Database;
 $pet = Database::select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
-Via helper `db_select`:
+Via the `db_select` helper:
 
 ```php
 $pet = db_select('select * from `pets` where id = :id', ['id' => 1]);
 ```
 
-Notez que la valeur retournée par la méthode `db_select` est un `array` ou `null` s'il y a aucune informations.
-Dans le cas ou c'est un `array` le contenu est de type `stClass` (plus d'information sur [stClass](http://php.net/manual/fr/language.types.object.php)).
+Note that the value returned by the `db_select` method is an `array`, or `null` if there is no information.
+When it is an `array`, the contents are of type `stClass` (more information on [stClass](http://php.net/manual/fr/language.types.object.php)).
 
-### Execution de requête Insert
+### Running an Insert query
 
-Pour executer une requête brute de type `INSERT` nous devrez utiliser la méthode `Database::insert` ou le helper `insert`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+To run a raw `INSERT` query you'll need to use the `Database::insert` method or the `insert` helper. We'll still consider our `pets` table and assume that we are properly connected to the database.
 
-Execution d'un requête pour inserer une information dans table `pets`:
+Running a query to insert a record into the `pets` table:
 
 ```php
 use Bow\Database\Database;
@@ -143,7 +143,7 @@ $pet = [
 $inserted = Database::insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
-Via helper `db_insert`:
+Via the `db_insert` helper:
 
 ```php
 $pet = [
@@ -155,16 +155,16 @@ $pet = [
 $inserted = db_insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
 ```
 
-Notez que la valeur retournée par la méthode `insert` est un `int` ou `number` qui est le nombre d'insertion.
+Note that the value returned by the `insert` method is an `int` or `number`, which is the number of inserted records.
 
-#### Insertion multiple
+#### Multiple inserts
 
-Vous avez aussi la possibilité d'inserer plusieurs enregistrements en même temps.
+You also have the ability to insert multiple records at the same time.
 
 ```php
 use Bow\Database\Database;
 
-// Liste de pets
+// List of pets
 $pets = [
   [
     'id' => 1,
@@ -184,7 +184,7 @@ $inserted = Database::insert(
 );
 ```
 
-Via helper `db_insert`:
+Via the `db_insert` helper:
 
 ```php
 $updated = db_insert(
@@ -193,11 +193,11 @@ $updated = db_insert(
 );
 ```
 
-### Execution de requête Update
+### Running an Update query
 
-Pour executer une requête brute de type `UPDATE` nous devrez utiliser la méthode `Database::update` ou le helper `db_update`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+To run a raw `UPDATE` query you'll need to use the `Database::update` method or the `db_update` helper. We'll still consider our `pets` table and assume that we are properly connected to the database.
 
-Execution d'un requête de mettre à jour d'information dans table `pets`:
+Running a query to update a record in the `pets` table:
 
 ```php
 use Bow\Database\Database;
@@ -214,7 +214,7 @@ $updated = Database::update(
 );
 ```
 
-Via le helper `db_update`:
+Via the `db_update` helper:
 
 ```php
 $pet = [
@@ -229,11 +229,11 @@ $updated = db_update(
 );
 ```
 
-### Execution de requête Delete
+### Running a Delete query
 
-Pour executer une requête brute de type `DELETE` nous devrez utiliser la méthode `Database::delete` ou le helper `db_delete`. On considère toujour notre table `pets` et que nous sommes bien connectés à la base de donnée.
+To run a raw `DELETE` query you'll need to use the `Database::delete` method or the `db_delete` helper. We'll still consider our `pets` table and assume that we are properly connected to the database.
 
-Execution d'un requête pour inserer une information dans table `pets`:
+Running a query to delete a record from the `pets` table:
 
 ```php
 use Bow\Database\Database;
@@ -244,7 +244,7 @@ $deleted = Database::delete(
 );
 ```
 
-Via le helper `db_delete`:
+Via the `db_delete` helper:
 
 ```php
 $deleted = db_delete(
@@ -253,9 +253,9 @@ $deleted = db_delete(
 );
 ```
 
-### Execution de requête
+### Running a query
 
-Pour exécuter une requête brute autre que `SELECT`, `UPDATE`, `INSERT`, `DELETE`. Il y a une méthode faite pour `Database::statement` ou le helper `db_statement`.
+To run a raw query other than `SELECT`, `UPDATE`, `INSERT`, `DELETE`, there is a dedicated method `Database::statement` or the `db_statement` helper.
 
 ```php
 use Bow\Database\Database;
@@ -263,7 +263,7 @@ use Bow\Database\Database;
 Database::statement('alter table `pets` add `owner` varchar(80) default null;');
 ```
 
-Via le helper `db_statement`:
+Via the `db_statement` helper:
 
 ```php
 db_statement('alter table `pets` add `owner` varchar(80) default null;');
@@ -271,9 +271,9 @@ db_statement('alter table `pets` add `owner` varchar(80) default null;');
 
 ## Database Transactions
 
-Vous pouvez utiliser la méthode de `startTransaction` sur la classe `Database` pour exécuter un ensemble d'opérations dans une transaction de base de données.
+You can use the `startTransaction` method on the `Database` class to run a set of operations within a database transaction.
 
-Si vous passez une `Closure` et qu'une exception est levée dans la fonction de rappel de la transaction, la transaction sera automatiquement annulée. Si la `Closure` s'exécute correctement, la transaction sera automatiquement validée. Vous n'avez pas à vous soucier de l'annulation manuelle ou de la validation lorsque vous utilisez la méthode de transaction:
+If you pass a `Closure` and an exception is thrown within the transaction's callback, the transaction will be automatically rolled back. If the `Closure` executes successfully, the transaction will be automatically committed. You don't have to worry about manually rolling back or committing when using the transaction method:
 
 ```php
 use Bow\Database\Database;
@@ -285,7 +285,7 @@ Database::startTransaction(function () {
 });
 ```
 
-Via le helper `db_transaction`:
+Via the `db_transaction` helper:
 
 ```php
 db_transaction(function () {
@@ -295,52 +295,52 @@ db_transaction(function () {
 });
 ```
 
-### Utilisation manuel des transaction
+### Manual use of transactions
 
-Vous pouvez aussi utiliser manuelement le système de transaction.
-Pour démarrer la transaction avec la méthode:
+You can also use the transaction system manually.
+To start a transaction with the method:
 
 ```php
 use Bow\Database\Database;
 
 Database::startTransaction();
-// Ou
+// Or
 db_transaction();
 ```
 
-Vous pouvez annuler la transaction avec la méthode:
+You can roll back the transaction with the method:
 
 ```php
 use Bow\Database\Database;
 
 Database::rollback();
-// Ou
+// Or
 db_rollback();
 ```
 
-Vous pouvez valider la transaction avec la méthode:
+You can commit the transaction with the method:
 
 ```php
 use Bow\Database\Database;
 
 Database::commit();
-// Ou
+// Or
 db_commit();
 ```
 
-Avec la méthode `inTransaction` vous pouvez vérifier si la base de donnée est en transaction:
+With the `inTransaction` method you can check whether the database is in a transaction:
 
 ```php
 use Bow\Database\Database;
 
 Database::inTransaction();
-// Ou
+// Or
 db_transaction_started();
 ```
 
-## Les jointures
+## Joins
 
-Considérons les tables suivantes:
+Consider the following tables:
 
 ```sql
 create table `author` (
@@ -356,13 +356,13 @@ create table `pets` (
 );
 ```
 
-Pour faire une jointure dans BowPHP c'est très simple en fait. Pour ce faire on utilise la méthode `join`.
+Performing a join in BowPHP is actually very simple. To do so, we use the `join` method.
 
 ```php
 $results = table('pets')->join('autors', 'authors.id', 'pets.author_id')->get();
 ```
 
-Souvant il est intéressant d'ajouter des contraintes dans la réquête normalement avec la clause `WHERE`.
+Often it's useful to add constraints to the query as usual with the `WHERE` clause.
 
 ```php
 $results = table('pets')
@@ -370,8 +370,8 @@ $results = table('pets')
   ->whereColumn('pets.author_id', 1)->get();
 ```
 
-Normalement vous pouvez ajouter plusieur jointure dans l'appel de méthode.
-Pour l'exemple disons qu'il y a une autre table nommé `countries` qui est le pays du propriétaire et que la table `authors` est maintenant:
+You can of course add several joins within the method call.
+For the example, let's say there is another table named `countries` that holds the owner's country, and that the `authors` table is now:
 
 ```sql
 create table `author` (
@@ -381,7 +381,7 @@ create table `author` (
 );
 ```
 
-Notre requête sera maintenant:
+Our query will now be:
 
 ```php
 $results = table('authors')

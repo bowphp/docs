@@ -1,45 +1,45 @@
 ---
 id: configuration
-title: "Configuration de l'application"
+title: "Application Configuration"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-  - [Explication de la notation à point](#explication-de-la-notation-à-point)
-  - [Fichier .env.json](#fichier-envjson)
-  - [Récupération des informations](#récupération-des-informations)
+  - [Explanation of dot notation](#explanation-of-dot-notation)
+  - [The .env.json file](#the-envjson-file)
+  - [Retrieving values](#retrieving-values)
 - [Helpers](#helpers)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
+- [Is something missing?](#il-manque-quelque-chose-)
 
 ## Introduction
 
-Tous les fichiers de configuration de BowPHP sont stockés dans le dossier `config`. Chaque option est documentée, alors n'hésitez pas à parcourir les fichiers et à vous familiariser avec les options à votre disposition.
+All of BowPHP's configuration files are stored in the `config` folder. Every option is documented, so feel free to browse the files and familiarize yourself with the options available to you.
 
 ## Configuration
 
-Vous pouvez accéder et modifier la configuration avec le helper `config`. L'accès aux valeurs se fait via un système de [notation à point](#explication-de-la-notation-a-point) (Dot notation).
+You can access and modify the configuration with the `config` helper. Values are accessed through a [dot notation](#explication-de-la-notation-a-point) system (Dot notation).
 
-Récupération d'une valeur:
+Retrieving a value:
 
 ```php
 echo config('app.public_path')
 ```
 
-Modification d'une valeur:
+Modifying a value:
 
 ```php
 config('view.engine', 'twig');
 config('view.extension', '.twig');
 ```
 
-### Explication de la notation à point
+### Explanation of dot notation
 
-Dans une notation à point, la partie avant le premier point représente le nom du fichier et toutes les valeurs suivantes
-représentent des clés ou valeurs du tableau de configuration.
+In dot notation, the part before the first dot represents the file name, and all the values that follow
+represent keys or values of the configuration array.
 
-Imaginez qu'on a un tableau défini comme suit et qui est dans un fichier dont le nom est `bow.php`:
+Imagine we have an array defined as follows, located in a file named `bow.php`:
 
 ```php
 return [
@@ -54,37 +54,37 @@ return [
 ];
 ```
 
-Avec `config` nous allons voir comment avoir accès à ces valeurs.
+With `config` we are going to see how to access these values.
 
 ```php
 config('bow.name'); // Bow
-config('bow'); // Retourne le tableau entier
+config('bow'); // Returns the entire array
 config('bow.skill.orm') // true
 config('bow.skill.preset.0') // reactjs
 ```
 
-> Remarquez qu'en premier c'est le nom du fichier qui contient la configuration, ici `bow.`
+> Notice that the first part is the name of the file that contains the configuration, here `bow.`
 
-### Fichier .env.json
+### The .env.json file
 
-Il est souvent souhaitable d'avoir différentes valeurs de configuration selon l'environnement ou notre application est lancée. Par exemple, l'on
-peut vouloir activer des logs de débogage en développement mais pas en production.
+It is often desirable to have different configuration values depending on the environment in which your application is running. For example, you
+might want to enable debug logs in development but not in production.
 
-Pour cela Bow utilise le fichier `.env.json` fichier dans lequel sont définis les informations concernant la configuration de votre application au format JSON. C'est aussi l'endroit idéal pour définir les informations sensibles comme une clé d'accès à un service.
+For this, Bow uses the `.env.json` file, in which the information about your application's configuration is defined in JSON format. It is also the ideal place to define sensitive information such as an access key to a service.
 
-Votre fichier `.env.json` ne doit pas sous contrôle de version, parce que chaque développeur/serveur utilisant votre application peut nécessiter une configuration d'environnement différente. De plus cela constituerait aussi un risque de sécurité dans le cas où un intrus aurait accès à votre depot de code source, parce que toutes les informations d'identification sensibles seraient exposées.
+Your `.env.json` file should not be under version control, because each developer/server using your application may require a different environment configuration. Furthermore, it would also pose a security risk if an intruder gained access to your source code repository, because all the sensitive credentials would be exposed.
 
-> Le fichier `.env.example.json` sert de base pour la création du fichier `.env.json`.
+> The `.env.example.json` file serves as a basis for creating the `.env.json` file.
 
-### Récupération des informations
+### Retrieving values
 
-Toutes les variables répertoriées dans le fichier `.env.json` seront chargées lorsque votre application recevra une requête. Cependant, vous pouvez utiliser le helper `app_env` pour récupérer les valeurs de ces variables dans les fichiers de configuration. En fait, si vous examinez les fichiers de configuration de Bow, vous remarquerez plusieurs des options utilisant déjà cet helper:
+All the variables listed in the `.env.json` file are loaded when your application receives a request. However, you can use the `app_env` helper to retrieve the values of these variables in the configuration files. In fact, if you examine Bow's configuration files, you will notice several options already using this helper:
 
 ```php
 'database' => app_env('MYSQL_DATABASE'),
 ```
 
-Dans le cas où la variable n'est pas définie `app_env` retournera `null`, ou bien vous pouvez passer un deuxième paramètre à `app_env` qui sera la valeur par défaut si la valeur n'est pas trouvé.
+In the case where the variable is not defined, `app_env` will return `null`, or you can pass a second parameter to `app_env` which will be the default value if the value is not found.
 
 ```php
 'database' => app_env('MYSQL_DATABASE', 'localhost'),
@@ -92,8 +92,8 @@ Dans le cas où la variable n'est pas définie `app_env` retournera `null`, ou b
 
 ## Helpers
 
-Bow inclut une variété de fonctions PHP "d'assistance" globales. Beaucoup de ces fonctions sont utilisées par le Framework lui-même; Cependant, vous êtes libre de les utiliser dans vos propres applications si vous les trouvez pratiques.
+Bow includes a variety of global PHP "helper" functions. Many of these functions are used by the Framework itself; however, you are free to use them in your own applications if you find them convenient.
 
-Notez que dans le fichier `config/helpers.php` il y a aussi des helpers, mais ceux-ci ne sont pas utilisés dans le Framework. Vous pouvez aussi définir vos propres helpers dans ce fichier.
+Note that in the `config/helpers.php` file there are also helpers, but these are not used in the Framework. You can also define your own helpers in this file.
 
 <SuggestionFeature />

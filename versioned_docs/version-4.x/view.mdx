@@ -1,64 +1,64 @@
 ---
 id: views
-title: "Vues dans BowPHP"
+title: "Views in BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-- [Création de vue](#création-de-vue)
-  - [Utilisation](#utilisation)
-- [Introduction Tintin](#introduction-tintin)
-  - [Configuration Tintin](#configuration-tintin)
-  - [Affichage des données](#affichage-des-données)
-    - [Affichage des données non échappées](#affichage-des-données-non-échappées)
-  - [Ajouter un commentaire](#ajouter-un-commentaire)
-  - [#if / #elseif ou #elif / #else](#if--elseif-ou-elif--else)
+- [Creating a view](#creating-a-view)
+  - [Usage](#usage)
+- [Tintin Introduction](#tintin-introduction)
+  - [Tintin Configuration](#tintin-configuration)
+  - [Displaying data](#displaying-data)
+    - [Displaying unescaped data](#displaying-unescaped-data)
+  - [Adding a comment](#adding-a-comment)
+  - [#if / #elseif or #elif / #else](#if--elseif-or-elif--else)
   - [#unless](#unless)
   - [#loop / #for / #while](#loop--for--while)
-    - [L'utilisation de #loop](#lutilisation-de-loop)
-    - [Les sucres syntaxiques #jump et #stop](#les-sucres-syntaxiques-jump-et-stop)
-    - [L'utilisation de #for](#lutilisation-de-for)
-    - [L'utilisation de #while](#lutilisation-de-while)
-  - [Inclusion de fichier](#inclusion-de-fichier)
-    - [Exemple d'inclusion](#exemple-dinclusion)
-- [Héritage avec #extends, #block et #inject](#héritage-avec-extends-block-et-inject)
-  - [Explication](#explication)
-- [Directive personnalisée](#directive-personnelisee)
-  - [Ajouter vos directive de la configuration](#ajouter-vos-directive-de-la-configuration)
-  - [Exemple de création de directive](#exemple-de-création-de-directive)
-  - [Utilisation des directives](#utilisation-des-directives)
-  - [Compilation du template](#compilation-du-template)
-  - [Sortie après compilation](#sortie-après-compilation)
+    - [Using #loop](#using-loop)
+    - [The #jump and #stop syntactic sugar](#the-jump-and-stop-syntactic-sugar)
+    - [Using #for](#using-for)
+    - [Using #while](#using-while)
+  - [Including a file](#including-a-file)
+    - [Inclusion example](#inclusion-example)
+- [Inheritance with #extends, #block and #inject](#inheritance-with-extends-block-and-inject)
+  - [Explanation](#explanation)
+- [Custom directive](#custom-directive)
+  - [Adding your directives from the configuration](#adding-your-directives-from-the-configuration)
+  - [Directive creation example](#directive-creation-example)
+  - [Using directives](#using-directives)
+  - [Compiling the template](#compiling-the-template)
+  - [Output after compilation](#output-after-compilation)
 - [IDE support](#ide-support)
-  - [Comment installer Sublime Package Control](#comment-installer-sublime-package-control)
-  - [Installer le package Tintin](#installer-le-package-tintin)
-- [Package supplémentaire](#package-supplémentaire)
-  - [Installation de twig](#installation-de-twig)
-  - [Vue avec Twig](#vue-avec-twig)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
+  - [How to install Sublime Package Control](#how-to-install-sublime-package-control)
+  - [Installing the Tintin package](#installing-the-tintin-package)
+- [Additional package](#additional-package)
+  - [Installing twig](#installing-twig)
+  - [View with Twig](#view-with-twig)
+- [Is something missing?](#il-manque-quelque-chose-)
 
 ## Introduction
 
-Les vues contiennent le code HTML fourni par votre application et séparent votre logique de contrôleur/application de votre logique de présentation:
+Views contain the HTML served by your application and separate your controller/application logic from your presentation logic:
 
 <script id="asciicast-srlT0uYy1bOin8Z3Z35E66JJB" src="https://asciinema.org/a/srlT0uYy1bOin8Z3Z35E66JJB.js" data-speed="3" data-rows="20" async></script>
 
 ## Configuration
 
-BowPHP implémente 2 moteurs de template et le template par défaut est **[Tintin](./tintin)**.
-La configuration des vues se trouve dans le fichier `view.php` du dossier `config/`.
+BowPHP implements 2 template engines and the default template engine is **[Tintin](./tintin)**.
+The view configuration is located in the `view.php` file in the `config/` folder.
 
-Spécifiez le nom du template à utiliser avec l'option `engine` de la configuration, cette option peut prendre les valeurs suivantes: `tintin`, `twig` et `php`. Par défaut Bow utilise `tintin`.
+Specify the name of the template engine to use with the `engine` option in the configuration; this option can take the following values: `tintin`, `twig` and `php`. By default Bow uses `tintin`.
 
-> Notez que si vous définissez `php`, le rendu des vues se fera sans moteur de template
+> Note that if you set `php`, views will be rendered without a template engine
 
-Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entrée `extension`. Vous verrez également que les vues sont stockées dans le répertoire `templates` par défaut.
+You can also change the template extension by modifying the value of the `extension` entry. You will also notice that views are stored in the `templates` directory by default.
 
-## Création de vue
+## Creating a view
 
-Une simple vue peut ressembler à ceci
+A simple view can look like this
 
 ```html
 <!-- View stored in templates/greeting.tintin.php -->
@@ -69,7 +69,7 @@ Une simple vue peut ressembler à ceci
 </html>
 ```
 
-Après avoir modifié et sauvegardé votre vue dans `templates/greeting.tintin.php`, vous pouvez maintenant l'envoyer aux utilisateurs avec le helper view comme ceci:
+After editing and saving your view in `templates/greeting.tintin.php`, you can now send it to users with the view helper like this:
 
 ```php
 $app->get('/', function() {
@@ -77,20 +77,20 @@ $app->get('/', function() {
 });
 ```
 
-### Utilisation
+### Usage
 
-Exemple d'utilisation: (Avec le classe `View`)
-Cette utilise la méthode `parse`.
+Usage example: (With the `View` class)
+This uses the `parse` method.
 
 ```php
 View::parse(view, data, status)
 ```
 
-| Paramètre | type | description|
+| Parameter | type | description|
 |-----------|------|------------|
-| `view`      | `String` | Le chemin de la vue sachant dans le moteur se base sur le dossier des vues|
-| `data`      | `Array`, `Object` | Les données a passé à la vue|
-| `status`    | `Integer` | Le code http |
+| `view`      | `String` | The path of the view, knowing that the engine bases it on the views folder|
+| `data`      | `Array`, `Object` | The data to pass to the view|
+| `status`    | `Integer` | The http status code |
 
 ```php
 use Bow\View\View;
@@ -98,7 +98,7 @@ use Bow\View\View;
 echo View::parse('nom-de-la-vue-sans-extension');
 ```
 
-Pour passer des variables à la vue
+To pass variables to the view
 
 ```php
 use Bow\View\View;
@@ -110,9 +110,9 @@ echo View::parse(
 );
 ```
 
-> Vous pouvez utiliser le helper `view` qui s'utilise de la même façon.
+> You can use the `view` helper, which is used in the same way.
 
-Avec la vue suivante:
+With the following view:
 
 ```html
 <!-- View stored in templates/greeting.tintin.php -->
@@ -123,7 +123,7 @@ Avec la vue suivante:
 </html>
 ```
 
-Exemple dans un controlleur:
+Example in a controller:
 
 ```php
 namespace App\Controllers;
@@ -140,53 +140,53 @@ class HomeController extends Controller
   public function show()
   {
     return view('greeting', ['name' => 'Bowphp']);
-    // Ou
+    // Or
     return $this->render('greeting', ['name' => "Bowphp"]);
-    // Ou
+    // Or
     return response()->render('greeting', ['name' => "Bowphp"]);
   }
 }
 ```
 
-## Introduction Tintin
+## Tintin Introduction
 
-Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP. Par défaut #Tintin est le moteur de template de BowPHP utilise.
+Tintin is a PHP template engine that aims to be very simple and extensible. It can be used in any PHP project. By default #Tintin is the template engine that BowPHP uses.
 
-### Configuration Tintin
+### Tintin Configuration
 
-Vous trouverez la configuration dans le fichier `config/view.php` et c'est dans le dossier `templates` que sont sauvegardés le fichier de template avec l'extension `.tintin.php`.
+You will find the configuration in the `config/view.php` file, and it is in the `templates` folder that template files are saved with the `.tintin.php` extension.
 
-### Affichage des données
+### Displaying data
 
-Vous pouvez afficher le contenu de la variable name de la manière suivante:
+You can display the content of the name variable as follows:
 
 ```css
 Hello, {{ $name }}.
 ```
 
-Bien entendu, vous n'êtes pas limité à afficher le contenu des variables transmises à la vue. Vous pouvez également faire écho aux résultats de toute fonction PHP. En fait, vous pouvez insérer n'importe quel code PHP dans une instruction echo Blade:
+Of course, you are not limited to displaying the content of the variables passed to the view. You can also echo the results of any PHP function. In fact, you can put any PHP code you wish inside a Blade echo statement:
 
 ```css
 Hello, {{ strtoupper($name) }}.
 ```
 
-> Les instructions Tintin `{{ }}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS.
+> Tintin `{{ }}` statements are automatically sent through the PHP `htmlspecialchars` function to prevent XSS attacks.
 
-#### Affichage des données non échappées
+#### Displaying unescaped data
 
-Par défaut, les instructions Tintin `{{ }}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS. Si vous ne souhaitez pas que vos données soient protégées, vous pouvez utiliser la syntaxe suivante:
+By default, Tintin `{{ }}` statements are automatically sent through the PHP `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be escaped, you can use the following syntax:
 
 ```css
 Hello, {{{ $name }}}.
 ```
 
-### Ajouter un commentaire
+### Adding a comment
 
-Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tintin`.
+The `{# comments #}` clause lets you add a comment to your `tintin` code.
 
-### #if / #elseif ou #elif / #else
+### #if / #elseif or #elif / #else
 
-Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
+These are the clauses that let you set up conditional branching as in most programming languages.
 
 ```css
 <p>
@@ -200,27 +200,27 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 </p>
 ```
 
-> Vous pouvez utiliser `#elif` à la place de `#elseif`.
+> You can use `#elif` instead of `#elseif`.
 
 ### #unless
 
-Petite spécificité, le `#unless` quant à lui, il permet de faire une condition inverse du `#if`.
-Pour faire simple, voici un exemple:
+A small specificity: `#unless` lets you make a condition that is the inverse of `#if`.
+To put it simply, here is an example:
 
 ```css
 #unless ($name == 'tintin')
 
-// Egale à
+// Equal to
 #if (!($name == 'tintin'))
 ```
 
 ### #loop / #for / #while
 
-Souvent vous pouvez être amener à faire des listes ou répétitions sur des éléments. Par exemple, afficher tout les utilisateurs de votre plateforme.
+Often you may need to build lists or repeat over elements. For example, displaying all the users of your platform.
 
-#### L'utilisation de #loop
+#### Using #loop
 
-Cette clause faire exactement l'action de `foreach`.
+This clause does exactly the same as `foreach`.
 
 ```css
 #loop ($names as $name)
@@ -228,7 +228,7 @@ Cette clause faire exactement l'action de `foreach`.
 #endloop
 ```
 
-Cette clause peux être aussi coupler avec tout autre clause telque `#if`. Voici un exemple rapide:
+This clause can also be combined with any other clause such as `#if`. Here is a quick example:
 
 ```css
 #loop ($names as $name)
@@ -239,35 +239,35 @@ Cette clause peux être aussi coupler avec tout autre clause telque `#if`. Voici
 #endloop
 ```
 
-Vous avez peut-être remarquer le `#stop` il permet de stoper l'éxécution de la boucle. Il y a aussi son conjoint le `#jump`, lui parcontre permet d'arrêter l'éxécution à son niveau et de lancer s'éxécution du prochain tour de la boucle.
+You may have noticed `#stop`; it lets you stop the execution of the loop. There is also its counterpart `#jump`, which stops execution at its point and starts the next iteration of the loop.
 
-#### Les sucres syntaxiques #jump et #stop
+#### The #jump and #stop syntactic sugar
 
-Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucle `#loop` comme ceci:
+Often the developer needs to write stop conditions for the `#loop` loop like this:
 
 ```css
 #loop ($names as $name)
   #if ($name == 'tintin')
     #stop
-    // Ou
+    // Or
     #jump
   #endif
 #endloop
 ```
 
-Avec les sucres syntaxique, on peut réduire le code comme ceci:
+With the syntactic sugar, we can reduce the code like this:
 
 ```css
 #loop ($names as $name)
   #stop($name == 'tintin')
-  // Ou
+  // Or
   #jump($name == 'tintin')
 #endloop
 ```
 
-#### L'utilisation de #for
+#### Using #for
 
-Cette clause faire exactement l'action de `for`.
+This clause does exactly the same as `for`.
 
 ```css
 #for ($i = 0; $i < 10; $i++)
@@ -275,9 +275,9 @@ Cette clause faire exactement l'action de `for`.
 #endfor
 ```
 
-#### L'utilisation de #while
+#### Using #while
 
-Cette clause faire exactement l'action de `while`.
+This clause does exactly the same as `while`.
 
 ```css
 #while ($name != 'tintin')
@@ -285,39 +285,39 @@ Cette clause faire exactement l'action de `while`.
 #endwhile
 ```
 
-### Inclusion de fichier
+### Including a file
 
-Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser les vues de votre application pour être plus flexible et écrire moin de code.
+Often when you develop your code, you need to split up your application's views to be more flexible and write less code.
 
-`#include` permet d'include un autre fichier de template dans un autre.
+`#include` lets you include another template file within another.
 
 ```css
  #include('filename', data)
 ```
 
-#### Exemple d'inclusion
+#### Inclusion example
 
-Considérons le fichier `hello.tintin.php` suivant:
+Consider the following `hello.tintin.php` file:
 
 ```css
 Hello {{ $name }}
 ```
 
-Utilisation:
+Usage:
 
 ```css
 #include('hello', ['name' => 'Tintin'])
 // => Hello Tintin
 ```
 
-## Héritage avec #extends, #block et #inject
+## Inheritance with #extends, #block and #inject
 
-Comme tout bon système de template **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
+Like any good template system, **tintin** supports sharing code between files. This makes your code flexible and maintainable.
 
-Considérérons le code **tintin** suivant:
+Consider the following **tintin** code:
 
 ```html
-// le fichier `layout.tintin.php`
+// the `layout.tintin.php` file
 <!DOCTYPE html>
 <html>
 <head>
@@ -333,10 +333,10 @@ Considérérons le code **tintin** suivant:
 </html>
 ```
 
-Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.php`
+And we also have another file that inherits the code from the `layout.tintin.php` file
 
 ```css
-// le fichier se nomme `content.tintin.php`
+// the file is named `content.tintin.php`
 #extends('layout')
 
 #block('content')
@@ -344,9 +344,9 @@ Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.ph
 #endblock
 ```
 
-### Explication
+### Explanation
 
-Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si vous rémarquez bien, dans le fichier `layout.tintin.php` on a la clause `#inject` qui a pour paramètre le nom du `#block` de `content.tintin.php` qui est `content`. Ce qui veut dire que le contenu du `#block` `content` sera remplacé par `#inject`. Ce qui donnéra à la fin ceci:
+The `content.tintin.php` file will inherit the code from `layout.tintin.php`, and if you look closely, in the `layout.tintin.php` file we have the `#inject` clause whose parameter is the name of the `#block` from `content.tintin.php`, which is `content`. This means that the content of the `content` `#block` will be substituted in place of `#inject`. Which ultimately gives this:
 
 ```html
 <!DOCTYPE html>
@@ -364,17 +364,17 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 </html>
 ```
 
-## Directive personnelisée
+## Custom directive
 
-Tintin peut être étendu avec son systême de directive personnalisé, pour ce faire utilisé la méthode `directive`. Pour se faire nous avons créer un configuration et extendre la configuration native `\Tintin\Bow\TintinConfiguration::class`.
+Tintin can be extended with its custom directive system; to do this use the `directive` method. To achieve this we created a configuration and extended the native configuration `\Tintin\Bow\TintinConfiguration::class`.
 
 ```bash
 php bow add:configuration TintinConfiguration
 ```
 
-### Ajouter vos directive de la configuration
+### Adding your directives from the configuration
 
-Après avoir créé la configuration vous trouverez le fichier `app/Configurations/TintinConfiguration.php` qui va étendre la configuration par défaut de Tintin qui est `\Tintin\Bow\TintinConfiguration::class` et ensuite modifier la méthode `onRunning`.
+After creating the configuration you will find the `app/Configurations/TintinConfiguration.php` file, which will extend Tintin's default configuration `\Tintin\Bow\TintinConfiguration::class`, and then modify the `onRunning` method.
 
 ```php
 use Tintin\Tintin;
@@ -395,18 +395,18 @@ class TintinConfiguration extends \Tintin\Bow\TintinConfiguration
 }
 ```
 
-Pour fin en beauté. remplacez la configuration par defaut de Tintin dans le `app/Kernel.php` par `App/Configurations/TintinConfiguration::class`.
+To finish in style, replace Tintin's default configuration in `app/Kernel.php` with `App/Configurations/TintinConfiguration::class`.
 
-Maintenant la directive `#super` est disponible et vous pouvez l'utiliser.
+Now the `#super` directive is available and you can use it.
 
 ```php
   return $tintin->render('#super');
   // => Super !
 ```
 
-### Exemple de création de directive
+### Directive creation example
 
-Ajoutons une directive simple. On l'appelera `#hello`
+Let's add a simple directive. We will call it `#hello`
 
 ```php
 $tintin->directive('hello', function (array $attributes = []) {
@@ -417,7 +417,7 @@ echo $tintin->render('#hello("Tintin")');
 // => Hello, Tintin
 ```
 
-Création de directive pour gérer un formulaires:
+Creating directives to handle a form:
 
 ```php
 $tintin->directive('input', function (array $attributes = []) {
@@ -455,12 +455,12 @@ $tintin->directive('endform', function (array $attributes = []) {
 });
 ```
 
-### Utilisation des directives
+### Using directives
 
-Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directive précédé la par `#`. Ensuite si cette directive prend des paramètres, lancer la directive comme vous lancez les fonctions dans votre programme. Les paramètres seront régroupés dans la varibles `$attributes` dans l'ordre d'ajout.
+Using these directives could not be simpler. Write the name of the directive preceded by `#`. Then if that directive takes parameters, call the directive the way you call functions in your program. The parameters will be grouped into the `$attributes` variable in the order they were added.
 
 ```css
-/** Fichier form.tintin.php **/
+/** form.tintin.php file **/
 #form(['method' => 'post', "action" => "/posts", "enctype" => "multipart/form-data"])
   #input(["type" => "text", "value" => null, "name" => "name"])
   #textarea(["value" => null, "name" => "content"])
@@ -468,15 +468,15 @@ Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directiv
 #endform
 ```
 
-### Compilation du template
+### Compiling the template
 
-La compilation se fait comme d'habitude, pour plus d'information sur la [compilation](#utilisation).
+Compilation is done as usual; for more information on [compilation](#utilisation).
 
 ```php
 echo $tintin->render('form');
 ```
 
-### Sortie après compilation
+### Output after compilation
 
 ```html
 <form action="/posts" method="post" enctype="multipart/form-data">
@@ -488,40 +488,40 @@ echo $tintin->render('form');
 
 ## IDE support
 
-Tintin est supporté actuellement par [sublime text](https://www.sublimetext.com).
+Tintin is currently supported by [sublime text](https://www.sublimetext.com).
 
-### Comment installer Sublime Package Control
+### How to install Sublime Package Control
 
-Allez sur le [site](https://packagecontrol.io/installation) et suivez les instructions.
+Go to the [site](https://packagecontrol.io/installation) and follow the instructions.
 
-### Installer le package Tintin
+### Installing the Tintin package
 
-- Recherchez **Bow Tintin** et installez-le/Téléchargez ou clonez ce référentiel dans [install-dir]/Packages/bow-tintin
-- Redémarrez Sublime Text.
-- Rouvrez n'importe quel fichier `.tintin` ou `.tintin.php`.
+- Search for **Bow Tintin** and install it / Download or clone this repository into [install-dir]/Packages/bow-tintin
+- Restart Sublime Text.
+- Reopen any `.tintin` or `.tintin.php` file.
 - Enjoy :smiley:
 
-## Package supplémentaire
+## Additional package
 
-Dans le cas où vous avez opter pour le moteur de template `twig`, voici la liste du package twig:
+In case you have opted for the `twig` template engine, here is the list of the twig package:
 
 | Template | Package |
 | ------- | ------- |
 | Twig | `twig/twig` |
 
-### Installation de twig
+### Installing twig
 
 ```bash
 composer require twig/twig
 ```
 
-### Vue avec Twig
+### View with Twig
 
-Twig est un moteur de templates pour le langage de programmation PHP, utilisé par défaut par le Framework Symfony.
+Twig is a template engine for the PHP programming language, used by default by the Symfony Framework.
 
-Il aurait été inspiré par `Jinja`, moteur de template Python utilisé dans [Django](https://www.djangoproject.com).
+It is said to have been inspired by `Jinja`, the Python template engine used in [Django](https://www.djangoproject.com).
 
-Exemple de code:
+Code example:
 
 ```php
 $names = [
@@ -541,6 +541,6 @@ $names = [
 </html>
 ```
 
-[Lien de la documentation](https://twig.symfony.com/ 'Lien de la documentation')
+[Documentation link](https://twig.symfony.com/ 'Documentation link')
 
 <SuggestionFeature />

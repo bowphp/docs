@@ -1,35 +1,35 @@
 ---
 id: container
-title: "Conteneur de services"
+title: "Service Container"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le conteneur d'injection de dépendances (DIC) de BowPHP, appelé **Capsule**, est un outil puissant pour gérer les dépendances de votre application.
+BowPHP's dependency injection container (DIC), called **Capsule**, is a powerful tool for managing your application's dependencies.
 
-### Injection de dépendances (DI)
+### Dependency Injection (DI)
 
-L'**injection de dépendances** permet de fournir les objets dont une classe a besoin plutôt que de les créer elle-même. Cela rend le code plus modulaire et testable.
+**Dependency injection** consists of providing the objects a class needs rather than having it create them itself. This makes the code more modular and testable.
 
-### Inversion de contrôle (IoC)
+### Inversion of Control (IoC)
 
-L'**inversion de contrôle** délègue la gestion des objets et de leurs dépendances à un conteneur. Le conteneur crée et gère les objets nécessaires pour vous.
+**Inversion of control** delegates the management of objects and their dependencies to a container. The container creates and manages the objects you need for you.
 
-## Accéder au conteneur
+## Accessing the container
 
-### Via le helper `app()`
+### Via the `app()` helper
 
 ```php
-// Obtenir l'instance du conteneur
+// Get the container instance
 $container = app();
 
-// Résoudre directement une classe
+// Resolve a class directly
 $service = app(App\Services\UserService::class);
 ```
 
-### Via la classe Capsule
+### Via the Capsule class
 
 ```php
 use Bow\Container\Capsule;
@@ -37,19 +37,19 @@ use Bow\Container\Capsule;
 $container = Capsule::getInstance();
 ```
 
-## Enregistrer des liaisons
+## Registering bindings
 
-Le conteneur propose trois primitives, distinguées par leur cycle de vie :
+The container offers three primitives, distinguished by their lifecycle:
 
-| Méthode | Quand l'objet est-il créé ? | Mise en cache ? |
+| Method | When is the object created? | Cached? |
 |---------|-----------------------------|------------------|
-| `bind($key, $value)`     | À la **première** résolution | Oui — réutilisée ensuite |
-| `instance($key, $obj)`   | Immédiatement (vous le passez) | Oui — l'instance fournie est toujours rendue |
-| `factory($key, $value)`  | À **chaque** résolution | Non — nouvelle instance à chaque appel |
+| `bind($key, $value)`     | On the **first** resolution | Yes — reused afterwards |
+| `instance($key, $obj)`   | Immediately (you pass it in) | Yes — the provided instance is always returned |
+| `factory($key, $value)`  | On **every** resolution | No — a new instance on each call |
 
-### Liaison simple (bind)
+### Simple binding (bind)
 
-Enregistre un service qui sera instancié une seule fois, puis mis en cache:
+Registers a service that will be instantiated once, then cached:
 
 ```php
 use Bow\Container\Capsule;
@@ -59,14 +59,14 @@ app()->bind('payment', function (Capsule $container) {
   return new PaymentService();
 });
 
-// Lier une interface à une implémentation : Bow utilisera la réflexion pour
-// instancier PaymentService et résoudra ses dépendances de constructeur.
+// Bind an interface to an implementation: Bow uses reflection to
+// instantiate PaymentService and resolves its constructor dependencies.
 app()->bind(PaymentServiceInterface::class, PaymentService::class);
 ```
 
 ### Instance (singleton)
 
-Enregistre une instance déjà créée:
+Registers an already-created instance:
 
 ```php
 use App\Services\Config;
@@ -75,9 +75,9 @@ $config = new Config(['debug' => true]);
 app()->instance('config', $config);
 ```
 
-### Fabrique (factory)
+### Factory
 
-Crée une nouvelle instance à chaque résolution:
+Creates a new instance on each resolution:
 
 ```php
 use Bow\Container\Capsule;
@@ -86,27 +86,27 @@ app()->factory('uuid', function (Capsule $container) {
   return new UuidGenerator();
 });
 
-// Chaque appel crée une nouvelle instance
+// Each call creates a new instance
 $uuid1 = app()->make('uuid');
-$uuid2 = app()->make('uuid'); // Instance différente
+$uuid2 = app()->make('uuid'); // Different instance
 ```
 
-## Résoudre des dépendances
+## Resolving dependencies
 
-### Résolution simple
+### Simple resolution
 
 ```php
 // Via make()
 $service = app()->make('payment');
 
-// Via le helper
+// Via the helper
 $service = app('payment');
 
-// Via une classe
+// Via a class
 $service = app(App\Services\PaymentService::class);
 ```
 
-### Résolution avec paramètres
+### Resolution with parameters
 
 ```php
 $service = app()->makeWith(App\Services\ReportService::class, [
@@ -114,39 +114,39 @@ $service = app()->makeWith(App\Services\ReportService::class, [
   'endDate' => '2024-12-31'
 ]);
 
-// Raccourci via le helper : si le 2e argument est non vide, app() délègue
-// automatiquement à makeWith().
+// Shortcut via the helper: if the 2nd argument is non-empty, app() automatically
+// delegates to makeWith().
 $service = app(App\Services\ReportService::class, [
   'startDate' => '2024-01-01',
   'endDate' => '2024-12-31',
 ]);
 ```
 
-### Accès par tableau
+### Array access
 
-Le conteneur implémente `ArrayAccess`:
+The container implements `ArrayAccess`:
 
 ```php
-// Vérifier l'existence
+// Check for existence
 if (isset(app()['payment'])) {
-  // Le service existe
+  // The service exists
 }
 
-// Récupérer un service
+// Retrieve a service
 $service = app()['payment'];
 
-// Enregistrer un service
+// Register a service
 app()['cache'] = function () {
   return new CacheService();
 };
 
-// Supprimer un service
+// Remove a service
 unset(app()['cache']);
 ```
 
-## Injection automatique
+## Automatic injection
 
-Le conteneur résout automatiquement les dépendances des constructeurs:
+The container automatically resolves constructor dependencies:
 
 ```php
 namespace App\Services;
@@ -171,29 +171,29 @@ class UserService
 }
 ```
 
-Lorsque vous demandez `UserService`, le conteneur:
+When you request `UserService`, the container:
 
-1. Détecte les dépendances du constructeur
-2. Résout `UserRepository` et `EmailService`
-3. Instancie `UserService` avec ces dépendances
+1. Detects the constructor dependencies
+2. Resolves `UserRepository` and `EmailService`
+3. Instantiates `UserService` with those dependencies
 
 ```php
-// Le conteneur crée automatiquement toutes les dépendances
+// The container automatically creates all dependencies
 $userService = app(App\Services\UserService::class);
 ```
 
-## Liaison d'interfaces
+## Interface binding
 
-Liez une interface à son implémentation concrète:
+Bind an interface to its concrete implementation:
 
 ```php
-// Enregistrement
+// Registration
 app()->bind(
   App\Contracts\PaymentGatewayInterface::class,
   App\Services\StripePaymentGateway::class
 );
 
-// Utilisation dans une classe
+// Usage in a class
 class OrderService
 {
   public function __construct(
@@ -202,13 +202,13 @@ class OrderService
   }
 }
 
-// Le conteneur injecte StripePaymentGateway
+// The container injects StripePaymentGateway
 $orderService = app(OrderService::class);
 ```
 
-## Utilisation dans les contrôleurs
+## Usage in controllers
 
-Les dépendances sont automatiquement injectées dans les contrôleurs:
+Dependencies are automatically injected into controllers:
 
 ```php
 namespace App\Http\Controllers;
@@ -228,7 +228,7 @@ class UserController
     return $this->userService->getAllUsers();
   }
 
-  // Injection par méthode
+  // Method injection
   public function show(Request $request, UserService $service)
   {
     return $service->find($request->get('id'));
@@ -236,9 +236,9 @@ class UserController
 }
 ```
 
-## Exemple complet
+## Complete example
 
-### Définir les interfaces
+### Define the interfaces
 
 ```php
 namespace App\Contracts;
@@ -257,7 +257,7 @@ interface NotificationServiceInterface
 }
 ```
 
-### Implémenter les interfaces
+### Implement the interfaces
 
 ```php
 namespace App\Repositories;
@@ -299,13 +299,13 @@ class EmailNotificationService implements NotificationServiceInterface
 {
   public function send(User $user, string $message): void
   {
-    // Envoyer un email
+    // Send an email
     mail($user->email, 'Notification', $message);
   }
 }
 ```
 
-### Créer le service
+### Create the service
 
 ```php
 namespace App\Services;
@@ -324,7 +324,7 @@ class UserService
   public function register(array $data): User
   {
     $user = $this->repository->create($data);
-    $this->notifier->send($user, 'Bienvenue sur notre plateforme!');
+    $this->notifier->send($user, 'Welcome to our platform!');
     return $user;
   }
 
@@ -335,7 +335,7 @@ class UserService
 }
 ```
 
-### Enregistrer dans un ServiceProvider
+### Register in a ServiceProvider
 
 ```php
 namespace App\Configurations;
@@ -351,7 +351,7 @@ class AppServiceProvider extends Configuration
 {
   public function create(Loader $config): void
   {
-    // Lier les interfaces aux implémentations
+    // Bind the interfaces to their implementations
     $this->container->bind(
       UserRepositoryInterface::class,
       UserRepository::class
@@ -370,7 +370,7 @@ class AppServiceProvider extends Configuration
 }
 ```
 
-### Utiliser dans un contrôleur
+### Use in a controller
 
 ```php
 namespace App\Http\Controllers;
@@ -407,28 +407,28 @@ class UserController
 }
 ```
 
-## Bonnes pratiques
+## Best practices
 
-:::tip Recommandations
-1. **Injection par constructeur**: Déclarez clairement les dépendances d'une classe
-2. **Interfaces plutôt que classes concrètes**: Gardez votre code flexible et testable
-3. **Un service, une responsabilité**: Chaque service doit avoir une seule raison de changer
-4. **Évitez les singletons abusifs**: Utilisez `bind()` par défaut, `instance()` uniquement si nécessaire
-5. **Enregistrez dans les ServiceProviders**: Centralisez la configuration du conteneur
+:::tip Recommendations
+1. **Constructor injection**: Clearly declare a class's dependencies
+2. **Interfaces over concrete classes**: Keep your code flexible and testable
+3. **One service, one responsibility**: Each service should have a single reason to change
+4. **Avoid overusing singletons**: Use `bind()` by default, `instance()` only when necessary
+5. **Register in ServiceProviders**: Centralize the container configuration
 :::
 
-## Méthodes du conteneur
+## Container methods
 
-| Méthode | Description |
+| Method | Description |
 |---------|-------------|
-| `bind($key, $value)` | Enregistre un service (singleton après première résolution) |
-| `factory($key, $value)` | Enregistre une fabrique (nouvelle instance à chaque fois) |
-| `instance($key, $object)` | Enregistre une instance existante |
-| `make($key)` | Résout un service |
-| `makeWith($key, $params)` | Résout avec des paramètres personnalisés |
+| `bind($key, $value)` | Registers a service (singleton after first resolution) |
+| `factory($key, $value)` | Registers a factory (new instance every time) |
+| `instance($key, $object)` | Registers an existing instance |
+| `make($key)` | Resolves a service |
+| `makeWith($key, $params)` | Resolves with custom parameters |
 
-:::info Avantages
-Grâce à ces principes, vous pouvez créer des applications plus propres, plus faciles à maintenir et plus robustes.
+:::info Benefits
+Thanks to these principles, you can build cleaner, more maintainable, and more robust applications.
 :::
 
 <SuggestionFeature />

@@ -1,6 +1,6 @@
 {
   "docs": {
-    "Démarrage": [
+    "Getting Started": [
       "installation",
       "structure",
       "configuration",
@@ -9,7 +9,7 @@
       "container",
       "contribution"
     ],
-    "Fondamentaux": [
+    "Fundamentals": [
       "routing",
       "controller",
       "views",
@@ -26,7 +26,7 @@
       "scheduler",
       "task"
     ],
-    "Base de données": [
+    "Database": [
       "database",
       "query-builder",
       "orm",
@@ -34,20 +34,20 @@
       "migration",
       "seeding"
     ],
-    "Http": [
+    "HTTP": [
       "http-request",
       "http-response",
       "http-session",
       "http-client",
       "validation"
     ],
-    "Sécurités": [
+    "Security": [
       "auth",
       "policier",
       "soauth",
       "csrf"
     ],
-    "Outils": [
+    "Tools": [
       "assets",
       "service",
       "helpers",

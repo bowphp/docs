@@ -7,14 +7,14 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Bow est préconfiguré avec un environnement Frontend moderne basé sur [Vite](https://vitejs.dev), incluant :
+Bow comes preconfigured with a modern Frontend environment based on [Vite](https://vitejs.dev), including:
 
 - [React](https://react.dev) 19
 - [Vue.js](https://vuejs.org) 3
 - [Tailwind CSS](https://tailwindcss.com) 3
 - [Sass/SCSS](https://sass-lang.com)
 
-Cette configuration offre un rechargement instantané (HMR) et une compilation ultra-rapide.
+This setup provides instant reloading (HMR) and ultra-fast compilation.
 
 ## Installation
 
@@ -22,20 +22,20 @@ Cette configuration offre un rechargement instantané (HMR) et une compilation u
 npm install
 ```
 
-## Commandes
+## Commands
 
-| Commande | Description |
+| Command | Description |
 |----------|-------------|
-| `npm run dev` | Lance le serveur de développement Vite avec HMR |
-| `npm run build` | Compile et optimise pour la production |
+| `npm run dev` | Starts the Vite development server with HMR |
+| `npm run build` | Compiles and optimizes for production |
 
-### Développement
+### Development
 
 ```bash
 npm run dev
 ```
 
-Lance le serveur Vite avec rechargement à chaud. Les modifications sont reflétées instantanément sans recharger la page.
+Starts the Vite server with hot reloading. Changes are reflected instantly without reloading the page.
 
 ### Production
 
@@ -43,24 +43,24 @@ Lance le serveur Vite avec rechargement à chaud. Les modifications sont reflét
 npm run build
 ```
 
-Compile et minifie les assets dans le dossier `public/`.
+Compiles and minifies the assets into the `public/` folder.
 
-## Structure des fichiers
+## File Structure
 
 ```
 assets/
 ├── js/
-│   ├── app.js          # Point d'entrée principal
-│   ├── Example.jsx     # Composant React
-│   └── Example.vue     # Composant Vue
+│   ├── app.js          # Main entry point
+│   ├── Example.jsx     # React component
+│   └── Example.vue     # Vue component
 ├── sass/
-│   ├── app.scss        # Styles principaux
-│   └── variables.scss  # Variables SCSS
+│   ├── app.scss        # Main styles
+│   └── variables.scss  # SCSS variables
 └── css/
     └── app.css         # CSS/Tailwind
 ```
 
-## Configuration Vite
+## Vite Configuration
 
 ```js title="vite.config.js"
 import { defineConfig } from 'vite';
@@ -125,20 +125,20 @@ export default {
 };
 ```
 
-### Utilisation
+### Usage
 
 ```css title="assets/css/app.css"
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Styles personnalisés */
+/* Custom styles */
 .btn-primary {
   @apply bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600;
 }
 ```
 
-## Composants React
+## React Components
 
 ```jsx title="assets/js/Example.jsx"
 import React, { useState } from 'react';
@@ -148,19 +148,19 @@ export default function Example() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold">Compteur: {count}</h1>
+      <h1 className="text-2xl font-bold">Counter: {count}</h1>
       <button
         className="btn-primary mt-4"
         onClick={() => setCount(count + 1)}
       >
-        Incrémenter
+        Increment
       </button>
     </div>
   );
 }
 ```
 
-## Composants Vue
+## Vue Components
 
 ```vue title="assets/js/Example.vue"
 <script setup>
@@ -171,17 +171,17 @@ const count = ref(0);
 
 <template>
   <div class="p-4">
-    <h1 class="text-2xl font-bold">Compteur: {{ count }}</h1>
+    <h1 class="text-2xl font-bold">Counter: {{ count }}</h1>
     <button class="btn-primary mt-4" @click="count++">
-      Incrémenter
+      Increment
     </button>
   </div>
 </template>
 ```
 
-## Intégration dans les templates
+## Integration into Templates
 
-### Avec Tintin
+### With Tintin
 
 ```html title="templates/app.tintin.php"
 <!DOCTYPE html>
@@ -196,83 +196,83 @@ const count = ref(0);
 </html>
 ```
 
-### Helper asset
+### The asset helper
 
-Le helper `asset()` construit simplement une URL vers un fichier statique du
-dossier `public/`. Il ne connaît pas le hash de cache ajouté par Vite en
-production — réservez-le aux fichiers dont le nom ne change pas (favicon,
-images statiques, etc.).
+The `asset()` helper simply builds a URL to a static file in the
+`public/` folder. It is not aware of the cache hash that Vite adds in
+production — reserve it for files whose name does not change (favicon,
+static images, etc.).
 
 ```php
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 <script src="{{ asset('js/app.js') }}"></script>
 ```
 
-### Helper vite (assets compilés)
+### The vite helper (compiled assets)
 
-En production, `npm run build` ajoute un hash au nom de chaque fichier
-(`app-CBsLkjX9.js`) pour le cache-busting, et enregistre la correspondance
-nom logique → fichier réel dans un **manifeste**. Le helper `vite()` lit ce
-manifeste et retourne l'URL du fichier compilé correspondant :
+In production, `npm run build` adds a hash to each file's name
+(`app-CBsLkjX9.js`) for cache-busting, and records the mapping
+logical name → actual file in a **manifest**. The `vite()` helper reads this
+manifest and returns the URL of the corresponding compiled file:
 
 ```php title="templates/layouts/default.tintin.php"
 <link rel="stylesheet" href="{{ vite('css/app.css') }}">
 <script type="module" src="{{ vite('js/app.js') }}"></script>
 ```
 
-**Signature :**
+**Signature:**
 
 ```php
 vite(string $file, bool $absolute = false): string
 ```
 
-- `$file` : la clé d'entrée dans le manifeste (ex. `js/app.js`). Chaque fichier
-  référencé doit être déclaré comme **entrée** (`input`) dans `vite.config.js`
-  pour apparaître dans le manifeste.
-- `$absolute` : si `true`, l'URL est préfixée par l'URL de l'application
-  (via `url()`) au lieu d'être relative.
-- Lève une `Exception` si l'entrée n'existe pas dans le manifeste.
+- `$file`: the entry key in the manifest (e.g. `js/app.js`). Each file
+  referenced must be declared as an **input** (`input`) in `vite.config.js`
+  in order to appear in the manifest.
+- `$absolute`: if `true`, the URL is prefixed with the application URL
+  (via `url()`) instead of being relative.
+- Throws an `Exception` if the entry does not exist in the manifest.
 
-Le helper cherche le manifeste, dans l'ordre, aux emplacements suivants :
+The helper looks for the manifest, in order, at the following locations:
 
 ```
 public/build/.vite/manifest.json
 public/build/manifest.json
 public/.vite/manifest.json
-manifest.json          (racine du projet)
+manifest.json          (project root)
 ```
 
-:::warning Chemin servi
-`vite()` renvoie des URLs préfixées par `/build/` (ex.
-`/build/js/app-CBsLkjX9.js`). Les fichiers compilés doivent donc être servis
-sous `/build/` : assurez-vous que la sortie du build (`outDir` dans
-`vite.config.js`) et l'emplacement du manifeste sont cohérents avec ce préfixe.
+:::warning Served path
+`vite()` returns URLs prefixed with `/build/` (e.g.
+`/build/js/app-CBsLkjX9.js`). The compiled files must therefore be served
+under `/build/`: make sure the build output (`outDir` in
+`vite.config.js`) and the manifest location are consistent with this prefix.
 :::
 
-:::tip Développement vs production
-Pendant `npm run dev`, les assets sont servis par le serveur Vite avec HMR.
-Le helper `vite()` n'est utile **qu'après** un `npm run build`, quand le
-manifeste existe. Pensez à lancer le build avant de tester en mode production.
+:::tip Development vs production
+During `npm run dev`, assets are served by the Vite server with HMR.
+The `vite()` helper is only useful **after** an `npm run build`, when the
+manifest exists. Remember to run the build before testing in production mode.
 :::
 
-## Variables d'environnement
+## Environment Variables
 
-Vite expose les variables préfixées par `VITE_` :
+Vite exposes variables prefixed with `VITE_`:
 
 ```json title=".env.json"
 {
-  "VITE_APP_NAME": "Mon App",
+  "VITE_APP_NAME": "My App",
   "VITE_API_URL": "https://api.example.com"
 }
 ```
 
 ```js
-// Accès dans le code
+// Access within the code
 const appName = import.meta.env.VITE_APP_NAME;
 ```
 
 :::info Documentation
-Pour plus d'informations, consultez la [documentation Vite](https://vitejs.dev/guide/).
+For more information, see the [Vite documentation](https://vitejs.dev/guide/).
 :::
 
 <SuggestionFeature />

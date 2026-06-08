@@ -1,0 +1,203 @@
+---
+id: seeding
+title: "Seeders"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Le seeding permet d'hydrater votre base de données avec des données de test pour le développement. Chaque seeder est associé à une table et génère des données via la librairie Faker.
+
+## Créer un seeder
+
+```bash
+php bow add:seeder users
+```
+
+Un fichier sera créé dans le dossier `seeders/` avec un timestamp :
+
+```php title="seeders/20260309120000-users.php"
+<?php
+
+use Faker\Factory as FakerFactory;
+
+class Users20260309120000
+{
+  public function run()
+  {
+    $faker = FakerFactory::create();
+
+    // Write the seeding here
+  }
+
+  /**
+   * Return the list of depended seeder
+   *
+   * @return array
+   */
+  public function depends()
+  {
+    return [];
+  }
+}
+```
+
+## Exemple complet
+
+```php title="seeders/20260309120000-users.php"
+<?php
+
+use App\Models\User;
+use Faker\Factory as FakerFactory;
+
+class Users20260309120000
+{
+  public function run()
+  {
+    $faker = FakerFactory::create();
+
+    foreach (range(1, 50) as $i) {
+      $user = User::create([
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'password' => app_hash('password'),
+        'avatar' => $faker->imageUrl(200, 200, 'people'),
+        'bio' => $faker->paragraph,
+        'is_active' => $faker->boolean(80),
+        'created_at' => $faker->dateTimeBetween('-1 year')->format('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s'),
+      ]);
+      $user->persist();
+    }
+  }
+
+  public function depends()
+  {
+    return [];
+  }
+}
+```
+
+## Dépendances entre seeders
+
+La méthode `depends()` permet de définir les seeders qui doivent être exécutés avant celui-ci :
+
+```php title="seeders/20260309130000-posts.php"
+<?php
+
+use App\Models\Post;
+use App\Models\User;
+use Faker\Factory as FakerFactory;
+
+class Posts20260309130000
+{
+  public function run()
+  {
+    $faker = FakerFactory::create();
+
+    // Récupère les IDs des utilisateurs déjà semés
+    $userIds = User::all()->map(fn ($user) => $user->id)->toArray();
+
+    foreach (range(1, 100) as $i) {
+      $post = Post::create([
+        'user_id' => $faker->randomElement($userIds),
+        'title' => $faker->sentence,
+        'slug' => $faker->slug,
+        'content' => $faker->paragraphs(5, true),
+        'published_at' => $faker->optional(0.7)->dateTimeBetween('-6 months')?->format('Y-m-d H:i:s'),
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s'),
+      ]);
+      $post->persist();
+    }
+  }
+
+  public function depends()
+  {
+    return [
+      Users20260309120000::class,
+    ];
+  }
+}
+```
+
+## Exécuter les seeders
+
+### Un seeder spécifique
+
+```bash
+php bow seed:file Users20260309120000
+```
+
+### Tous les seeders
+
+```bash
+php bow seed:all
+```
+
+## Données de référence
+
+Pour les données de référence (rôles, statuts, etc.), utilisez un seeder dédié :
+
+```php title="seeders/20260309100000-roles.php"
+<?php
+
+use Bow\Database\Database;
+
+class Roles20260309100000
+{
+  public function run()
+  {
+    $roles = [
+      ['name' => 'admin', 'display_name' => 'Administrateur'],
+      ['name' => 'moderator', 'display_name' => 'Modérateur'],
+      ['name' => 'user', 'display_name' => 'Utilisateur'],
+    ];
+
+    foreach ($roles as $role) {
+      Database::table('roles')->insert(array_merge($role, [
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s'),
+      ]));
+    }
+  }
+
+  public function depends()
+  {
+    return [];
+  }
+}
+```
+
+## Méthodes Faker utiles
+
+| Méthode | Description | Exemple |
+|---------|-------------|---------|
+| `$faker->name` | Nom complet | Jean Dupont |
+| `$faker->email` | Email | jean@example.com |
+| `$faker->unique()->email` | Email unique | - |
+| `$faker->safeEmail` | Email de test | user@example.org |
+| `$faker->password` | Mot de passe | a3$kLm9x |
+| `$faker->phoneNumber` | Téléphone | +33 6 12 34 56 78 |
+| `$faker->address` | Adresse complète | - |
+| `$faker->city` | Ville | Paris |
+| `$faker->country` | Pays | France |
+| `$faker->text(200)` | Texte (200 car.) | - |
+| `$faker->paragraph` | Paragraphe | - |
+| `$faker->sentence` | Phrase | - |
+| `$faker->boolean(70)` | Boolean (70% true) | true/false |
+| `$faker->numberBetween(1, 100)` | Nombre | 42 |
+| `$faker->randomFloat(2, 0, 1000)` | Décimal | 123.45 |
+| `$faker->dateTimeBetween('-1 year')` | Date | DateTime |
+| `$faker->optional(0.8)->name` | Nullable (80%) | Jean ou null |
+| `$faker->randomElement(['a', 'b'])` | Choix aléatoire | a |
+| `$faker->imageUrl(200, 200)` | URL d'image | https://... |
+| `$faker->uuid` | UUID | 550e8400-... |
+| `$faker->slug` | Slug | mon-article |
+
+:::tip Localisation
+Utilisez `FakerFactory::create('fr_FR')` pour des données en français.
+:::
+
+<SuggestionFeature />

@@ -1,182 +1,182 @@
 ---
 id: helpers
-title: "Helpers PHP globaux"
+title: "Global PHP Helpers"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Les helpers sont des fonctions globales qui simplifient les tâches courantes dans BowPHP. Ces fonctions raccourcies vous permettent d'accéder rapidement aux fonctionnalités du framework sans avoir à instancier des classes ou injecter des dépendances.
+Helpers are global functions that simplify common tasks in BowPHP. These shortcut functions let you quickly access the framework's features without having to instantiate classes or inject dependencies.
 
-## Liste des helpers
+## List of helpers
 
 ### Application
 
 | Helper | Description |
 |--------|-------------|
-| [app](#app) | Accède au conteneur d'injection de dépendances |
-| [config](#config) | Récupère ou définit une configuration |
-| [app_env](#app_env) | Récupère une variable d'environnement |
-| [app_assets](#app_assets) | Génère l'URL d'un asset |
-| [app_abort](#app_abort) | Interrompt l'exécution avec une erreur HTTP |
-| [app_abort_if](#app_abort_if) | Interrompt l'exécution si une condition est vraie |
-| [app_mode](#app_mode) | Retourne le mode de l'application (dev, prod) |
-| [app_in_debug](#app_in_debug) | Vérifie si le mode debug est activé |
+| [app](#app) | Accesses the dependency injection container |
+| [config](#config) | Gets or sets a configuration value |
+| [app_env](#app_env) | Gets an environment variable |
+| [app_assets](#app_assets) | Generates the URL of an asset |
+| [app_abort](#app_abort) | Aborts execution with an HTTP error |
+| [app_abort_if](#app_abort_if) | Aborts execution if a condition is true |
+| [app_mode](#app_mode) | Returns the application mode (dev, prod) |
+| [app_in_debug](#app_in_debug) | Checks whether debug mode is enabled |
 
-### HTTP et Réponses
-
-| Helper | Description |
-|--------|-------------|
-| [request](#request) | Accède à la requête HTTP courante |
-| [response](#response) | Crée une réponse HTTP |
-| [response_json](#response_json) | Retourne une réponse JSON |
-| [response_download](#response_download) | Force le téléchargement d'un fichier |
-| [set_response_status_code](#set_response_status_code) | Définit le code de statut HTTP |
-| [set_response_header](#set_response_header) | Ajoute un en-tête à la réponse |
-| [get_response_header](#get_response_header) | Récupère un en-tête de la réponse |
-| [redirect](#redirect) | Crée une redirection HTTP |
-| [redirect_back](#redirect_back) | Redirige vers la page précédente |
-| [url](#url) | Construit une URL |
-| [route](#route) | Génère l'URL d'une route nommée |
-| [old](#old) | Récupère l'ancienne valeur d'un champ |
-| [view](#view) | Compile et retourne une vue |
-
-### Base de données
+### HTTP and Responses
 
 | Helper | Description |
 |--------|-------------|
-| [db](#db) | Accède à l'instance de la base de données |
-| [table](#table) | Retourne un QueryBuilder pour une table |
-| [app_db_table](#app_db_table) | Alias de table() |
-| [get_last_insert_id](#get_last_insert_id) | Récupère le dernier ID inséré |
-| [app_db_select](#app_db_select) | Exécute une requête SELECT |
-| [app_db_select_one](#app_db_select_one) | Récupère un seul enregistrement |
-| [app_db_insert](#app_db_insert) | Insère des données |
-| [app_db_delete](#app_db_delete) | Supprime des enregistrements |
-| [app_db_update](#app_db_update) | Met à jour des enregistrements |
-| [app_db_statement](#app_db_statement) | Exécute une requête SQL brute |
-| [app_db_transaction](#app_db_transaction) | Démarre une transaction |
-| [app_db_transaction_started](#app_db_transaction_started) | Vérifie si une transaction est active |
-| [app_db_rollback](#app_db_rollback) | Annule la transaction |
-| [app_db_commit](#app_db_commit) | Valide la transaction |
-| [pdo](#pdo) | Récupère l'instance PDO |
-| [set_pdo](#set_pdo) | Définit une nouvelle instance PDO |
-| [app_db_seed](#app_db_seed) | Exécute un seeder |
+| [request](#request) | Accesses the current HTTP request |
+| [response](#response) | Creates an HTTP response |
+| [response_json](#response_json) | Returns a JSON response |
+| [response_download](#response_download) | Forces a file download |
+| [set_response_status_code](#set_response_status_code) | Sets the HTTP status code |
+| [set_response_header](#set_response_header) | Adds a header to the response |
+| [get_response_header](#get_response_header) | Gets a header from the response |
+| [redirect](#redirect) | Creates an HTTP redirect |
+| [redirect_back](#redirect_back) | Redirects to the previous page |
+| [url](#url) | Builds a URL |
+| [route](#route) | Generates the URL of a named route |
+| [old](#old) | Gets the old value of a field |
+| [view](#view) | Compiles and returns a view |
 
-### Sécurité
+### Database
 
 | Helper | Description |
 |--------|-------------|
-| [encrypt](#encrypt) | Chiffre une chaîne |
-| [decrypt](#decrypt) | Déchiffre une chaîne |
-| [app_hash](#app_hash) | Crée ou vérifie un hash |
-| [sanitize](#sanitize) | Nettoie une chaîne (supprime balises HTML) |
-| [secure](#secure) | Échappe les caractères spéciaux |
-| [create_csrf_token](#create_csrf_token) | Crée un nouveau token CSRF |
-| [csrf_token](#csrf_token) | Récupère le token CSRF courant |
-| [csrf_field](#csrf_field) | Génère un champ hidden pour le CSRF |
-| [method_field](#method_field) | Génère un champ hidden pour la méthode HTTP |
-| [gen_csrf_token](#gen_csrf_token) | Génère un token CSRF dans la session |
-| [verify_csrf](#verify_csrf) | Vérifie un token CSRF |
-| [csrf_time_is_expired](#csrf_time_is_expired) | Vérifie si le token CSRF a expiré |
+| [db](#db) | Accesses the database instance |
+| [table](#table) | Returns a QueryBuilder for a table |
+| [app_db_table](#app_db_table) | Alias of table() |
+| [get_last_insert_id](#get_last_insert_id) | Gets the last inserted ID |
+| [app_db_select](#app_db_select) | Runs a SELECT query |
+| [app_db_select_one](#app_db_select_one) | Gets a single record |
+| [app_db_insert](#app_db_insert) | Inserts data |
+| [app_db_delete](#app_db_delete) | Deletes records |
+| [app_db_update](#app_db_update) | Updates records |
+| [app_db_statement](#app_db_statement) | Runs a raw SQL query |
+| [app_db_transaction](#app_db_transaction) | Starts a transaction |
+| [app_db_transaction_started](#app_db_transaction_started) | Checks whether a transaction is active |
+| [app_db_rollback](#app_db_rollback) | Rolls back the transaction |
+| [app_db_commit](#app_db_commit) | Commits the transaction |
+| [pdo](#pdo) | Gets the PDO instance |
+| [set_pdo](#set_pdo) | Sets a new PDO instance |
+| [app_db_seed](#app_db_seed) | Runs a seeder |
 
-### Authentification
-
-| Helper | Description |
-|--------|-------------|
-| [app_auth](#app_auth) | Accède au système d'authentification |
-| [auth](#auth) | Alias de app_auth() (déprécié) |
-
-### Session et Cookies
+### Security
 
 | Helper | Description |
 |--------|-------------|
-| [session](#session) | Manipule la session |
-| [cookie](#cookie) | Manipule les cookies |
-| [flash](#flash) | Définit un message flash |
-| [app_flash](#app_flash) | Alias de flash() |
+| [encrypt](#encrypt) | Encrypts a string |
+| [decrypt](#decrypt) | Decrypts a string |
+| [app_hash](#app_hash) | Creates or verifies a hash |
+| [sanitize](#sanitize) | Cleans a string (removes HTML tags) |
+| [secure](#secure) | Escapes special characters |
+| [create_csrf_token](#create_csrf_token) | Creates a new CSRF token |
+| [csrf_token](#csrf_token) | Gets the current CSRF token |
+| [csrf_field](#csrf_field) | Generates a hidden field for the CSRF token |
+| [method_field](#method_field) | Generates a hidden field for the HTTP method |
+| [gen_csrf_token](#gen_csrf_token) | Generates a CSRF token in the session |
+| [verify_csrf](#verify_csrf) | Verifies a CSRF token |
+| [csrf_time_is_expired](#csrf_time_is_expired) | Checks whether the CSRF token has expired |
 
-### Chaînes de caractères
+### Authentication
 
 | Helper | Description |
 |--------|-------------|
-| [e](#e) | Échappe les balises HTML |
-| [str_uuid](#str_uuid) | Génère un UUID |
-| [str_slug](#str_slug) | Convertit en slug URL-friendly |
-| [str_is_mail](#str_is_mail) | Vérifie si c'est un email valide |
-| [str_is_domain](#str_is_domain) | Vérifie si c'est un domaine valide |
-| [str_is_slug](#str_is_slug) | Vérifie si c'est un slug valide |
-| [str_is_alpha](#str_is_alpha) | Vérifie si contient uniquement des lettres |
-| [str_is_lower](#str_is_lower) | Vérifie si en minuscules |
-| [str_is_upper](#str_is_upper) | Vérifie si en majuscules |
-| [str_is_alpha_num](#str_is_alpha_num) | Vérifie si alphanumerique |
-| [str_shuffle_words](#str_shuffle_words) | Mélange les mots |
-| [str_wordily](#str_wordily) | Découpe en tableau de mots |
-| [str_plural](#str_plural) | Convertit au pluriel |
-| [str_camel](#str_camel) | Convertit en camelCase |
-| [str_snake](#str_snake) | Convertit en snake_case |
-| [str_contains](#str_contains) | Vérifie si contient une sous-chaîne |
-| [str_capitalize](#str_capitalize) | Met en capitale |
-| [str_random](#str_random) | Génère une chaîne aléatoire |
-| [str_force_in_utf8](#str_force_in_utf8) | Force la sortie en UTF-8 |
-| [str_fix_utf8](#str_fix_utf8) | Corrige l'encodage UTF-8 |
+| [app_auth](#app_auth) | Accesses the authentication system |
+| [auth](#auth) | Alias of app_auth() (deprecated) |
+
+### Session and Cookies
+
+| Helper | Description |
+|--------|-------------|
+| [session](#session) | Manipulates the session |
+| [cookie](#cookie) | Manipulates cookies |
+| [flash](#flash) | Sets a flash message |
+| [app_flash](#app_flash) | Alias of flash() |
+
+### Strings
+
+| Helper | Description |
+|--------|-------------|
+| [e](#e) | Escapes HTML tags |
+| [str_uuid](#str_uuid) | Generates a UUID |
+| [str_slug](#str_slug) | Converts to a URL-friendly slug |
+| [str_is_mail](#str_is_mail) | Checks whether it is a valid email |
+| [str_is_domain](#str_is_domain) | Checks whether it is a valid domain |
+| [str_is_slug](#str_is_slug) | Checks whether it is a valid slug |
+| [str_is_alpha](#str_is_alpha) | Checks whether it contains only letters |
+| [str_is_lower](#str_is_lower) | Checks whether it is lowercase |
+| [str_is_upper](#str_is_upper) | Checks whether it is uppercase |
+| [str_is_alpha_num](#str_is_alpha_num) | Checks whether it is alphanumeric |
+| [str_shuffle_words](#str_shuffle_words) | Shuffles the words |
+| [str_wordily](#str_wordily) | Splits into an array of words |
+| [str_plural](#str_plural) | Converts to plural |
+| [str_camel](#str_camel) | Converts to camelCase |
+| [str_snake](#str_snake) | Converts to snake_case |
+| [str_contains](#str_contains) | Checks whether it contains a substring |
+| [str_capitalize](#str_capitalize) | Capitalizes |
+| [str_random](#str_random) | Generates a random string |
+| [str_force_in_utf8](#str_force_in_utf8) | Forces output to UTF-8 |
+| [str_fix_utf8](#str_fix_utf8) | Fixes UTF-8 encoding |
 
 ### Email
 
 | Helper | Description |
 |--------|-------------|
-| [email](#email) | Envoie un email avec une vue |
-| [app_email](#app_email) | Alias de email() |
-| [raw_email](#raw_email) | Envoie un email brut |
+| [email](#email) | Sends an email with a view |
+| [app_email](#app_email) | Alias of email() |
+| [raw_email](#raw_email) | Sends a raw email |
 
-### Évènements et Files d'attente
-
-| Helper | Description |
-|--------|-------------|
-| [event](#event) | Émet un évènement |
-| [app_event](#app_event) | Alias de event() |
-| [queue](#queue) | Ajoute un job à la file d'attente |
-
-### Stockage et Cache
+### Events and Queues
 
 | Helper | Description |
 |--------|-------------|
-| [app_storage](#app_storage) | Accède à un disque de stockage local |
-| [storage_service](#storage_service) | Accède à un service de stockage (S3, FTP) |
-| [cache](#cache) | Manipule le cache |
+| [event](#event) | Emits an event |
+| [app_event](#app_event) | Alias of event() |
+| [queue](#queue) | Adds a job to the queue |
 
-### Traduction
+### Storage and Cache
 
 | Helper | Description |
 |--------|-------------|
-| [app_trans](#app_trans) | Traduit une clé |
-| [t](#t) | Alias de app_trans() |
-| [__](#__) | Alias de app_trans() |
+| [app_storage](#app_storage) | Accesses a local storage disk |
+| [storage_service](#storage_service) | Accesses a storage service (S3, FTP) |
+| [cache](#cache) | Manipulates the cache |
+
+### Translation
+
+| Helper | Description |
+|--------|-------------|
+| [app_trans](#app_trans) | Translates a key |
+| [t](#t) | Alias of app_trans() |
+| [__](#__) | Alias of app_trans() |
 
 ### Validation
 
 | Helper | Description |
 |--------|-------------|
-| [validator](#validator) | Valide des données |
+| [validator](#validator) | Validates data |
 
 ### Logging
 
 | Helper | Description |
 |--------|-------------|
-| [logger](#logger) | Accède au logger |
-| [app_logger](#app_logger) | Alias de logger() |
+| [logger](#logger) | Accesses the logger |
+| [app_logger](#app_logger) | Alias of logger() |
 
-### Utilitaires
+### Utilities
 
 | Helper | Description |
 |--------|-------------|
-| [collect](#collect) | Crée une collection |
-| [app_now](#app_now) | Retourne la date/heure actuelle (Carbon) |
-| [client_locale](#client_locale) | Récupère la langue du client |
-| [is_blank](#is_blank) | Vérifie si une valeur est vide |
-| [debug](#debug) | Affiche des informations de débogage |
-| [sep](#sep) | Retourne le séparateur de répertoire |
+| [collect](#collect) | Creates a collection |
+| [app_now](#app_now) | Returns the current date/time (Carbon) |
+| [client_locale](#client_locale) | Gets the client's language |
+| [is_blank](#is_blank) | Checks whether a value is empty |
+| [debug](#debug) | Displays debugging information |
+| [sep](#sep) | Returns the directory separator |
 
 ---
 
@@ -184,48 +184,48 @@ Les helpers sont des fonctions globales qui simplifient les tâches courantes da
 
 ### app
 
-Accède au conteneur d'injection de dépendances de BowPHP.
+Accesses BowPHP's dependency injection container.
 
 ```php
-// Récupérer un service
+// Retrieve a service
 $mailer = app("mail");
 
-// Récupérer une classe avec auto-résolution
+// Retrieve a class with auto-resolution
 $service = app(UserService::class);
 
-// Sans argument, retourne le conteneur
+// Without an argument, returns the container
 $container = app();
 ```
 
 ### config
 
-Récupère ou définit une valeur de configuration.
+Gets or sets a configuration value.
 
 ```php
-// Récupérer une configuration
+// Retrieve a configuration value
 $driver = config("database.driver");
 
-// Avec une valeur par défaut
+// With a default value
 $timeout = config("app.timeout", 30);
 
-// Récupérer toute une section
+// Retrieve an entire section
 $mailConfig = config("mail");
 ```
 
 ### app_env
 
-Récupère une variable d'environnement définie dans le fichier `.env`.
+Gets an environment variable defined in the `.env` file.
 
 ```php
 $appUrl = app_env("APP_URL");
 
-// Avec une valeur par défaut
+// With a default value
 $debug = app_env("APP_DEBUG", false);
 ```
 
 ### app_assets
 
-Génère l'URL complète d'un asset (CSS, JS, image).
+Generates the full URL of an asset (CSS, JS, image).
 
 ```php
 $cssUrl = app_assets("css/style.css");
@@ -237,120 +237,120 @@ $jsUrl = app_assets("js/app.js");
 
 ### app_abort
 
-Interrompt l'exécution de l'application avec une erreur HTTP.
+Aborts the application's execution with an HTTP error.
 
 ```php
-// Erreur 404
+// 404 error
 app_abort(404);
 
-// Erreur 403 avec message personnalisé
-app_abort(403, "Accès refusé");
+// 403 error with a custom message
+app_abort(403, "Access denied");
 ```
 
 ### app_abort_if
 
-Interrompt l'exécution si une condition est vraie.
+Aborts execution if a condition is true.
 
 ```php
 $user = User::find($id);
 
-// Retourne 404 si l'utilisateur n'existe pas
-app_abort_if($user === null, 404, "Utilisateur non trouvé");
+// Returns 404 if the user does not exist
+app_abort_if($user === null, 404, "User not found");
 
-// Retourne 403 si non autorisé
+// Returns 403 if not authorized
 app_abort_if(!$user->canEdit($post), 403);
 ```
 
 ### app_mode
 
-Retourne le mode de l'application (`production`, `development`, `testing`).
+Returns the application mode (`production`, `development`, `testing`).
 
 ```php
 $mode = app_mode();
 
 if ($mode === "development") {
-  // Code de développement
+  // Development code
 }
 ```
 
 ### app_in_debug
 
-Vérifie si l'application est en mode debug.
+Checks whether the application is in debug mode.
 
 ```php
 if (app_in_debug()) {
-  // Afficher des informations de débogage
+  // Display debugging information
   var_dump($data);
 }
 ```
 
 ---
 
-## HTTP et Réponses
+## HTTP and Responses
 
 ### request
 
-Accède à l'instance de la requête HTTP courante.
+Accesses the current HTTP request instance.
 
 ```php
-// Récupérer un paramètre
+// Retrieve a parameter
 $name = request()->get("name");
 
-// Récupérer tous les paramètres
+// Retrieve all parameters
 $all = request()->all();
 
-// Vérifier la méthode HTTP
+// Check the HTTP method
 if (request()->isPost()) {
   // ...
 }
 
-// Récupérer un fichier uploadé
+// Retrieve an uploaded file
 $file = request()->file("avatar");
 ```
 
 ### response
 
-Crée une réponse HTTP.
+Creates an HTTP response.
 
 ```php
-// Réponse simple
+// Simple response
 return response("Hello World");
 
-// Avec code de statut
+// With a status code
 return response("Not Found", 404);
 
-// Accès à l'instance Response
+// Access the Response instance
 return response()->status(201)->send("Created");
 ```
 
 ### response_json
 
-Retourne une réponse au format JSON.
+Returns a response in JSON format.
 
 ```php
 return response_json(["name" => "John", "age" => 25]);
 
-// Avec code de statut
+// With a status code
 return response_json(["error" => "Not found"], 404);
 ```
 
 ### response_download
 
-Force le téléchargement d'un fichier.
+Forces a file download.
 
 ```php
 $filepath = storage_path("files/document.pdf");
 
-// Télécharger avec le nom original
+// Download with the original name
 return response_download($filepath);
 
-// Télécharger avec un nom personnalisé
-return response_download($filepath, "mon-document.pdf");
+// Download with a custom name
+return response_download($filepath, "my-document.pdf");
 ```
 
 ### set_response_status_code
 
-Définit le code de statut HTTP de la réponse.
+Sets the HTTP status code of the response.
 
 ```php
 set_response_status_code(201); // Created
@@ -359,7 +359,7 @@ set_response_status_code(404); // Not Found
 
 ### set_response_header
 
-Ajoute un en-tête à la réponse HTTP.
+Adds a header to the HTTP response.
 
 ```php
 set_response_header("X-Custom-Header", "value");
@@ -368,7 +368,7 @@ set_response_header("Cache-Control", "no-cache");
 
 ### get_response_header
 
-Récupère un en-tête de la réponse HTTP.
+Gets a header from the HTTP response.
 
 ```php
 $contentType = get_response_header("Content-Type");
@@ -376,117 +376,117 @@ $contentType = get_response_header("Content-Type");
 
 ### redirect
 
-Crée une redirection HTTP.
+Creates an HTTP redirect.
 
 ```php
-// Redirection simple
+// Simple redirect
 return redirect("/dashboard");
 
-// Avec des méthodes chaînées
+// With chained methods
 return redirect()->to("/home");
 return redirect()->route("user.profile", ["id" => 1]);
 
-// Avec des données flash
-return redirect("/login")->with("error", "Session expirée");
+// With flash data
+return redirect("/login")->with("error", "Session expired");
 ```
 
 ### redirect_back
 
-Redirige vers la page précédente.
+Redirects to the previous page.
 
 ```php
-// Redirection standard
+// Standard redirect
 return redirect_back();
 
-// Avec un code de statut personnalisé
+// With a custom status code
 return redirect_back(301);
 
-// Avec des données
-return redirect()->back()->with("message", "Enregistré");
+// With data
+return redirect()->back()->with("message", "Saved");
 ```
 
 ### url
 
-Construit une URL complète.
+Builds a full URL.
 
 ```php
-// URL simple
+// Simple URL
 $url = url("/users");
-// http://votre-site.com/users
+// http://your-site.com/users
 
-// Avec des paramètres de requête
+// With query parameters
 $url = url("/users", ["page" => 2, "sort" => "name"]);
-// http://votre-site.com/users?page=2&sort=name
+// http://your-site.com/users?page=2&sort=name
 ```
 
 ### route
 
-Génère l'URL d'une route nommée.
+Generates the URL of a named route.
 
 ```php
 // Route: Route::get('/users/:id', [UserController::class, 'show'])->name('user.show');
 $url = route("user.show", ["id" => 1]);
 // /users/1
 
-// URL absolue
+// Absolute URL
 $url = route("user.show", ["id" => 1], true);
-// http://votre-site.com/users/1
+// http://your-site.com/users/1
 
-// Avec paramètres optionnels
+// With optional parameters
 $url = route("search", ["q" => "bow", "page" => 2]);
 ```
 
 ### old
 
-Récupère l'ancienne valeur d'un champ après une redirection (utile pour les formulaires).
+Gets the old value of a field after a redirect (useful for forms).
 
 ```php
-// Dans une vue après validation échouée
+// In a view after a failed validation
 <input type="text" name="email" value="{{ old('email') }}">
 
-// Avec une valeur par défaut
+// With a default value
 $email = old("email", "default@example.com");
 ```
 
 ### view
 
-Compile et retourne une vue.
+Compiles and returns a view.
 
 ```php
-// Vue simple
+// Simple view
 return view("home");
 
-// Avec des données
+// With data
 return view("users.profile", ["user" => $user]);
 
-// Avec un code de statut
+// With a status code
 return view("errors.404", [], 404);
 ```
 
 ---
 
-## Base de données
+## Database
 
 ### db
 
-Accède à l'instance de connexion à la base de données.
+Accesses the database connection instance.
 
 ```php
 $db = db();
 
-// Exécuter une requête
+// Run a query
 $users = db()->select("SELECT * FROM users WHERE active = ?", [1]);
 ```
 
 ### table
 
-Retourne un QueryBuilder pour une table spécifique.
+Returns a QueryBuilder for a specific table.
 
 ```php
-// Sélectionner tous les enregistrements
+// Select all records
 $users = table("users")->get();
 
-// Avec conditions
+// With conditions
 $user = table("users")
   ->where("email", "john@example.com")
   ->first();
@@ -500,7 +500,7 @@ table("users")->insert([
 
 ### app_db_table
 
-Alias de `table()`.
+Alias of `table()`.
 
 ```php
 $users = app_db_table("users")->get();
@@ -508,7 +508,7 @@ $users = app_db_table("users")->get();
 
 ### get_last_insert_id
 
-Récupère le dernier ID auto-incrémenté après une insertion.
+Gets the last auto-incremented ID after an insertion.
 
 ```php
 table("users")->insert(["name" => "John"]);
@@ -517,7 +517,7 @@ $id = get_last_insert_id();
 
 ### app_db_select
 
-Exécute une requête SELECT avec des paramètres.
+Runs a SELECT query with parameters.
 
 ```php
 $users = app_db_select(
@@ -528,7 +528,7 @@ $users = app_db_select(
 
 ### app_db_select_one
 
-Récupère un seul enregistrement.
+Gets a single record.
 
 ```php
 $user = app_db_select_one(
@@ -539,7 +539,7 @@ $user = app_db_select_one(
 
 ### app_db_insert
 
-Insère des données dans une table.
+Inserts data into a table.
 
 ```php
 $result = app_db_insert(
@@ -550,7 +550,7 @@ $result = app_db_insert(
 
 ### app_db_update
 
-Met à jour des enregistrements.
+Updates records.
 
 ```php
 $affected = app_db_update(
@@ -561,7 +561,7 @@ $affected = app_db_update(
 
 ### app_db_delete
 
-Supprime des enregistrements.
+Deletes records.
 
 ```php
 $deleted = app_db_delete(
@@ -572,7 +572,7 @@ $deleted = app_db_delete(
 
 ### app_db_statement
 
-Exécute une requête SQL brute (CREATE, ALTER, DROP, etc.).
+Runs a raw SQL query (CREATE, ALTER, DROP, etc.).
 
 ```php
 app_db_statement("TRUNCATE TABLE users");
@@ -582,22 +582,22 @@ app_db_statement("ALTER TABLE users ADD COLUMN avatar VARCHAR(255)");
 ### Transactions
 
 ```php
-// Démarrer une transaction
+// Start a transaction
 app_db_transaction();
 
 try {
   table("accounts")->where("id", 1)->decrement("balance", 100);
   table("accounts")->where("id", 2)->increment("balance", 100);
 
-  // Valider
+  // Commit
   app_db_commit();
 } catch (Exception $e) {
-  // Annuler
+  // Roll back
   app_db_rollback();
   throw $e;
 }
 
-// Vérifier si une transaction est active
+// Check whether a transaction is active
 if (app_db_transaction_started()) {
   // ...
 }
@@ -605,65 +605,65 @@ if (app_db_transaction_started()) {
 
 ### pdo / set_pdo
 
-Accède ou définit l'instance PDO.
+Gets or sets the PDO instance.
 
 ```php
-// Récupérer l'instance PDO
+// Retrieve the PDO instance
 $pdo = pdo();
 
-// Définir une nouvelle connexion
+// Set a new connection
 $newPdo = new PDO($dsn, $user, $password);
 set_pdo($newPdo);
 ```
 
 ### app_db_seed
 
-Exécute un seeder de manière programmatique.
+Runs a seeder programmatically.
 
 ```php
-// Par nom de fichier (seeders/users.php)
+// By file name (seeders/users.php)
 app_db_seed("users");
 
-// Avec des données supplémentaires
+// With additional data
 app_db_seed("users", ["created_by" => "admin"]);
 
-// Avec une classe Model
+// With a Model class
 app_db_seed(User::class, ["name" => "John Doe"]);
 ```
 
 ---
 
-## Sécurité
+## Security
 
 ### encrypt / decrypt
 
-Chiffre et déchiffre des données.
+Encrypts and decrypts data.
 
 ```php
-// Chiffrer
-$encrypted = encrypt("données sensibles");
+// Encrypt
+$encrypted = encrypt("sensitive data");
 
-// Déchiffrer
+// Decrypt
 $decrypted = decrypt($encrypted);
-// "données sensibles"
+// "sensitive data"
 ```
 
 ### app_hash
 
-Crée un hash ou vérifie un hash existant.
+Creates a hash or verifies an existing hash.
 
 ```php
-// Créer un hash
+// Create a hash
 $hash = app_hash("password123");
 
-// Vérifier un hash
+// Verify a hash
 $isValid = app_hash("password123", $hash);
-// true ou false
+// true or false
 ```
 
 ### sanitize
 
-Nettoie une chaîne en supprimant les balises HTML et les caractères dangereux.
+Cleans a string by removing HTML tags and dangerous characters.
 
 ```php
 $clean = sanitize("<script>alert('xss')</script>Hello");
@@ -675,40 +675,40 @@ $clean = sanitize("O'Reilly");
 
 ### secure
 
-Échappe les caractères spéciaux HTML.
+Escapes special HTML characters.
 
 ```php
 $safe = secure("<script>alert('xss')</script>");
 // "&lt;script&gt;alert('xss')&lt;/script&gt;"
 ```
 
-### Protection CSRF
+### CSRF Protection
 
 ```php
-// Générer un nouveau token CSRF
+// Generate a new CSRF token
 create_csrf_token();
 
-// Récupérer le token courant
+// Retrieve the current token
 $token = csrf_token();
 
-// Générer un champ HTML hidden
+// Generate a hidden HTML field
 echo csrf_field();
 // <input type="hidden" name="_token" value="...">
 
-// Vérifier un token
+// Verify a token
 if (verify_csrf($tokenFromRequest)) {
-  // Token valide
+  // Valid token
 }
 
-// Vérifier si le token a expiré
+// Check whether the token has expired
 if (csrf_time_is_expired()) {
-  // Token expiré
+  // Expired token
 }
 ```
 
 ### method_field
 
-Génère un champ hidden pour simuler les méthodes PUT, PATCH, DELETE.
+Generates a hidden field to simulate the PUT, PATCH, and DELETE methods.
 
 ```php
 echo method_field("DELETE");
@@ -720,84 +720,84 @@ echo method_field("PUT");
 
 ---
 
-## Authentification
+## Authentication
 
 ### app_auth
 
-Accède au système d'authentification.
+Accesses the authentication system.
 
 ```php
-// Vérifier si authentifié
+// Check whether authenticated
 if (app_auth()->check()) {
   $user = app_auth()->user();
 }
 
-// Avec un guard spécifique
+// With a specific guard
 $admin = app_auth("admin")->user();
 
-// Récupérer l'ID de l'utilisateur
+// Retrieve the user's ID
 $userId = app_auth()->id();
 
-// Déconnecter
+// Log out
 app_auth()->logout();
 ```
 
-> **Note**: `auth()` est un alias déprécié de `app_auth()`.
+> **Note**: `auth()` is a deprecated alias of `app_auth()`.
 
 ---
 
-## Session et Cookies
+## Session and Cookies
 
 ### session
 
-Manipule les données de session.
+Manipulates session data.
 
 ```php
-// Récupérer une valeur
+// Retrieve a value
 $name = session("user_name");
 
-// Avec une valeur par défaut
+// With a default value
 $role = session("role", "guest");
 
-// Récupérer l'instance de session
+// Retrieve the session instance
 $session = session();
 $session->set("key", "value");
 ```
 
 ### cookie
 
-Manipule les cookies.
+Manipulates cookies.
 
 ```php
-// Récupérer un cookie
+// Retrieve a cookie
 $value = cookie("remember_token");
 
-// Définir un cookie (expiration en secondes)
-cookie("theme", "dark", 3600 * 24 * 30); // 30 jours
+// Set a cookie (expiration in seconds)
+cookie("theme", "dark", 3600 * 24 * 30); // 30 days
 
-// Récupérer tous les cookies
+// Retrieve all cookies
 $all = cookie();
 ```
 
 ### flash
 
-Définit un message flash (visible une seule fois).
+Sets a flash message (visible only once).
 
 ```php
-// Définir un message flash
-flash("success", "Utilisateur créé avec succès");
+// Set a flash message
+flash("success", "User created successfully");
 
-// Dans la vue suivante
+// In the next view
 $message = session("success");
 ```
 
 ---
 
-## Chaînes de caractères
+## Strings
 
 ### e
 
-Échappe les caractères HTML pour éviter les injections XSS.
+Escapes HTML characters to prevent XSS injections.
 
 ```php
 $safe = e("<script>alert('xss')</script>");
@@ -806,7 +806,7 @@ $safe = e("<script>alert('xss')</script>");
 
 ### str_uuid
 
-Génère un UUID v4.
+Generates a UUID v4.
 
 ```php
 $uuid = str_uuid();
@@ -815,18 +815,18 @@ $uuid = str_uuid();
 
 ### str_slug
 
-Convertit une chaîne en slug URL-friendly.
+Converts a string into a URL-friendly slug.
 
 ```php
 $slug = str_slug("Hello World!");
 // "hello-world"
 
-// Avec un séparateur personnalisé
+// With a custom separator
 $slug = str_slug("Hello World!", "_");
 // "hello_world"
 ```
 
-### Vérifications de chaînes
+### String checks
 
 ```php
 str_is_mail("user@example.com"); // true
@@ -838,26 +838,26 @@ str_is_upper("HELLO");           // true
 str_is_alpha_num("Hello123");    // true
 ```
 
-### Transformations de chaînes
+### String transformations
 
 ```php
 str_camel("hello_world");     // "helloWorld"
 str_snake("helloWorld");      // "hello_world"
 str_plural("user");           // "users"
 str_capitalize("hello");      // "Hello"
-str_shuffle_words("a b c");   // "c a b" (aléatoire)
+str_shuffle_words("a b c");   // "c a b" (random)
 ```
 
-### Autres fonctions de chaînes
+### Other string functions
 
 ```php
-// Vérifier si contient
+// Check whether it contains
 str_contains("Hello World", "World"); // true
 
-// Découper en mots
+// Split into words
 str_wordily("Hello World"); // ["Hello", "World"]
 
-// Chaîne aléatoire
+// Random string
 str_random(16); // "a1b2c3d4e5f6g7h8"
 
 // UTF-8
@@ -871,15 +871,15 @@ $fixed = str_fix_utf8($brokenString);
 
 ### email
 
-Envoie un email avec une vue template.
+Sends an email with a template view.
 
 ```php
 email("emails.welcome", ["user" => $user], function ($mail) {
   $mail->to("user@example.com")
-       ->subject("Bienvenue sur notre site");
+       ->subject("Welcome to our site");
 });
 
-// Récupérer l'instance Mail
+// Retrieve the Mail instance
 $mailer = email();
 $mailer->to("admin@example.com")
        ->subject("Notification")
@@ -888,36 +888,36 @@ $mailer->to("admin@example.com")
 
 ### raw_email
 
-Envoie un email brut sans template.
+Sends a raw email without a template.
 
 ```php
 raw_email(
   "user@example.com",
-  "Sujet de l'email",
-  "Corps du message en texte brut",
+  "Email subject",
+  "Plain text message body",
   ["From: no-reply@example.com"]
 );
 ```
 
 ---
 
-## Évènements et Files d'attente
+## Events and Queues
 
 ### event
 
-Émet un évènement.
+Emits an event.
 
 ```php
-// Émettre un évènement
+// Emit an event
 event(UserRegistered::class, $user);
 
-// Avec des données
+// With data
 event("user.created", ["user" => $user, "timestamp" => time()]);
 ```
 
 ### queue
 
-Ajoute un job à la file d'attente.
+Adds a job to the queue.
 
 ```php
 queue(new SendWelcomeEmail($user));
@@ -926,22 +926,22 @@ queue(new ProcessPayment($order));
 
 ---
 
-## Stockage et Cache
+## Storage and Cache
 
 ### app_storage
 
-Accède à un disque de stockage local.
+Accesses a local storage disk.
 
 ```php
 $storage = app_storage("local");
 
-// Écrire un fichier
+// Write a file
 $storage->put("documents/file.txt", $content);
 
-// Lire un fichier
+// Read a file
 $content = $storage->get("documents/file.txt");
 
-// Vérifier l'existence
+// Check existence
 if ($storage->exists("documents/file.txt")) {
   // ...
 }
@@ -949,57 +949,57 @@ if ($storage->exists("documents/file.txt")) {
 
 ### storage_service
 
-Accède à un service de stockage distant (S3, FTP).
+Accesses a remote storage service (S3, FTP).
 
 ```php
-// Service S3
+// S3 service
 $s3 = storage_service("s3");
 $s3->put("backups/db.sql", $backup);
 
-// Service FTP
+// FTP service
 $ftp = storage_service("ftp");
 $ftp->download("remote/file.zip", "local/file.zip");
 ```
 
 ### cache
 
-Manipule le cache de l'application.
+Manipulates the application cache.
 
 ```php
-// Récupérer une valeur
+// Retrieve a value
 $value = cache("key");
 
-// Définir une valeur (TTL en secondes)
-cache("key", "value", 3600); // 1 heure
+// Set a value (TTL in seconds)
+cache("key", "value", 3600); // 1 hour
 
-// Récupérer l'instance Cache
+// Retrieve the Cache instance
 $cache = cache();
-$cache->forget("key"); // Supprimer
-$cache->flush();       // Vider tout le cache
+$cache->forget("key"); // Remove
+$cache->flush();       // Clear the entire cache
 ```
 
 ---
 
-## Traduction
+## Translation
 
 ### app_trans / t / __
 
-Traduit une clé de traduction.
+Translates a translation key.
 
 ```php
-// Traduction simple
+// Simple translation
 echo app_trans("messages.welcome");
-// "Bienvenue"
+// "Welcome"
 
-// Alias
+// Aliases
 echo t("messages.welcome");
 echo __("messages.welcome");
 
-// Avec des variables
+// With variables
 echo t("messages.hello", ["name" => "John"]);
-// "Bonjour John"
+// "Hello John"
 
-// Avec choix pluriel
+// With plural choice
 echo t("messages.items", [], true);
 ```
 
@@ -1009,7 +1009,7 @@ echo t("messages.items", [], true);
 
 ### validator
 
-Valide des données selon des règles définies.
+Validates data according to defined rules.
 
 ```php
 $validation = validator(
@@ -1022,7 +1022,7 @@ if ($validation->fails()) {
   return response_json(["errors" => $errors], 422);
 }
 
-// Données validées
+// Validated data
 $data = $validation->getData();
 ```
 
@@ -1032,23 +1032,23 @@ $data = $validation->getData();
 
 ### logger / app_logger
 
-Accède au système de logging.
+Accesses the logging system.
 
 ```php
 logger()->info("User logged in", ["user_id" => 1]);
 logger()->warning("Slow query detected", ["time" => 2.5]);
 logger()->error("Database error", ["exception" => $e->getMessage()]);
 
-// Niveaux disponibles : debug, info, notice, warning, error, critical, alert, emergency
+// Available levels: debug, info, notice, warning, error, critical, alert, emergency
 ```
 
 ---
 
-## Utilitaires
+## Utilities
 
 ### collect
 
-Crée une collection à partir d'un tableau.
+Creates a collection from an array.
 
 ```php
 $collection = collect([1, 2, 3, 4, 5]);
@@ -1059,7 +1059,7 @@ $filtered = $collection->filter(fn($n) => $n > 2)->map(fn($n) => $n * 2);
 
 ### app_now
 
-Retourne la date/heure actuelle comme instance Carbon.
+Returns the current date/time as a Carbon instance.
 
 ```php
 $now = app_now();
@@ -1072,7 +1072,7 @@ echo $now->addDays(7)->format("Y-m-d");
 
 ### client_locale
 
-Récupère la langue préférée du client depuis l'en-tête Accept-Language.
+Gets the client's preferred language from the Accept-Language header.
 
 ```php
 $locale = client_locale();
@@ -1081,7 +1081,7 @@ $locale = client_locale();
 
 ### is_blank
 
-Vérifie si une valeur est "vide".
+Checks whether a value is "empty".
 
 ```php
 is_blank(null);      // true
@@ -1095,7 +1095,7 @@ is_blank("hello");   // false
 
 ### debug
 
-Affiche des informations de débogage formatées.
+Displays formatted debugging information.
 
 ```php
 debug($variable);
@@ -1104,16 +1104,16 @@ debug($user, $request, $config);
 
 ### sep
 
-Retourne le séparateur de répertoire du système.
+Returns the system's directory separator.
 
 ```php
 $sep = sep();
-// "/" sur Linux/macOS, "\" sur Windows
+// "/" on Linux/macOS, "\" on Windows
 ```
 
 ---
 
-## Code source
+## Source code
 
 [https://github.com/bowphp/framework/blob/5.x/src/Support/helpers.php](https://github.com/bowphp/framework/blob/5.x/src/Support/helpers.php)
 

@@ -6,44 +6,44 @@ title: "HTTP Request"
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
-- [Accéder à la requête](#accéder-à-la-requête)
-- [Récupération des données](#récupération-des-données)
-  - [Via des Closures de route](#via-des-closures-de-route)
-  - [Via un contrôleur](#via-un-contrôleur)
-- [Chemin de requête et méthode](#chemin-de-requête-et-méthode)
-  - [Récupérer le chemin de requête](#récupérer-le-chemin-de-requête)
-  - [Récupérer la méthode de requête](#récupérer-la-méthode-de-requête)
-  - [Vérifier si la requête est en AJAX](#vérifier-si-la-requête-est-en-ajax)
-  - [Récupérer une entrée](#récupérer-une-entrée)
-  - [Recupération d'une partie des données d'entrée](#recupération-dune-partie-des-données-dentrée)
-  - [Déterminer si une valeur d'entrée est présente](#déterminer-si-une-valeur-dentrée-est-présente)
-  - [Déterminer l'adresse IP de client](#déterminer-ladresse-ip-de-client)
-  - [Déterminer le Port de client](#déterminer-le-port-de-client)
-  - [Déterminer le protocol de client](#déterminer-le-protocol-de-client)
-  - [Récupérer les entête-https](#récupérer-les-entête-https)
-  - [Récupérer le IP du server](#récupérer-le-ip-du-server)
-  - [Récupérer le domaine Origin](#récupérer-le-domaine-origin)
-  - [Récupérer le temps de la requête](#récupérer-le-temps-de-la-requête)
-  - [Récupérer une instance de la session](#récupérer-une-instance-de-la-session)
-  - [Récupérer l'authentification courante](#récupérer-lauthentification-courante)
+- [Accessing the request](#accessing-the-request)
+- [Retrieving data](#retrieving-data)
+  - [Via route Closures](#via-route-closures)
+  - [Via a controller](#via-a-controller)
+- [Request path and method](#request-path-and-method)
+  - [Retrieving the request path](#retrieving-the-request-path)
+  - [Retrieving the request method](#retrieving-the-request-method)
+  - [Checking whether the request is an AJAX request](#checking-whether-the-request-is-an-ajax-request)
+  - [Retrieving an input](#retrieving-an-input)
+  - [Retrieving a subset of input data](#retrieving-a-subset-of-input-data)
+  - [Determining whether an input value is present](#determining-whether-an-input-value-is-present)
+  - [Determining the client IP address](#determining-the-client-ip-address)
+  - [Determining the client port](#determining-the-client-port)
+  - [Determining the client protocol](#determining-the-client-protocol)
+  - [Retrieving the HTTP headers](#retrieving-the-http-headers)
+  - [Retrieving the server IP](#retrieving-the-server-ip)
+  - [Retrieving the Origin domain](#retrieving-the-origin-domain)
+  - [Retrieving the request time](#retrieving-the-request-time)
+  - [Retrieving a session instance](#retrieving-a-session-instance)
+  - [Retrieving the current authentication](#retrieving-the-current-authentication)
 
 ## Introduction
 
-Une requête HTTP est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autre outil tel que `curl`, `httpie` et autre.
+An HTTP request is the message that the user sends to the Bow application through their browser or another tool such as `curl`, `httpie`, and the like.
 
-Ce message est traité par Bow à travers la classe [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html). Cette classe vous permet d'avoir les informations sur la requête envoyé par l'utilisateur comme son adresse ip, le type du message, les information d'un formulaire etc...
+This message is handled by Bow through the [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html) class. This class allows you to get information about the request sent by the user, such as their IP address, the type of message, the data from a form, and so on.
 
-## Accéder à la requête
+## Accessing the request
 
-Pour capturer un message ou requête HTTP, vous pouvez premièrement utiliser le helper `request()` qui vous donne une instance de [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html), deuxièmement vous pouvez passer par l'injecteur de dépendance via une action de contrôleur.
+To capture an HTTP message or request, you can first use the `request()` helper, which gives you an instance of [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html); second, you can use dependency injection through a controller action.
 
-## Récupération des données
+## Retrieving data
 
-En utilisant quelques méthodes simples, vous pouvez accéder à toutes les entrées utilisateur de votre application.
+Using a few simple methods, you can access all of your application's user input.
 
-### Via des Closures de route
+### Via route Closures
 
-- Avec le helper `request`:
+- With the `request` helper:
 
 ```php
 $app->get('/', function ()
@@ -51,11 +51,11 @@ $app->get('/', function ()
   $request = request();
 
   $name = $request->get('name');
-  // code ici
+  // code here
 });
 ```
 
-- Par l'injection de dépendance
+- Through dependency injection
 
 ```php
 use Bow\Http\Request;
@@ -66,15 +66,15 @@ $app->get('/', function (Request $request)
 });
 ```
 
-### Via un contrôleur
+### Via a controller
 
-Si votre méthode de contrôleur attend également une entrée d'un paramètre de route, vous devez répertorier les paramètres de votre route après vos autres dépendances. Par exemple, si votre route est définie comme suit:
+If your controller method also expects input from a route parameter, you must list your route parameters after your other dependencies. For example, if your route is defined as follows:
 
 ```php
 $app->get('/users/:id', 'UserController::show');
 ```
 
-Vous pouvez toujours taper la requête [Bow\Http\Request](https://bowphp.com/api/master/Bow/Http/Request.html) et accéder à l'id de votre paramètre de route en définissant votre méthode de contrôleur comme suit:
+You can still type-hint the [Bow\Http\Request](https://bowphp.com/api/master/Bow/Http/Request.html) request and access the id from your route parameter by defining your controller method as follows:
 
 ```php
 namespace App\Controllers;
@@ -86,7 +86,7 @@ use Bow\Http\Request;
 class UserController extends Controller
 {
   /**
-   * Afficher le profil pour l'utilisateur donné
+   * Display the profile for the given user
    *
    * @param Request $reuest
    * @return mixed
@@ -104,17 +104,17 @@ class UserController extends Controller
 }
 ```
 
-## Chemin de requête et méthode
+## Request path and method
 
-### Récupérer le chemin de requête
+### Retrieving the request path
 
-La méthode `path` renvoie les informations de chemin de la requête. Ainsi, si la requête entrante est ciblée sur `http://example.com/bar/zar`, la méthode path retournera `bar/zar`:
+The `path` method returns the path information of the request. So, if the incoming request targets `http://example.com/bar/zar`, the path method will return `bar/zar`:
 
 ```php
 $uri = $request->path();
 ```
 
-La méthode `is` vous permet de vérifier que le chemin de requête entrant correspond à un modèle donné. Vous pouvez utiliser le caractère `*` comme caractère générique lorsque vous utilisez cette méthode:
+The `is` method allows you to check that the incoming request path matches a given pattern. You can use the `*` character as a wildcard when using this method:
 
 ```php
 if ($request->is('users/*')) {
@@ -122,9 +122,9 @@ if ($request->is('users/*')) {
 }
 ```
 
-### Récupérer la méthode de requête
+### Retrieving the request method
 
-La méthode `method` retournera le verbe HTTP pour la requête. Vous pouvez utiliser les méthodes `isPost`, `isGet`, `isPut`, `isDelete`, `isOptions`, `isPutch` pour vérifier que le verbe HTTP correspond à une méthode HTTP de la requête donnée:
+The `method` method will return the HTTP verb for the request. You can use the `isPost`, `isGet`, `isPut`, `isDelete`, `isOptions`, `isPutch` methods to check that the HTTP verb matches a given request's HTTP method:
 
 ```php
 $method = $request->method();
@@ -135,9 +135,9 @@ if ($request->isPost()) {
 }
 ```
 
-### Vérifier si la requête est en AJAX
+### Checking whether the request is an AJAX request
 
-Pour déterminer si une requête a été envoyé via AJAX, la méthode `isAjax` vous permet de vérifier ça.
+To determine whether a request was sent via AJAX, the `isAjax` method lets you check this.
 
 ```php
 if ($request->isAjax()) {
@@ -145,20 +145,20 @@ if ($request->isAjax()) {
 }
 ```
 
-### Récupérer une entrée
+### Retrieving an input
 
-Souvent la requête envoyé par le client HTTP contient des données souvent demander pour actioner un mecanisme par exemple celui d'une inscription.
+Often the request sent by the HTTP client contains data that is needed to trigger a mechanism, such as a registration.
 
-BowPHP dans son démarrage optimise le donnée envoyés au serveur en remplaçant les valeur vide par `null` et supprimer les spaces blancs dans les valeurs de chaque champs avec la fonction php `trim`.
+During its startup, BowPHP optimizes the data sent to the server by replacing empty values with `null` and removing whitespace from each field's values using the PHP `trim` function.
 
 ```php
 $name = $request->get('name');
 
-// Récupérer directement la valeur via le nom du champ
+// Retrieve the value directly via the field name
 $name = $request->name;
 ```
 
-> Vous pouvez aussi défini une valeur par défaut à `get`
+> You can also set a default value for `get`
 
 ```php
 $name = $request->get('name', 'Papac');
@@ -168,11 +168,11 @@ $name = $request->get('name', function () {
 });
 ```
 
-Ceci permet justement de récupérer le contenu du champ `name` d'un formulaire ou d'un url en fonction du type de requête.
+This makes it possible to retrieve the contents of a form's `name` field or a URL's, depending on the type of request.
 
-### Recupération d'une partie des données d'entrée
+### Retrieving a subset of input data
 
-Si vous devez extraire un sous-ensemble des données d'entrée, vous pouvez utiliser les méthodes `ignore` et `only`. Ces deux méthodes acceptent un seul tableau ou une liste d'arguments dynamique:
+If you need to extract a subset of the input data, you can use the `ignore` and `only` methods. Both methods accept either a single array or a dynamic list of arguments:
 
 ```php
 $input = $request->only(['name', 'lastname']);
@@ -184,9 +184,9 @@ $input = $request->ignore(['password']);
 $input = $request->ignore('password');
 ```
 
-### Déterminer si une valeur d'entrée est présente
+### Determining whether an input value is present
 
-Vous devez utiliser la méthode `has` pour déterminer si une valeur est présente sur la requête. La méthode `has` renvoie `true` si la valeur est présente dans la requête:
+You should use the `has` method to determine whether a value is present in the request. The `has` method returns `true` if the value is present in the request:
 
 ```php
 if ($request->has('name')) {
@@ -194,39 +194,39 @@ if ($request->has('name')) {
 }
 ```
 
-### Déterminer l'adresse IP de client
+### Determining the client IP address
 
-Souvent vous allez vouloir l'adresse IP du client qui à envoyer la requête, la méthode `ip` permet comme son nom l'indique de récupérer l'adresse ip de client:
+Often you will want the IP address of the client that sent the request; the `ip` method, as its name suggests, retrieves the client's IP address:
 
 ```php
 $ip = $request->ip();
 
 if ($ip == 'xxx.xxx.xxx.xxx') {
-  // code ici
+  // code here
 }
 ```
 
-### Déterminer le Port de client
+### Determining the client port
 
-La méthode `port` permet comme son nom l'indique de récupérer le port de client:
+The `port` method, as its name suggests, retrieves the client's port:
 
 ```php
 $port = $request->port();
 
-// Code ici
+// Code here
 ```
 
-### Déterminer le protocol de client
+### Determining the client protocol
 
-La méthode `protocol` permet comme son nom l'indique de récupérer le protocol de client:
+The `protocol` method, as its name suggests, retrieves the client's protocol:
 
 ```php
 $protocol = $request->protocol();
 
-// Code ici
+// Code here
 ```
 
-Il y a aussi la méthode `isProtocol` qui permet de faire de vérification sur le protocol:
+There is also the `isProtocol` method, which allows you to check the protocol:
 
 ```php
 if ($request->isProtocol('http')) {
@@ -234,7 +234,7 @@ if ($request->isProtocol('http')) {
 }
 ```
 
-Et `isSecure` vous permet de vérifier si la requête est sécurisé.
+And `isSecure` lets you check whether the request is secure.
 
 ```php
 if ($request->isSecure()) {
@@ -242,9 +242,9 @@ if ($request->isSecure()) {
 }
 ```
 
-### Récupérer les entête-https
+### Retrieving the HTTP headers
 
-Vous avez la possibilité de récupérer les [entête-https](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers) du client avec la méthode `getHeader` et `hasHeader` pour vérifier l'existance d'une entête-http.
+You can retrieve the client's [HTTP headers](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers) with the `getHeader` method and use `hasHeader` to check for the existence of an HTTP header.
 
 ```php
 $header = $request->getHeader('content-type');
@@ -253,13 +253,13 @@ echo $header;
 // text/html
 
 if ($request->hasHeader('x-proxy-key')) {
-  // code ici
+  // code here
 }
 ```
 
-### Récupérer le IP du server
+### Retrieving the server IP
 
-Vous avez la possibilité de récupérer l'adresse IP de serveur sur lequel votre application Bow est hébergé.
+You can retrieve the IP address of the server on which your Bow application is hosted.
 
 ```php
 $hostname = $request->hostname();
@@ -268,9 +268,9 @@ echo $hostname;
 // exemple.com
 ```
 
-### Récupérer le domaine Origin
+### Retrieving the Origin domain
 
-Le domaine dit `origin` est l'adresse récupérer avec la méthode `hostname` ensuite associé avec le protocol de la requête.
+The so-called `origin` domain is the address retrieved with the `hostname` method, combined with the request's protocol.
 
 ```php
 $hostname = $request->origin();
@@ -279,9 +279,9 @@ echo $hostname;
 // https://exemple.com
 ```
 
-### Récupérer le temps de la requête
+### Retrieving the request time
 
-Il est souvent intéressent de voir combien de temps à faire une requête. La méthode `time` nous permet de le faire et elle retourne un timestamp.
+It is often useful to see how long a request took. The `time` method lets us do this and returns a timestamp.
 
 ```php
 $time = $request->time();
@@ -289,9 +289,9 @@ $time = $request->time();
 echo $time;
 ```
 
-### Récupérer une instance de la session
+### Retrieving a session instance
 
-Il est souvent intéressent de manipuler la session directement. La méthode `session` nous permet de le faire et elle retourne l'instance de la session.
+It is often useful to manipulate the session directly. The `session` method lets us do this and returns the session instance.
 
 ```php
 $session = $request->session();
@@ -299,16 +299,16 @@ $session = $request->session();
 var_dump($session);
 ```
 
-> Pour plus d'information sur la session visitez cette page [HTTP Session](./seeding)
+> For more information about the session, visit this page [HTTP Session](./seeding)
 
-### Récupérer l'authentification courante
+### Retrieving the current authentication
 
-Vous pouvez aussi avoir l'authenticiation en cours si vous avez utiliser le système d'authentification native de BowPHP.
+You can also get the current authentication if you have used BowPHP's native authentication system.
 
 ```php
 $user = $request->user();
 
-// Definir le guard
+// Define the guard
 $user = $request->user('api');
 ```
 

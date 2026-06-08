@@ -1,32 +1,32 @@
 ---
 id: controller
-title: "Contrôleurs"
+title: "Controllers"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Les contrôleurs organisent la logique de gestion des requêtes en classes dédiées,
-plutôt que de définir des closures dans les fichiers de routes. Les contrôleurs
-sont stockés dans `app/Controllers/`.
+Controllers organize request-handling logic into dedicated classes,
+instead of defining closures in route files. Controllers
+are stored in `app/Controllers/`.
 
-Bow prend en charge deux styles de déclaration :
+Bow supports two declaration styles:
 
-- **Routes définies dans `routes/app.php`** — les routes pointent vers un
-  contrôleur via la syntaxe `Controller::action` (style décrit dans la majeure
-  partie de ce document).
-- **Routage par attributs PHP 8** — les routes sont déclarées directement sur
-  la classe avec `#[Controller]`, `#[Get]`, `#[Post]`, etc. (voir
-  [Routage par attributs](./routing#routage-par-attributs)).
+- **Routes defined in `routes/app.php`** — routes point to a
+  controller using the `Controller::action` syntax (the style described throughout most
+  of this document).
+- **PHP 8 attribute routing** — routes are declared directly on
+  the class with `#[Controller]`, `#[Get]`, `#[Post]`, etc. (see
+  [Attribute routing](./routing#routage-par-attributs)).
 
-## Créer un contrôleur
+## Creating a controller
 
 ```bash
 php bow add:controller UserController
 ```
 
-## Contrôleur simple
+## Simple controller
 
 ```php title="app/Controllers/UserController.php"
 namespace App\Controllers;
@@ -62,7 +62,7 @@ class UserController
 }
 ```
 
-## Définir les routes
+## Defining the routes
 
 ```php title="routes/app.php"
 $app->get('/users', 'UserController::index');
@@ -70,9 +70,9 @@ $app->get('/users/:id', 'UserController::show');
 $app->post('/users', 'UserController::store');
 ```
 
-## Injection de dépendances
+## Dependency injection
 
-Les dépendances sont automatiquement injectées dans les constructeurs et méthodes :
+Dependencies are automatically injected into constructors and methods:
 
 ```php title="app/Controllers/OrderController.php"
 namespace App\Controllers;
@@ -102,9 +102,9 @@ class OrderController
 }
 ```
 
-## Contrôleur invocable
+## Invokable controller
 
-Pour les contrôleurs à action unique, utilisez `__invoke` :
+For single-action controllers, use `__invoke`:
 
 ```php title="app/Controllers/ShowDashboardController.php"
 namespace App\Controllers;
@@ -132,16 +132,16 @@ class ShowDashboardController
 $app->get('/dashboard', ShowDashboardController::class);
 ```
 
-## Espaces de noms
+## Namespaces
 
-Pour les contrôleurs imbriqués, utilisez le chemin relatif :
+For nested controllers, use the relative path:
 
 ```php
-// Contrôleur: App\Controllers\Admin\UserController
+// Controller: App\Controllers\Admin\UserController
 $app->get('/admin/users', 'Admin\UserController::index');
 ```
 
-Générer un contrôleur imbriqué :
+Generate a nested controller:
 
 ```bash
 php bow add:controller Admin/UserController
@@ -149,26 +149,26 @@ php bow add:controller Admin/UserController
 
 ## Middleware
 
-Appliquez des middlewares sur les routes :
+Apply middleware to routes:
 
 ```php
 $app->get('/profile', 'ProfileController::show')->middleware('auth');
 
-// Plusieurs middlewares
+// Multiple middleware
 $app->get('/admin', 'AdminController::index')->middleware(['auth', 'admin']);
 ```
 
-## Contrôleur REST
+## REST controller
 
-Les contrôleurs REST facilitent la création d'APIs RESTful.
+REST controllers make it easy to build RESTful APIs.
 
-### Générer un contrôleur REST
+### Generating a REST controller
 
 ```bash
 php bow generate:resource ArticleController
 ```
 
-### Structure générée
+### Generated structure
 
 ```php title="app/Controllers/ArticleController.php"
 namespace App\Controllers;
@@ -182,7 +182,7 @@ class ArticleController
    */
   public function index(): void
   {
-    // Liste des articles
+    // List of articles
   }
 
   /**
@@ -190,7 +190,7 @@ class ArticleController
    */
   public function store(Request $request): void
   {
-    // Créer un article
+    // Create an article
   }
 
   /**
@@ -198,7 +198,7 @@ class ArticleController
    */
   public function show(Request $request, mixed $id): void
   {
-    // Afficher un article
+    // Display an article
   }
 
   /**
@@ -206,7 +206,7 @@ class ArticleController
    */
   public function update(Request $request, mixed $id): void
   {
-    // Mettre à jour un article
+    // Update an article
   }
 
   /**
@@ -214,20 +214,20 @@ class ArticleController
    */
   public function destroy(Request $request, mixed $id): void
   {
-    // Supprimer un article
+    // Delete an article
   }
 }
 ```
 
-### Enregistrer les routes REST
+### Registering REST routes
 
 ```php title="routes/app.php"
 $app->rest('articles', 'ArticleController');
 ```
 
-### Routes générées
+### Generated routes
 
-| URL | Méthode | Action | Nom |
+| URL | Method | Action | Name |
 |-----|---------|--------|-----|
 | `/articles` | GET | `index` | `articles.index` |
 | `/articles` | POST | `store` | `articles.store` |
@@ -235,9 +235,9 @@ $app->rest('articles', 'ArticleController');
 | `/articles/:id` | PUT | `update` | `articles.update` |
 | `/articles/:id` | DELETE | `destroy` | `articles.destroy` |
 
-:::note PUT uniquement (pas PATCH)
-La méthode `update` est enregistrée en **PUT** seulement. Si vous voulez
-exposer aussi PATCH (mise à jour partielle), ajoutez une route dédiée :
+:::note PUT only (no PATCH)
+The `update` method is registered for **PUT** only. If you also want
+to expose PATCH (partial update), add a dedicated route:
 
 ```php
 $app->patch('/articles/:id', 'ArticleController::update')
@@ -245,27 +245,27 @@ $app->patch('/articles/:id', 'ArticleController::update')
 ```
 :::
 
-:::note Nom des routes et URL imbriquée
-Le nom est construit à partir de `str_replace('/', '.', $url) . '.' . $action`.
-Avec une URL avec slash de tête comme `'/api/v1/articles'`, vous obtiendrez
-des noms comme `.api.v1.articles.index` (point de tête). Passez l'URL **sans**
-slash de tête (`'api/v1/articles'`) pour des noms propres.
+:::note Route names and nested URLs
+The name is built from `str_replace('/', '.', $url) . '.' . $action`.
+With a URL that has a leading slash such as `'/api/v1/articles'`, you will get
+names like `.api.v1.articles.index` (leading dot). Pass the URL **without**
+a leading slash (`'api/v1/articles'`) for clean names.
 :::
 
-### Contraintes sur les paramètres
+### Parameter constraints
 
 ```php
-// Contrainte globale
+// Global constraint
 $app->rest('articles', 'ArticleController', ['id' => '\d+']);
 
-// Contraintes par méthode
+// Per-method constraints
 $app->rest('articles', 'ArticleController', [
   'show' => ['id' => '\d+'],
   'update' => ['id' => '\d+'],
 ]);
 ```
 
-### Ignorer des méthodes
+### Ignoring methods
 
 ```php
 $app->rest('articles', [
@@ -274,10 +274,10 @@ $app->rest('articles', [
 ], ['id' => '\d+']);
 ```
 
-## Contrôleurs avec attributs
+## Controllers with attributes
 
-Pour éviter de maintenir un fichier de routes central, vous pouvez déclarer
-les routes directement sur la classe avec les attributs PHP 8 :
+To avoid maintaining a central route file, you can declare
+routes directly on the class using PHP 8 attributes:
 
 ```php title="app/Controllers/ArticleController.php"
 namespace App\Controllers;
@@ -305,26 +305,26 @@ final class ArticleController
 }
 ```
 
-Il suffit ensuite d'enregistrer la classe dans le fichier de routes :
+Then all you need to do is register the class in the route file:
 
 ```php title="routes/app.php"
 $app->register(\App\Controllers\ArticleController::class);
 
-// Ou un lot de contrôleurs
+// Or a batch of controllers
 $app->register([
     \App\Controllers\ArticleController::class,
     \App\Controllers\CommentController::class,
 ]);
 ```
 
-Le préfixe `name:` du `#[Controller]` est concaténé **verbatim** au nom de
-chaque route — choisissez `'articles.'` (avec point) pour obtenir
-`articles.index`, `articles.show`, etc. Voir [Routage > Routage par attributs](./routing)
-pour la liste complète des attributs (`#[Patch]`, `#[Options]`, `#[Route]`…).
+The `name:` prefix of `#[Controller]` is concatenated **verbatim** to the name of
+each route — choose `'articles.'` (with a dot) to get
+`articles.index`, `articles.show`, etc. See [Routing > Attribute routing](./routing)
+for the full list of attributes (`#[Patch]`, `#[Options]`, `#[Route]`…).
 
-## Configuration du namespace
+## Namespace configuration
 
-Personnalisez les namespaces des composants dans `app/Kernel.php` :
+Customize component namespaces in `app/Kernel.php`:
 
 ```php title="app/Kernel.php"
 public function namespaces(): array
@@ -337,9 +337,9 @@ public function namespaces(): array
 }
 ```
 
-| Clé | Utilisée par |
+| Key | Used by |
 |-----|--------------|
-| `controller` | Résolution `'UserController::action'` → `App\Controllers\UserController`, `php bow add:controller`, `generate:resource` |
+| `controller` | Resolving `'UserController::action'` → `App\Controllers\UserController`, `php bow add:controller`, `generate:resource` |
 | `middleware` | `php bow add:middleware` |
 | `listener`   | `php bow add:listener` |
 

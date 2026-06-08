@@ -1,15 +1,15 @@
 ---
 id: installation
-title: "Installation de BowPHP"
+title: "Installing BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-BowPHP est un micro-framework PHP moderne et élégant. Avant de créer votre première application, assurez-vous que votre environnement respecte les prérequis suivants.
+BowPHP is a modern and elegant PHP micro-framework. Before creating your first application, make sure your environment meets the following requirements.
 
-## Prérequis système
+## System requirements
 
 - **PHP >= 8.2**
 - OpenSSL PHP Extension
@@ -18,13 +18,13 @@ BowPHP est un micro-framework PHP moderne et élégant. Avant de créer votre pr
 - XML PHP Extension
 - JSON PHP Extension
 
-:::tip Environnements de développement
-Si vous utilisez [Laragon](https://laragon.org/) (Windows), [XAMPP](https://www.apachefriends.org/), ou [MAMP](https://www.mamp.info/), ces extensions sont généralement déjà installées et configurées.
+:::tip Development environments
+If you use [Laragon](https://laragon.org/) (Windows), [XAMPP](https://www.apachefriends.org/), or [MAMP](https://www.mamp.info/), these extensions are generally already installed and configured.
 :::
 
-## Créer un projet
+## Creating a project
 
-BowPHP utilise [Composer](https://getcomposer.org) pour gérer ses dépendances. Assurez-vous que Composer est installé sur votre machine avant de continuer.
+BowPHP uses [Composer](https://getcomposer.org) to manage its dependencies. Make sure Composer is installed on your machine before continuing.
 
 ### Installation via Composer
 
@@ -32,81 +32,81 @@ BowPHP utilise [Composer](https://getcomposer.org) pour gérer ses dépendances.
 composer create-project --prefer-dist bowphp/app nom-du-projet
 ```
 
-:::info Installation de Composer
-Nous recommandons d'installer Composer de manière globale sur votre machine. Consultez la [documentation officielle](https://getcomposer.org/download) pour les instructions d'installation.
+:::info Installing Composer
+We recommend installing Composer globally on your machine. See the [official documentation](https://getcomposer.org/download) for installation instructions.
 
-Si vous découvrez Composer, prenez le temps de parcourir sa [documentation](https://getcomposer.org/doc/) pour comprendre son fonctionnement.
+If you are new to Composer, take the time to read through its [documentation](https://getcomposer.org/doc/) to understand how it works.
 :::
 
 [![asciicast](https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z.svg)](https://asciinema.org/a/s8HpeoaUwnxEZ7OOPRxxXE52z)
 
-## Démarrer votre projet
+## Starting your project
 
-Rendez-vous à la racine de votre projet et démarrez le serveur de développement :
+Go to the root of your project and start the development server:
 
 ```bash
 cd nom-du-projet
 php bow run:server --port=8080 --host=0.0.0.0
 ```
 
-Ouvrez votre navigateur et accédez à `http://localhost:8080`.
+Open your browser and go to `http://localhost:8080`.
 
-:::info Port par défaut
-Si vous ne spécifiez pas de port, le serveur démarre sur le port `5000` par défaut :
+:::info Default port
+If you do not specify a port, the server starts on port `5000` by default:
 
 ```bash
 php bow run:server
-# Accessible sur http://localhost:5000
+# Accessible at http://localhost:5000
 ```
 :::
 
 ## Configuration
 
-### Dossier public
+### Public directory
 
-Après l'installation, configurez le `document root` de votre serveur web pour qu'il pointe vers le dossier `public`.
+After installation, configure your web server's `document root` to point to the `public` directory.
 
-Le fichier `index.php` situé dans ce dossier sert de point d'entrée unique pour toutes les requêtes HTTP (pattern **Front Controller**).
+The `index.php` file located in this directory serves as the single entry point for all HTTP requests (the **Front Controller** pattern).
 
-### Fichiers de configuration
+### Configuration files
 
-Tous les fichiers de configuration de BowPHP se trouvent dans le dossier `config`. Chaque option est documentée pour faciliter la personnalisation de votre application.
+All of BowPHP's configuration files are located in the `config` directory. Each option is documented to make it easier to customize your application.
 
-**Structure du dossier config :**
-- `app.php` : Configuration de l'application
-- `database.php` : Configuration des bases de données
-- `mail.php` : Configuration de l'envoi d'emails
-- Et bien d'autres...
+**Structure of the config directory:**
+- `app.php`: Application configuration
+- `database.php`: Database configuration
+- `mail.php`: Email sending configuration
+- And many more...
 
-### Permissions des dossiers
+### Directory permissions
 
-Les dossiers contenus dans `var` doivent avoir les permissions d'écriture pour le serveur web :
+The directories contained in `var` must have write permissions for the web server:
 
 ```bash
-# Sur Linux/macOS
+# On Linux/macOS
 chmod -R 775 var/
 chown -R www-data:www-data var/
 ```
 
 :::warning Important
-Assurez-vous que le serveur web a les droits d'écriture sur le dossier `var` pour que les logs, le cache et les sessions fonctionnent correctement.
+Make sure the web server has write permissions on the `var` directory so that logs, cache, and sessions work correctly.
 :::
 
-## Configuration des serveurs web
+## Web server configuration
 
 ### Apache
 
-Bow inclut un fichier `public/.htaccess` qui gère la réécriture d'URLs vers le front controller. 
+Bow includes a `public/.htaccess` file that handles URL rewriting to the front controller.
 
-**Prérequis :** Le module `mod_rewrite` doit être activé.
+**Requirement:** The `mod_rewrite` module must be enabled.
 
 ```bash
-# Activer mod_rewrite sur Ubuntu/Debian
+# Enable mod_rewrite on Ubuntu/Debian
 sudo a2enmod rewrite
 sudo systemctl restart apache2
 ```
 
-Si le fichier `.htaccess` par défaut ne fonctionne pas, essayez cette configuration alternative :
+If the default `.htaccess` file does not work, try this alternative configuration:
 
 ```c
 Options +FollowSymLinks
@@ -119,7 +119,7 @@ RewriteRule ^ index.php [L]
 
 ### Nginx
 
-Pour Nginx, ajoutez cette configuration dans votre fichier de site :
+For Nginx, add this configuration to your site file:
 
 ```nginx title="/etc/nginx/sites-available/bow-app"
 server {
@@ -132,7 +132,7 @@ server {
   access_log /var/log/nginx/bow-app.access.log;
   error_log /var/log/nginx/bow-app.error.log;
 
-  # Sécurité - Headers
+  # Security - Headers
   add_header X-Frame-Options "SAMEORIGIN" always;
   add_header X-Content-Type-Options "nosniff" always;
   add_header X-XSS-Protection "1; mode=block" always;
@@ -159,14 +159,14 @@ server {
     fastcgi_hide_header X-Powered-By;
   }
 
-  # Cache des assets statiques
+  # Static assets cache
   location ~* \.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot)$ {
     expires 1y;
     add_header Cache-Control "public, immutable";
     access_log off;
   }
 
-  # Bloquer l'accès aux fichiers sensibles
+  # Block access to sensitive files
   location ~ /\.(env|git|htaccess) {
     deny all;
   }
@@ -177,7 +177,7 @@ server {
 }
 ```
 
-#### Nginx avec SSL (HTTPS)
+#### Nginx with SSL (HTTPS)
 
 ```nginx title="/etc/nginx/sites-available/bow-app-ssl"
 server {
@@ -192,11 +192,11 @@ server {
   root /var/www/bow-app/public;
   index index.php;
 
-  # Certificats SSL (Let's Encrypt)
+  # SSL certificates (Let's Encrypt)
   ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
 
-  # Configuration SSL moderne
+  # Modern SSL configuration
   ssl_protocols TLSv1.2 TLSv1.3;
   ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256;
   ssl_prefer_server_ciphers off;
@@ -205,7 +205,7 @@ server {
   ssl_stapling on;
   ssl_stapling_verify on;
 
-  # Headers de sécurité
+  # Security headers
   add_header Strict-Transport-Security "max-age=63072000" always;
   add_header X-Frame-Options "SAMEORIGIN" always;
   add_header X-Content-Type-Options "nosniff" always;
@@ -227,27 +227,27 @@ server {
 }
 ```
 
-#### Activer le site Nginx
+#### Enabling the Nginx site
 
 ```bash
-# Créer le lien symbolique
+# Create the symbolic link
 sudo ln -s /etc/nginx/sites-available/bow-app /etc/nginx/sites-enabled/
 
-# Tester la configuration
+# Test the configuration
 sudo nginx -t
 
-# Recharger Nginx
+# Reload Nginx
 sudo systemctl reload nginx
 ```
 
 ### Docker
 
-Pour développer avec Docker, créez les fichiers suivants à la racine du projet :
+To develop with Docker, create the following files at the root of the project:
 
 ```dockerfile title="Dockerfile"
 FROM php:8.2-fpm-alpine
 
-# Extensions PHP
+# PHP extensions
 RUN apk add --no-cache \
   libpng-dev libjpeg-turbo-dev freetype-dev \
   oniguruma-dev libxml2-dev zip unzip git curl \
@@ -343,20 +343,20 @@ server {
 ```
 
 ```bash
-# Démarrer les conteneurs
+# Start the containers
 docker-compose up -d
 
-# Accéder à l'application
+# Access the application
 # http://localhost:8080
 ```
 
-### Déploiement sur serveur mutualisé
+### Deploying to shared hosting
 
-Pour déployer BowPHP sur un hébergement mutualisé :
+To deploy BowPHP to shared hosting:
 
-1. Déplacez les fichiers `index.php` et `.htaccess` du dossier `public` vers la racine du projet
-2. Modifiez les chemins dans `index.php` pour qu'ils pointent correctement vers les dossiers du framework
-3. Utilisez la configuration `.htaccess` suivante :
+1. Move the `index.php` and `.htaccess` files from the `public` directory to the root of the project
+2. Update the paths in `index.php` so that they correctly point to the framework's directories
+3. Use the following `.htaccess` configuration:
 
 ```c
 Options -indexes
@@ -380,19 +380,19 @@ Options -indexes
 </Files>
 ```
 
-:::tip Gestion des assets
-Pour un hébergement mutualisé, utilisez le helper `app_assets()` pour vos fichiers statiques et modifiez la valeur de `APP_ASSET_PREFIX` à `/public` dans votre fichier `.env.json`. Bow gérera automatiquement les chemins corrects !
+:::tip Asset management
+For shared hosting, use the `app_assets()` helper for your static files and change the value of `APP_ASSET_PREFIX` to `/public` in your `.env.json` file. Bow will automatically handle the correct paths!
 :::
 
-## Prochaines étapes
+## Next steps
 
-Maintenant que votre installation est terminée, découvrez comment construire votre application :
+Now that your installation is complete, learn how to build your application:
 
-- [Créer vos premières routes](./routing)
-- [Utiliser les contrôleurs](./controller)
-- [Travailler avec les bases de données](./database)
-- [Gérer les sessions utilisateur](./session)
-- [Utiliser le système de stockage](./storage)
-- [Créer des vues avec Tintin](./views)
+- [Create your first routes](./routing)
+- [Use controllers](./controller)
+- [Work with databases](./database)
+- [Manage user sessions](./session)
+- [Use the storage system](./storage)
+- [Create views with Tintin](./views)
 
 <SuggestionFeature />

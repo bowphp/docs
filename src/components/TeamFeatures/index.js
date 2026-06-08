@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import Translate from '@docusaurus/Translate';
 
 const TeamFeatures = () => {
   const {siteConfig} = useDocusaurusContext();
@@ -16,11 +17,12 @@ const TeamFeatures = () => {
         <div className="row margin-bottom--lg">
           <div className="col col--12">
             <h2 className={styles.sectionTitle}>
-              Ceux qui utilisent BowPHP ?
+              <Translate id="home.team.title">Who uses BowPHP?</Translate>
             </h2>
             <p className={styles.sectionDescription}>
-              Ce projet est utilisé par toutes ces personnes influentes dans les
-              communautés technologiques de Côte d'ivoire et dans reste du Monde.
+              <Translate id="home.team.description">
+                This project is used by all these influential people in the tech communities of Côte d'Ivoire and around the world.
+              </Translate>
             </p>
           </div>
         </div>

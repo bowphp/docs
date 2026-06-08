@@ -6,38 +6,38 @@ title: "HTTP Response"
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
-- [Envoyer une réponse](#envoyer-une-réponse)
-  - [Une chaîne de caractères](#une-chaine-de-caractère)
-  - [Une Collection et Un tableau ou un Object](#une-collection-et-un-tableau-ou-un-object)
-  - [Un modèle BARRY](#un-modèle-barry)
-- [Modification de réponse](#modification-de-réponse)
-  - [Modification du code d'erreur](#modification-du-code-derreur)
-  - [Ajouter une entête HTTP](#ajouter-une-entête-http)
-- [Envoyer un JSON](#envoyer-un-json)
-  - [Prototype de la méthode `json`](#protototype-de-la-méthode-json)
-  - [Exemple d'envoi de JSON](#exemple-denvoye-de-json)
-- [Envoyer une réponse depuis les vues](#envoyer-une-réponse-depuis-les-vues)
-  - [Prototype de la méthode `render`](#protototype-de-la-méthode-render)
-  - [Exemple d'envoi de vue](#exemple-denvoye-de-vue)
-  - [Télécharger un fichier](#télécharger-un-fichier)
-  - [Prototype de la méthode `download`](#protototype-de-la-méthode-download)
-  - [Exemple de téléchargement](#exemple-de-télécharge)
+- [Sending a response](#sending-a-response)
+  - [A string](#a-string)
+  - [A Collection and an array or an Object](#a-collection-and-an-array-or-an-object)
+  - [A BARRY model](#a-barry-model)
+- [Modifying the response](#modifying-the-response)
+  - [Modifying the error code](#modifying-the-error-code)
+  - [Adding an HTTP header](#adding-an-http-header)
+- [Sending JSON](#sending-json)
+  - [Prototype of the `json` method](#prototype-of-the-json-method)
+  - [JSON sending example](#json-sending-example)
+- [Sending a response from views](#sending-a-response-from-views)
+  - [Prototype of the `render` method](#prototype-of-the-render-method)
+  - [View sending example](#view-sending-example)
+  - [Downloading a file](#downloading-a-file)
+  - [Prototype of the `download` method](#prototype-of-the-download-method)
+  - [Download example](#download-example)
 - [Redirection](#redirection)
-  - [Redirection avec `to`](#redirection-avec-to)
-    - [Prototype de `to`](#prototype-de-to)
-  - [Redirection avec `back`](#redirection-avec-back)
-    - [Prototype de `back`](#prototype-de-back)
-  - [Redirection avec des informations](#redirection-avec-des-informations)
+  - [Redirection with `to`](#redirection-with-to)
+    - [Prototype of `to`](#prototype-of-to)
+  - [Redirection with `back`](#redirection-with-back)
+    - [Prototype of `back`](#prototype-of-back)
+  - [Redirection with information](#redirection-with-information)
 
 ## Introduction
 
-Tous les routes et contrôleurs doivent retourner une réponse à renvoyer à l'utilisateur. Bow fournit plusieurs façons différentes de renvoyer des réponses. La réponse la plus élémentaire est le retour d'une chaîne depuis une route ou un contrôleur. Bow convertira automatiquement la chaîne en une réponse HTTP complète.
+All routes and controllers must return a response to be sent back to the user. Bow provides several different ways to return responses. The most basic response is returning a string from a route or a controller. Bow will automatically convert the string into a complete HTTP response.
 
-## Envoyer une réponse
+## Sending a response
 
-### Une chaîne de caractères
+### A string
 
-Une réponse HTTP peut être une chaîne de caractères.
+An HTTP response can be a string.
 
 ```php
 $app->get('/', function ()
@@ -46,9 +46,9 @@ $app->get('/', function ()
 });
 ```
 
-### Une Collection et Un tableau ou un Object
+### A Collection and an array or an Object
 
-Une réponse HTTP peut être une instance de [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html).
+An HTTP response can be an instance of [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html).
 
 ```php
 $app->get('/array', function ()
@@ -67,9 +67,9 @@ $app->get('/object', function ()
 });
 ```
 
-### Un modèle BARRY
+### A BARRY model
 
-La réponse HTTP peut être un `Model` ou une `Collection` de modèle, Bow la convertit directement en `JSON`.
+The HTTP response can be a `Model` or a `Collection` of models; Bow converts it directly to `JSON`.
 
 ```php
 use App\Models\User;
@@ -82,11 +82,11 @@ $app->get('/', function ()
 });
 ```
 
-## Modification de réponse
+## Modifying the response
 
-### Modification du code d'erreur
+### Modifying the error code
 
-Il est très important d'ajouter les codes d'erreurs à votre réponse HTTP si vous développez un API RESTFUL. La méthode `status` vous permet de le faire.
+It is very important to add error codes to your HTTP response if you are developing a RESTFUL API. The `status` method allows you to do this.
 
 ```php
 use App\Models\User;
@@ -99,19 +99,19 @@ $app->get('/', function ()
 });
 ```
 
-Pour plus d'information sur les code HTTP. Consultez ce [lien](https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP).
+For more information about HTTP codes, check out this [link](https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP).
 
-Si dans votre API, la requête a été traitée avec succès et que vous n'avez pas d'information à renvoyer. Il est préférable de lui retourne un **204** qu'un **200** :tada:.
+If, in your API, the request was processed successfully and you have no information to return, it is better to return a **204** than a **200** :tada:.
 
-### Ajouter une entête HTTP
+### Adding an HTTP header
 
-Souvent vous serez amener à ajouter d'autre entête HTTP à votre réponse HTTP. La méthode `addHeader` et `withHeaders` vous permet de le faire.
+You will often need to add other HTTP headers to your HTTP response. The `addHeader` and `withHeaders` methods allow you to do this.
 
 ```php
 $response->addHeader('Content-Type', 'application/json');
 ```
 
-Nous pouvez ajouter plusieur entête en même temps:
+You can add several headers at the same time:
 
 ```php
 $response->withHeaders([
@@ -120,97 +120,97 @@ $response->withHeaders([
 ]);
 ```
 
-## Envoyer un JSON
+## Sending JSON
 
-Dans les applications REST (Api REST/RESTFUL) les informations sont généralement retournés en JSON. Pour envoyer un information JSON au client, vous pouvez utiliser le help `json` ou la méthode `json` sur l'instance de `Bow\Http\Response`.
+In REST applications (REST/RESTFUL APIs) information is generally returned in JSON. To send JSON information to the client, you can use the `json` helper or the `json` method on the `Bow\Http\Response` instance.
 
-### Protototype de la méthode `json`
+### Prototype of the `json` method
 
 ```php
 $response->json($data, $code, $headers);
 ```
 
-| Paramètre | Type | Description |
+| Parameter | Type | Description |
 |----------|------|------|
-| $data  | **Array**, `stdClass`, `Iterable`, `JsonSerializable` | Les données à sérialiser |
-| $code  | **Int** | Le code du status HTTP |
-| $headers  | **Array** | Les entêtes à ajouter sur le réponse |
+| $data  | **Array**, `stdClass`, `Iterable`, `JsonSerializable` | The data to serialize |
+| $code  | **Int** | The HTTP status code |
+| $headers  | **Array** | The headers to add to the response |
 
-### Exemple d'envoye de JSON
+### JSON sending example
 
-Exemple:
+Example:
 
 ```php
 $data = ['message' => 'Hello, World'];
 
 return $response->json($data, $code = 200, [
-  'X-Proto-Value' => 1 // Juste un test
+  'X-Proto-Value' => 1 // Just a test
 ]);
 ```
 
-Avec le HELPER:
+With the HELPER:
 
 ```php
 $data = ['message' => 'Hello, World'];
 
 return json($data, 200, [
-  'X-Proto-Value' => 1 // Juste un test
+  'X-Proto-Value' => 1 // Just a test
 ]);
 ```
 
-Ici, Bow ajout directement l'entête HTTP `Content-Type` à `application/json`, donc plus besoin de l'ajouter manuellement dans le `$headers`.
+Here, Bow directly adds the `Content-Type` HTTP header set to `application/json`, so there is no need to add it manually in the `$headers`.
 
-## Envoyer une réponse depuis les vues
+## Sending a response from views
 
-Souvent vous pouvez utiliser un instance de `Bow\Http\Response` pour faire le rendu de [vue](./views) via la méthode `render`.
+You can often use an instance of `Bow\Http\Response` to render a [view](./views) via the `render` method.
 
-### Protototype de la méthode `render`
+### Prototype of the `render` method
 
 ```php
 $response->render($name, $data, $code, $headers);
 ```
 
-| Paramètre | Type | Description |
+| Parameter | Type | Description |
 |----------|------|
-| $name  | **String** - Le nom d'une vue à rendre |
-| $data  | **Array** - Les données à envoyer à la vue |
-| $code  | **Int** - Le code du status HTTP |
-| $headers  | **Array** - Les entêtes à ajouter à la réponse |
+| $name  | **String** - The name of a view to render |
+| $data  | **Array** - The data to send to the view |
+| $code  | **Int** - The HTTP status code |
+| $headers  | **Array** - The headers to add to the response |
 
-### Exemple d'envoye de vue
+### View sending example
 
-Exemple:
+Example:
 
 ```php
 $users = User::where('id', '!=', 2)->get();
 
 return $response->render('users', ['users' => $users], 200, [
-  'X-Proto-Value' => 1 // Juste un test
+  'X-Proto-Value' => 1 // Just a test
 ]);
 ```
 
-### Télécharger un fichier
+### Downloading a file
 
-Souvent vous serez amener à mettre en place des systèmes de téléchargement de fichier zip ou image, encore vous allez faire des applications où il faut s'authentifier avant de télécharge des fichiers du type dropbox. Bow offre un API simple via la classe [`Bow\Http\Response`](https://bowphp.com/api/master/Bow/Http/Response.html) pour télécharger un fichier avec la méthode `download`.
+You will often need to set up systems for downloading zip files or images, or you may build applications where you have to authenticate before downloading files, like Dropbox. Bow offers a simple API via the [`Bow\Http\Response`](https://bowphp.com/api/master/Bow/Http/Response.html) class to download a file with the `download` method.
 
-### Protototype de la méthode `download`
+### Prototype of the `download` method
 
 ```php
 $response->download($file, $filename = null, $headers, $disposition = 'attachment');
 ```
 
-| Paramètre | Type | Description |
+| Parameter | Type | Description |
 |----------|------|------|
-| $file  | **String** | Le chemin absolu du fichier |
-| $filename  | **String** | Le nouveau du fichier par defaut est **null** |
-| $headers  | **Array** | Les entêtes à ajouter à la réponse |
-| $disposition  | **String** | Indiquant si le contenu devrait être affiché en ligne dans le navigateur, c'est-à-dire en tant que page Web, ou en pièce jointe téléchargé et enregistré localement. |
+| $file  | **String** | The absolute path of the file |
+| $filename  | **String** | The new file name; defaults to **null** |
+| $headers  | **Array** | The headers to add to the response |
+| $disposition  | **String** | Indicates whether the content should be displayed inline in the browser, i.e. as a web page, or as an attachment that is downloaded and saved locally. |
 
-Plus d'information sur l'entête [`Content-Disposition`](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers/Content-Disposition).
+More information about the [`Content-Disposition`](https://developer.mozilla.org/fr/docs/Web/HTTP/Headers/Content-Disposition) header.
 
-### Exemple de télécharge
+### Download example
 
-Exemple:
+Example:
 
 ```php
 $file = '/path/to/file.png';
@@ -220,60 +220,60 @@ return $response->download($file, 'image.png');
 
 ## Redirection
 
-Vous serez certainement amener à faire des redirections vers d'autres ressources et cela en réalité constitue une réponse HTTP. Les méthodes `to` et `back` (qui comme son nom l'indique permet de faire une revenir sur en arrière) de la classe [`Bow\Http\Redirect`](https://bowphp.com/api/master/Bow/Http/Redirect.html).
+You will certainly need to perform redirections to other resources, and this is in fact an HTTP response. This is done with the `to` and `back` methods (the latter, as its name suggests, allows you to go back) of the [`Bow\Http\Redirect`](https://bowphp.com/api/master/Bow/Http/Redirect.html) class.
 
-### Redirection avec `to`
+### Redirection with `to`
 
-La redirection avec `to` permet de renvoyer l'utilisateur sur une autre la page.
+Redirection with `to` allows you to send the user to another page.
 
 ```php
 return redirect()->to($path);
 ```
 
-#### Prototype de `to`
+#### Prototype of `to`
 
-| Paramètre | Type | Description |
+| Parameter | Type | Description |
 |----------|------|------|
-| $path  | **String** | L'URL de rédirection |
+| $path  | **String** | The redirection URL |
 
 ```php
 return redirect()->to('/users');
 ```
 
-### Redirection avec `back`
+### Redirection with `back`
 
-La redirection avec `back` permet de renvoyer l'utilisateur sur la page précédente.
+Redirection with `back` allows you to send the user to the previous page.
 
 ```php
 return redirect()->back($status_code);
 ```
 
-#### Prototype de `back`
+#### Prototype of `back`
 
-| Paramètre | Type |
+| Parameter | Type |
 |----------|------|
-| $status_code  | **Int** - Le code HTTP de la réponse par defaut est égale à `302` |
+| $status_code  | **Int** - The HTTP code of the response; defaults to `302` |
 
 ```php
 return redirect()->back();
 ```
 
-### Redirection avec des informations
+### Redirection with information
 
-Vous pouvez aussi faire la redirection avec les informations envoyés par l'utilisateur et ceci avec la méthode `withInput`, `withFlash` comme ceci:
+You can also perform a redirection along with the information sent by the user, using the `withInput` and `withFlash` methods, like this:
 
 ```php
  return redirect()->back()->withInput();
- // Ou
+ // Or
  return redirect()->to("/home")->withInput();
 ```
 
-Avec un message flash
+With a flash message:
 
 ```php
  return redirect()->back()->withFlash('success', 'Papac');
 ```
 
-Notez que vous pouvez donner une tableau de valeur à `withInput` qui sera une collection d'information à envoyer à utilisateur.
+Note that you can pass an array of values to `withInput`, which will be a collection of information to send to the user.
 
 <SuggestionFeature />

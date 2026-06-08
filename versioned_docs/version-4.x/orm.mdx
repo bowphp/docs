@@ -10,25 +10,25 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
   <br/><span>BARRY ORM</span>
 </h1>
 
-<p align="center">BARRY c'est l'ORM (<strong>Object Relation Mapping</strong>) intégré dans BowPHP.</p>
+<p align="center">BARRY is the ORM (<strong>Object Relation Mapping</strong>) built into BowPHP.</p>
 
 ## Introduction
 
-Un ORM est une façon de relier les tables entre elles en utilisant des classes. Ici chaque enregistrement d'une table représentera un Objet qui peut être en relation avec d'autres enregistrements. C'est ce qu'on appelle en anglais **The Object Relation Mapping** et en français, Mappage de relation en Objet :wink:.
+An ORM is a way of linking tables together using classes. Here, each record in a table represents an Object that can be related to other records. This is what is called **Object Relation Mapping** :wink:.
 
-L'ORM BARRY inclus avec BowPHP fournit une implémentation ActiveRecord belle et simple pour travailler avec votre base de données. Chaque table de base de données a un "modèle" correspondant qui est utilisé pour interagir avec cette table. Les modèles vous permettent de rechercher des données dans vos tables, ainsi que d'insérer de nouveaux enregistrements dans la table.
+The BARRY ORM included with BowPHP provides a beautiful and simple ActiveRecord implementation for working with your database. Each database table has a corresponding "model" that is used to interact with that table. Models allow you to query for data in your tables, as well as insert new records into the table.
 
-Dans tout bon Framework qui se respect, il y a un système de ORM et qui posséde un nom super mignon. Celui de Bow se nomme **BARRY**, n'est pas mignon ça :smile:.
+In every self-respecting framework, there is an ORM system with a super cute name. Bow's is called **BARRY**, isn't that cute :smile:.
 
-> Avant de commencer, assurez-vous de configurer une connexion à la base de données dans `config/database.php`.
+> Before getting started, make sure you have configured a database connection in `config/database.php`.
 
-Avant de continuer veuillez ajouter une migration:
+Before continuing, please add a migration:
 
 ```bash
 php bow add:migration CreateTodoTable
 ```
 
-Ensuite modifiez la migration:
+Then edit the migration:
 
 ```php
 public function up()
@@ -43,25 +43,25 @@ public function up()
 }
 ```
 
-En fin de faire la migration:
+Finally, run the migration:
 
 ```bash
 php bow migration:migrate
 ```
 
-> Cette migration sera utilisé pour vous permettre de faire directement les tests sur le modèle `App\Models\Todo::class`.
+> This migration will be used to allow you to run the tests directly on the `App\Models\Todo::class` model.
 
-## Ajouter un model
+## Adding a model
 
-Pour ajouter un modèle il faut utiliser la ligne de commande `php bow` avec la commande `add:model` suivi du nom du modèle.
+To add a model, use the `php bow` command line with the `add:model` command followed by the model name.
 
 ```bash
 php bow add:model Todo
 ```
 
-Après création du modele, un fichier du meme nom sera créer, dans note cas `Todo.php`, à la racine du dossier `app/Models`.
+After creating the model, a file with the same name will be created, in our case `Todo.php`, at the root of the `app/Models` folder.
 
-Voici un aperçu du fichier:
+Here is an overview of the file:
 
 ```php
 namespace App\Models;
@@ -74,13 +74,13 @@ class Todo extends Model
 }
 ```
 
-> Avant d'utiliser le model vérifier que vous avez configurer votre base de donnée
+> Before using the model, make sure you have configured your database
 
-### Nom de Table
+### Table Name
 
-Notez que nous n'avons pas indiqué à BARRY quelle table utiliser pour notre modèle Todo. Par convention, le "snake case", le nom pluriel de la classe sera utilisé comme nom de table à moins qu'un autre nom ne soit explicitement spécifié.
+Note that we did not tell BARRY which table to use for our Todo model. By convention, the "snake case", plural name of the class will be used as the table name unless another name is explicitly specified.
 
-Vous pouvez spécifier manuellement un nom de table en définissant une propriété de table sur votre modèle:
+You can manually specify a table name by defining a table property on your model:
 
 ```php
 namespace App\Models;
@@ -90,7 +90,7 @@ use Bow\Database\Barry\Model;
 class Todo extends Model
 {
   /**
-   * Définissez la table associée au modèle.
+   * Define the table associated with the model.
    *
    * @var string
    */
@@ -98,9 +98,9 @@ class Todo extends Model
 }
 ```
 
-### Clés primaires
+### Primary keys
 
-BARRY supposera également que chaque table a une colonne de clé primaire nommée id. Vous pouvez définir une propriété `$primary_key` protégée pour remplacer cette convention:
+BARRY will also assume that each table has a primary key column named id. You can define a protected `$primary_key` property to override this convention:
 
 ```php
 namespace App\Models;
@@ -110,7 +110,7 @@ use Bow\Database\Barry\Model;
 class Todo extends Model
 {
   /**
-   * La clé primaire associée à la table.
+   * The primary key associated with the table.
    *
    * @var string
    */
@@ -118,11 +118,11 @@ class Todo extends Model
 }
 ```
 
-## Récupérer les données
+## Retrieving data
 
-Une fois que vous avez créé un modèle et sa table de base de données associée, vous êtes prêt à commencer à récupérer les données de votre base de données. Considérez chaque modèle BARRY comme un puissant [générateur de requêtes](./query-builder) vous permettant d'interroger couramment la table de base de données associée au modèle.
+Once you have created a model and its associated database table, you are ready to start retrieving data from your database. Think of each BARRY model as a powerful [query builder](./query-builder) allowing you to fluently query the database table associated with the model.
 
-Par exemple:
+For example:
 
 ```php
 use App\Models\Todo;
@@ -134,21 +134,21 @@ foreach ($todos as $todo) {
 }
 ```
 
-La méthode `find` et `findBy` permet aussi de récupérer les informations:
+The `find` and `findBy` methods also allow you to retrieve information:
 
 ```php
-// Avec find
+// With find
 $todo = Todo::find(1);
 
-// Avec findBy
+// With findBy
 $todo = Todo::findBy('id', 1);
 ```
 
-> La méthode peut aussi retourner `null` dans le case ou il y a aucun enrégistrement trouvé
+> The method can also return `null` in the case where no record is found
 
-## Ajout de contraintes supplémentaires
+## Adding additional constraints
 
-La méthode BARRY `all` retournera tous les résultats dans le tableau du modèle. Étant donné que chaque modèle BARRY sert de [générateur de requêtes](./query-builder), vous pouvez également ajouter des contraintes aux requêtes, puis utiliser la méthode get pour récupérer les résultats:
+The BARRY `all` method will return all of the results in the model's table. Since each BARRY model serves as a [query builder](./query-builder), you can also add constraints to queries, and then use the get method to retrieve the results:
 
 ```php
 $flights = App\Models\Todo::where('status', 'done')
@@ -157,9 +157,9 @@ $flights = App\Models\Todo::where('status', 'done')
             ->get();
 ```
 
-## Récupération d'agrégats
+## Retrieving aggregates
 
-Vous pouvez également utiliser les méthodes `count`, `sum`, `max` et d'autres méthodes d'agrégation fournies par le [générateur de requêtes](./query-builder). Ces méthodes renvoient la valeur scalaire appropriée au lieu d'une instance de modèle complète:
+You can also use the `count`, `sum`, `max`, and other aggregate methods provided by the [query builder](./query-builder). These methods return the appropriate scalar value instead of a full model instance:
 
 ```php
 use App\Models\Todo;
@@ -169,11 +169,11 @@ $count = Todo::where('status', 'done')->count();
 $max = Todo::where('status', 'done')->max('budget');
 ```
 
-## Insertion et mise à jour de modèles
+## Inserting and updating models
 
 ### INSERT
 
-Pour créer un nouvel enregistrement dans la base de données, créez une nouvelle instance de modèle, définissez des attributs sur le modèle, puis appelez la méthode de sauvegarde:
+To create a new record in the database, create a new model instance, set attributes on the model, then call the save method:
 
 ```php
 
@@ -186,14 +186,14 @@ use Bow\Http\Request;
 class TodoController extends Controller
 {
   /**
-   * Créez une nouvelle instance de todo.
+   * Create a new todo instance.
    *
    * @param Request $request
    * @return mixed
    */
   public function store(Request $request)
   {
-    // Validez la demande...
+    // Validate the request...
 
     $todo = new Todo;
 
@@ -206,13 +206,13 @@ class TodoController extends Controller
 }
 ```
 
-Dans cet exemple, nous affectons le paramètre de nom de la requête HTTP entrante à les attributs `title`, `budget` de l'instance de modèle `App\Models\Todo`. Lorsque nous appelons la méthode `save`, un enregistrement sera inséré dans la base de données. Les horodatages `created_at` et `updated_at` seront automatiquement définis lorsque la méthode de sauvegarde sera appelée, il n'est donc pas nécessaire de les définir manuellement.
+In this example, we assign the name parameter from the incoming HTTP request to the `title` and `budget` attributes of the `App\Models\Todo` model instance. When we call the `save` method, a record will be inserted into the database. The `created_at` and `updated_at` timestamps will automatically be set when the save method is called, so there is no need to set them manually.
 
 ### Insert via CREATE
 
-Les objets Active Record peuvent être créés à partir d'un hachage, d'un bloc ou avoir leurs attributs définis manuellement après la création. La nouvelle méthode renverra un nouvel objet tandis que `create` renverra l'objet et l'enregistrera dans la base de données.
+Active Record objects can be created from a hash, from a block, or have their attributes set manually after creation. The new method will return a new object while `create` will return the object and save it to the database.
 
-Par exemple, étant donné un utilisateur modèle avec des attributs de nom et d'occupation, l'appel de la méthode create créera et enregistrera un nouvel enregistrement dans la base de données:
+For example, given a model user with name and occupation attributes, calling the create method will create and save a new record to the database:
 
 ```php
 use App\Models\Todo;
@@ -226,7 +226,7 @@ $user = Todo::create([
 
 ### UPDATE
 
-La méthode `save` peut également être utilisée pour mettre à jour des modèles qui existent déjà dans la base de données. Pour mettre à jour un modèle, vous devez le récupérer, définir les attributs que vous souhaitez mettre à jour, puis appeler la méthode `save`. Encore une fois, l'horodatage `updated_at` sera automatiquement mis à jour, il n'est donc pas nécessaire de définir manuellement sa valeur:
+The `save` method can also be used to update models that already exist in the database. To update a model, you should retrieve it, set the attributes you wish to update, then call the `save` method. Again, the `updated_at` timestamp will automatically be updated, so there is no need to manually set its value:
 
 ```php
 use App\Models\Todo;
@@ -238,7 +238,7 @@ $todo->title = 'Shopping pour Franck';
 $todo->save();
 ```
 
-Ou bien vous pouvez aussi utiliser la methode `update`. Seulement vous dévez definir les conditions pour ainsi limiter l'impact de la mise à jour.
+Alternatively, you can also use the `update` method. You just need to define the conditions in order to limit the impact of the update.
 
 ```php
 use App\Models\Todo;
@@ -247,11 +247,11 @@ Todo::where('status', 'done')
   ->update(['title' => 'Achat de ticket d\'avion']);
 ```
 
-La méthode `update` attend un tableau de paires de colonnes et de valeurs représentant les colonnes à mettre à jour.
+The `update` method expects an array of column and value pairs representing the columns to be updated.
 
-## Suppression de donnée
+## Deleting data
 
-De même, une fois récupéré, un objet Active Record peut être détruit, ce qui le supprime de la base de données.
+Likewise, once retrieved, an Active Record object can be destroyed, which removes it from the database.
 
 ```php
 use App\Models\Todo;
@@ -260,7 +260,7 @@ $todo = Todo::find(1);
 $todo->delete();
 ```
 
-Si vous souhaitez supprimer plusieurs enregistrements en masse, vous pouvez utiliser la méthode `destroyBy` ou `truncate`:
+If you wish to delete multiple records in bulk, you can use the `destroyBy` or `truncate` method:
 
 ```php
 // Delete all todo by id

@@ -1,28 +1,28 @@
 ---
 id: http-client
-title: "Client HTTP"
+title: "HTTP Client"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le client HTTP de BowPHP est un composant puissant et flexible permettant de réaliser des requêtes HTTP vers des API ou des services distants. Il utilise la bibliothèque cURL pour offrir des fonctionnalités avancées tout en simplifiant leur utilisation.
+BowPHP's HTTP client is a powerful and flexible component for making HTTP requests to APIs or remote services. It relies on the cURL library to provide advanced features while keeping them simple to use.
 
-## Fonctionnalités principales
+## Key features
 
-1. Méthodes HTTP supportées : `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD`, `OPTIONS`.
-2. Gestion des en-têtes personnalisés.
-3. Support des fichiers attachés pour les requêtes multipart/form-data.
-4. Encodage JSON natif des données.
-5. Définition d'une URL de base (`base_url`) pour simplifier la gestion des endpoints API.
-6. Authentification intégrée (Basic, Bearer, HTTP Auth).
-7. Configuration des timeouts et vérification SSL.
-8. Gestion des erreurs avec des exceptions spécifiques.
+1. Supported HTTP methods: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD`, `OPTIONS`.
+2. Custom header management.
+3. Support for attached files in multipart/form-data requests.
+4. Native JSON encoding of data.
+5. Defining a base URL (`base_url`) to simplify the management of API endpoints.
+6. Built-in authentication (Basic, Bearer, HTTP Auth).
+7. Timeout configuration and SSL verification.
+8. Error handling with dedicated exceptions.
 
-## Utilisation
+## Usage
 
-Pour utiliser le client HTTP, créez simplement une nouvelle instance ou injectez-le dans un service ou un contrôleur :
+To use the HTTP client, simply create a new instance or inject it into a service or a controller:
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -31,7 +31,7 @@ $client = new HttpClient();
 ```
 
 :::info
-Le constructeur accepte un paramètre optionnel `$base_url`. Si l'URL de base est définie, l'appel des endpoints devient plus simple :
+The constructor accepts an optional `$base_url` parameter. When the base URL is defined, calling endpoints becomes simpler:
 
 ```php
 $client = new HttpClient('https://api.example.com');
@@ -39,26 +39,26 @@ $client = new HttpClient('https://api.example.com');
 :::
 
 :::tip
-Si vous n'avez pas défini l'URL de base lors de la création de l'instance, utilisez `setBaseUrl` pour le faire ultérieurement :
+If you did not define the base URL when creating the instance, use `setBaseUrl` to do it later:
 
 ```php
 $client->setBaseUrl('https://api.example.com');
 ```
 :::
 
-## Méthodes HTTP
+## HTTP methods
 
 ### `get`
 
-Effectue une requête GET pour récupérer des ressources.
+Performs a GET request to retrieve resources.
 
-**Paramètres :**
-- `$url` : Le chemin relatif ou l'URL complète
-- `$data` : Tableau de paramètres ajoutés à l'URL sous forme de query string
+**Parameters:**
+- `$url`: The relative path or the full URL
+- `$data`: Array of parameters appended to the URL as a query string
 
-**Retourne :** Une instance de `Response`
+**Returns:** A `Response` instance
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -67,21 +67,21 @@ $client = new HttpClient('https://api.example.com');
 $response = $client->get('/users', ['page' => 2, 'limit' => 10]);
 
 echo $response->getContent();
-// Accéder aux données JSON
+// Access the JSON data
 $users = $response->toArray();
 ```
 
 ### `post`
 
-Effectue une requête POST pour créer ou envoyer des données.
+Performs a POST request to create or send data.
 
-**Paramètres :**
-- `$url` : Le chemin relatif ou l'URL complète
-- `$data` : Tableau de données à envoyer (JSON ou form-urlencoded selon la configuration)
+**Parameters:**
+- `$url`: The relative path or the full URL
+- `$data`: Array of data to send (JSON or form-urlencoded depending on the configuration)
 
-**Retourne :** Une instance de `Response`
+**Returns:** A `Response` instance
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -93,24 +93,24 @@ $response = $client->acceptJson()->post('/users', [
   'role' => 'admin'
 ]);
 
-// Vérifier le succès
+// Check for success
 if ($response->isSuccessful()) {
   $user = $response->toArray();
-  echo "Utilisateur créé avec l'ID: {$user['id']}";
+  echo "User created with ID: {$user['id']}";
 }
 ```
 
 ### `put`
 
-Effectue une requête PUT pour mettre à jour une ressource existante.
+Performs a PUT request to update an existing resource.
 
-**Paramètres :**
-- `$url` : Le chemin relatif ou l'URL complète
-- `$data` : Tableau de données à envoyer pour la mise à jour
+**Parameters:**
+- `$url`: The relative path or the full URL
+- `$data`: Array of data to send for the update
 
-**Retourne :** Une instance de `Response`
+**Returns:** A `Response` instance
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -122,21 +122,21 @@ $response = $client->acceptJson()->put('/users/123', [
 ]);
 
 if ($response->isSuccessful()) {
-  echo "Utilisateur mis à jour avec succès";
+  echo "User updated successfully";
 }
 ```
 
 ### `delete`
 
-Effectue une requête DELETE pour supprimer une ressource.
+Performs a DELETE request to delete a resource.
 
-**Paramètres :**
-- `$url` : Le chemin relatif ou l'URL complète
-- `$data` : Tableau de données optionnelles à envoyer
+**Parameters:**
+- `$url`: The relative path or the full URL
+- `$data`: Array of optional data to send
 
-**Retourne :** Une instance de `Response`
+**Returns:** A `Response` instance
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -145,21 +145,21 @@ $client = new HttpClient('https://api.example.com');
 $response = $client->delete('/users/123');
 
 if ($response->isSuccessful()) {
-  echo "Utilisateur supprimé avec succès";
+  echo "User deleted successfully";
 }
 ```
 
 ### `patch`
 
-Effectue une requête PATCH pour mettre à jour partiellement une ressource.
+Performs a PATCH request to partially update a resource.
 
-**Paramètres :**
-- `$url` : Le chemin relatif ou l'URL complète
-- `$data` : Tableau de données à envoyer pour la mise à jour partielle
+**Parameters:**
+- `$url`: The relative path or the full URL
+- `$data`: Array of data to send for the partial update
 
-**Retourne :** Une instance de `Response`
+**Returns:** A `Response` instance
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -170,21 +170,21 @@ $response = $client->acceptJson()->patch('/users/123', [
 ]);
 
 if ($response->isSuccessful()) {
-  echo "Email mis à jour avec succès";
+  echo "Email updated successfully";
 }
 ```
 
 ### `head`
 
-Effectue une requête HEAD pour récupérer uniquement les en-têtes HTTP sans le corps de la réponse. Utile pour vérifier l'existence d'une ressource ou obtenir des métadonnées.
+Performs a HEAD request to retrieve only the HTTP headers without the response body. Useful for checking whether a resource exists or for obtaining metadata.
 
-**Paramètres :**
-- `$url` : Le chemin relatif ou l'URL complète
-- `$data` : Tableau de paramètres ajoutés à l'URL sous forme de query string
+**Parameters:**
+- `$url`: The relative path or the full URL
+- `$data`: Array of parameters appended to the URL as a query string
 
-**Retourne :** Une instance de `Response`
+**Returns:** A `Response` instance
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -194,20 +194,20 @@ $response = $client->head('/large-file.zip');
 
 if ($response->isSuccessful()) {
   $headers = $response->getHeaders();
-  echo "Taille du fichier : " . ($headers['download_content_length'] ?? 'inconnue');
+  echo "File size: " . ($headers['download_content_length'] ?? 'unknown');
 }
 ```
 
 ### `options`
 
-Effectue une requête OPTIONS pour découvrir les méthodes HTTP autorisées sur une ressource. Souvent utilisé pour les requêtes CORS préliminaires.
+Performs an OPTIONS request to discover the HTTP methods allowed on a resource. Often used for CORS preflight requests.
 
-**Paramètres :**
-- `$url` : Le chemin relatif ou l'URL complète
+**Parameters:**
+- `$url`: The relative path or the full URL
 
-**Retourne :** Une instance de `Response`
+**Returns:** A `Response` instance
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -215,33 +215,33 @@ use Bow\Http\Client\HttpClient;
 $client = new HttpClient('https://api.example.com');
 $response = $client->options('/users');
 
-// Les méthodes autorisées sont généralement dans l'en-tête Allow
+// The allowed methods are usually in the Allow header
 $headers = $response->getHeaders();
 ```
 
-## Configuration avancée
+## Advanced configuration
 
 ### `addAttach`
 
-Attache un ou plusieurs fichiers à une requête multipart/form-data.
+Attaches one or more files to a multipart/form-data request.
 
-**Paramètres :**
-- `$attach` : Chemin du fichier (string) ou tableau de chemins de fichiers
+**Parameters:**
+- `$attach`: File path (string) or array of file paths
 
-**Retourne :** L'instance du client pour un chaînage fluide
+**Returns:** The client instance for fluent chaining
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
 
 $client = new HttpClient('https://api.example.com');
 
-// Upload d'un seul fichier
+// Upload a single file
 $response = $client->addAttach('/path/to/document.pdf')
   ->post('/upload');
 
-// Upload de plusieurs fichiers
+// Upload multiple files
 $response = $client->addAttach([
   '/path/to/image1.jpg',
   '/path/to/image2.jpg'
@@ -250,14 +250,14 @@ $response = $client->addAttach([
 
 ### `withHeaders`
 
-Ajoute des en-têtes HTTP personnalisés à la requête.
+Adds custom HTTP headers to the request.
 
-**Paramètres :**
-- `$headers` : Tableau associatif d'en-têtes
+**Parameters:**
+- `$headers`: Associative array of headers
 
-**Retourne :** L'instance du client pour un chaînage fluide
+**Returns:** The client instance for fluent chaining
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -275,14 +275,14 @@ echo $response->getContent();
 
 ### `setUserAgent`
 
-Définit l'agent utilisateur (User-Agent) pour la requête.
+Sets the user agent (User-Agent) for the request.
 
-**Paramètres :**
-- `$user_agent` : Chaîne représentant l'agent utilisateur
+**Parameters:**
+- `$user_agent`: String representing the user agent
 
-**Retourne :** L'instance du client pour un chaînage fluide
+**Returns:** The client instance for fluent chaining
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -297,13 +297,13 @@ echo $response->getContent();
 
 ### `acceptJson`
 
-Configure le client pour envoyer **et** accepter des données au format JSON.
-Ajoute automatiquement les en-têtes `Content-Type: application/json` et
-`Accept: application/json`.
+Configures the client to send **and** accept data in JSON format.
+Automatically adds the `Content-Type: application/json` and
+`Accept: application/json` headers.
 
-**Retourne :** L'instance du client pour un chaînage fluide
+**Returns:** The client instance for fluent chaining
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -316,22 +316,22 @@ $response = $client
     'email' => 'john@example.com'
   ]);
 
-// Les données seront automatiquement encodées en JSON
+// The data will be automatically encoded as JSON
 $result = $response->toArray();
 ```
 
 ### `withJson`
 
-Configure le client pour **envoyer** des données au format JSON, sans imposer
-le format de la réponse. Ajoute uniquement l'en-tête `Content-Type: application/json`.
+Configures the client to **send** data in JSON format, without enforcing
+the response format. Only adds the `Content-Type: application/json` header.
 
-Utilisez `withJson` lorsque l'API distante accepte du JSON en entrée mais
-renvoie un autre format (XML, HTML, texte brut). Utilisez `acceptJson` quand
-l'échange est JSON dans les deux sens.
+Use `withJson` when the remote API accepts JSON as input but
+returns another format (XML, HTML, plain text). Use `acceptJson` when
+the exchange is JSON in both directions.
 
-**Retourne :** L'instance du client pour un chaînage fluide
+**Returns:** The client instance for fluent chaining
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -344,16 +344,16 @@ $response = $client
 
 ### `hasHeader`
 
-Vérifie si un en-tête spécifique (clé **et** valeur) a déjà été ajouté à la
-requête. Pratique pour éviter d'ajouter deux fois le même en-tête conditionnel.
+Checks whether a specific header (key **and** value) has already been added to the
+request. Handy for avoiding adding the same conditional header twice.
 
-**Paramètres :**
-- `$key` : Nom de l'en-tête
-- `$value` : Valeur attendue
+**Parameters:**
+- `$key`: Header name
+- `$value`: Expected value
 
-**Retourne :** `bool`
+**Returns:** `bool`
 
-**Exemple :**
+**Example:**
 
 ```php
 $client = new HttpClient('https://api.example.com');
@@ -364,19 +364,19 @@ if (!$client->hasHeader('X-Trace-Id', 'abc-123')) {
 }
 ```
 
-## Authentification
+## Authentication
 
 ### `basicAuth`
 
-Configure l'authentification HTTP Basic avec encodage Base64 des identifiants.
+Configures HTTP Basic authentication with Base64 encoding of the credentials.
 
-**Paramètres :**
-- `$key` : Clé ou nom d'utilisateur
-- `$secret` : Secret ou mot de passe
+**Parameters:**
+- `$key`: Key or username
+- `$secret`: Secret or password
 
-**Retourne :** L'instance du client pour un chaînage fluide
+**Returns:** The client instance for fluent chaining
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -389,14 +389,14 @@ $response = $client
 
 ### `bearerAuth`
 
-Configure l'authentification par token Bearer (OAuth2, JWT, etc.).
+Configures Bearer token authentication (OAuth2, JWT, etc.).
 
-**Paramètres :**
-- `$token` : Le token d'authentification
+**Parameters:**
+- `$token`: The authentication token
 
-**Retourne :** L'instance du client pour un chaînage fluide
+**Returns:** The client instance for fluent chaining
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -409,15 +409,15 @@ $response = $client
 
 ### `auth`
 
-Configure l'authentification HTTP native de cURL.
+Configures cURL's native HTTP authentication.
 
-**Paramètres :**
-- `$username` : Nom d'utilisateur
-- `$password` : Mot de passe
+**Parameters:**
+- `$username`: Username
+- `$password`: Password
 
-**Retourne :** L'instance du client pour un chaînage fluide
+**Returns:** The client instance for fluent chaining
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -428,56 +428,56 @@ $response = $client
   ->get('/protected');
 ```
 
-## Timeouts et SSL
+## Timeouts and SSL
 
 ### `timeout`
 
-Définit le temps maximum autorisé pour l'exécution de la requête complète.
+Sets the maximum time allowed for the complete request to execute.
 
-**Paramètres :**
-- `$seconds` : Durée en secondes
+**Parameters:**
+- `$seconds`: Duration in seconds
 
-**Retourne :** L'instance du client pour un chaînage fluide
+**Returns:** The client instance for fluent chaining
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
 
 $client = new HttpClient('https://api.example.com');
 $response = $client
-  ->timeout(30) // 30 secondes maximum
+  ->timeout(30) // 30 seconds maximum
   ->get('/slow-endpoint');
 ```
 
 ### `connectTimeout`
 
-Définit le temps maximum pour établir la connexion au serveur.
+Sets the maximum time to establish the connection to the server.
 
-**Paramètres :**
-- `$seconds` : Durée en secondes
+**Parameters:**
+- `$seconds`: Duration in seconds
 
-**Retourne :** L'instance du client pour un chaînage fluide
+**Returns:** The client instance for fluent chaining
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
 
 $client = new HttpClient('https://api.example.com');
 $response = $client
-  ->connectTimeout(5) // 5 secondes pour établir la connexion
+  ->connectTimeout(5) // 5 seconds to establish the connection
   ->timeout(30)
   ->get('/endpoint');
 ```
 
 ### `disableSslVerification`
 
-Désactive la vérification des certificats SSL. **Attention : à utiliser uniquement en environnement de développement.**
+Disables SSL certificate verification. **Warning: use only in a development environment.**
 
-**Retourne :** L'instance du client pour un chaînage fluide
+**Returns:** The client instance for fluent chaining
 
-**Exemple :**
+**Example:**
 
 ```php
 use Bow\Http\Client\HttpClient;
@@ -489,20 +489,20 @@ $response = $client
 ```
 
 :::warning
-Ne jamais désactiver la vérification SSL en production. Cela expose votre application à des attaques man-in-the-middle.
+Never disable SSL verification in production. Doing so exposes your application to man-in-the-middle attacks.
 :::
 
-## Gestion des exceptions
+## Exception handling
 
-Il faut distinguer **deux niveaux d'erreur** :
+You must distinguish between **two levels of error**:
 
-1. **Erreur de transport** — la requête n'a pas pu aboutir du tout (connexion
-   refusée, hôte introuvable, timeout dépassé, échec de la négociation SSL).
-   Dans ce cas, le client lève une `Bow\Http\Client\HttpClientException`
-   portant le message et le code d'erreur cURL.
-2. **Réponse HTTP en erreur** — la requête a abouti mais le serveur répond avec
-   un statut d'erreur (`404`, `500`, …). **Aucune exception n'est levée** :
-   vous obtenez une instance `Response` et inspectez son statut via
+1. **Transport error** — the request could not complete at all (connection
+   refused, host not found, timeout exceeded, SSL negotiation failure).
+   In this case, the client throws a `Bow\Http\Client\HttpClientException`
+   carrying the cURL error message and code.
+2. **HTTP error response** — the request completed but the server responds with
+   an error status (`404`, `500`, etc.). **No exception is thrown**:
+   you get a `Response` instance and inspect its status via
    `isFailed()` / `getCode()`.
 
 ```php
@@ -514,30 +514,30 @@ $client = new HttpClient('https://api.example.com');
 try {
     $response = $client->acceptJson()->get('/users');
 
-    // La requête a abouti : vérifier le statut HTTP renvoyé
+    // The request completed: check the returned HTTP status
     if ($response->isFailed()) {
-        // 4xx / 5xx — pas d'exception, on lit le code
-        logger()->warning('API a répondu ' . $response->getCode());
+        // 4xx / 5xx — no exception, read the code
+        logger()->warning('API responded ' . $response->getCode());
         return;
     }
 
     $users = $response->toArray();
 } catch (HttpClientException $e) {
-    // Échec réseau / SSL / timeout : la requête n'a jamais abouti
-    logger()->error('Échec HTTP: ' . $e->getMessage(), ['code' => $e->getCode()]);
+    // Network / SSL / timeout failure: the request never completed
+    logger()->error('HTTP failure: ' . $e->getMessage(), ['code' => $e->getCode()]);
 }
 ```
 
-:::note Extension cURL requise
-Le client repose sur l'extension `curl`. Si elle n'est pas chargée, instancier
-`HttpClient` lève une `BadFunctionCallException`.
+:::note cURL extension required
+The client relies on the `curl` extension. If it is not loaded, instantiating
+`HttpClient` throws a `BadFunctionCallException`.
 :::
 
-## La classe `Response`
+## The `Response` class
 
-La classe `Response` encapsule toutes les informations retournées par une requête HTTP : contenu, en-têtes, code de statut et métriques de performance. Elle offre une interface simple et intuitive pour manipuler les réponses.
+The `Response` class encapsulates all the information returned by an HTTP request: content, headers, status code, and performance metrics. It provides a simple and intuitive interface for working with responses.
 
-### Méthodes principales
+### Main methods
 
 #### `getContent`
 
@@ -545,9 +545,9 @@ La classe `Response` encapsule toutes les informations retournées par une requ�
 public function getContent(): ?string
 ```
 
-Retourne le contenu brut de la réponse HTTP sous forme de chaîne. Retourne `null` si aucun contenu n'est disponible.
+Returns the raw content of the HTTP response as a string. Returns `null` if no content is available.
 
-**Exemple :**
+**Example:**
 
 ```php
 $content = $response->getContent();
@@ -560,19 +560,19 @@ echo $content;
 public function toJson(?bool $associative = null): object|array
 ```
 
-Décode le contenu JSON de la réponse en objet ou tableau PHP.
+Decodes the JSON content of the response into a PHP object or array.
 
-**Paramètres :**
-- `$associative` : `true` pour un tableau associatif, `false` pour un objet (défaut)
+**Parameters:**
+- `$associative`: `true` for an associative array, `false` for an object (default)
 
-**Exemple :**
+**Example:**
 
 ```php
-// Retourne un objet
+// Returns an object
 $user = $response->toJson();
 echo $user->name;
 
-// Retourne un tableau
+// Returns an array
 $userData = $response->toJson(true);
 echo $userData['name'];
 ```
@@ -583,9 +583,9 @@ echo $userData['name'];
 public function toArray(): array
 ```
 
-Alias de `toJson(true)`. Retourne le contenu JSON sous forme de tableau associatif.
+Alias for `toJson(true)`. Returns the JSON content as an associative array.
 
-**Exemple :**
+**Example:**
 
 ```php
 $users = $response->toArray();
@@ -600,15 +600,15 @@ foreach ($users as $user) {
 public function getHeaders(): array
 ```
 
-Retourne le tableau de métadonnées produit par `curl_getinfo()` pour la requête.
-Ce tableau **n'est pas** la liste brute des en-têtes HTTP de réponse : il
-contient des clés cURL telles que `http_code`, `content_type`, `total_time`,
+Returns the metadata array produced by `curl_getinfo()` for the request.
+This array is **not** the raw list of HTTP response headers: it
+contains cURL keys such as `http_code`, `content_type`, `total_time`,
 `connect_time`, `size_upload`, `size_download`, `download_content_length`, etc.
 
 :::note
-Si vous avez besoin d'un en-tête HTTP brut spécifique (par ex. `Location`,
-`X-Request-Id`), parsez-le via `CURLOPT_HEADERFUNCTION` ou utilisez l'option
-de configuration cURL adéquate côté serveur distant.
+If you need a specific raw HTTP header (e.g. `Location`,
+`X-Request-Id`), parse it via `CURLOPT_HEADERFUNCTION` or use the appropriate
+cURL configuration option on the remote server side.
 :::
 
 #### `getCode` / `statusCode`
@@ -618,17 +618,17 @@ public function getCode(): ?int
 public function statusCode(): ?int
 ```
 
-Retournent le code de statut HTTP de la réponse (200, 404, 500, etc.). Retourne `null` si indisponible.
+Return the HTTP status code of the response (200, 404, 500, etc.). Return `null` if unavailable.
 
-**Exemple :**
+**Example:**
 
 ```php
 $code = $response->getCode();
-// ou
+// or
 $code = $response->statusCode();
 
 if ($code === 200) {
-  echo "Requête réussie";
+  echo "Request successful";
 }
 ```
 
@@ -638,14 +638,14 @@ if ($code === 200) {
 public function isSuccessful(): bool
 ```
 
-Retourne `true` si le code de statut indique un succès (200 ou 201).
+Returns `true` if the status code indicates success (200 or 201).
 
-**Exemple :**
+**Example:**
 
 ```php
 if ($response->isSuccessful()) {
   $data = $response->toArray();
-  // Traiter les données
+  // Process the data
 }
 ```
 
@@ -655,54 +655,54 @@ if ($response->isSuccessful()) {
 public function isFailed(): bool
 ```
 
-Retourne `true` si la requête a échoué (code différent de 200 ou 201).
+Returns `true` if the request failed (a code other than 200 or 201).
 
-**Exemple :**
+**Example:**
 
 ```php
 if ($response->isFailed()) {
-  echo "Erreur : " . $response->getCode();
+  echo "Error: " . $response->getCode();
 }
 ```
 
-### Métriques de performance
+### Performance metrics
 
-Le client HTTP fournit plusieurs méthodes pour analyser les performances des requêtes :
+The HTTP client provides several methods for analyzing request performance:
 
-| Méthode | Description | Retour |
+| Method | Description | Return |
 |---------|-------------|--------|
-| `getExecutionTime()` | Temps total d'exécution de la requête (clé cURL `total_time`) | `mixed` (généralement `?float`, secondes) |
-| `getConnexionTime()` | Temps d'établissement de la connexion | `?float` (secondes) |
-| `getUploadSize()` | Taille des données envoyées | `?float` (octets) |
-| `getUploadSpeed()` | Vitesse d'upload | `?float` (octets/sec) |
-| `getDownloadSize()` | Taille des données reçues | `?float` (octets) |
-| `getDownloadSpeed()` | Vitesse de download | `?float` (octets/sec) |
+| `getExecutionTime()` | Total request execution time (cURL key `total_time`) | `mixed` (usually `?float`, seconds) |
+| `getConnexionTime()` | Connection establishment time | `?float` (seconds) |
+| `getUploadSize()` | Size of the data sent | `?float` (bytes) |
+| `getUploadSpeed()` | Upload speed | `?float` (bytes/sec) |
+| `getDownloadSize()` | Size of the data received | `?float` (bytes) |
+| `getDownloadSpeed()` | Download speed | `?float` (bytes/sec) |
 
-**Exemple d'utilisation :**
+**Example usage:**
 
 ```php
 $response = $client->get('/large-data');
 
-echo "Temps d'exécution : " . $response->getExecutionTime() . "s\n";
-echo "Taille téléchargée : " . $response->getDownloadSize() . " octets\n";
-echo "Vitesse : " . $response->getDownloadSpeed() . " octets/s\n";
+echo "Execution time: " . $response->getExecutionTime() . "s\n";
+echo "Downloaded size: " . $response->getDownloadSize() . " bytes\n";
+echo "Speed: " . $response->getDownloadSpeed() . " bytes/s\n";
 ```
 
-### Gestion des erreurs
+### Error handling
 
-**`getErrorMessage`** : Retourne le message d'erreur cURL s'il y en a un, sinon une chaîne vide.
+**`getErrorMessage`**: Returns the cURL error message if there is one, otherwise an empty string.
 
-**`getErrorNumber`** : Retourne le code d'erreur cURL.
+**`getErrorNumber`**: Returns the cURL error code.
 
-**Exemple :**
+**Example:**
 
 ```php
 if ($response->isFailed()) {
-  echo "Erreur #{$response->getErrorNumber()}: {$response->getErrorMessage()}";
+  echo "Error #{$response->getErrorNumber()}: {$response->getErrorMessage()}";
 }
 ```
 
-### Autres méthodes
+### Other methods
 
 #### `getContentType`
 
@@ -710,9 +710,9 @@ if ($response->isFailed()) {
 public function getContentType(): ?string
 ```
 
-Retourne le type MIME du contenu (ex: `application/json`, `text/html`).
+Returns the MIME type of the content (e.g. `application/json`, `text/html`).
 
-**Exemple :**
+**Example:**
 
 ```php
 $contentType = $response->getContentType();

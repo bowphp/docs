@@ -1,30 +1,38 @@
 {
   "version.label": {
-    "message": "Canary 🚧",
+    "message": "CANARY 🚧",
     "description": "The label for version current"
   },
-  "sidebar.docs.category.Démarrage": {
+  "sidebar.docs.category.Getting Started": {
     "message": "Démarrage",
-    "description": "The label for category 'Démarrage' in sidebar 'docs'"
+    "description": "The label for category 'Getting Started' in sidebar 'docs'"
   },
-  "sidebar.docs.category.Guide": {
-    "message": "Guide",
-    "description": "The label for category 'Guide' in sidebar 'docs'"
+  "sidebar.docs.category.Fundamentals": {
+    "message": "Fondamentaux",
+    "description": "The label for category 'Fundamentals' in sidebar 'docs'"
   },
-  "sidebar.docs.category.Base de donnée": {
-    "message": "Base de donnée",
-    "description": "The label for category 'Base de donnée' in sidebar 'docs'"
+  "sidebar.docs.category.Services": {
+    "message": "Services",
+    "description": "The label for category 'Services' in sidebar 'docs'"
   },
-  "sidebar.docs.category.Http": {
+  "sidebar.docs.category.Console": {
+    "message": "Console",
+    "description": "The label for category 'Console' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Database": {
+    "message": "Base de données",
+    "description": "The label for category 'Database' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.HTTP": {
     "message": "Http",
-    "description": "The label for category 'Http' in sidebar 'docs'"
+    "description": "The label for category 'HTTP' in sidebar 'docs'"
   },
-  "sidebar.docs.category.Sécurités": {
+  "sidebar.docs.category.Security": {
     "message": "Sécurités",
-    "description": "The label for category 'Sécurités' in sidebar 'docs'"
+    "description": "The label for category 'Security' in sidebar 'docs'"
   },
-  "sidebar.docs.category.Misc": {
-    "message": "Misc",
-    "description": "The label for category 'Misc' in sidebar 'docs'"
+  "sidebar.docs.category.Tools": {
+    "message": "Outils",
+    "description": "The label for category 'Tools' in sidebar 'docs'"
   }
 }

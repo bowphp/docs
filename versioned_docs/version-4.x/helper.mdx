@@ -6,16 +6,16 @@ title: "Application Helpers"
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
-- [Helper de gestion HTTP](#helper-de-gestion-http)
-- [Base de donnée](#base-de-donnée)
-- [Sécurité](#sécurité)
-- [Gestion d'évènement](#gestion-dévènement)
-- [Système de storage](#système-de-storage)
-- [helper Application](#helper-application)
-- [Chaine de carractère](#chaine-de-carractère)
+- [HTTP management helper](#http-management-helper)
+- [Database](#database)
+- [Security](#security)
+- [Event management](#event-management)
+- [Storage system](#storage-system)
+- [Application helper](#application-helper)
+- [Strings](#strings)
 - [Email](#email)
-- [Autre](#autre)
-- [Utilisation](#utilisation)
+- [Other](#other)
+- [Usage](#usage)
   - [app](#app)
   - [config](#config)
   - [response](#response)
@@ -47,37 +47,37 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
   - [route](#route)
   - [old](#old)
   - [client_locale](#client_locale)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
+- [Is something missing?](#il-manque-quelque-chose-)
 
 ## Introduction
 
-Les helpers sont des fonctions raccourcis chargées dans l'application qui permettent de faire rapidement certaines actions. Voici la liste des helpers qui existent dans l'application BowPHP. Voici les helpers disponibles dans l'application.
+Helpers are shortcut functions loaded into the application that let you quickly perform certain actions. Here is the list of helpers that exist in the BowPHP application. Below are the helpers available in the application.
 
-## Helper de gestion HTTP
+## HTTP management helper
 
 [app](#app), [config](#config), [response](#response), [request](#request), [json](#json), [download](#download), [set_status_code](#set_status_code), [view](#view), [session](#session), [cookie](#cookie), [create_csrf_token](#create_csrf_token), [csrf_token](#csrf_token), [csrf_field](#csrf_field), [method_field](#method_field), [generate_token_csrf](#generate_token_csrf), [verify_csrf](#verify_csrf), [csrf_time_is_expired](#csrf_time_is_expired), [sanitize](#sanitize), [secure](#secure), [set_header](#set_header), [get_header](#get_header), [redirect](#redirect), [send](#send), [curl](#curl), [url](#url), [flash](#flash), [validator](#validator), [route](#route), [old](#old), [client_locale](#client_locale), [redirect_back](#redirect_back)
 
-## Base de donnée
+## Database
 
 [db](#db), [table](#table), [get_last_insert_id](#get_last_insert_id), [db_select](#db_select), [db_select_one](#db_select_one), [db_insert](#db_insert), [db_delete](#db_delete), [db_update](#db_update), [db_statement](#db_statement), [db_transaction](#db_transaction), [db_transaction_started](#db_transaction_started), [db_rollback](#db_rollback), [pdo](#pdo), [set_pdo](#set_pdo), [db_commit](#db_commit), [db_seed](#db_seed)
 
-## Sécurité
+## Security
 
 [encrypt](#encrypt), [decrypt](#decrypt), [app_hash](#app_hash), [bow_hash](#bow_hash)
 
-## Gestion d'évènement
+## Event management
 
 [listen_event](#listen_event), [listen_event_once](#listen_event_once), [listen_transmisson_event](#listen_transmisson_event), [listen_transmisson_event](#listen_transmisson_event), [emitter](#emitter), [emit_event](#emit_event)
 
-## Système de storage
+## Storage system
 
 [ftp](#ftp), [s3](#s3), [config](#config), [mount](#mount), [file_system](#file_system), [cache](#cache)
 
-## helper Application
+## Application helper
 
 [app_env](#app_env), [app_assets](#app_assets), [app_abort](#app_abort), [app_abort_if](#app_abort_if), [app_mode](#app_mode), [auth](#auth), [logger](#logger)
 
-## Chaîne de caractères
+## Strings
 
 [str_slug](#str_slug), [str_is_mail](#str_is_mail), [str_is_domain](#str_is_domain), [str_is_slug](#str_is_slug), [str_is_alpha](#str_is_alpha), [str_is_lower](#str_is_lower), [str_is_upper](#str_is_upper), [str_is_alpha_num](#str_is_alpha_num), [str_shuffle_words](#str_shuffle_words), [str_wordify](#str_wordify), [str_plurial](#str_plurial), [str_camel](#str_camel), [str_snake](#str_snake), [str_contains](#str_contains), [str_capitalize](#str_capitalize), [str_random](#str_random), [str_force_in_utf8](#str_force_in_utf8), [e](#e), [str_fix_utf8](#str_fix_utf8)
 
@@ -85,15 +85,15 @@ Les helpers sont des fonctions raccourcis chargées dans l'application qui perme
 
 [email](#email), [raw_email](#raw_email)
 
-## Autre
+## Other
 
 [debug](#debug), [sep](#sep), [collect](#collect), [trans](#trans), [t](#t), [__](#__)
 
-## Utilisation
+## Usage
 
 ### app
 
-Ce helper permet d'avoir accès au containeur de BowPHP.
+This helper gives you access to the BowPHP container.
 
 ```php
 app("mail");
@@ -101,7 +101,7 @@ app("mail");
 
 ### config
 
-Permet d'avoir accès au configuration de BowPHP.
+Gives you access to the BowPHP configuration.
 
 ```php
 config("mail")
@@ -109,7 +109,7 @@ config("mail")
 
 ### response
 
-Permet d'avoir accès à une instance de `\Bow\Http\Response::class`.Elle doit être utilisée impérativement dans un controlleur. Avoir plus d'information sur les méthodes possible [ici](./responses)
+Gives you access to an instance of `\Bow\Http\Response::class`. It must be used inside a controller. You can find more information about the available methods [here](./responses)
 
 ```php
 return response($content = "hello papac", $code = 200);
@@ -117,7 +117,7 @@ return response($content = "hello papac", $code = 200);
 
 ### request
 
-Permet d'avoir accès à une instance de `\Bow\Http\Request::class`. Elle doit être utilisée impérativement dans un controlleur. Avoir plus d'information sur les méthodes possible [ici](./requests)
+Gives you access to an instance of `\Bow\Http\Request::class`. It must be used inside a controller. You can find more information about the available methods [here](./requests)
 
 ```php
 $name = request()->get("name");
@@ -125,7 +125,7 @@ $name = request()->get("name");
 
 ### json
 
-Permet d'utiliser le méthode `json` de `\Bow\Http\Response::class`. Elle doit être utilisée impérativement dans un controlleur.
+Lets you use the `json` method of `\Bow\Http\Response::class`. It must be used inside a controller.
 
 ```php
 return json(["name" => "papac"], $code = 200);
@@ -134,7 +134,7 @@ return json(["name" => "papac"], $code = 200);
 
 ### download
 
-Permet lors d'une requête de télécharger un fichier et elle est liée sur la classe `\Bow\Http\Response::class`. Elle doit être utilisée impérativement dans un controlleur.
+During a request, lets you download a file. It is bound to the `\Bow\Http\Response::class` class. It must be used inside a controller.
 
 ```php
 $file = "/path/to/file.png";
@@ -145,7 +145,7 @@ return download($file, $filename);
 
 ### set_status_code
 
-Permet de modifier le code du statut http de réponse et elle est liée sur la classe `\Bow\Http\Response::class`. Elle doit être utilisée impérativement dans un controlleur.
+Lets you change the HTTP status code of the response. It is bound to the `\Bow\Http\Response::class` class. It must be used inside a controller.
 
 ```php
 set_status_code(404);
@@ -153,7 +153,7 @@ set_status_code(404);
 
 ### view
 
-Permet de complie une vue dans BowPHP.
+Lets you compile a view in BowPHP.
 
 ```php
 return view("view.name", ["name" => "papac"], $code = 200);
@@ -161,15 +161,15 @@ return view("view.name", ["name" => "papac"], $code = 200);
 
 ### session
 
-Permet de manipuler l'interface de session dans BowPHP.
+Lets you manipulate the session interface in BowPHP.
 
 ```php
 session($value, $default = null)
 ```
 
-- Si aucun argument n'est passé. Elle recupère l'instance de la session
-- Si default est fournie et que la valeur n'existe pas elle sera retourné comme valeur de remplacement
-- Si `$value` est un tableau associatif elle ajoutera ces informations dans la session en couple de clé valeur.
+- If no argument is passed, it retrieves the session instance.
+- If `default` is provided and the value does not exist, it will be returned as the fallback value.
+- If `$value` is an associative array, it will add this information to the session as key-value pairs.
 
 ### cookie
 

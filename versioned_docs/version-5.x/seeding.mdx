@@ -7,15 +7,15 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le seeding permet d'hydrater votre base de données avec des données de test pour le développement. Chaque seeder est associé à une table et génère des données via la librairie Faker.
+Seeding lets you populate your database with test data for development. Each seeder is tied to a table and generates data using the Faker library.
 
-## Créer un seeder
+## Creating a seeder
 
 ```bash
 php bow add:seeder users
 ```
 
-Un fichier sera créé dans le dossier `seeders/` avec un timestamp :
+A file will be created in the `seeders/` directory with a timestamp:
 
 ```php title="seeders/20260309120000-users.php"
 <?php
@@ -43,7 +43,7 @@ class Users20260309120000
 }
 ```
 
-## Exemple complet
+## Complete example
 
 ```php title="seeders/20260309120000-users.php"
 <?php
@@ -79,9 +79,9 @@ class Users20260309120000
 }
 ```
 
-## Dépendances entre seeders
+## Dependencies between seeders
 
-La méthode `depends()` permet de définir les seeders qui doivent être exécutés avant celui-ci :
+The `depends()` method lets you define the seeders that must run before this one:
 
 ```php title="seeders/20260309130000-posts.php"
 <?php
@@ -96,7 +96,7 @@ class Posts20260309130000
   {
     $faker = FakerFactory::create();
 
-    // Récupère les IDs des utilisateurs déjà semés
+    // Get the IDs of the users that have already been seeded
     $userIds = User::all()->map(fn ($user) => $user->id)->toArray();
 
     foreach (range(1, 100) as $i) {
@@ -122,23 +122,23 @@ class Posts20260309130000
 }
 ```
 
-## Exécuter les seeders
+## Running seeders
 
-### Un seeder spécifique
+### A specific seeder
 
 ```bash
 php bow seed:file Users20260309120000
 ```
 
-### Tous les seeders
+### All seeders
 
 ```bash
 php bow seed:all
 ```
 
-## Données de référence
+## Reference data
 
-Pour les données de référence (rôles, statuts, etc.), utilisez un seeder dédié :
+For reference data (roles, statuses, etc.), use a dedicated seeder:
 
 ```php title="seeders/20260309100000-roles.php"
 <?php
@@ -170,34 +170,34 @@ class Roles20260309100000
 }
 ```
 
-## Méthodes Faker utiles
+## Useful Faker methods
 
-| Méthode | Description | Exemple |
+| Method | Description | Example |
 |---------|-------------|---------|
-| `$faker->name` | Nom complet | Jean Dupont |
+| `$faker->name` | Full name | Jean Dupont |
 | `$faker->email` | Email | jean@example.com |
-| `$faker->unique()->email` | Email unique | - |
-| `$faker->safeEmail` | Email de test | user@example.org |
-| `$faker->password` | Mot de passe | a3$kLm9x |
-| `$faker->phoneNumber` | Téléphone | +33 6 12 34 56 78 |
-| `$faker->address` | Adresse complète | - |
-| `$faker->city` | Ville | Paris |
-| `$faker->country` | Pays | France |
-| `$faker->text(200)` | Texte (200 car.) | - |
-| `$faker->paragraph` | Paragraphe | - |
-| `$faker->sentence` | Phrase | - |
+| `$faker->unique()->email` | Unique email | - |
+| `$faker->safeEmail` | Test email | user@example.org |
+| `$faker->password` | Password | a3$kLm9x |
+| `$faker->phoneNumber` | Phone number | +33 6 12 34 56 78 |
+| `$faker->address` | Full address | - |
+| `$faker->city` | City | Paris |
+| `$faker->country` | Country | France |
+| `$faker->text(200)` | Text (200 chars) | - |
+| `$faker->paragraph` | Paragraph | - |
+| `$faker->sentence` | Sentence | - |
 | `$faker->boolean(70)` | Boolean (70% true) | true/false |
-| `$faker->numberBetween(1, 100)` | Nombre | 42 |
-| `$faker->randomFloat(2, 0, 1000)` | Décimal | 123.45 |
+| `$faker->numberBetween(1, 100)` | Number | 42 |
+| `$faker->randomFloat(2, 0, 1000)` | Decimal | 123.45 |
 | `$faker->dateTimeBetween('-1 year')` | Date | DateTime |
-| `$faker->optional(0.8)->name` | Nullable (80%) | Jean ou null |
-| `$faker->randomElement(['a', 'b'])` | Choix aléatoire | a |
-| `$faker->imageUrl(200, 200)` | URL d'image | https://... |
+| `$faker->optional(0.8)->name` | Nullable (80%) | Jean or null |
+| `$faker->randomElement(['a', 'b'])` | Random choice | a |
+| `$faker->imageUrl(200, 200)` | Image URL | https://... |
 | `$faker->uuid` | UUID | 550e8400-... |
 | `$faker->slug` | Slug | mon-article |
 
-:::tip Localisation
-Utilisez `FakerFactory::create('fr_FR')` pour des données en français.
+:::tip Localization
+Use `FakerFactory::create('fr_FR')` for data in French.
 :::
 
 <SuggestionFeature />

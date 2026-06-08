@@ -1,55 +1,55 @@
 ---
 id: frontend
-title: "Frontend dans BowPHP"
+title: "Frontend in BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
-- [Utilisation](#utilisation)
-  - [Compilation simple](#compilation-simplement)
-  - [Compilation et minification les fichiers sources](#compilation-et-minification-les-fichiers-sources)
-  - [Surveiller le changement de fichier et récompile en fonction](#surveiller-le-changement-de-fichier-et-récompile-en-fonction)
-  - [Pour lancer code sniffer](#pour-lancer-code-sniffer)
+- [Usage](#usage)
+  - [Simple compilation](#simple-compilation)
+  - [Compiling and minifying source files](#compiling-and-minifying-source-files)
+  - [Watching for file changes and recompiling accordingly](#watching-for-file-changes-and-recompiling-accordingly)
+  - [Running the code sniffer](#running-the-code-sniffer)
 - [Webpack.mix.js](#webpackmixjs)
 
 ## Introduction
 
-Bow est préconfiguré avec un environnement Frontend, notamment avec [Reacjs](https://reactjs.org), [Vuejs](https://vuejs.org) et [Sass](https://sass-lang.com) basé sur le package [laravel-mix](https://laravel-mix.com). Ce qui permet d'accélérer le développement d'applications web.
+Bow comes preconfigured with a Frontend environment, notably with [Reacjs](https://reactjs.org), [Vuejs](https://vuejs.org) and [Sass](https://sass-lang.com) based on the [laravel-mix](https://laravel-mix.com) package. This helps speed up the development of web applications.
 
-## Utilisation
+## Usage
 
-Pour lancer la compilation, allez dans la racine de votre application et taper `npm install` ou `yarn install` dans votre console, en fonction du gestionnaire de package que vous utilisez.
+To start the compilation, go to the root of your application and type `npm install` or `yarn install` in your console, depending on the package manager you use.
 
-### Compilation simple
+### Simple compilation
 
-Lance la compilation des fichiers définis dans `webpack.mix.js`.
+Compiles the files defined in `webpack.mix.js`.
 
 ```bash
 npm run dev
 ```
 
-### Compilation et minification les fichiers sources
+### Compiling and minifying source files
 
-Compile les sources définies dans `webpack.mix.js` et optimise les fichiers.
+Compiles the sources defined in `webpack.mix.js` and optimizes the files.
 
 ```bash
 npm run prod
 ```
 
-### Surveiller le changement de fichier et récompile en fonction
+### Watching for file changes and recompiling accordingly
 
-Ceci permet de surveiller le changement des fichiers définis dans webpack.mix.js et relance la compilation.
+This watches for changes to the files defined in webpack.mix.js and re-runs the compilation.
 
 ```bash
 npm run watch
 ```
 
-### Pour lancer code sniffer
+### Running the code sniffer
 
-Code sniffer est un outil qui permet de formater le code, valider sa qualité et réorganiser votre code dans le standard de développement (ici le standard est le `psr-2`).
+The code sniffer is a tool that formats your code, validates its quality, and reorganizes your code according to the development standard (here the standard is `psr-2`).
 
-Cette commande va aussi lancer `format` qui est un simple outil de validation syntaxique pour PHP.
+This command will also run `format`, which is a simple syntax validation tool for PHP.
 
 ```bash
 npm run format
@@ -57,13 +57,13 @@ npm run format
 
 ## Webpack.mix.js
 
-`webpack.mix.js` est un fichier qui vous permet de définir les fichiers JavaScript, JSx et Sass à compiler et est préconfiguré comme suit:
+`webpack.mix.js` is a file that lets you define the JavaScript, JSx, and Sass files to compile, and it comes preconfigured as follows:
 
 ```js
 mix.react('frontend/js/app.js', 'public/js')
   .sass('frontend/js/app.scss', 'public/css');
 ```
 
-Pour plus d'information sur [laravel-mix](https://laravel-mix.com/docs/4.0/basic-example).
+For more information, see [laravel-mix](https://laravel-mix.com/docs/4.0/basic-example).
 
 <SuggestionFeature />

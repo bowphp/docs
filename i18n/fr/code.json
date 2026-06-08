@@ -325,5 +325,66 @@
   "theme.tags.tagsPageTitle": {
     "message": "Tags",
     "description": "The title of the tag list page"
+  },
+  "home.hero.landingText": {
+    "message": "BowPHP a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement et est apprécié par <strong>+2500</strong> Développeur(se)s",
+    "description": "The hero landing description on the homepage"
+  },
+  "home.hero.getStarted": {
+    "message": "Démarrer →"
+  },
+  "home.hero.fileUpload": {
+    "message": "Téléversement de fichiers"
+  },
+  "home.code.title": {
+    "message": "Simple, Élégant, Puissant"
+  },
+  "home.code.subtitle": {
+    "message": "Découvrez la simplicité de BowPHP avec des exemples de code concrets"
+  },
+  "home.tab.controller": {
+    "message": "Contrôleur"
+  },
+  "home.tab.database": {
+    "message": "Base de données"
+  },
+  "home.code.validationTitle": {
+    "message": "Validation des données"
+  },
+  "home.tab.response": {
+    "message": "Réponses"
+  },
+  "home.code.responseTitle": {
+    "message": "Types de réponses"
+  },
+  "suggestion.title": {
+    "message": "Il manque quelque chose ?"
+  },
+  "suggestion.body": {
+    "message": "Si vous rencontrez des problèmes avec la documentation ou si vous avez des suggestions pour améliorer la documentation ou le projet en général, veuillez déposer une issue pour nous, ou envoyer un tweet mentionnant le compte Twitter {twitter} ou directement sur le {github}."
+  },
+  "home.feature.s2r": {
+    "message": "Simple, Rapide et Robuste. Concentrez-vous sur votre projet sans vous soucier de la complexité. BowPHP offre une architecture claire et intuitive qui vous permet de développer rapidement tout en maintenant un code propre et maintenable."
+  },
+  "home.feature.orm": {
+    "message": "Un ORM extrêmement simple qui se nomme Barry. Interagissez avec votre base de données de manière élégante et expressive. Barry simplifie les opérations CRUD et les relations entre modèles, rendant la gestion des données plus naturelle et productive."
+  },
+  "home.feature.extensible": {
+    "message": "Structure personnalisable à l'infini. Support de plugin et composants réutilisables. BowPHP s'adapte à vos besoins spécifiques grâce à son architecture modulaire et son système de packages, vous permettant d'étendre les fonctionnalités selon vos exigences."
+  },
+  "home.feature.frontend": {
+    "message": "Par défaut Bow est preset Reactjs et Vuejs. Créez des interfaces utilisateur modernes et réactives avec vos frameworks JavaScript préférés. L'intégration native facilite le développement d'applications web full-stack performantes et évolutives."
+  },
+  "home.features.title": {
+    "message": "Pourquoi choisir BowPHP ?"
+  },
+  "home.features.subtitle": {
+    "message": "Un framework PHP moderne qui combine simplicité et puissance pour accélérer votre développement"
+  },
+  "home.team.title": {
+    "message": "Ceux qui utilisent BowPHP ?"
+  },
+  "home.team.description": {
+    "message": "Ce projet est utilisé par toutes ces personnes influentes dans les communautés technologiques de Côte d'ivoire et dans reste du Monde."
   }
 }

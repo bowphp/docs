@@ -7,63 +7,63 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Toutes les contributions sont les bienvenues ! Contribuer à BowPHP est une excellente façon de s'améliorer et d'aider la communauté.
+All contributions are welcome! Contributing to BowPHP is a great way to improve your skills and help the community.
 
-:::info Discussion préalable
-Avant de commencer un travail conséquent, créez une issue sur GitHub pour discuter de votre proposition avec les mainteneurs.
+:::info Prior discussion
+Before starting any significant work, create an issue on GitHub to discuss your proposal with the maintainers.
 :::
 
-## Dépôts principaux
+## Main repositories
 
-| Dépôt | Description |
+| Repository | Description |
 |-------|-------------|
-| [bowphp/framework](https://github.com/bowphp/framework) | Core du framework |
-| [bowphp/app](https://github.com/bowphp/app) | Application squelette |
+| [bowphp/framework](https://github.com/bowphp/framework) | Framework core |
+| [bowphp/app](https://github.com/bowphp/app) | Skeleton application |
 | [bowphp/docs](https://github.com/bowphp/docs) | Documentation |
 
-## Processus de contribution
+## Contribution process
 
-### 1. Fork et clone
+### 1. Fork and clone
 
 ```bash
-# Forker le projet sur GitHub, puis cloner
+# Fork the project on GitHub, then clone it
 git clone https://github.com/VOTRE-USERNAME/framework.git
 cd framework
 
-# Ajouter le dépôt upstream
+# Add the upstream repository
 git remote add upstream https://github.com/bowphp/framework.git
 ```
 
-### 2. Créer une branche
+### 2. Create a branch
 
 ```bash
-# Synchroniser avec upstream
+# Sync with upstream
 git fetch upstream
 git checkout -b feat/ma-fonctionnalite upstream/5.x
 ```
 
-Conventions de nommage :
-- `feat/description` - Nouvelle fonctionnalité
-- `fix/description` - Correction de bug
+Naming conventions:
+- `feat/description` - New feature
+- `fix/description` - Bug fix
 - `docs/description` - Documentation
 - `refactor/description` - Refactoring
 
-### 3. Développer
+### 3. Develop
 
 ```bash
-# Installer les dépendances
+# Install dependencies
 composer install
 
-# Lancer les tests pendant le développement
+# Run tests during development
 composer test
 
-# Format lisible avec testdox (les noms de méthode comme phrases)
+# Readable format with testdox (method names as sentences)
 composer testdox
 ```
 
-### 4. Commiter
+### 4. Commit
 
-Utilisez la convention [Conventional Commits](https://www.conventionalcommits.org) :
+Use the [Conventional Commits](https://www.conventionalcommits.org) convention:
 
 ```bash
 # Format: type(scope): description
@@ -72,72 +72,72 @@ git commit -m "fix(session): resolve token expiration issue"
 git commit -m "docs(readme): update installation instructions"
 ```
 
-Types disponibles :
-- `feat` - Nouvelle fonctionnalité
-- `fix` - Correction de bug
+Available types:
+- `feat` - New feature
+- `fix` - Bug fix
 - `docs` - Documentation
-- `refactor` - Refactoring sans changement fonctionnel
-- `test` - Ajout/modification de tests
-- `chore` - Maintenance (dépendances, CI, etc.)
+- `refactor` - Refactoring with no functional change
+- `test` - Adding/modifying tests
+- `chore` - Maintenance (dependencies, CI, etc.)
 
 :::note
-Les messages de commit doivent être en anglais.
+Commit messages must be written in English.
 :::
 
-### 5. Soumettre la Pull Request
+### 5. Submit the Pull Request
 
 ```bash
-# Pousser la branche
+# Push the branch
 git push origin feat/ma-fonctionnalite
 ```
 
-Sur GitHub, créez une Pull Request avec :
-- Un titre clair suivant Conventional Commits
-- Une description des changements
-- Référence à l'issue associée (ex: `Fixes #123`)
+On GitHub, create a Pull Request with:
+- A clear title following Conventional Commits
+- A description of the changes
+- A reference to the associated issue (e.g., `Fixes #123`)
 
-## Règles
+## Rules
 
 ### Pull Requests
 
-- **Une PR par fonctionnalité** : Séparez les modifications indépendantes
-- **Tests requis** : Toute nouvelle fonctionnalité doit être testée
-- **Documentation** : Mettez à jour la doc si nécessaire
-- **Versioning** : Suivez [SemVer](https://semver.org) pour les changements majeurs
+- **One PR per feature**: Separate independent changes
+- **Tests required**: Every new feature must be tested
+- **Documentation**: Update the docs if necessary
+- **Versioning**: Follow [SemVer](https://semver.org) for major changes
 
-### Qualité du code
+### Code quality
 
 ```bash
-# Vérifier le style (lecture seule, échoue en cas d'écart PSR-12)
+# Check the style (read-only, fails on any PSR-12 deviation)
 composer phpcs
 
-# Corriger automatiquement les écarts de style
+# Automatically fix style deviations
 composer phpcbf
 
-# Lancer tous les tests
+# Run all tests
 composer test
 
-# Analyse statique (PHPStan est dans require-dev)
+# Static analysis (PHPStan is in require-dev)
 vendor/bin/phpstan analyse src
 ```
 
 ### Standards
 
 - PHP 8.1+
-- PSR-12 pour le style de code (vérifié par `phpcs`, corrigé par `phpcbf`)
-- PHPDoc pour les méthodes publiques
-- Tests unitaires avec PHPUnit (configuration : `phpunit.dist.xml`)
+- PSR-12 for code style (checked by `phpcs`, fixed by `phpcbf`)
+- PHPDoc for public methods
+- Unit tests with PHPUnit (configuration: `phpunit.dist.xml`)
 
-## Exemples de commits
+## Commit examples
 
 ```bash
-# Fonctionnalité simple
+# Simple feature
 git commit -m "feat(http): add support for PATCH requests"
 
-# Correction de bug
+# Bug fix
 git commit -m "fix(routing): handle trailing slashes correctly"
 
-# Commit avec description détaillée
+# Commit with a detailed description
 git commit
 ```
 
@@ -151,14 +151,14 @@ feat(auth): implement JWT authentication
 Closes #42
 ```
 
-## Code de conduite
+## Code of conduct
 
-Respectez le [code de conduite](https://github.com/bowphp/framework/blob/5.x/CODE_OF_CONDUCT.md) dans toutes vos interactions.
+Respect the [code of conduct](https://github.com/bowphp/framework/blob/5.x/CODE_OF_CONDUCT.md) in all your interactions.
 
-## Ressources
+## Resources
 
 - [CONTRIBUTING.md](https://github.com/bowphp/framework/blob/5.x/CONTRIBUTING.md)
-- [Issues ouvertes](https://github.com/bowphp/framework/issues)
+- [Open issues](https://github.com/bowphp/framework/issues)
 - [Discussions](https://github.com/bowphp/framework/discussions)
 
 <SuggestionFeature />

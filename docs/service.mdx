@@ -1,27 +1,27 @@
 ---
 id: service
-title: "Services dans BowPHP"
+title: "Services in BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-:::info À propos des services
-Les services sont des classes qui encapsulent la logique métier de votre application. Ils permettent de découpler le code des contrôleurs et de rendre votre application plus testable et maintenable.
+:::info About services
+Services are classes that encapsulate your application's business logic. They allow you to decouple code from controllers and make your application more testable and maintainable.
 :::
 
-Les services sont automatiquement injectés par le conteneur d'injection de dépendances de BowPHP.
+Services are automatically injected by BowPHP's dependency injection container.
 
-## Création d'un service
+## Creating a service
 
-Pour créer un service, utilisez la commande `add:service` :
+To create a service, use the `add:service` command:
 
 ```bash
 php bow add:service UserService
 ```
 
-Le service sera créé dans le dossier `app/Services` :
+The service will be created in the `app/Services` folder:
 
 ```php title="app/Services/UserService.php"
 namespace App\Services;
@@ -32,9 +32,9 @@ class UserService
 }
 ```
 
-## Exemple pratique
+## Practical example
 
-Créons un service complet pour gérer les utilisateurs :
+Let's create a complete service to manage users:
 
 ```php title="app/Services/UserService.php"
 namespace App\Services;
@@ -45,7 +45,7 @@ use Bow\Database\Collection;
 class UserService
 {
   /**
-   * Récupère tous les utilisateurs
+   * Retrieve all users
    */
   public function getAllUsers(): Collection
   {
@@ -53,7 +53,7 @@ class UserService
   }
 
   /**
-   * Récupère un utilisateur par son ID
+   * Retrieve a user by their ID
    */
   public function findById(int $id): ?User
   {
@@ -61,7 +61,7 @@ class UserService
   }
 
   /**
-   * Crée un nouvel utilisateur
+   * Create a new user
    */
   public function create(array $data): User
   {
@@ -77,7 +77,7 @@ class UserService
   }
 
   /**
-   * Met à jour un utilisateur
+   * Update a user
    */
   public function update(int $id, array $data): bool
   {
@@ -91,7 +91,7 @@ class UserService
   }
 
   /**
-   * Supprime un utilisateur
+   * Delete a user
    */
   public function delete(int $id): bool
   {
@@ -100,11 +100,11 @@ class UserService
 }
 ```
 
-## Injection dans un contrôleur
+## Injecting into a controller
 
-Le service peut être injecté via le constructeur ou directement dans les méthodes :
+The service can be injected via the constructor or directly into methods:
 
-### Via le constructeur
+### Via the constructor
 
 ```php title="app/Controllers/UserController.php"
 namespace App\Controllers;
@@ -146,7 +146,7 @@ class UserController extends Controller
 }
 ```
 
-### Via les paramètres de méthode
+### Via method parameters
 
 ```php
 public function index(UserService $userService)
@@ -157,9 +157,9 @@ public function index(UserService $userService)
 }
 ```
 
-## Injection de dépendances dans un service
+## Dependency injection within a service
 
-Les services peuvent eux-mêmes avoir des dépendances injectées :
+Services can themselves have dependencies injected:
 
 ```php title="app/Services/NotificationService.php"
 namespace App\Services;
@@ -183,9 +183,9 @@ class NotificationService
 }
 ```
 
-## Services avec interface (Repository Pattern)
+## Services with an interface (Repository Pattern)
 
-Pour une architecture plus flexible, utilisez des interfaces :
+For a more flexible architecture, use interfaces:
 
 ```php title="app/Contracts/UserRepositoryInterface.php"
 namespace App\Contracts;
@@ -241,12 +241,12 @@ class UserRepository implements UserRepositoryInterface
 }
 ```
 
-### Enregistrer le binding dans un provider
+### Registering the binding in a provider
 
-Les bindings se déclarent dans un provider qui étend
-`Bow\Configuration\Configuration`. La méthode `boot()` du Kernel est
-réservée au framework — **ne l'override pas** (vous court-circuiteriez le
-chargement des autres configurations).
+Bindings are declared in a provider that extends
+`Bow\Configuration\Configuration`. The Kernel's `boot()` method is
+reserved for the framework — **do not override it** (you would bypass the
+loading of the other configurations).
 
 ```php title="app/Configurations/AppServiceProvider.php"
 namespace App\Configurations;
@@ -273,19 +273,19 @@ class AppServiceProvider extends Configuration
 }
 ```
 
-Puis enregistrez le provider dans `Kernel::configurations()` :
+Then register the provider in `Kernel::configurations()`:
 
 ```php title="app/Kernel.php"
 public function configurations(): array
 {
   return [
-    // ... autres providers
+    // ... other providers
     \App\Configurations\AppServiceProvider::class,
   ];
 }
 ```
 
-### Utilisation
+### Usage
 
 ```php
 class UserController extends Controller
@@ -301,9 +301,9 @@ class UserController extends Controller
 }
 ```
 
-## Tester un service
+## Testing a service
 
-Les services sont faciles à tester unitairement :
+Services are easy to unit test:
 
 ```php title="tests/Services/UserServiceTest.php"
 namespace Tests\Services;
@@ -345,14 +345,14 @@ class UserServiceTest extends TestCase
 }
 ```
 
-## Bonnes pratiques
+## Best practices
 
-:::tip Recommandations
-- **Un service = une responsabilité** : Chaque service doit avoir un seul domaine de responsabilité.
-- **Injection de dépendances** : Préférez l'injection via le constructeur pour les dépendances obligatoires.
-- **Interfaces** : Utilisez des interfaces pour les services complexes afin de faciliter les tests et les changements.
-- **Nommage** : Utilisez des noms explicites comme `UserService`, `PaymentService`, `NotificationService`.
-- **Tests** : Les services permettent d'isoler la logique métier et de la tester indépendamment.
+:::tip Recommendations
+- **One service = one responsibility**: Each service should have a single domain of responsibility.
+- **Dependency injection**: Prefer constructor injection for required dependencies.
+- **Interfaces**: Use interfaces for complex services to make testing and changes easier.
+- **Naming**: Use explicit names such as `UserService`, `PaymentService`, `NotificationService`.
+- **Tests**: Services make it possible to isolate business logic and test it independently.
 :::
 
 <SuggestionFeature />

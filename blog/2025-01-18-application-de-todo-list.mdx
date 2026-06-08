@@ -1,7 +1,7 @@
 ---
-title: "Créer une application de To Do List avec BowPHP"
-description: "Créer une application de To Do List avec BowPHP"
-slug: creer-une-application-de-to-do-list-avec-bowphp
+title: "Building a To Do List Application with BowPHP"
+description: "Building a To Do List Application with BowPHP"
+slug: building-a-to-do-list-application-with-bowphp
 authors: papac
 tags: [bowphp, php, framework,]
 image: https://avatars.githubusercontent.com/u/9353811?v=4
@@ -10,24 +10,24 @@ hide_table_of_contents: false
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-Créer une application de To Do List avec BowPHP, un framework PHP léger, est une excellente idée. Voici un plan détaillé pour y parvenir :
+Building a To Do List application with BowPHP, a lightweight PHP framework, is a great idea. Here is a detailed plan to get there:
 
 <!--truncate-->
 
-### **Étape 1 : Installation de BowPHP**
+### **Step 1: Installing BowPHP**
 
-1. **Installer BowPHP** :
+1. **Install BowPHP**:
 
-Assurez-vous que Composer est installé sur votre machine, puis utilisez la commande suivante pour installer BowPHP :
+Make sure Composer is installed on your machine, then use the following command to install BowPHP:
 
 ```bash
 composer create-project bowphp/app todolist
 ```
-Cela créera une nouvelle application BowPHP nommée `todolist`.
+This will create a new BowPHP application named `todolist`.
 
-2. **Configurer votre application** :
+2. **Configure your application**:
 
-- Modifiez le fichier `.env.json` pour configurer la connexion à la base de données (par exemple MySQL).
+- Edit the `.env.json` file to configure the database connection (for example MySQL).
 
 ```json title=".env.json"
 {
@@ -40,25 +40,25 @@ Cela créera une nouvelle application BowPHP nommée `todolist`.
 }
 ```
 
-### **Étape 2 : Configurer la base de données**
+### **Step 2: Configure the database**
 
-1. **Créer la base de données** :
+1. **Create the database**:
 
-Exécutez cette commande MySQL pour créer une base de données :
+Run this MySQL command to create a database:
 
 ```sql
 CREATE DATABASE todolist_db;
 ```
 
-2. **Créer une table pour les tâches** :
+2. **Create a table for tasks**:
 
-Pour ajouter une nous table, vous pouvez le faire avec la commande suivante:
+To add a new table, you can do so with the following command:
 
 ```bash
 php bow add:migration create-tasks-table
 ```
 
-Vous allez avoir un nouveau fichier dans le dossier `database/migrations`.
+You will get a new file in the `database/migrations` folder.
 
 ```php title="database/migrations/Version1000000000CreateTasksTable.php"
 
@@ -94,23 +94,23 @@ class Version1000000000CreateTasksTable extends Migration
 }
 ```
 
-Ensuite, exécutez la migration :
+Then, run the migration:
 
 ```bash
 php bow migrate
 ```
 
-### **Étape 3 : Créer le modèle et le contrôleur**
+### **Step 3: Create the model and controller**
 
-1. **Créer un modèle `Task`** :
+1. **Create a `Task` model**:
 
-Ajouter un modèle de base de donnée
+Add a database model
 
 ```bash
 php bow add:model Task
 ```
 
-Vous verrez le fichier `app/Models/Task.php` dans votre projet.
+You will see the `app/Models/Task.php` file in your project.
 
 ```php title="app/Models/Task.php"
 namespace App\Models;
@@ -123,7 +123,7 @@ class Task extends Model
 }
 ```
 
-2. **Créer un contrôleur `TaskController`** :
+2. **Create a `TaskController` controller**:
 
 ```php title="app/Controllers/TaskController.php"
 namespace App\Controllers;
@@ -142,7 +142,7 @@ class TaskController
 
   public function store(Request $request)
   {
-    // Validation des données
+    // Data validation
     $request->validate([
       'title' => 'required|min:3|max:255'
     ]);
@@ -183,9 +183,9 @@ class TaskController
 }
 ```
 
-### **Étape 4 : Configurer les routes**
+### **Step 4: Configure the routes**
 
-Dans le fichier `routes/app.php`, ajoutez les routes suivantes :
+In the `routes/app.php` file, add the following routes:
 
 ```php
 use App\Controllers\TaskController;
@@ -196,14 +196,14 @@ $app->put('/tasks/{id}', [TaskController::class, 'update']);
 $app->delete('/tasks/{id}', [TaskController::class, 'destroy']);
 ```
 
-:::info Note sur les méthodes HTTP
-BowPHP gère automatiquement la méthode spoofing via le champ `_method` dans les formulaires. 
-Cela permet d'utiliser PUT et DELETE même si HTML ne supporte nativement que GET et POST.
+:::info Note on HTTP methods
+BowPHP automatically handles method spoofing via the `_method` field in forms. 
+This makes it possible to use PUT and DELETE even though HTML natively supports only GET and POST.
 :::
 
-### **Étape 5 : Créer les vues**
+### **Step 5: Create the views**
 
-Créer le fichier de template `templates/tasks.tintin.php` et ajoutez-y le contenu suivant.
+Create the template file `templates/tasks.tintin.php` and add the following content to it.
 
 ```php title="templates/tasks.tintin.php"
 <!DOCTYPE html>
@@ -350,64 +350,64 @@ Créer le fichier de template `templates/tasks.tintin.php` et ajoutez-y le conte
 </html>
 ```
 
-:::tip Sécurité CSRF
-Notez l'utilisation de `{{ csrf_field() }}` dans tous les formulaires. C'est une protection CSRF intégrée dans BowPHP qui empêche les attaques de type Cross-Site Request Forgery.
+:::tip CSRF Security
+Note the use of `{{ csrf_field() }}` in all forms. This is built-in CSRF protection in BowPHP that prevents Cross-Site Request Forgery attacks.
 :::
 
-### **Étape 6 : Lancer l'application**
+### **Step 6: Run the application**
 
-Démarrez le serveur BowPHP :
+Start the BowPHP server:
 
 ```bash
 php bow run:server
 ```
 
-Accédez à votre application sur `http://localhost:5000`.
+Access your application at `http://localhost:5000`.
 
-### **Étape 7 : Améliorations possibles**
+### **Step 7: Possible improvements**
 
-Voici quelques idées pour améliorer votre application :
+Here are a few ideas to improve your application:
 
-1. **Filtrage des tâches** : Ajouter des filtres pour voir les tâches complétées/incomplètes
-2. **Date d'échéance** : Ajouter une colonne `due_date` pour gérer les dates limites
-3. **Catégories** : Créer un système de catégories ou tags pour organiser les tâches
-4. **Authentification** : Implémenter un système de connexion pour que chaque utilisateur ait ses propres tâches
-5. **API REST** : Transformer l'application en API pour une utilisation avec un frontend JavaScript (React, Vue.js)
-6. **Recherche** : Ajouter une barre de recherche pour filtrer les tâches
-7. **Priorités** : Ajouter des niveaux de priorité (haute, moyenne, basse)
+1. **Task filtering**: Add filters to view completed/incomplete tasks
+2. **Due date**: Add a `due_date` column to manage deadlines
+3. **Categories**: Create a category or tag system to organize tasks
+4. **Authentication**: Implement a login system so that each user has their own tasks
+5. **REST API**: Turn the application into an API for use with a JavaScript frontend (React, Vue.js)
+6. **Search**: Add a search bar to filter tasks
+7. **Priorities**: Add priority levels (high, medium, low)
 
-### **Déploiement**
+### **Deployment**
 
-Pour déployer votre application en production :
+To deploy your application to production:
 
 ```bash
-# 1. Optimiser l'autoloader
+# 1. Optimize the autoloader
 composer dump-autoload --optimize
 
-# 2. Configurer l'environnement de production dans .env.json
+# 2. Configure the production environment in .env.json
 {
     "APP_ENV": "production",
     "APP_DEBUG": false,
-    // ... autres configs
+    // ... other configs
 }
 
-# 3. Configurer votre serveur web (Apache/Nginx)
-# Le point d'entrée doit pointer vers public/index.php
+# 3. Configure your web server (Apache/Nginx)
+# The entry point must point to public/index.php
 ```
 
-:::warning Sécurité en Production
-- Désactivez le mode debug (`APP_DEBUG=false`)
-- Utilisez des mots de passe forts pour la base de données
-- Configurez HTTPS sur votre serveur
-- Gardez BowPHP et ses dépendances à jour
-- Validez toujours les entrées utilisateur
+:::warning Production Security
+- Disable debug mode (`APP_DEBUG=false`)
+- Use strong passwords for the database
+- Configure HTTPS on your server
+- Keep BowPHP and its dependencies up to date
+- Always validate user input
 :::
 
-### **Ressources utiles**
+### **Useful resources**
 
-- [Documentation officielle de BowPHP](https://bowphp.com/docs)
-- [Guide de migration](https://bowphp.com/docs/migration)
-- [Guide ORM Barry](https://bowphp.com/docs/orm)
-- [Validation des données](https://bowphp.com/docs/validation)
+- [BowPHP official documentation](https://bowphp.com/docs)
+- [Migration guide](https://bowphp.com/docs/migration)
+- [Barry ORM guide](https://bowphp.com/docs/orm)
+- [Data validation](https://bowphp.com/docs/validation)
 
 <SuggestionFeature />

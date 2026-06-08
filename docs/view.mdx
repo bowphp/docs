@@ -1,35 +1,35 @@
 ---
 id: views
-title: "Utiliser les vues"
+title: "Using views"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Les vues contiennent le code HTML fourni par votre application et séparent votre logique de contrôleur/application de votre logique de présentation.
+Views contain the HTML provided by your application and separate your controller/application logic from your presentation logic.
 
 <script id="asciicast-srlT0uYy1bOin8Z3Z35E66JJB" src="https://asciinema.org/a/srlT0uYy1bOin8Z3Z35E66JJB.js" data-speed="3" data-rows="20" async></script>
 
 ## Configuration
 
-:::tip Moteurs de template
-BowPHP implémente 2 moteurs de template et le template par défaut est **[Tintin](./tintin)**.
+:::tip Template engines
+BowPHP implements 2 template engines and the default template is **[Tintin](./tintin)**.
 :::
 
-La configuration des vues se trouve dans le fichier `view.php` du dossier `config/`.
+The view configuration is located in the `view.php` file in the `config/` folder.
 
-Spécifiez le nom du template à utiliser avec l'option `engine` de la configuration, cette option peut prendre les valeurs suivantes : `tintin`, `twig` et `php`. Par défaut Bow utilise `tintin`.
+Specify the name of the template to use with the configuration's `engine` option. This option can take the following values: `tintin`, `twig` and `php`. By default, Bow uses `tintin`.
 
-:::warning Remarque
-Notez que si vous définissez `php`, le rendu des vues se fera sans moteur de template.
+:::warning Note
+Note that if you set `php`, views will be rendered without a template engine.
 :::
 
-Vous pouvez aussi changer l'extension de template en modifiant la valeur de l'entrée `extension`. Vous verrez également que les vues sont stockées dans le répertoire `templates` par défaut.
+You can also change the template extension by modifying the value of the `extension` entry. You will also notice that views are stored in the `templates` directory by default.
 
-## Création de vue
+## Creating a view
 
-Une simple vue peut ressembler à ceci :
+A simple view might look like this:
 
 ```html
 <!-- View stored in templates/greeting.tintin.php -->
@@ -40,7 +40,7 @@ Une simple vue peut ressembler à ceci :
 </html>
 ```
 
-Après avoir modifié et sauvegardé votre vue dans `templates/greeting.tintin.php`, vous pouvez maintenant l'envoyer aux utilisateurs avec le helper `view` comme ceci :
+After editing and saving your view in `templates/greeting.tintin.php`, you can now send it to users with the `view` helper like this:
 
 ```php
 $app->get('/', function() {
@@ -48,18 +48,18 @@ $app->get('/', function() {
 });
 ```
 
-### Utilisation
+### Usage
 
-Exemple d'utilisation avec la classe statique `View::parse` :
+Example usage with the static class `View::parse`:
 
 ```php
 View::parse(string $view, array $data = []): View
 ```
 
-| Paramètre | Type     | Description |
+| Parameter | Type     | Description |
 |-----------|----------|-------------|
-| `$view`   | `string` | Le nom de la vue, sans extension, relatif au dossier des vues |
-| `$data`   | `array`  | Les données passées au template |
+| `$view`   | `string` | The name of the view, without extension, relative to the views folder |
+| `$data`   | `array`  | The data passed to the template |
 
 ```php
 use Bow\View\View;
@@ -67,7 +67,7 @@ use Bow\View\View;
 echo View::parse('nom-de-la-vue-sans-extension');
 ```
 
-Pour passer des variables à la vue :
+To pass variables to the view:
 
 ```php
 use Bow\View\View;
@@ -76,14 +76,14 @@ echo View::parse('nom-de-la-vue-sans-extension', ['name' => 'bow']);
 ```
 
 :::tip Helper
-Vous pouvez utiliser le helper `view` qui s'utilise de la même façon.
+You can use the `view` helper, which is used in the same way.
 
-Pour fixer un code de statut HTTP, utilisez plutôt
-`response()->render('vue', $data, $code)` (voir la documentation des
-[réponses HTTP](./http-response)). `View::parse()` ne prend pas de code.
+To set an HTTP status code, use
+`response()->render('vue', $data, $code)` instead (see the
+[HTTP responses](./http-response) documentation). `View::parse()` does not take a code.
 :::
 
-Avec la vue suivante :
+With the following view:
 
 ```html
 <!-- View stored in templates/greeting.tintin.php -->
@@ -94,7 +94,7 @@ Avec la vue suivante :
 </html>
 ```
 
-Exemple dans un contrôleur :
+Example in a controller:
 
 ```php
 namespace App\Controllers;
@@ -111,51 +111,51 @@ class HomeController extends Controller
   public function show()
   {
     return view('greeting', ['name' => 'Bowphp']);
-    // Ou
+    // Or
     return $this->render('greeting', ['name' => "Bowphp"]);
-    // Ou
+    // Or
     return response()->render('greeting', ['name' => "Bowphp"]);
   }
 }
 ```
 
-## Introduction Tintin
+## Introduction to Tintin
 
 :::info Tintin
-Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP. Par défaut, Tintin est le moteur de template utilisé par BowPHP.
+Tintin is a PHP template engine designed to be very simple and extensible. It can be used in any PHP project. By default, Tintin is the template engine used by BowPHP.
 :::
 
 ```t
 Hello, {{ $name }}.
 ```
 
-Bien entendu, vous n'êtes pas limité à afficher le contenu des variables transmises à la vue. Vous pouvez également faire écho aux résultats de toute fonction PHP. En fait, vous pouvez insérer n'importe quel code PHP dans une instruction echo Tintin:
+Of course, you are not limited to displaying the content of the variables passed to the view. You can also echo the results of any PHP function. In fact, you can insert any PHP code into a Tintin echo statement:
 
 ```t
 Hello, {{ strtoupper($name) }}.
 ```
 
-> Les instructions Tintin `{{ }}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS.
+> Tintin `{{ }}` statements are automatically sent through the PHP `htmlspecialchars` function to prevent XSS attacks.
 
-### Affichage des données non échappées
+### Displaying unescaped data
 
-Par défaut, les instructions Tintin `{{ }}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS. Si vous ne souhaitez pas que vos données soient protégées, vous pouvez utiliser la syntaxe suivante:
+By default, Tintin `{{ }}` statements are automatically sent through the PHP `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be protected, you can use the following syntax:
 
 ```t
 Hello, {{{ $name }}}.
 ```
 
-### Ajouter un commentaire
+### Adding a comment
 
-Cette clause `{## ##}` permet d'ajouter un commentaire à votre code `tintin`.
+The `{## ##}` clause lets you add a comment to your `tintin` code.
 
 ```t
 {## This comment will not be present in the rendered HTML ##}
 ```
 
-## La directive %verbatim
+## The %verbatim directive
 
-Si vous affichez des variables JavaScript dans une grande partie de votre modèle, vous pouvez envelopper le code HTML dans la directive `%verbatim` afin de ne pas avoir à préfixer chaque instruction Tintin echo avec un symbole `%` :
+If you are displaying JavaScript variables in a large portion of your template, you can wrap the HTML in the `%verbatim` directive so that you don't have to prefix each Tintin echo statement with a `%` symbol:
 
 ```t
 %verbatim
@@ -165,11 +165,11 @@ Si vous affichez des variables JavaScript dans une grande partie de votre modèl
 %endverbatim
 ```
 
-## les directives `%if`
+## The `%if` directives
 
-Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
+These are the clauses that let you build conditional branches, as in most programming languages.
 
-Vous pouvez construire des instructions if en utilisant les directives `%if`, `%elseif`, `%elif`, `%else` et `%endif`. Ces directives fonctionnent de la même manière que leurs homologues PHP :
+You can build if statements using the `%if`, `%elseif`, `%elif`, `%else` and `%endif` directives. These directives work the same way as their PHP counterparts:
 
 ```t
 %if ($name == 'tintin')
@@ -181,10 +181,10 @@ Vous pouvez construire des instructions if en utilisant les directives `%if`, `%
 %endif
 ```
 
-> Vous pouvez utiliser `%elif` à la place de `%elseif`.
+> You can use `%elif` instead of `%elseif`.
 
-Petite spécificité, le `%unless` quant à lui, il permet de faire une condition inverse du `%if`.
-Pour faire simple, voici un exemple:
+One small specificity: `%unless` lets you write a condition that is the inverse of `%if`.
+To keep it simple, here is an example:
 
 ```t
 %unless ($user->isAdmin())
@@ -192,7 +192,7 @@ Pour faire simple, voici un exemple:
 %endunless
 ```
 
-En plus des directives conditionnelles déjà discutées, les directives `%isset`, `%empty`, `%notempty` peuvent être utilisées comme raccourcis pratiques pour leurs fonctions PHP respectives :
+In addition to the conditional directives already discussed, the `%isset`, `%empty` and `%notempty` directives can be used as convenient shortcuts for their respective PHP functions:
 
 ```t
 %isset($records)
@@ -208,15 +208,15 @@ En plus des directives conditionnelles déjà discutées, les directives `%isset
 %endnotempty
 ```
 
-> Vous pouvez ajouter `%else` pour effectuer une action contraire.
+> You can add `%else` to perform an opposite action.
 
-## Les directives `%loop` / `%for` / `%while`
+## The `%loop` / `%for` / `%while` directives
 
-Souvent vous pouvez être amener à faire des listes ou répétitions sur des éléments. Par exemple, afficher tout les utilisateurs de votre plateforme.
+You will often need to create lists or repeat over elements. For example, displaying all the users of your platform.
 
-### L'utilisation de `%loop`
+### Using `%loop`
 
-Cette clause faire exactement l'action de `foreach`.
+This clause does exactly what `foreach` does.
 
 ```t
 %loop($names as $name)
@@ -224,8 +224,8 @@ Cette clause faire exactement l'action de `foreach`.
 %endloop
 ```
 
-Cette clause peux être aussi coupler avec tout autre clause telque `%if`.
-Un exemple rapide.
+This clause can also be combined with any other clause such as `%if`.
+A quick example.
 
 ```t
 %loop($names as $name)
@@ -236,35 +236,35 @@ Un exemple rapide.
 %endloop
 ```
 
-Vous avez peut-être remarquer le `%stop` il permet de stoper l'éxécution de la boucle. Il y a aussi son conjoint le `%jump`, lui parcontre permet d'arrêter l'éxécution à son niveau et de lancer s'éxécution du prochain tour de la boucle.
+You may have noticed the `%stop`, which lets you stop the loop's execution. There is also its companion `%jump`, which stops execution at its level and starts the next iteration of the loop.
 
-### Les sucres syntaxiques `%jump` et `%stop`
+### The `%jump` and `%stop` syntactic sugar
 
-Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucle `%loop` comme ceci:
+Often the developer needs to write loop-stopping conditions in a `%loop` like this:
 
 ```t
 %loop($names as $name)
   %if($name == 'tintin')
     %stop
-    // Ou
+    // Or
     %jump
   %endif
 %endloop
 ```
 
-Avec les sucres syntaxique, on peut réduire le code comme ceci:
+With syntactic sugar, you can shorten the code like this:
 
 ```t
 %loop($names as $name)
   %stop($name == 'tintin')
-  // Ou
+  // Or
   %jump($name == 'tintin')
 %endloop
 ```
 
-### L'utilisation de `%for` et `%while`
+### Using `%for` and `%while`
 
-Cette clause faire exactement l'action de `for`.
+This clause does exactly what `for` does.
 
 ```t
 %for($i = 0; $i < 10; $i++)
@@ -272,7 +272,7 @@ Cette clause faire exactement l'action de `for`.
 %endfor
 ```
 
-Cette clause faire exactement l'action de `while`.
+This clause does exactly what `while` does.
 
 ```t
 %while($name != 'tintin')
@@ -280,9 +280,9 @@ Cette clause faire exactement l'action de `while`.
 %endwhile
 ```
 
-## Classes et styles conditionnels
+## Conditional classes and styles
 
-La directive `%class` compile conditionnellement une chaîne de classe CSS. La directive accepte un tableau de classes où la clé du tableau contient la ou les classes que vous souhaitez ajouter, tandis que la valeur est une expression booléenne. Si l'élément de tableau a une clé numérique, il sera toujours inclus dans la liste de classe rendue :
+The `%class` directive conditionally compiles a CSS class string. The directive accepts an array of classes where the array key contains the class or classes you want to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
 ```t
 %php
@@ -300,7 +300,7 @@ La directive `%class` compile conditionnellement une chaîne de classe CSS. La d
 <span class="p-4 text-gray-500 bg-red"></span>
 ```
 
-De même, la directive `%style` peut être utilisée pour ajouter conditionnellement des styles CSS en ligne à un élément HTML :
+Similarly, the `%style` directive can be used to conditionally add inline CSS styles to an HTML element:
 
 ```t
 %php
@@ -315,11 +315,11 @@ De même, la directive `%style` peut être utilisée pour ajouter conditionnelle
 <span style="background-color: red; font-weight: bold;"></span>
 ```
 
-## Inclure les sous-vues
+## Including sub-views
 
-Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser les vues de votre application pour être plus flexible et écrire moin de code.
+Often when developing your code, you will need to split up your application's views to be more flexible and write less code.
 
-`%include` permet d'include un autre fichier de template dans un autre.
+`%include` lets you include another template file into another.
 
 ```t
 <div id="container">
@@ -327,21 +327,21 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
 </div>
 ```
 
-Si vous essayez d'inclure une vue qui n'existe pas, Tintin lancera une erreur. Si vous souhaitez inclure une vue qui peut ou non être présente, vous devez utiliser la directive `%includeIf` :
+If you try to include a view that does not exist, Tintin will throw an error. If you want to include a view that may or may not be present, you should use the `%includeIf` directive:
 
 ```t
 %includeIf("filename", ["name" => "Tintin"])
 ```
 
-Si vous souhaitez `%include` une vue si une expression booléenne donnée est évaluée comme vraie ou fausse, vous pouvez utiliser les directives `%includeWhen` et `%includeUnless`:
+If you want to `%include` a view when a given boolean expression evaluates to true or false, you can use the `%includeWhen` and `%includeUnless` directives:
 
 ```t
 %includeWhen($user->isAdmin(), "include-file-name", ["name" => "Tintin"])
 ```
 
-## PHP brut
+## Raw PHP
 
-Dans certaines situations, il est utile d'intégrer du code PHP dans vos vues. Vous pouvez utiliser la directive Tintin `%php` ou `%raw` pour exécuter un bloc de PHP simple dans votre template:
+In some situations, it is useful to embed PHP code in your views. You can use the Tintin `%php` or `%raw` directive to execute a block of plain PHP in your template:
 
 ```t
 %php
@@ -355,7 +355,7 @@ Dans certaines situations, il est utile d'intégrer du code PHP dans vos vues. V
 
 ## Flash session
 
-Dans le cas ou vous voulez afficher un message flash directement vue vous pouvez utiliser `%flash`. Et pour vérifier si une message flash existe `%hasflash` et `%endhasflash` :
+If you want to display a flash message directly in a view, you can use `%flash`. And to check whether a flash message exists, use `%hasflash` and `%endhasflash`:
 
 ```t
 %hasflash("error")
@@ -365,9 +365,9 @@ Dans le cas ou vous voulez afficher un message flash directement vue vous pouvez
 %endhasflash
 ```
 
-## Injection de services
+## Service injection
 
-La directive `%service` peut être utilisée pour récupérer un service du conteneur. Le premier argument passé à `%service` est le nom de la variable dans laquelle le service sera placé, tandis que le second argument est le nom de la classe ou de l'interface du service que vous souhaitez résoudre :
+The `%service` directive can be used to retrieve a service from the container. The first argument passed to `%service` is the name of the variable in which the service will be placed, while the second argument is the class or interface name of the service you want to resolve:
 
 ```t
 %service('user_service', 'App\Services\UserService')
@@ -379,9 +379,9 @@ La directive `%service` peut être utilisée pour récupérer un service du cont
 </div>
 ```
 
-## Directives d'authentification
+## Authentication directives
 
-Les directives `%auth` et `%guest` peuvent être utilisées pour déterminer rapidement si l'utilisateur actuel est authentifié ou est un invité :
+The `%auth` and `%guest` directives can be used to quickly determine whether the current user is authenticated or is a guest:
 
 ```t
 %auth
@@ -393,7 +393,7 @@ Les directives `%auth` et `%guest` peuvent être utilisées pour déterminer rap
 %endguest
 ```
 
-Si nécessaire, vous pouvez spécifier la garde d'authentification qui doit être vérifiée lors de l'utilisation des directives `%auth` et `%guest` :
+If needed, you can specify the authentication guard that should be checked when using the `%auth` and `%guest` directives:
 
 ```t
 %auth('admin')
@@ -407,7 +407,7 @@ Si nécessaire, vous pouvez spécifier la garde d'authentification qui doit êtr
 
 ## Environment Guidelines
 
-Vous pouvez vérifier si l'application s'exécute dans l'environnement de production à l'aide de la directive `%production` :
+You can check whether the application is running in the production environment using the `%production` directive:
 
 ```t
 %production
@@ -415,7 +415,7 @@ Vous pouvez vérifier si l'application s'exécute dans l'environnement de produc
 %endproduction
 ```
 
-Ou, vous pouvez déterminer si l'application s'exécute dans un environnement spécifique à l'aide de la directive `%env` :
+Or, you can determine whether the application is running in a specific environment using the `%env` directive:
 
 ```t
 %env('staging')
@@ -427,9 +427,9 @@ Ou, vous pouvez déterminer si l'application s'exécute dans un environnement sp
 %endenv
 ```
 
-## Champ CSRF
+## CSRF Field
 
-Chaque fois que vous définissez un formulaire HTML dans votre application, vous devez inclure un champ de jeton CSRF masqué dans le formulaire afin que le middleware de protection CSRF puisse valider la demande. Vous pouvez utiliser la directive `%csrf` Tintin pour générer le champ de jeton :
+Whenever you define an HTML form in your application, you must include a hidden CSRF token field in the form so that the CSRF protection middleware can validate the request. You can use the Tintin `%csrf` directive to generate the token field:
 
 ```t
 <form method="POST" action="/profile">
@@ -437,9 +437,9 @@ Chaque fois que vous définissez un formulaire HTML dans votre application, vous
 </form>
 ```
 
-## Champ Méthode
+## Method Field
 
-Étant donné que les formulaires HTML ne peuvent pas effectuer de requêtes `PUT`, `PATCH` ou `DELETE`, vous devrez ajouter un champ _method masqué pour usurper ces verbes HTTP. La directive `%method` Tintin peut créer ce champ pour vous :
+Since HTML forms cannot make `PUT`, `PATCH` or `DELETE` requests, you will need to add a hidden _method field to spoof these HTTP verbs. The Tintin `%method` directive can create this field for you:
 
 ```t
 <form action="/foo/bar" method="POST">
@@ -447,11 +447,11 @@ Chaque fois que vous définissez un formulaire HTML dans votre application, vous
 </form>
 ```
 
-## Héritage avec %extends, %block et %inject
+## Inheritance with %extends, %block and %inject
 
-Comme tout bon système de template __tintin__ support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
+Like any good template system, __tintin__ supports sharing code between files. This makes your code flexible and maintainable.
 
-Considérérons le code __tintin__ suivant:
+Consider the following __tintin__ code:
 
 ```t
 # le fichier `layout.tintin.php`
@@ -470,7 +470,7 @@ Considérérons le code __tintin__ suivant:
 </html>
 ```
 
-Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.php`
+And we also have another file that inherits the code from the `layout.tintin.php` file.
 
 ```t
 # le fichier se nomme `content.tintin.php`
@@ -481,9 +481,9 @@ Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.ph
 %endblock
 ```
 
-### Explication
+### Explanation
 
-Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si vous rémarquez bien, dans le fichier `layout.tintin.php` on a la clause `%inject` qui a pour paramètre le nom du `%block` de `content.tintin.php` qui est `content`. Ce qui veut dire que le contenu du `%block` `content` sera remplacé par `%inject`. Ce qui donnéra à la fin ceci:
+The `content.tintin.php` file inherits the code from `layout.tintin.php`, and if you look closely, the `layout.tintin.php` file has the `%inject` clause whose parameter is the name of the `%block` in `content.tintin.php`, which is `content`. This means that the content of the `content` `%block` will be substituted by `%inject`. This will ultimately give the following:
 
 ```html
 <!DOCTYPE html>
@@ -501,10 +501,10 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 </html>
 ```
 
-### Directive personnelisée
+### Custom directive
 
-Tintin peut être étendu avec son systême de directive personnalisé, pour ce faire utilisé la méthode `directive`
-Créons des directives pour gérer un formulaires:
+Tintin can be extended with its custom directive system. To do this, use the `directive` method.
+Let's create some directives to handle a form:
 
 ```php
 $tintin->directive('input', function (string $type, string $name, ?string $value) {
@@ -524,7 +524,7 @@ $tintin->directive('endform', function () {
 });
 ```
 
-Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directive précédé la par `%`. Ensuite si cette directive prend des paramètres, lancer la directive comme vous lancez les fonctions dans votre programme.
+Using these directives could not be simpler. Write the name of the directive preceded by `%`. Then, if the directive takes parameters, call the directive the same way you call functions in your program.
 
 ```t
 <div class="container">
@@ -535,13 +535,13 @@ Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directiv
 </div>
 ```
 
-La compilation se fait comme d'habitude, pour plus d'information sur la [compilation](#utilisation).
+Compilation works as usual; for more information about [compilation](#usage).
 
 ```php
 echo $tintin->render('form');
 ```
 
-Sortie après compilation:
+Output after compilation:
 
 ```html
 <form action="/posts" method="post" enctype="multipart/form-data">
@@ -550,11 +550,11 @@ Sortie après compilation:
 </form>
 ```
 
-### Ajouter vos directives via la configuration
+### Adding your directives via configuration
 
-Pour enregistrer vos directives au démarrage de BowPHP, créez (ou
-modifiez) un provider dans `app/Configurations/` qui étend
-`Bow\Configuration\Configuration` :
+To register your directives at BowPHP startup, create (or
+modify) a provider in `app/Configurations/` that extends
+`Bow\Configuration\Configuration`:
 
 ```php title="app/Configurations/ApplicationConfiguration.php"
 namespace App\Configurations;
@@ -583,25 +583,25 @@ class ApplicationConfiguration extends Configuration
 }
 ```
 
-N'oubliez pas d'enregistrer ce provider dans `Kernel::configurations()` pour
-qu'il soit exécuté au boot.
+Don't forget to register this provider in `Kernel::configurations()` so
+that it is executed at boot.
 
-Maintenant la directive `%super` est disponible et vous pouvez l'utiliser.
+Now the `%super` directive is available and you can use it.
 
 ```php
 return $tintin->render('%super');
 // => Super !
 ```
 
-## La directive `%macro`
+## The `%macro` directive
 
-Souvent, vous serez amené utiliser ou réutiliser un bloc de template pour optimiser l'écriture de votre application. Alors les macros sont là pour cela.
+Often, you will need to use or reuse a block of template to streamline the writing of your application. That is exactly what macros are for.
 
-> Les macros doivent être définies dans un fichier séparé.
+> Macros must be defined in a separate file.
 
-Pour vous utiliser les `%macro` vous devez passer en premier paramêtre le nom du macro et ensuite les paramêtres du macro.
+To use `%macro`, you must pass the name of the macro as the first parameter, followed by the macro's parameters.
 
-Considérons le fichier `user-macro.tintin.php`.
+Consider the file `user-macro.tintin.php`.
 
 ```t
 %macro('users', array $users)
@@ -611,7 +611,7 @@ Considérons le fichier `user-macro.tintin.php`.
 %endmacro
 ```
 
-Pour utiliser le macro vous devez l'importer dans un autre fichier avec `%import`. Nous allons appeler le fichier `app.tintin.php` contenant le template suivant:
+To use the macro, you must import it into another file with `%import`. We will call the file `app.tintin.php`, which contains the following template:
 
 ```t
 %import('user-macro')
@@ -625,7 +625,7 @@ Pour utiliser le macro vous devez l'importer dans un autre fichier avec `%import
 %endblock
 ```
 
-Pour la compilation nous allons passer la liste des utilisateurs suivant:
+For compilation, we will pass the following list of users:
 
 ```php
 $users = ["franck", "lucien", "brice"];
@@ -633,7 +633,7 @@ $users = ["franck", "lucien", "brice"];
 $tintin->render('app', compact('users'));
 ```
 
-Après compilation du fichier
+After compiling the file:
 
 ```html
 <div>franck</div>
