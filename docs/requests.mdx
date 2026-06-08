@@ -1,26 +1,26 @@
 ---
 id: http-request
-title: "Requêtes HTTP"
+title: "HTTP Requests"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Une requête HTTP est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autres outils tels que `curl`, `httpie`, etc.
+An HTTP request is the message the user sends to the Bow application through their browser or other tools such as `curl`, `httpie`, etc.
 
-Ce message est traité par Bow via la classe `Bow\Http\Request`. Cette classe permet d'accéder aux informations de la requête : adresse IP, méthode HTTP, données de formulaire, fichiers uploadés, etc.
+This message is handled by Bow via the `Bow\Http\Request` class. This class provides access to the request information: IP address, HTTP method, form data, uploaded files, etc.
 
-## Accéder à la requête
+## Accessing the request
 
-### Via le helper
+### Via the helper
 
 ```php
 $request = request();
 $name = $request->get('name');
 ```
 
-### Via l'injection de dépendance
+### Via dependency injection
 
 ```php title="routes/app.php"
 use Bow\Http\Request;
@@ -30,7 +30,7 @@ $app->get('/', function (Request $request) {
 });
 ```
 
-### Via un contrôleur
+### Via a controller
 
 ```php
 namespace App\Controllers;
@@ -51,110 +51,110 @@ class UserController
 }
 ```
 
-## Récupérer les données
+## Retrieving data
 
-### Récupérer une valeur
+### Retrieving a value
 
 ```php
-// Via la méthode get()
+// Via the get() method
 $name = $request->get('name');
 
-// Via la propriété magique
+// Via the magic property
 $name = $request->name;
 
-// Avec une valeur par défaut
+// With a default value
 $name = $request->get('name', 'Invité');
 
-// Avec un callback par défaut
+// With a default callback
 $name = $request->get('name', fn() => User::first()->name);
 ```
 
-### Récupérer toutes les données
+### Retrieving all data
 
 ```php
 $data = $request->all();
 ```
 
-### Données par source : query string vs POST
+### Data by source: query string vs POST
 
-Quand vous voulez explicitement lire `$_GET` ou `$_POST` (au lieu du tableau
-fusionné renvoyé par `all()`), utilisez `query()` et `post()` :
+When you want to explicitly read `$_GET` or `$_POST` (instead of the merged
+array returned by `all()`), use `query()` and `post()`:
 
 ```php
-// Tableau complet de $_GET
+// Full $_GET array
 $queryParams = $request->query();
 
-// Une clé spécifique de $_GET (renvoie [] si absente)
+// A specific $_GET key (returns [] if absent)
 $page = $request->query('page');
 
-// Tableau complet de $_POST
+// Full $_POST array
 $body = $request->post();
 
-// Une clé spécifique de $_POST
+// A specific $_POST key
 $name = $request->post('name');
 ```
 
-:::tip Quand préférer `get()` ?
-`get($key)` cherche d'abord dans les routes/query/body fusionnés et offre un
-fallback par défaut (`get('name', 'Invité')`). Réservez `query()` / `post()`
-aux cas où l'origine de la donnée est importante (par ex. ne *jamais* lire
-`?admin=1` depuis l'URL).
+:::tip When should you prefer `get()`?
+`get($key)` first looks in the merged routes/query/body and offers a default
+fallback (`get('name', 'Invité')`). Reserve `query()` / `post()` for cases
+where the origin of the data matters (e.g. *never* reading `?admin=1` from the
+URL).
 :::
 
-### Corps JSON et PUT
+### JSON and PUT bodies
 
-Bow décode automatiquement le corps de la requête : si l'en-tête
-`Content-Type` vaut `application/json`, le JSON est décodé et fusionné dans les
-données accessibles via `get()`, `all()` et `post()`. Aucune étape manuelle
-n'est nécessaire pour consommer une API JSON :
+Bow automatically decodes the request body: if the `Content-Type` header is
+`application/json`, the JSON is decoded and merged into the data accessible via
+`get()`, `all()` and `post()`. No manual step is required to consume a JSON
+API:
 
 ```php
-// Requête POST avec Content-Type: application/json et corps {"name": "Franck"}
+// POST request with Content-Type: application/json and body {"name": "Franck"}
 $name = $request->get('name'); // "Franck"
 $body = $request->post();       // ['name' => 'Franck']
 ```
 
-Les corps de requêtes `PUT` (form-urlencoded) sont également analysés
-automatiquement et disponibles via les mêmes méthodes.
+`PUT` request bodies (form-urlencoded) are also parsed automatically and
+available through the same methods.
 
-:::warning JSON invalide
-Si le `Content-Type` est `application/json` mais que le corps n'est pas un JSON
-valide, Bow lève une `Bow\Http\Exception\BadRequestException`.
+:::warning Invalid JSON
+If the `Content-Type` is `application/json` but the body is not valid JSON, Bow
+throws a `Bow\Http\Exception\BadRequestException`.
 :::
 
-### Filtrer les données
+### Filtering data
 
 ```php
-// Récupérer uniquement certains champs
+// Retrieve only certain fields
 $data = $request->only(['name', 'email']);
 
-// Exclure certains champs
+// Exclude certain fields
 $data = $request->ignore(['password', 'password_confirmation']);
 
-// Les deux acceptent aussi une liste d'arguments
+// Both also accept a list of arguments
 $data = $request->only('name', 'email');
 $data = $request->ignore('password', 'password_confirmation');
 ```
 
-### Vérifier l'existence
+### Checking existence
 
 ```php
 if ($request->has('name')) {
-  // Le champ existe
+  // The field exists
 }
 ```
 
-### Récupérer les anciennes valeurs
+### Retrieving old values
 
-Après une redirection avec erreurs de validation :
+After a redirect with validation errors:
 
 ```php
 $oldName = $request->old('name', 'Valeur par défaut');
 ```
 
-## Fichiers uploadés
+## Uploaded files
 
-### Récupérer un fichier
+### Retrieving a file
 
 ```php
 $file = $request->file('avatar');
@@ -164,7 +164,7 @@ if ($file) {
 }
 ```
 
-### Fichiers multiples
+### Multiple files
 
 ```php
 $files = $request->file('documents');
@@ -174,72 +174,72 @@ foreach ($files as $file) {
 }
 ```
 
-### Vérifier l'existence
+### Checking existence
 
 ```php
 if (Request::hasFile('avatar')) {
-  // Un fichier a été uploadé
+  // A file was uploaded
 }
 ```
 
-## Informations de la requête
+## Request information
 
-### URL et chemin
+### URL and path
 
 ```php
-// Chemin de la requête (ex: /users/1)
+// Request path (e.g. /users/1)
 $path = $request->path();
 
-// URL complète (ex: https://example.com/users/1)
+// Full URL (e.g. https://example.com/users/1)
 $url = $request->url();
 
-// Origine (ex: https://example.com)
+// Origin (e.g. https://example.com)
 $origin = $request->origin();
 
-// Nom d'hôte (ex: example.com)
+// Hostname (e.g. example.com)
 $host = $request->hostname();
 
-// Domaine sans port (ex: example.com)
+// Domain without port (e.g. example.com)
 $domain = $request->domain();
 ```
 
-### Vérifier le chemin
+### Checking the path
 
 ```php
 if ($request->is('users/*')) {
-  // La requête commence par /users/
+  // The request starts with /users/
 }
 ```
 
-### Méthode HTTP
+### HTTP method
 
 ```php
 $method = $request->method(); // GET, POST, PUT, DELETE, etc.
 
-// Vérifications rapides
+// Quick checks
 if ($request->isGet()) { }
 if ($request->isPost()) { }
 if ($request->isPut()) { }
 if ($request->isDelete()) { }
 ```
 
-### Type de requête
+### Request type
 
 ```php
-// Requête AJAX
+// AJAX request
 if ($request->isAjax()) {
-  // Traitement AJAX
+  // AJAX handling
 }
 
-// Requête attendant du JSON
+// Request expecting JSON
 if ($request->wantsJson()) {
   return response()->json($data);
 }
 ```
 
-## Informations client
+## Client information
 
-### Adresse IP et port
+### IP address and port
 
 ```php
 $ip = $request->ip();
@@ -252,11 +252,11 @@ $port = $request->port();
 $userAgent = $request->userAgent();
 ```
 
-### Langue et locale
+### Language and locale
 
 ```php
-$lang = $request->lang();     // ex: "fr"
-$locale = $request->locale(); // ex: "fr_FR"
+$lang = $request->lang();     // e.g. "fr"
+$locale = $request->locale(); // e.g. "fr_FR"
 ```
 
 ### Referer
@@ -265,40 +265,40 @@ $locale = $request->locale(); // ex: "fr_FR"
 $referer = $request->referer();
 
 if ($request->isReferer('https://google.com/*')) {
-  // L'utilisateur vient de Google
+  // The user comes from Google
 }
 ```
 
-## Protocole et sécurité
+## Protocol and security
 
 ```php
-$protocol = $request->protocol(); // http ou https
+$protocol = $request->protocol(); // http or https
 
 if ($request->isSecure()) {
-  // Connexion HTTPS
+  // HTTPS connection
 }
 
 if ($request->isProtocol('https')) {
-  // Même chose
+  // Same thing
 }
 ```
 
-## En-têtes HTTP
+## HTTP headers
 
-### Récupérer un en-tête
+### Retrieving a header
 
 ```php
 $contentType = $request->getHeader('content-type');
 $authorization = $request->getHeader('authorization');
 ```
 
-### Récupérer tous les en-têtes
+### Retrieving all headers
 
 ```php
 $headers = $request->getHeaders();
 ```
 
-### Vérifier l'existence
+### Checking existence
 
 ```php
 if ($request->hasHeader('x-api-key')) {
@@ -306,50 +306,50 @@ if ($request->hasHeader('x-api-key')) {
 }
 ```
 
-## Identifiant de requête
+## Request identifier
 
-Chaque requête possède un identifiant unique :
+Each request has a unique identifier:
 
 ```php
 $requestId = $request->id();
-// ou
+// or
 $requestId = $request->getId();
 
-// Définir un ID personnalisé
+// Set a custom ID
 $request->setId('custom-request-id');
 ```
 
-## Session et authentification
+## Session and authentication
 
-### Accéder à la session
+### Accessing the session
 
 ```php
 $session = $request->session();
 $session->put('key', 'value');
 ```
 
-### Utilisateur authentifié
+### Authenticated user
 
 ```php
 $user = $request->user();
 
-// Avec un guard spécifique
+// With a specific guard
 $user = $request->user('api');
 ```
 
 ## Cookies
 
 ```php
-// Récupérer tous les cookies
+// Retrieve all cookies
 $cookies = $request->cookie();
 
-// Récupérer un cookie spécifique
+// Retrieve a specific cookie
 $token = $request->cookie('remember_token');
 ```
 
 ## Validation
 
-Valider les données directement depuis la requête :
+Validate data directly from the request:
 
 ```php
 $validation = $request->validate([
@@ -363,48 +363,48 @@ if ($validation->fails()) {
 }
 ```
 
-## Bags (données partagées)
+## Bags (shared data)
 
-Les *bags* permettent de stocker des valeurs au sein d'une même requête (par
-exemple des permissions résolues par un middleware, qu'un contrôleur lira
-ensuite) sans polluer les inputs.
+*Bags* let you store values within a single request (for example permissions
+resolved by a middleware, which a controller will read later) without polluting
+the inputs.
 
 ```php
-// Définir / lire une valeur
+// Set / read a value
 $request->setBag('user_permissions', ['read', 'write']);
 $permissions = $request->getBag('user_permissions');
 
-// Lire / remplacer tout le tableau de bags
+// Read / replace the entire bags array
 $all = $request->getBags();
 $request->setBags(['user_permissions' => ['read'], 'feature_flags' => ['v2']]);
 ```
 
-## Temps de la requête
+## Request time
 
 ```php
 $timestamp = $request->time();
 ```
 
-## Tableau récapitulatif
+## Summary table
 
-| Méthode | Description |
+| Method | Description |
 |---------|-------------|
-| `get($key, $default)` | Récupère une valeur (toutes sources fusionnées) |
-| `query($key = null)` | Paramètres de la query string (`$_GET`) |
-| `post($key = null)` | Données du corps POST (`$_POST`) |
-| `all()` | Toutes les données |
-| `only($keys)` | Filtre par clés |
-| `ignore($keys)` | Exclut des clés |
-| `has($key)` | Vérifie l'existence |
-| `file($key)` | Récupère un fichier |
-| `path()` | Chemin de la requête |
-| `url()` | URL complète |
-| `method()` | Méthode HTTP |
-| `ip()` | Adresse IP client |
-| `getHeader($key)` | En-tête HTTP |
-| `session()` | Instance de session |
-| `user($guard)` | Utilisateur authentifié |
-| `validate($rules)` | Valide les données |
-| `setBag($name, $value)` / `getBag($name)` | Données partagées dans la requête |
+| `get($key, $default)` | Retrieves a value (all sources merged) |
+| `query($key = null)` | Query string parameters (`$_GET`) |
+| `post($key = null)` | POST body data (`$_POST`) |
+| `all()` | All data |
+| `only($keys)` | Filter by keys |
+| `ignore($keys)` | Exclude keys |
+| `has($key)` | Check existence |
+| `file($key)` | Retrieve a file |
+| `path()` | Request path |
+| `url()` | Full URL |
+| `method()` | HTTP method |
+| `ip()` | Client IP address |
+| `getHeader($key)` | HTTP header |
+| `session()` | Session instance |
+| `user($guard)` | Authenticated user |
+| `validate($rules)` | Validate data |
+| `setBag($name, $value)` / `getBag($name)` | Shared data within the request |
 
 <SuggestionFeature />

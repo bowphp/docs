@@ -7,47 +7,47 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Tous les fichiers de configuration de BowPHP sont centralisés dans le dossier `config/`. Chaque fichier est documenté pour faciliter la personnalisation.
+All BowPHP configuration files are centralized in the `config/` folder. Each file is documented to make customization easier.
 
-## Accéder à la configuration
+## Accessing the configuration
 
-### Récupérer une valeur
+### Retrieving a value
 
 ```php
-// Récupérer une valeur (retourne null si absente)
+// Retrieve a value (returns null if absent)
 $appName = config('app.name');
 
-// Récupérer tout un fichier
+// Retrieve an entire file
 $appConfig = config('app');
 ```
 
-:::warning Pas de valeur par défaut dans `config()`
-Contrairement à `app_env()`, le helper `config()` **n'a pas** de paramètre
-« valeur par défaut ». Passer un second argument écrit la valeur dans la
-configuration (voir « Modifier une valeur »). Pour appliquer un fallback,
-utilisez `??` :
+:::warning No default value in `config()`
+Unlike `app_env()`, the `config()` helper does **not** have a
+"default value" parameter. Passing a second argument writes the value into the
+configuration (see "Modifying a value"). To apply a fallback,
+use `??`:
 
 ```php
 $timezone = config('app.timezone') ?? 'UTC';
 ```
 :::
 
-### Modifier une valeur
+### Modifying a value
 
-Le second argument de `config()` est un **setter** : il écrit la valeur dans
-la configuration en mémoire pour la durée de la requête.
+The second argument of `config()` is a **setter**: it writes the value into
+the in-memory configuration for the duration of the request.
 
 ```php
 config('view.engine', 'twig');
 config('view.extension', '.twig');
 ```
 
-### Notation à point
+### Dot notation
 
-La notation à point navigue dans les fichiers de configuration :
+Dot notation navigates through the configuration files:
 
-- Premier segment = nom du fichier
-- Segments suivants = clés imbriquées
+- First segment = file name
+- Following segments = nested keys
 
 ```php title="config/app.php"
 return [
@@ -69,11 +69,11 @@ config('app.settings.cache.driver');   // "file"
 config('app.settings.cache.ttl');      // 3600
 ```
 
-## Variables d'environnement
+## Environment variables
 
-### Fichier `.env.json`
+### The `.env.json` file
 
-Bow utilise `.env.json` pour les paramètres sensibles et variables selon l'environnement :
+Bow uses `.env.json` for sensitive settings and environment-specific variables:
 
 ```json title=".env.json"
 {
@@ -95,21 +95,21 @@ Bow utilise `.env.json` pour les paramètres sensibles et variables selon l'envi
 }
 ```
 
-:::warning Sécurité
-Ajoutez `.env.json` dans `.gitignore` pour ne jamais versionner vos secrets. Créez un `.env.example.json` comme modèle.
+:::warning Security
+Add `.env.json` to your `.gitignore` so you never commit your secrets. Create a `.env.example.json` as a template.
 :::
 
-### Récupérer les variables
+### Retrieving variables
 
 ```php
-// Récupérer une variable
+// Retrieve a variable
 $dbHost = app_env('DB_HOST');
 
-// Avec une valeur par défaut
+// With a default value
 $dbHost = app_env('DB_HOST', 'localhost');
 ```
 
-### Valeurs imbriquées
+### Nested values
 
 ```json title=".env.json"
 {
@@ -131,7 +131,7 @@ $stripeKey = app_env('SERVICES.STRIPE.KEY');
 $paypalId = app_env('SERVICES.PAYPAL.CLIENT_ID');
 ```
 
-### Réutiliser des variables
+### Reusing variables
 
 ```json title=".env.json"
 {
@@ -148,70 +148,70 @@ app_env('WEBHOOKS.PAYMENT');
 // https://api.example.com/webhooks/payment
 ```
 
-### Format de fichier
+### File format
 
-:::info Format unique : JSON
-Bow ne charge **que** le format `.env.json`. Le format classique
-`KEY=VALUE` (dotenv) n'est pas supporté par `Bow\Support\Env` —
-`Env::configure()` appelle directement `json_decode()` sur le fichier.
+:::info Single format: JSON
+Bow loads **only** the `.env.json` format. The classic
+`KEY=VALUE` format (dotenv) is not supported by `Bow\Support\Env` —
+`Env::configure()` calls `json_decode()` directly on the file.
 
-Si vous arrivez d'un autre framework et avez besoin du format `.env`,
-convertissez vos variables en JSON, ou ajoutez votre propre loader.
+If you are coming from another framework and need the `.env` format,
+convert your variables to JSON, or add your own loader.
 :::
 
-## Fichiers de configuration
+## Configuration files
 
-| Fichier | Description |
+| File | Description |
 |---------|-------------|
-| `app.php` | Configuration générale (nom, timezone, chemins, debug) |
-| `database.php` | Connexions base de données |
-| `cache.php` | Configuration du cache |
-| `session.php` | Sessions (driver, durée, cookies) |
-| `storage.php` | Stockage de fichiers |
-| `mail.php` | Configuration email |
-| `view.php` | Moteur de templates |
-| `queue.php` | File d'attente |
-| `auth.php` | Authentification |
-| `security.php` | CORS, headers de sécurité |
-| `translate.php` | Internationalisation |
+| `app.php` | General configuration (name, timezone, paths, debug) |
+| `database.php` | Database connections |
+| `cache.php` | Cache configuration |
+| `session.php` | Sessions (driver, duration, cookies) |
+| `storage.php` | File storage |
+| `mail.php` | Email configuration |
+| `view.php` | Template engine |
+| `queue.php` | Queue |
+| `auth.php` | Authentication |
+| `security.php` | CORS, security headers |
+| `translate.php` | Internationalization |
 
-### Configuration `app.php`
+### `app.php` configuration
 
 ```php title="config/app.php"
 return [
-  // Nom de l'application
+  // Application name
   'name' => app_env('APP_NAME', 'Bow Application'),
 
-  // Protection CSRF automatique
+  // Automatic CSRF protection
   'auto_csrf' => (bool) app_env('APP_AUTO_CSRF', true),
 
-  // Préfixe d'URL (ex: '/api')
+  // URL prefix (e.g. '/api')
   'root' => app_env('APP_URI_PREFIX', ''),
 
-  // Fuseau horaire
+  // Timezone
   'timezone' => 'Africa/Abidjan',
 
-  // Chemins
+  // Paths
   'env_file' => realpath(__DIR__ . '/../.env.json'),
   'frontend_path' => dirname(__DIR__) . '/assets',
   'seeder_path' => dirname(__DIR__) . '/seeders',
   'public_path' => dirname(__DIR__) . '/public',
   'storage_path' => dirname(__DIR__) . '/var/storage',
 
-  // Mode debug: development | production
+  // Debug mode: development | production
   'debug' => app_env('APP_ENV', 'development'),
 
-  // Gestionnaire d'erreurs personnalisé
+  // Custom error handler
   'error_handle' => \App\Exceptions\ErrorHandle::class,
 
-  // Afficher les traces d'erreur en JSON
+  // Display error traces in JSON
   'error_trace' => true,
 ];
 ```
 
-## Helpers personnalisés
+## Custom helpers
 
-Ajoutez vos fonctions personnalisées dans `config/helpers.php` :
+Add your custom functions in `config/helpers.php`:
 
 ```php title="config/helpers.php"
 <?php
@@ -232,7 +232,7 @@ if (!function_exists('slugify')) {
 ```
 
 :::info Documentation
-Consultez la [documentation des helpers](./helper) pour toutes les fonctions disponibles.
+See the [helpers documentation](./helper) for all available functions.
 :::
 
 <SuggestionFeature />

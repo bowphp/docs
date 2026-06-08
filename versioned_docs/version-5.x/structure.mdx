@@ -1,73 +1,73 @@
 ---
 id: structure
-title: "Structure de l'application"
+title: "Application Structure"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-## Vue d'ensemble
+## Overview
 
-BowPHP suit le modèle **MVC** (Modèle-Vue-Contrôleur), une architecture éprouvée qui sépare clairement les responsabilités de votre application.
+BowPHP follows the **MVC** (Model-View-Controller) pattern, a proven architecture that clearly separates your application's responsibilities.
 
 ```
 bow-app/
-├── app/                    # Logique de l'application
-│   ├── Configurations/     # Configurations personnalisées
-│   ├── Controllers/        # Contrôleurs HTTP
-│   ├── Events/             # Gestionnaires d'événements
-│   ├── Exceptions/         # Exceptions personnalisées
-│   ├── Listeners/          # Écouteurs d'événements
-│   ├── Middlewares/        # Middlewares HTTP
-│   ├── Models/             # Modèles de données (ORM)
-│   ├── Commands/           # Commandes console personnalisées
-│   ├── Services/           # Services métier
-│   ├── Tasks/              # Tâches asynchrones (Queue)
-│   ├── Validations/        # Règles de validation
-│   └── Kernel.php          # Configuration du noyau
-├── assets/                 # Ressources frontend (sources)
-│   ├── css/                # Fichiers CSS
-│   ├── js/                 # Fichiers JavaScript
-│   └── sass/               # Fichiers SCSS
-├── config/                 # Fichiers de configuration
-│   ├── app.php             # Configuration générale
-│   ├── database.php        # Configuration base de données
-│   ├── mail.php            # Configuration email
-│   ├── storage.php         # Configuration stockage
-│   └── view.php            # Configuration des vues
-├── lang/                   # Fichiers de traduction
-│   ├── en/                 # Traductions anglaises
-│   └── fr/                 # Traductions françaises
-├── migrations/             # Migrations de base de données
-├── public/                 # Point d'entrée web (documentroot)
+├── app/                    # Application logic
+│   ├── Configurations/     # Custom configurations
+│   ├── Controllers/        # HTTP controllers
+│   ├── Events/             # Event handlers
+│   ├── Exceptions/         # Custom exceptions
+│   ├── Listeners/          # Event listeners
+│   ├── Middlewares/        # HTTP middlewares
+│   ├── Models/             # Data models (ORM)
+│   ├── Commands/           # Custom console commands
+│   ├── Services/           # Business services
+│   ├── Tasks/              # Asynchronous tasks (Queue)
+│   ├── Validations/        # Validation rules
+│   └── Kernel.php          # Kernel configuration
+├── assets/                 # Frontend resources (sources)
+│   ├── css/                # CSS files
+│   ├── js/                 # JavaScript files
+│   └── sass/               # SCSS files
+├── config/                 # Configuration files
+│   ├── app.php             # General configuration
+│   ├── database.php        # Database configuration
+│   ├── mail.php            # Email configuration
+│   ├── storage.php         # Storage configuration
+│   └── view.php            # View configuration
+├── lang/                   # Translation files
+│   ├── en/                 # English translations
+│   └── fr/                 # French translations
+├── migrations/             # Database migrations
+├── public/                 # Web entry point (documentroot)
 │   ├── index.php           # Front controller
-│   ├── css/                # CSS compilés
-│   └── js/                 # JS compilés
-├── routes/                 # Définition des routes
-│   └── app.php             # Routes de l'application
-├── seeders/                # Seeders de données
-├── templates/              # Vues Tintin
-│   ├── layouts/            # Layouts partagés
-│   └── partials/           # Composants réutilisables
-├── tests/                  # Tests unitaires et fonctionnels
-├── var/                    # Fichiers générés
-│   ├── cache/              # Cache de l'application
-│   ├── logs/               # Journaux d'erreurs
-│   ├── session/            # Sessions utilisateurs
-│   ├── storage/            # Fichiers uploadés
-│   └── view/               # Cache des vues compilées
-├── .env.json               # Variables d'environnement
-├── bow                     # CLI Bow Console
-├── composer.json           # Dépendances PHP
-└── package.json            # Dépendances Node.js
+│   ├── css/                # Compiled CSS
+│   └── js/                 # Compiled JS
+├── routes/                 # Route definitions
+│   └── app.php             # Application routes
+├── seeders/                # Data seeders
+├── templates/              # Tintin views
+│   ├── layouts/            # Shared layouts
+│   └── partials/           # Reusable components
+├── tests/                  # Unit and functional tests
+├── var/                    # Generated files
+│   ├── cache/              # Application cache
+│   ├── logs/               # Error logs
+│   ├── session/            # User sessions
+│   ├── storage/            # Uploaded files
+│   └── view/               # Compiled view cache
+├── .env.json               # Environment variables
+├── bow                     # Bow Console CLI
+├── composer.json           # PHP dependencies
+└── package.json            # Node.js dependencies
 ```
 
-## Dossier app/
+## The app/ directory
 
-Le cœur de votre application. C'est ici que vous écrivez la logique métier.
+The heart of your application. This is where you write your business logic.
 
 ### Controllers/
 
-Les contrôleurs gèrent les requêtes HTTP et retournent des réponses.
+Controllers handle HTTP requests and return responses.
 
 ```php title="app/Controllers/UserController.php"
 namespace App\Controllers;
@@ -83,7 +83,7 @@ class UserController
 
 ### Models/
 
-Les modèles représentent vos tables de base de données.
+Models represent your database tables.
 
 ```php title="app/Models/User.php"
 namespace App\Models;
@@ -98,23 +98,23 @@ class User extends Model
 
 ### Services/
 
-Les services encapsulent la logique métier complexe. Voir la [documentation des services](./service).
+Services encapsulate complex business logic. See the [services documentation](./service).
 
 ### Middlewares/
 
-Les middlewares filtrent les requêtes HTTP. Voir la [documentation des middlewares](./middleware).
+Middlewares filter HTTP requests. See the [middlewares documentation](./middleware).
 
-### Events/ et Listeners/
+### Events/ and Listeners/
 
-Système d'événements pour découpler votre application. Voir la [documentation des événements](./messaging).
+Event system to decouple your application. See the [events documentation](./messaging).
 
 ### Tasks/
 
-Tâches asynchrones exécutées en arrière-plan via la file d'attente. Voir la [documentation des tâches](./task).
+Asynchronous tasks executed in the background via the queue. See the [tasks documentation](./task).
 
 ### Kernel.php
 
-Configure le démarrage de l'application :
+Configures the application bootstrap:
 
 ```php title="app/Kernel.php"
 namespace App;
@@ -126,7 +126,7 @@ class Kernel extends Loader
   public function configurations(): array
   {
     return [
-      // Liste des providers à charger
+      // List of providers to load
       \Bow\Database\DatabaseConfiguration::class,
       \Bow\Mail\MailConfiguration::class,
     ];
@@ -141,23 +141,23 @@ class Kernel extends Loader
 }
 ```
 
-## Dossier config/
+## The config/ directory
 
-Contient tous les fichiers de configuration de l'application.
+Contains all the application's configuration files.
 
-| Fichier | Description |
+| File | Description |
 |---------|-------------|
-| `app.php` | Configuration générale (nom, timezone, locale) |
-| `database.php` | Connexions aux bases de données |
-| `mail.php` | Configuration SMTP et drivers email |
-| `storage.php` | Disques de stockage (local, S3, FTP) |
-| `view.php` | Moteur de template et cache |
-| `session.php` | Gestion des sessions |
-| `cache.php` | Configuration du cache |
+| `app.php` | General configuration (name, timezone, locale) |
+| `database.php` | Database connections |
+| `mail.php` | SMTP configuration and email drivers |
+| `storage.php` | Storage disks (local, S3, FTP) |
+| `view.php` | Template engine and cache |
+| `session.php` | Session management |
+| `cache.php` | Cache configuration |
 
-## Dossier routes/
+## The routes/ directory
 
-Définit les points d'entrée de votre API ou application web.
+Defines the entry points of your API or web application.
 
 ```php title="routes/app.php"
 $app->get("/", "HomeController::index");
@@ -166,50 +166,50 @@ $app->post("/users", "UserController::store");
 $app->get("/users/:id", "UserController::show");
 ```
 
-## Dossier templates/
+## The templates/ directory
 
-Vos vues Tintin (ou Twig/Blade selon configuration).
+Your Tintin views (or Twig/Blade depending on configuration).
 
 ```
 templates/
 ├── layouts/
-│   └── app.tintin.php      # Layout principal
+│   └── app.tintin.php      # Main layout
 ├── partials/
-│   ├── header.tintin.php   # En-tête
-│   └── footer.tintin.php   # Pied de page
-├── home.tintin.php         # Page d'accueil
+│   ├── header.tintin.php   # Header
+│   └── footer.tintin.php   # Footer
+├── home.tintin.php         # Home page
 └── users/
-    ├── index.tintin.php    # Liste des utilisateurs
-    └── show.tintin.php     # Détail utilisateur
+    ├── index.tintin.php    # User list
+    └── show.tintin.php     # User detail
 ```
 
-## Dossier public/
+## The public/ directory
 
-Le seul dossier accessible depuis le web.
+The only directory accessible from the web.
 
-:::warning Sécurité
-Configurez votre serveur web pour pointer vers ce dossier uniquement. Ne jamais exposer les autres dossiers.
+:::warning Security
+Configure your web server to point to this directory only. Never expose the other directories.
 :::
 
-## Dossier var/
+## The var/ directory
 
-Fichiers générés automatiquement par l'application.
+Files generated automatically by the application.
 
-| Sous-dossier | Description |
+| Subdirectory | Description |
 |--------------|-------------|
-| `cache/` | Cache de l'application (config, routes) |
-| `logs/` | Fichiers de log (erreurs, debug) |
-| `session/` | Fichiers de session (si driver file) |
-| `storage/` | Fichiers uploadés par les utilisateurs |
-| `view/` | Vues compilées (cache) |
+| `cache/` | Application cache (config, routes) |
+| `logs/` | Log files (errors, debug) |
+| `session/` | Session files (when using the file driver) |
+| `storage/` | Files uploaded by users |
+| `view/` | Compiled views (cache) |
 
 :::tip Permissions
-Assurez-vous que le serveur web a les droits d'écriture sur `var/`.
+Make sure the web server has write permissions on `var/`.
 :::
 
-## Fichier .env.json
+## The .env.json file
 
-Variables d'environnement sensibles (non versionnées) :
+Sensitive environment variables (not versioned):
 
 ```json title=".env.json"
 {
@@ -225,13 +225,13 @@ Variables d'environnement sensibles (non versionnées) :
 }
 ```
 
-## Bonnes pratiques
+## Best practices
 
-:::info Organisation du code
-- **Un fichier = une classe** : Suivez les conventions PSR-4.
-- **Nommage explicite** : `UserController`, `PaymentService`, `OrderCreatedEvent`.
-- **Séparation des responsabilités** : Contrôleurs légers, logique dans les services.
-- **Configuration centralisée** : Utilisez `config/` et `.env.json`.
+:::info Code organization
+- **One file = one class**: Follow PSR-4 conventions.
+- **Explicit naming**: `UserController`, `PaymentService`, `OrderCreatedEvent`.
+- **Separation of concerns**: Keep controllers thin, put logic in services.
+- **Centralized configuration**: Use `config/` and `.env.json`.
 :::
 
 <SuggestionFeature />

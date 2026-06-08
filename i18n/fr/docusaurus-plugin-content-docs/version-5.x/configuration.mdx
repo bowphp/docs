@@ -1,0 +1,238 @@
+---
+id: configuration
+title: "Configuration"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Tous les fichiers de configuration de BowPHP sont centralisés dans le dossier `config/`. Chaque fichier est documenté pour faciliter la personnalisation.
+
+## Accéder à la configuration
+
+### Récupérer une valeur
+
+```php
+// Récupérer une valeur (retourne null si absente)
+$appName = config('app.name');
+
+// Récupérer tout un fichier
+$appConfig = config('app');
+```
+
+:::warning Pas de valeur par défaut dans `config()`
+Contrairement à `app_env()`, le helper `config()` **n'a pas** de paramètre
+« valeur par défaut ». Passer un second argument écrit la valeur dans la
+configuration (voir « Modifier une valeur »). Pour appliquer un fallback,
+utilisez `??` :
+
+```php
+$timezone = config('app.timezone') ?? 'UTC';
+```
+:::
+
+### Modifier une valeur
+
+Le second argument de `config()` est un **setter** : il écrit la valeur dans
+la configuration en mémoire pour la durée de la requête.
+
+```php
+config('view.engine', 'twig');
+config('view.extension', '.twig');
+```
+
+### Notation à point
+
+La notation à point navigue dans les fichiers de configuration :
+
+- Premier segment = nom du fichier
+- Segments suivants = clés imbriquées
+
+```php title="config/app.php"
+return [
+  'name' => 'Mon Application',
+  'settings' => [
+    'debug' => true,
+    'cache' => [
+      'driver' => 'file',
+      'ttl' => 3600
+    ]
+  ]
+];
+```
+
+```php
+config('app.name');                    // "Mon Application"
+config('app.settings.debug');          // true
+config('app.settings.cache.driver');   // "file"
+config('app.settings.cache.ttl');      // 3600
+```
+
+## Variables d'environnement
+
+### Fichier `.env.json`
+
+Bow utilise `.env.json` pour les paramètres sensibles et variables selon l'environnement :
+
+```json title=".env.json"
+{
+  "APP_NAME": "Mon Application",
+  "APP_ENV": "development",
+  "APP_DEBUG": true,
+
+  "DB_CONNECTION": "mysql",
+  "DB_HOST": "localhost",
+  "DB_PORT": 3306,
+  "DB_DATABASE": "app_db",
+  "DB_USERNAME": "root",
+  "DB_PASSWORD": "secret",
+
+  "MAIL_HOST": "smtp.example.com",
+  "MAIL_PORT": 587,
+  "MAIL_USERNAME": "user@example.com",
+  "MAIL_PASSWORD": "password"
+}
+```
+
+:::warning Sécurité
+Ajoutez `.env.json` dans `.gitignore` pour ne jamais versionner vos secrets. Créez un `.env.example.json` comme modèle.
+:::
+
+### Récupérer les variables
+
+```php
+// Récupérer une variable
+$dbHost = app_env('DB_HOST');
+
+// Avec une valeur par défaut
+$dbHost = app_env('DB_HOST', 'localhost');
+```
+
+### Valeurs imbriquées
+
+```json title=".env.json"
+{
+  "SERVICES": {
+    "STRIPE": {
+      "KEY": "pk_test_xxx",
+      "SECRET": "sk_test_xxx"
+    },
+    "PAYPAL": {
+      "CLIENT_ID": "xxx",
+      "SECRET": "xxx"
+    }
+  }
+}
+```
+
+```php
+$stripeKey = app_env('SERVICES.STRIPE.KEY');
+$paypalId = app_env('SERVICES.PAYPAL.CLIENT_ID');
+```
+
+### Réutiliser des variables
+
+```json title=".env.json"
+{
+  "BASE_URL": "https://api.example.com",
+  "WEBHOOKS": {
+    "PAYMENT": "${BASE_URL}/webhooks/payment",
+    "ORDER": "${BASE_URL}/webhooks/order"
+  }
+}
+```
+
+```php
+app_env('WEBHOOKS.PAYMENT');
+// https://api.example.com/webhooks/payment
+```
+
+### Format de fichier
+
+:::info Format unique : JSON
+Bow ne charge **que** le format `.env.json`. Le format classique
+`KEY=VALUE` (dotenv) n'est pas supporté par `Bow\Support\Env` —
+`Env::configure()` appelle directement `json_decode()` sur le fichier.
+
+Si vous arrivez d'un autre framework et avez besoin du format `.env`,
+convertissez vos variables en JSON, ou ajoutez votre propre loader.
+:::
+
+## Fichiers de configuration
+
+| Fichier | Description |
+|---------|-------------|
+| `app.php` | Configuration générale (nom, timezone, chemins, debug) |
+| `database.php` | Connexions base de données |
+| `cache.php` | Configuration du cache |
+| `session.php` | Sessions (driver, durée, cookies) |
+| `storage.php` | Stockage de fichiers |
+| `mail.php` | Configuration email |
+| `view.php` | Moteur de templates |
+| `queue.php` | File d'attente |
+| `auth.php` | Authentification |
+| `security.php` | CORS, headers de sécurité |
+| `translate.php` | Internationalisation |
+
+### Configuration `app.php`
+
+```php title="config/app.php"
+return [
+  // Nom de l'application
+  'name' => app_env('APP_NAME', 'Bow Application'),
+
+  // Protection CSRF automatique
+  'auto_csrf' => (bool) app_env('APP_AUTO_CSRF', true),
+
+  // Préfixe d'URL (ex: '/api')
+  'root' => app_env('APP_URI_PREFIX', ''),
+
+  // Fuseau horaire
+  'timezone' => 'Africa/Abidjan',
+
+  // Chemins
+  'env_file' => realpath(__DIR__ . '/../.env.json'),
+  'frontend_path' => dirname(__DIR__) . '/assets',
+  'seeder_path' => dirname(__DIR__) . '/seeders',
+  'public_path' => dirname(__DIR__) . '/public',
+  'storage_path' => dirname(__DIR__) . '/var/storage',
+
+  // Mode debug: development | production
+  'debug' => app_env('APP_ENV', 'development'),
+
+  // Gestionnaire d'erreurs personnalisé
+  'error_handle' => \App\Exceptions\ErrorHandle::class,
+
+  // Afficher les traces d'erreur en JSON
+  'error_trace' => true,
+];
+```
+
+## Helpers personnalisés
+
+Ajoutez vos fonctions personnalisées dans `config/helpers.php` :
+
+```php title="config/helpers.php"
+<?php
+
+if (!function_exists('format_price')) {
+  function format_price(float $price, string $currency = '€'): string
+  {
+    return number_format($price, 2, ',', ' ') . ' ' . $currency;
+  }
+}
+
+if (!function_exists('slugify')) {
+  function slugify(string $text): string
+  {
+    return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $text), '-'));
+  }
+}
+```
+
+:::info Documentation
+Consultez la [documentation des helpers](./helper) pour toutes les fonctions disponibles.
+:::
+
+<SuggestionFeature />

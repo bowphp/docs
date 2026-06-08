@@ -27,8 +27,12 @@ module.exports = {
   organizationName: "bowphp",
   projectName: "bowphp.com",
   i18n: {
-    defaultLocale: "fr",
-    locales: ["fr"],
+    defaultLocale: "en",
+    locales: ["en", "fr"],
+    localeConfigs: {
+      en: { label: "English", htmlLang: "en-US" },
+      fr: { label: "Français", htmlLang: "fr-FR" },
+    },
   },
   scripts: [
     "https://www.googletagmanager.com/gtag/js?id=UA-97409420-1",
@@ -49,7 +53,7 @@ module.exports = {
   customFields: {
     startTutorial: "/blog/installation",
     landingText:
-      "BowPHP a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement et est apprécié par <strong>+2500</strong> Développeur(se)s",
+      "BowPHP was designed from the ground up to be easy to install and use, getting your application up and running quickly, and is trusted by <strong>+2500</strong> developers",
     apiUrl: "https://bowphp.com/api/master",
     users: [
       {
@@ -207,7 +211,7 @@ module.exports = {
         },
         blog: {
           blogTitle: "Blog",
-          blogDescription: "Trouver les astuces et conseils sur bowphp",
+          blogDescription: "Find tips and tricks about bowphp",
           showReadingTime: true,
           routeBasePath: "blog",
           path: "blog",
@@ -287,7 +291,7 @@ module.exports = {
         },
         {
           href: "https://t.me/+PiAXH-w9qLUyOTU0",
-          label: "COMMUNAUTÉ",
+          label: "COMMUNITY",
           position: "right",
         },
         {
@@ -322,7 +326,7 @@ module.exports = {
           items: [
             {
               label:
-                "Bowphp a été conçu dès le départ pour être facilement installé et utilisé pour rendre votre application opérationnel rapidement.",
+                "BowPHP was designed from the ground up to be easy to install and use, getting your application up and running quickly.",
               to: "#",
             },
           ],
@@ -331,11 +335,11 @@ module.exports = {
           title: "Documentation",
           items: [
             {
-              label: "Commencer BowPHP",
+              label: "Get started with BowPHP",
               to: "https://bowphp.com/docs/installation",
             },
             {
-              label: "Voulez-vous contribuer ?",
+              label: "Want to contribute?",
               to: "https://bowphp.com/docs/contribution",
             },
             {
@@ -345,7 +349,7 @@ module.exports = {
           ],
         },
         {
-          title: "Communautés",
+          title: "Communities",
           items: [
             {
               label: "Code D'ivoire",
@@ -362,7 +366,7 @@ module.exports = {
           ],
         },
         {
-          title: "En plus",
+          title: "More",
           items: [
             {
               label: "X",
@@ -379,7 +383,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} développé avec 💚 par <a href="https://github.com/papac">Franck DAKIA</a>`,
+      copyright: `Copyright © ${new Date().getFullYear()} built with 💚 by <a href="https://github.com/papac">Franck DAKIA</a>`,
     },
     mermaid: {
       theme: {

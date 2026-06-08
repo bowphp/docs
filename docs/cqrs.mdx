@@ -7,15 +7,15 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-**CQRS** (*Command Query Responsibility Segregation*) est un pattern architectural qui sépare les opérations de lecture (Queries) des opérations d'écriture (Commands).
+**CQRS** (*Command Query Responsibility Segregation*) is an architectural pattern that separates read operations (Queries) from write operations (Commands).
 
-| Type | Description | Exemple |
+| Type | Description | Example |
 |------|-------------|---------|
-| **Command** | Modifie l'état du système | Créer, modifier, supprimer |
-| **Query** | Lit les données sans modification | Lister, afficher, rechercher |
+| **Command** | Modifies the state of the system | Create, update, delete |
+| **Query** | Reads data without modifying it | List, display, search |
 
-:::info Quand utiliser CQRS ?
-CQRS est utile pour les systèmes complexes où les besoins en lecture et écriture diffèrent. Pour les applications simples, ce pattern peut ajouter une complexité inutile.
+:::info When should you use CQRS?
+CQRS is useful for complex systems where read and write needs differ. For simple applications, this pattern may add unnecessary complexity.
 :::
 
 ## Installation
@@ -26,9 +26,9 @@ composer require bowphp/cqrs
 
 ## Commands
 
-Les Commands représentent des intentions de modification de l'état du système.
+Commands represent intentions to modify the state of the system.
 
-### Créer une Command
+### Creating a Command
 
 ```php title="app/Commands/CreateUserCommand.php"
 namespace App\Commands;
@@ -45,7 +45,7 @@ class CreateUserCommand implements CommandInterface
 }
 ```
 
-### Créer un Handler
+### Creating a Handler
 
 ```php title="app/CommandHandlers/CreateUserCommandHandler.php"
 namespace App\CommandHandlers;
@@ -78,7 +78,7 @@ class CreateUserCommandHandler implements CommandHandlerInterface
 }
 ```
 
-### Enregistrer le Handler
+### Registering the Handler
 
 ```php title="app/Configurations/ApplicationConfiguration.php"
 namespace App\Configurations;
@@ -99,7 +99,7 @@ class ApplicationConfiguration extends Configuration
 }
 ```
 
-### Exécuter la Command
+### Executing the Command
 
 ```php title="app/Controllers/UserController.php"
 namespace App\Controllers;
@@ -131,9 +131,9 @@ class UserController
 
 ## Queries
 
-Les Queries récupèrent des données sans modifier l'état du système.
+Queries retrieve data without modifying the state of the system.
 
-### Créer une Query
+### Creating a Query
 
 ```php title="app/Queries/GetUserByIdQuery.php"
 namespace App\Queries;
@@ -148,7 +148,7 @@ class GetUserByIdQuery implements QueryInterface
 }
 ```
 
-### Créer un Handler
+### Creating a Handler
 
 ```php title="app/QueryHandlers/GetUserByIdQueryHandler.php"
 namespace App\QueryHandlers;
@@ -167,7 +167,7 @@ class GetUserByIdQueryHandler implements QueryHandlerInterface
 }
 ```
 
-### Enregistrer le Handler
+### Registering the Handler
 
 ```php title="app/Configurations/ApplicationConfiguration.php"
 use App\Queries\GetUserByIdQuery;
@@ -182,7 +182,7 @@ public function run(): void
 }
 ```
 
-### Exécuter la Query
+### Executing the Query
 
 ```php title="app/Controllers/UserController.php"
 namespace App\Controllers;
@@ -206,9 +206,9 @@ class UserController
 }
 ```
 
-## Attributs PHP
+## PHP Attributes
 
-Utilisez les attributs PHP 8 pour lier automatiquement les handlers.
+Use PHP 8 attributes to automatically bind handlers.
 
 ### CommandHandler Attribute
 
@@ -225,7 +225,7 @@ class CreateUserCommandHandler implements CommandHandlerInterface
 {
   public function process(CommandInterface $command): mixed
   {
-    // Logique de création
+    // Creation logic
   }
 }
 ```
@@ -245,12 +245,12 @@ class GetUserByIdQueryHandler implements QueryHandlerInterface
 {
   public function process(QueryInterface $query): mixed
   {
-    // Logique de récupération
+    // Retrieval logic
   }
 }
 ```
 
-### Enregistrement avec handlers()
+### Registration with handlers()
 
 ```php title="app/Configurations/ApplicationConfiguration.php"
 use App\CommandHandlers\CreateUserCommandHandler;
@@ -279,7 +279,7 @@ $app->get('/users', 'UserController::index');
 $app->get('/users/:id', 'UserController::show');
 ```
 
-## Structure recommandée
+## Recommended Structure
 
 ```
 app/
@@ -301,18 +301,18 @@ app/
 
 ## Interfaces
 
-| Interface | Méthode | Description |
-|-----------|---------|-------------|
-| `CommandInterface` | - | Marqueur pour les commands |
-| `CommandHandlerInterface` | `process(CommandInterface): mixed` | Traite une command |
-| `QueryInterface` | - | Marqueur pour les queries |
-| `QueryHandlerInterface` | `process(QueryInterface): mixed` | Traite une query |
+| Interface | Method | Description |
+|-----------|--------|-------------|
+| `CommandInterface` | - | Marker for commands |
+| `CommandHandlerInterface` | `process(CommandInterface): mixed` | Handles a command |
+| `QueryInterface` | - | Marker for queries |
+| `QueryHandlerInterface` | `process(QueryInterface): mixed` | Handles a query |
 
 ## Bus
 
-| Classe | Méthode | Description |
-|--------|---------|-------------|
-| `CommandBus` | `execute(CommandInterface): mixed` | Exécute une command |
-| `QueryBus` | `execute(QueryInterface): mixed` | Exécute une query |
+| Class | Method | Description |
+|-------|--------|-------------|
+| `CommandBus` | `execute(CommandInterface): mixed` | Executes a command |
+| `QueryBus` | `execute(QueryInterface): mixed` | Executes a query |
 
 <SuggestionFeature />

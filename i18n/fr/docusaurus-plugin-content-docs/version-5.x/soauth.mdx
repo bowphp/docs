@@ -1,0 +1,165 @@
+---
+id: soauth
+title: "Authentification via les réseaux sociaux"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Package d'authentification via les réseaux sociaux pour BowPHP. Ce package utilise [`thephpleague/oauth2-client`](https://github.com/thephpleague/oauth2-client) comme wrapper.
+
+Actuellement, il supporte les fournisseurs suivants :
+
+- Facebook
+- Gitlab
+- Github
+- Google
+- Instagram
+- Linkedin
+
+## Installation
+
+Pour installer ce paquet, vous devez utiliser [composer](https://getcomposer.org). Nous vous recommandons de l'installer globalement.
+
+```bash
+composer require bowphp/soauth
+```
+
+## Configuration
+
+Après l'installation, dans votre fichier `.env.json`, vous devez définir les informations d'accès au fournisseur comme suit :
+
+### Configuration Facebook
+
+Vous pouvez créer une nouvelle application Facebook à l'adresse [https://developers.facebook.com/fr](https://developers.facebook.com/fr).
+
+```json
+{
+  "FACEBOOK_CLIENT_ID": "client_id",
+  "FACEBOOK_CLIENT_SECRET": "client_secret",
+  "FACEBOOK_REDIRECT_URI": "redirect_uri"
+}
+```
+
+### Configuration Gitlab
+
+```json
+{
+  "GITLAB_CLIENT_ID": "client_id",
+  "GITLAB_CLIENT_SECRET": "client_secret",
+  "GITLAB_REDIRECT_URI": "redirect_uri"
+}
+```
+
+### Configuration GitHub
+
+```json
+{
+  "GITHUB_CLIENT_ID": "client_id",
+  "GITHUB_CLIENT_SECRET": "client_secret",
+  "GITHUB_REDIRECT_URI": "redirect_uri"
+}
+```
+
+### Configuration Google
+
+```json
+{
+  "GOOGLE_CLIENT_ID": "client_id",
+  "GOOGLE_CLIENT_SECRET": "client_secret",
+  "GOOGLE_REDIRECT_URI": "redirect_uri"
+}
+```
+
+### Configuration Instagram
+
+```json
+{
+  "INSTAGRAM_CLIENT_ID": "client_id",
+  "INSTAGRAM_CLIENT_SECRET": "client_secret",
+  "INSTAGRAM_REDIRECT_URI": "redirect_uri"
+}
+```
+
+### Configuration LinkedIn
+
+```json
+{
+  "LINKEDIN_CLIENT_ID": "client_id",
+  "LINKEDIN_CLIENT_SECRET": "client_secret",
+  "LINKEDIN_REDIRECT_URI": "redirect_uri"
+}
+```
+
+:::tip Remarque
+La configuration suit toujours la même approche : trois clés
+`<PROVIDER>_CLIENT_ID`, `<PROVIDER>_CLIENT_SECRET`,
+`<PROVIDER>_REDIRECT_URI`.
+:::
+
+## Utilisation
+
+Activez le package en l'ajoutant à `Kernel::configurations()` :
+
+```php title="app/Kernel.php"
+public function configurations(): array
+{
+  return [
+    \Bow\Soauth\SoauthConfiguration::class,
+    // ... autres providers
+  ];
+}
+```
+
+Nous considérons le contrôleur suivant :
+
+```php
+namespace App\Controllers;
+
+use App\Controllers\Controller;
+use Bow\Soauth\Soauth;
+
+class SoauthController extends Controller
+{
+  /**
+   * Redirection vers le fournisseur défini
+   *
+   * @param string $provider
+   * @return mixed
+   */
+  public function redirect(string $provider)
+  {
+    // Le second argument $scope est optionnel : passez un tableau de
+    // permissions OAuth (ex. ['email', 'public_profile']) ou omettez-le
+    // pour utiliser le scope par défaut du fournisseur.
+    return Soauth::redirect($provider, ['email']);
+  }
+
+  /**
+   * Gérer le retour du fournisseur OAuth
+   *
+   * @param string $provider
+   * @return mixed
+   */
+  public function handle(string $provider)
+  {
+    $user = Soauth::resource($provider);
+
+    // Connectez l'utilisateur ou créez-le, puis redirigez :
+    // session()->set('user', $user);
+    return redirect('/dashboard');
+  }
+}
+```
+
+### Ajouter une route
+
+Définissez la route qui sera utilisée pour les actions d'appel Soauth :
+
+```php title="routes/app.php"
+$app->get('/oauth/:provider/redirect', 'SoauthController::redirect');
+$app->get('/oauth/:provider/callback', 'SoauthController::handle');
+```
+
+<SuggestionFeature />

@@ -1,0 +1,250 @@
+---
+id: storage
+title: "Stockage de fichiers"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+:::info
+BowPHP intègre un système de gestion de fichiers permettant de manipuler des fichiers avec une grande simplicité.
+:::
+
+## Configuration
+
+Le fichier de configuration du système de gestion de fichiers se trouve dans `config/resource.php`.
+
+## Fonctionnement
+
+Vous avez la possibilité d'utiliser les services ou travailler dans votre disque local. Les méthodes statiques `local` et `service` permettent respectivement de manipuler le système de disque et les services de stockage actuellement `ftp` et `s3`.
+
+### Système de fichiers local
+
+Pour gérer votre système de fichiers local avec BowPHP, vous allez utiliser la méthode statique `local`.
+
+#### Explication du concept
+
+Nous appelerons les différents dossiers spécifiés `disk`.
+
+Considérons la configuration suivante :
+
+```php
+'disk' =>[
+  'mount' => 'storage',
+  'path' => [
+    'storage' => __DIR__.'/../var/app',
+    'public' => __DIR__.'/../public',
+  ]
+];
+```
+
+:::tip Remarque
+Vous pouvez spécifier autant de disques que vous voulez.
+:::
+
+La classe `Storage` expose la méthode statique `local` qui permet la manipulation de fichiers. La valeur passée à `local` doit être un nom de disque valide spécifié dans la liste des `path`.
+
+```php
+use Bow\Storage\Storage;
+
+Storage::local('public');     // disque nommé
+Storage::local();             // disque par défaut (clé `mount`)
+
+// `Storage::disk()` est un alias de `Storage::local()`
+Storage::disk('public');
+```
+
+:::info Information
+Si la méthode `local` (ou son alias `disk`) est appelée sans paramètre, elle
+utilisera par défaut la valeur de la clé `mount`.
+:::
+
+Vous pouvez aussi utiliser le helper `app_storage()` qui fonctionne exactement de la même manière :
+
+```php
+app_storage('public');
+// Ou
+app_storage()->get('app.js');
+```
+
+### Les services S3 et FTP
+
+Pour utiliser un système de stockage externe, cela se fait via la méthode `service`. Cette méthode vous permet de sélectionner le type de stockage externe que vous voulez utiliser. Vous trouverez la configuration nécessaire des services dans le fichier de configuration, section `services` du fichier `config/resource.php`.
+
+Exemple avec le service `ftp` :
+
+```php
+$service = Storage::service('ftp');
+$service->get('app.js');
+```
+
+## Manipulation des fichiers
+
+Cette section décrit les différentes méthodes disponibles pour la manipulation de fichiers et leur utilisation.
+
+Supposons que nous avons le fichier `app.txt` dans le disque `public` :
+
+```plain
+// contenu du fichier app.txt
+Hello, world
+```
+
+:::info Important
+Notez que ces méthodes (sauf la méthode `get`) retournent respectivement `true` ou `false` en cas de succès ou d'échec.
+:::
+
+### Récupérer le contenu d'un fichier
+
+La méthode `get` sert à récupérer le contenu d'un fichier. Elle prend comme paramètre le nom du fichier.
+
+```php
+$local_storage = app_storage('public');
+$content = $local_storage->get("app.txt");
+
+// Avec un service
+$service = Storage::service('ftp');
+$content = $service->get("app.txt");
+
+echo $content;
+// => Hello, world
+```
+
+:::info Compatibilité
+`service` et `local` utilisent la même interface de manipulation. Ce qui veut dire que les méthodes disponibles pour `local` existent aussi pour `service`.
+:::
+
+### Ajouter/Modifier le contenu d'un fichier
+
+La méthode `put` permet d'ajouter ou de modifier le contenu d'un fichier :
+
+```php
+$local_storage = app_storage('public');
+$content = 'console.log("Hello, world")';
+
+$local_storage->put('app.js', $content );
+```
+
+### Ajouter du contenu au début ou à la fin d'un fichier
+
+Les méthodes `prepend` et `append` vous permettent d'ajouter respectivement du contenu au début ou à la fin d'un fichier :
+
+```php
+$local_storage = app_storage('public');
+
+$local_storage->prepend('app.txt', 'Contenu ajouté au début');
+$local_storage->append('app.txt', 'Contenu ajouté à la fin');
+```
+
+### Supprimer un fichier
+
+La méthode `delete` permet de supprimer un fichier.
+
+```php
+$local_storage = app_storage('public');
+
+$local_storage->delete('app.js');
+```
+
+### Copier ou déplacer un fichier
+
+```php
+$local_storage = app_storage('public');
+
+$local_storage->copy('app.txt', 'sous-dossier/app.txt');
+$local_storage->move('app.txt', 'archive/app.txt'); // copie + supprime la source
+```
+
+### Lister les fichiers et dossiers
+
+Pour énumérer le contenu d'un dossier :
+
+```php
+$local_storage = app_storage('public');
+
+$files = $local_storage->files('uploads');         // fichiers d'un dossier
+$subdirs = $local_storage->directories('uploads'); // sous-dossiers
+```
+
+### Stocker un fichier uploadé
+
+Pour persister un fichier provenant de `$request->file(...)` :
+
+```php
+$file = request()->file('avatar');
+
+$path = app_storage('public')->store($file, 'avatars');
+// path : chemin relatif du fichier stocké
+```
+
+### Créer un dossier
+
+Vous pouvez créer un nouveau dossier à l'aide de la méthode `makeDirectory`:
+
+#### Prototype
+
+```php
+makeDirectory(string $dirname, int $mode = 0777): bool
+```
+
+| Paramètre | Type | Description |
+|-----------|------|-------------|
+| `dirname` | `string` | Le chemin du dossier à créer |
+| `mode`    | `int`    | Mode UNIX, par défaut `0777` |
+
+:::note Création récursive automatique
+Bow appelle `mkdir($dirname, $mode, true)` en interne — la création
+récursive est **toujours active**. Pas besoin d'un drapeau dédié pour
+créer une arborescence comme `chemin/vers/un/dossier`.
+:::
+
+```php
+$local_storage = app_storage('public');
+
+$local_storage->makeDirectory('dossier');
+$local_storage->makeDirectory('chemin/vers/un/dossier'); // récursif
+$local_storage->makeDirectory('private', 0750);          // mode personnalisé
+```
+
+### Vérifier si un fichier existe
+
+```php
+$local_storage = app_storage('public');
+
+if ($local_storage->exists('app.txt')) {
+  echo $local_storage->get('app.txt');
+}
+```
+
+### Vérifier si le paramètre est un fichier
+
+```php
+$local_storage = app_storage('public');
+
+if ($local_storage->isFile('app.txt')) {
+  echo "C'est un fichier";
+}
+```
+
+### Vérifier si le paramètre est un dossier
+
+```php
+$local_storage = app_storage('public');
+
+if ($local_storage->isDirectory('nom_du_dossier')) {
+  echo "C'est un dossier";
+}
+```
+
+### Obtenir le chemin absolu d'un fichier ou dossier
+
+```php
+$local_storage = app_storage('public');
+
+$path = $local_storage->path('app.txt');
+
+echo $path;
+// => /chemin/absolu/vers/le/fichier/app.txt
+```
+
+<SuggestionFeature />

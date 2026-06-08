@@ -1,0 +1,410 @@
+---
+id: http-request
+title: "Requêtes HTTP"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Une requête HTTP est le message que l'utilisateur envoie à l'application Bow via son navigateur ou d'autres outils tels que `curl`, `httpie`, etc.
+
+Ce message est traité par Bow via la classe `Bow\Http\Request`. Cette classe permet d'accéder aux informations de la requête : adresse IP, méthode HTTP, données de formulaire, fichiers uploadés, etc.
+
+## Accéder à la requête
+
+### Via le helper
+
+```php
+$request = request();
+$name = $request->get('name');
+```
+
+### Via l'injection de dépendance
+
+```php title="routes/app.php"
+use Bow\Http\Request;
+
+$app->get('/', function (Request $request) {
+  return $request->get('name');
+});
+```
+
+### Via un contrôleur
+
+```php
+namespace App\Controllers;
+
+use App\Models\User;
+use Bow\Http\Request;
+
+class UserController
+{
+  public function show(Request $request, int $id)
+  {
+    $user = User::retrieve($id);
+    $user->name = $request->get('name');
+    $user->persist();
+
+    return view('user/profile', ['user' => $user]);
+  }
+}
+```
+
+## Récupérer les données
+
+### Récupérer une valeur
+
+```php
+// Via la méthode get()
+$name = $request->get('name');
+
+// Via la propriété magique
+$name = $request->name;
+
+// Avec une valeur par défaut
+$name = $request->get('name', 'Invité');
+
+// Avec un callback par défaut
+$name = $request->get('name', fn() => User::first()->name);
+```
+
+### Récupérer toutes les données
+
+```php
+$data = $request->all();
+```
+
+### Données par source : query string vs POST
+
+Quand vous voulez explicitement lire `$_GET` ou `$_POST` (au lieu du tableau
+fusionné renvoyé par `all()`), utilisez `query()` et `post()` :
+
+```php
+// Tableau complet de $_GET
+$queryParams = $request->query();
+
+// Une clé spécifique de $_GET (renvoie [] si absente)
+$page = $request->query('page');
+
+// Tableau complet de $_POST
+$body = $request->post();
+
+// Une clé spécifique de $_POST
+$name = $request->post('name');
+```
+
+:::tip Quand préférer `get()` ?
+`get($key)` cherche d'abord dans les routes/query/body fusionnés et offre un
+fallback par défaut (`get('name', 'Invité')`). Réservez `query()` / `post()`
+aux cas où l'origine de la donnée est importante (par ex. ne *jamais* lire
+`?admin=1` depuis l'URL).
+:::
+
+### Corps JSON et PUT
+
+Bow décode automatiquement le corps de la requête : si l'en-tête
+`Content-Type` vaut `application/json`, le JSON est décodé et fusionné dans les
+données accessibles via `get()`, `all()` et `post()`. Aucune étape manuelle
+n'est nécessaire pour consommer une API JSON :
+
+```php
+// Requête POST avec Content-Type: application/json et corps {"name": "Franck"}
+$name = $request->get('name'); // "Franck"
+$body = $request->post();       // ['name' => 'Franck']
+```
+
+Les corps de requêtes `PUT` (form-urlencoded) sont également analysés
+automatiquement et disponibles via les mêmes méthodes.
+
+:::warning JSON invalide
+Si le `Content-Type` est `application/json` mais que le corps n'est pas un JSON
+valide, Bow lève une `Bow\Http\Exception\BadRequestException`.
+:::
+
+### Filtrer les données
+
+```php
+// Récupérer uniquement certains champs
+$data = $request->only(['name', 'email']);
+
+// Exclure certains champs
+$data = $request->ignore(['password', 'password_confirmation']);
+
+// Les deux acceptent aussi une liste d'arguments
+$data = $request->only('name', 'email');
+$data = $request->ignore('password', 'password_confirmation');
+```
+
+### Vérifier l'existence
+
+```php
+if ($request->has('name')) {
+  // Le champ existe
+}
+```
+
+### Récupérer les anciennes valeurs
+
+Après une redirection avec erreurs de validation :
+
+```php
+$oldName = $request->old('name', 'Valeur par défaut');
+```
+
+## Fichiers uploadés
+
+### Récupérer un fichier
+
+```php
+$file = $request->file('avatar');
+
+if ($file) {
+  $file->moveTo('/uploads/avatars');
+}
+```
+
+### Fichiers multiples
+
+```php
+$files = $request->file('documents');
+
+foreach ($files as $file) {
+  $file->moveTo('/uploads/documents/' . $file->getClientFilename());
+}
+```
+
+### Vérifier l'existence
+
+```php
+if (Request::hasFile('avatar')) {
+  // Un fichier a été uploadé
+}
+```
+
+## Informations de la requête
+
+### URL et chemin
+
+```php
+// Chemin de la requête (ex: /users/1)
+$path = $request->path();
+
+// URL complète (ex: https://example.com/users/1)
+$url = $request->url();
+
+// Origine (ex: https://example.com)
+$origin = $request->origin();
+
+// Nom d'hôte (ex: example.com)
+$host = $request->hostname();
+
+// Domaine sans port (ex: example.com)
+$domain = $request->domain();
+```
+
+### Vérifier le chemin
+
+```php
+if ($request->is('users/*')) {
+  // La requête commence par /users/
+}
+```
+
+### Méthode HTTP
+
+```php
+$method = $request->method(); // GET, POST, PUT, DELETE, etc.
+
+// Vérifications rapides
+if ($request->isGet()) { }
+if ($request->isPost()) { }
+if ($request->isPut()) { }
+if ($request->isDelete()) { }
+```
+
+### Type de requête
+
+```php
+// Requête AJAX
+if ($request->isAjax()) {
+  // Traitement AJAX
+}
+
+// Requête attendant du JSON
+if ($request->wantsJson()) {
+  return response()->json($data);
+}
+```
+
+## Informations client
+
+### Adresse IP et port
+
+```php
+$ip = $request->ip();
+$port = $request->port();
+```
+
+### User Agent
+
+```php
+$userAgent = $request->userAgent();
+```
+
+### Langue et locale
+
+```php
+$lang = $request->lang();     // ex: "fr"
+$locale = $request->locale(); // ex: "fr_FR"
+```
+
+### Referer
+
+```php
+$referer = $request->referer();
+
+if ($request->isReferer('https://google.com/*')) {
+  // L'utilisateur vient de Google
+}
+```
+
+## Protocole et sécurité
+
+```php
+$protocol = $request->protocol(); // http ou https
+
+if ($request->isSecure()) {
+  // Connexion HTTPS
+}
+
+if ($request->isProtocol('https')) {
+  // Même chose
+}
+```
+
+## En-têtes HTTP
+
+### Récupérer un en-tête
+
+```php
+$contentType = $request->getHeader('content-type');
+$authorization = $request->getHeader('authorization');
+```
+
+### Récupérer tous les en-têtes
+
+```php
+$headers = $request->getHeaders();
+```
+
+### Vérifier l'existence
+
+```php
+if ($request->hasHeader('x-api-key')) {
+  $apiKey = $request->getHeader('x-api-key');
+}
+```
+
+## Identifiant de requête
+
+Chaque requête possède un identifiant unique :
+
+```php
+$requestId = $request->id();
+// ou
+$requestId = $request->getId();
+
+// Définir un ID personnalisé
+$request->setId('custom-request-id');
+```
+
+## Session et authentification
+
+### Accéder à la session
+
+```php
+$session = $request->session();
+$session->put('key', 'value');
+```
+
+### Utilisateur authentifié
+
+```php
+$user = $request->user();
+
+// Avec un guard spécifique
+$user = $request->user('api');
+```
+
+## Cookies
+
+```php
+// Récupérer tous les cookies
+$cookies = $request->cookie();
+
+// Récupérer un cookie spécifique
+$token = $request->cookie('remember_token');
+```
+
+## Validation
+
+Valider les données directement depuis la requête :
+
+```php
+$validation = $request->validate([
+  'name' => 'required|string|max:255',
+  'email' => 'required|email',
+  'password' => 'required|min:8'
+]);
+
+if ($validation->fails()) {
+  return back()->withErrors($validation->getMessages());
+}
+```
+
+## Bags (données partagées)
+
+Les *bags* permettent de stocker des valeurs au sein d'une même requête (par
+exemple des permissions résolues par un middleware, qu'un contrôleur lira
+ensuite) sans polluer les inputs.
+
+```php
+// Définir / lire une valeur
+$request->setBag('user_permissions', ['read', 'write']);
+$permissions = $request->getBag('user_permissions');
+
+// Lire / remplacer tout le tableau de bags
+$all = $request->getBags();
+$request->setBags(['user_permissions' => ['read'], 'feature_flags' => ['v2']]);
+```
+
+## Temps de la requête
+
+```php
+$timestamp = $request->time();
+```
+
+## Tableau récapitulatif
+
+| Méthode | Description |
+|---------|-------------|
+| `get($key, $default)` | Récupère une valeur (toutes sources fusionnées) |
+| `query($key = null)` | Paramètres de la query string (`$_GET`) |
+| `post($key = null)` | Données du corps POST (`$_POST`) |
+| `all()` | Toutes les données |
+| `only($keys)` | Filtre par clés |
+| `ignore($keys)` | Exclut des clés |
+| `has($key)` | Vérifie l'existence |
+| `file($key)` | Récupère un fichier |
+| `path()` | Chemin de la requête |
+| `url()` | URL complète |
+| `method()` | Méthode HTTP |
+| `ip()` | Adresse IP client |
+| `getHeader($key)` | En-tête HTTP |
+| `session()` | Instance de session |
+| `user($guard)` | Utilisateur authentifié |
+| `validate($rules)` | Valide les données |
+| `setBag($name, $value)` / `getBag($name)` | Données partagées dans la requête |
+
+<SuggestionFeature />

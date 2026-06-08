@@ -1,39 +1,39 @@
 ---
 id: migration
-title: "Migrations de base de données"
+title: "Database Migrations"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-:::info À propos des migrations
-Les migrations sont un moyen de versionner votre base de données qui évolue souvent avec les modifications de l'application.
+:::info About migrations
+Migrations are a way to version your database, which often evolves along with changes to your application.
 :::
 
-Les migrations sont sauvegardées dans le dossier `migrations`.
+Migrations are saved in the `migrations` folder.
 
-## Ajouter une migration
+## Adding a migration
 
-Pour ajouter une migration, il faut passer par `php bow` avec la commande `add:migration` ensuite le nom de la migration (ex: `create_todos_table`). Bow créera un fichier du même nom précédé d'une date de création.
+To add a migration, use `php bow` with the `add:migration` command followed by the name of the migration (e.g. `create_todos_table`). Bow will create a file with the same name prefixed by a creation date.
 
 ```bash
 php bow add:migration create_todos_table
 ```
 
-Les options `--table` et `--create` peuvent également être utilisées pour indiquer le nom de la table et indiquer si la migration créera une nouvelle table:
+The `--table` and `--create` options can also be used to indicate the table name and whether the migration will create a new table:
 
 ```bash
-# Créer une nouvelle table
+# Create a new table
 php bow add:migration create_todos_table --create=todos
 
-# Modifier une table existante
+# Modify an existing table
 php bow add:migration add_status_to_todos_table --table=todos
 ```
 
-## Structure de migration
+## Migration structure
 
-Une classe de migration contient deux méthodes: `up` et `rollback`. La méthode `up` sert à ajouter de nouvelles tables, colonnes ou index à votre base de données, tandis que la méthode `rollback` doit inverser les opérations effectuées par la méthode `up`.
+A migration class contains two methods: `up` and `rollback`. The `up` method is used to add new tables, columns, or indexes to your database, while the `rollback` method should reverse the operations performed by the `up` method.
 
 ```php
 use Bow\Database\Migration\Migration;
@@ -42,7 +42,7 @@ use Bow\Database\Migration\Table;
 class Version20190929153939CreateTodosTable extends Migration
 {
   /**
-   * Exécuter la migration
+   * Run the migration
    */
   public function up(): void
   {
@@ -55,7 +55,7 @@ class Version20190929153939CreateTodosTable extends Migration
   }
 
   /**
-   * Annuler la migration
+   * Reverse the migration
    */
   public function rollback(): void
   {
@@ -64,34 +64,34 @@ class Version20190929153939CreateTodosTable extends Migration
 }
 ```
 
-## Exécuter des migrations
+## Running migrations
 
-Pour exécuter toutes vos migrations en attente:
+To run all your pending migrations:
 
 ```bash
 php bow migration:migrate
 
-# Raccourci
+# Shortcut
 php bow migrate
 ```
 
-## Annuler les migrations
+## Rolling back migrations
 
-Pour annuler la dernière opération de migration:
+To roll back the last migration operation:
 
 ```bash
 php bow migration:rollback
 ```
 
-Pour annuler toutes les migrations:
+To roll back all migrations:
 
 ```bash
 php bow migration:reset
 ```
 
-## Gestion des tables
+## Managing tables
 
-### Créer une table
+### Creating a table
 
 ```php
 $this->create("users", function (Table $table) {
@@ -102,7 +102,7 @@ $this->create("users", function (Table $table) {
 });
 ```
 
-### Créer une table si elle n'existe pas
+### Creating a table if it does not exist
 
 ```php
 $this->createIfNotExists("users", function (Table $table) {
@@ -112,7 +112,7 @@ $this->createIfNotExists("users", function (Table $table) {
 });
 ```
 
-### Modifier une table
+### Modifying a table
 
 ```php
 $this->alter('users', function (Table $table) {
@@ -120,25 +120,25 @@ $this->alter('users', function (Table $table) {
 });
 ```
 
-### Renommer une table
+### Renaming a table
 
 ```php
 $this->renameTable('old_table', 'new_table');
 
-// Renommer si existe
+// Rename if it exists
 $this->renameTableIfExists('old_table', 'new_table');
 ```
 
-### Supprimer une table
+### Dropping a table
 
 ```php
 $this->drop('users');
 
-// Supprimer si existe
+// Drop if it exists
 $this->dropIfExists('users');
 ```
 
-### Connexion personnalisée
+### Custom connection
 
 ```php
 $this->connection('mysql_secondary')->create("logs", function (Table $table) {
@@ -148,7 +148,7 @@ $this->connection('mysql_secondary')->create("logs", function (Table $table) {
 });
 ```
 
-### Options de table
+### Table options
 
 ```php
 $this->create("users", function (Table $table) {
@@ -161,66 +161,66 @@ $this->create("users", function (Table $table) {
 });
 ```
 
-### SQL brut
+### Raw SQL
 
 ```php
-// Exécuter du SQL brut dans la migration
+// Execute raw SQL within the migration
 $this->sql('ALTER TABLE users ADD INDEX idx_email (email)');
 
 // Alternative
 $this->addSql('CREATE INDEX idx_name ON users (name)');
 ```
 
-## Types de colonnes
+## Column types
 
-### Colonnes numériques
+### Numeric columns
 
-| Méthode | Description |
+| Method | Description |
 |---------|-------------|
-| `addIncrement('id')` | INTEGER auto-incrémenté (clé primaire) |
-| `addBigIncrement('id')` | BIGINT auto-incrémenté (clé primaire) |
-| `addMediumIncrement('id')` | MEDIUMINT auto-incrémenté (clé primaire) |
-| `addSmallIntegerIncrement('id')` | SMALLINT auto-incrémenté (clé primaire) |
+| `addIncrement('id')` | Auto-incremented INTEGER (primary key) |
+| `addBigIncrement('id')` | Auto-incremented BIGINT (primary key) |
+| `addMediumIncrement('id')` | Auto-incremented MEDIUMINT (primary key) |
+| `addSmallIntegerIncrement('id')` | Auto-incremented SMALLINT (primary key) |
 | `addInteger('column', $attr)` | INTEGER |
-| `addIntegerPrimary('column')` | INTEGER (clé primaire) |
+| `addIntegerPrimary('column')` | INTEGER (primary key) |
 | `addBigInteger('column', $attr)` | BIGINT |
 | `addMediumInteger('column', $attr)` | MEDIUMINT |
 | `addSmallInteger('column', $attr)` | SMALLINT |
 | `addTinyInteger('column', $attr)` | TINYINT |
 | `addFloat('column', $attr)` | FLOAT |
-| `addFloatPrimary('column')` | FLOAT (clé primaire) |
+| `addFloatPrimary('column')` | FLOAT (primary key) |
 | `addDouble('column', $attr)` | DOUBLE |
-| `addDoublePrimary('column')` | DOUBLE (clé primaire) |
+| `addDoublePrimary('column')` | DOUBLE (primary key) |
 | `addBoolean('column')` | BOOLEAN |
 
-### Colonnes texte
+### Text columns
 
-| Méthode | Description |
+| Method | Description |
 |---------|-------------|
-| `addString('column', $attr)` | VARCHAR (255 par défaut) |
+| `addString('column', $attr)` | VARCHAR (255 by default) |
 | `addChar('column', $attr)` | CHAR |
 | `addText('column', $attr)` | TEXT |
 | `addLongtext('column', $attr)` | LONGTEXT |
 | `addJson('column', $attr)` | JSON |
 
-### Colonnes date/heure
+### Date/time columns
 
-| Méthode | Description |
+| Method | Description |
 |---------|-------------|
 | `addDatetime('column', $attr)` | DATETIME |
 | `addDate('column', $attr)` | DATE |
 | `addTime('column', $attr)` | TIME |
 | `addTimestamp('column', $attr)` | TIMESTAMP |
 | `addYear('column', $attr)` | YEAR |
-| `addTimestamps()` | Ajoute `created_at` et `updated_at` |
-| `addSoftDelete()` | Ajoute `deleted_at` pour soft delete |
+| `addTimestamps()` | Adds `created_at` and `updated_at` |
+| `addSoftDelete()` | Adds `deleted_at` for soft delete |
 
-### Colonnes spéciales
+### Special columns
 
-| Méthode | Description |
+| Method | Description |
 |---------|-------------|
 | `addUuid('column', $attr)` | UUID |
-| `addUuidPrimary('column', $attr)` | UUID (clé primaire) |
+| `addUuidPrimary('column', $attr)` | UUID (primary key) |
 | `addBinary('column', $attr)` | BINARY |
 | `addBlob('column', $attr)` | BLOB |
 | `addTinyBlob('column', $attr)` | TINYBLOB |
@@ -231,26 +231,26 @@ $this->addSql('CREATE INDEX idx_name ON users (name)');
 | `addEnum('column', $attr)` | ENUM |
 | `addCheck('column', $attr)` | CHECK constraint |
 
-## Attributs de colonne
+## Column attributes
 
-Toutes les méthodes `add*` acceptent un tableau d'attributs:
+All `add*` methods accept an array of attributes:
 
 ```php
 $table->addString('email', [
-  'size' => 100,        // Taille de la colonne
-  'nullable' => true,   // Peut être NULL
-  'default' => 'N/A',   // Valeur par défaut
-  'unique' => true,     // Contrainte UNIQUE
-  'index' => true,      // Ajouter un INDEX
-  'unsigned' => true,   // Non signé (pour nombres)
-  'primary' => true,    // Clé primaire
-  'increment' => true,  // Auto-incrément
+  'size' => 100,        // Column size
+  'nullable' => true,   // Can be NULL
+  'default' => 'N/A',   // Default value
+  'unique' => true,     // UNIQUE constraint
+  'index' => true,      // Add an INDEX
+  'unsigned' => true,   // Unsigned (for numbers)
+  'primary' => true,    // Primary key
+  'increment' => true,  // Auto-increment
 ]);
 ```
 
-### Méthode addColumn
+### The addColumn method
 
-Toutes les méthodes helpers utilisent `addColumn` en interne:
+All helper methods use `addColumn` internally:
 
 ```php
 $table->addColumn('price', 'decimal', [
@@ -260,15 +260,15 @@ $table->addColumn('price', 'decimal', [
 ]);
 ```
 
-### SQL brut dans une colonne
+### Raw SQL in a column
 
 ```php
 $table->addRaw('FULLTEXT INDEX idx_content (title, body)');
 ```
 
-## Modification de colonnes
+## Modifying columns
 
-### Renommer une colonne
+### Renaming a column
 
 ```php
 $this->alter('users', function (Table $table) {
@@ -276,11 +276,11 @@ $this->alter('users', function (Table $table) {
 });
 ```
 
-### Modifier le type d'une colonne
+### Changing a column's type
 
-Chaque méthode `add*` du tableau ci-dessus a une jumelle `change*` qui modifie
-le type ou les attributs d'une colonne existante (`changeString`, `changeInteger`,
-`changeFloat`, `changeBoolean`, `changeEnum`, `changeJson`, etc.) :
+Each `add*` method in the table above has a `change*` counterpart that changes
+the type or attributes of an existing column (`changeString`, `changeInteger`,
+`changeFloat`, `changeBoolean`, `changeEnum`, `changeJson`, etc.):
 
 ```php
 $this->alter('users', function (Table $table) {
@@ -289,10 +289,10 @@ $this->alter('users', function (Table $table) {
 });
 ```
 
-Pour les cas non couverts par les helpers, la méthode générique
-`changeColumn($name, $type, $attr)` est disponible.
+For cases not covered by the helpers, the generic
+`changeColumn($name, $type, $attr)` method is available.
 
-### Supprimer une colonne
+### Dropping a column
 
 ```php
 $this->alter('users', function (Table $table) {
@@ -300,9 +300,9 @@ $this->alter('users', function (Table $table) {
 });
 ```
 
-## Contraintes
+## Constraints
 
-### Clés étrangères
+### Foreign keys
 
 ```php
 $this->create("posts", function (Table $table) {
@@ -311,7 +311,7 @@ $this->create("posts", function (Table $table) {
   $table->addString('title');
   $table->addTimestamps();
   
-  // Définir la clé étrangère
+  // Define the foreign key
   $table->addForeign('user_id', [
     'references' => 'id',
     'on' => 'users',
@@ -321,7 +321,7 @@ $this->create("posts", function (Table $table) {
 });
 ```
 
-### Index
+### Indexes
 
 ```php
 $this->alter('users', function (Table $table) {
@@ -329,7 +329,7 @@ $this->alter('users', function (Table $table) {
 });
 ```
 
-### Contrainte UNIQUE
+### UNIQUE constraint
 
 ```php
 $this->alter('users', function (Table $table) {
@@ -337,27 +337,27 @@ $this->alter('users', function (Table $table) {
 });
 ```
 
-### Supprimer une contrainte (rollback)
+### Dropping a constraint (rollback)
 
-Pour défaire les contraintes — utile dans la méthode `rollback()` :
+To undo constraints — useful in the `rollback()` method:
 
 ```php
 $this->alter('posts', function (Table $table) {
-  $table->dropForeign('user_id');          // ou un tableau de colonnes
+  $table->dropForeign('user_id');          // or an array of columns
   $table->dropIndex('idx_title');
   $table->dropUnique('email');
   $table->dropPrimary();
 });
 ```
 
-| Méthode | Description |
+| Method | Description |
 |---------|-------------|
-| `dropForeign($name)` | Supprime une clé étrangère (chaîne ou tableau) |
-| `dropIndex($name)` | Supprime un index |
-| `dropUnique($name)` | Supprime une contrainte UNIQUE |
-| `dropPrimary()` | Supprime la clé primaire |
+| `dropForeign($name)` | Drops a foreign key (string or array) |
+| `dropIndex($name)` | Drops an index |
+| `dropUnique($name)` | Drops a UNIQUE constraint |
+| `dropPrimary()` | Drops the primary key |
 
-## Exemple complet
+## Complete example
 
 ```php
 use Bow\Database\Migration\Migration;
@@ -367,7 +367,7 @@ class Version20240101120000CreateBlogTables extends Migration
 {
   public function up(): void
   {
-    // Table des catégories
+    // Categories table
     $this->create("categories", function (Table $table) {
       $table->addIncrement('id');
       $table->addString('name');
@@ -375,7 +375,7 @@ class Version20240101120000CreateBlogTables extends Migration
       $table->addTimestamps();
     });
 
-    // Table des articles
+    // Posts table
     $this->create("posts", function (Table $table) {
       $table->withEngine('InnoDB');
       $table->withCharset('utf8mb4');

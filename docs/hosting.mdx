@@ -1,28 +1,28 @@
 ---
 id: hosting
-title: "Hébergement et Déploiement"
+title: "Hosting and Deployment"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Ce guide couvre les différentes options d'hébergement et de déploiement pour votre application BowPHP. Que vous utilisiez un serveur traditionnel ou des conteneurs, vous trouverez ici les configurations nécessaires.
+This guide covers the various hosting and deployment options for your BowPHP application. Whether you use a traditional server or containers, you will find the necessary configurations here.
 
-## Prérequis de production
+## Production prerequisites
 
-Avant de déployer, assurez-vous que votre environnement de production dispose de :
+Before deploying, make sure your production environment has:
 
-- **PHP >= 8.1** avec les extensions requises
-- Un serveur web (Apache, Nginx)
-- Composer pour la gestion des dépendances
-- Accès en écriture aux dossiers `var/` et `public/`
+- **PHP >= 8.1** with the required extensions
+- A web server (Apache, Nginx)
+- Composer for dependency management
+- Write access to the `var/` and `public/` directories
 
-## Configuration du serveur web
+## Web server configuration
 
 ### Apache
 
-Créez ou modifiez le fichier `.htaccess` dans le dossier `public/` :
+Create or edit the `.htaccess` file in the `public/` directory:
 
 ```apache title="public/.htaccess"
 <IfModule mod_rewrite.c>
@@ -32,18 +32,18 @@ Créez ou modifiez le fichier `.htaccess` dans le dossier `public/` :
 
   RewriteEngine On
 
-  # Rediriger vers HTTPS (optionnel)
+  # Redirect to HTTPS (optional)
   # RewriteCond %{HTTPS} off
   # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # Gestion des fichiers existants
+  # Handle existing files
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^ index.php [L]
 </IfModule>
 ```
 
-**Configuration du Virtual Host :**
+**Virtual Host configuration:**
 
 ```apache title="/etc/apache2/sites-available/domain.conf"
 <VirtualHost *:80>
@@ -61,7 +61,7 @@ Créez ou modifiez le fichier `.htaccess` dans le dossier `public/` :
 </VirtualHost>
 ```
 
-Activez le site et les modules nécessaires :
+Enable the site and the necessary modules:
 
 ```bash
 sudo a2enmod rewrite
@@ -84,18 +84,18 @@ server {
   access_log /var/log/nginx/access.log;
   error_log /var/log/nginx/error.log;
 
-  # Gestion des fichiers statiques
+  # Static file handling
   location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ {
     expires 1y;
     add_header Cache-Control "public, immutable";
   }
 
-  # Routage vers index.php
+  # Routing to index.php
   location / {
     try_files $uri $uri/ /index.php?$query_string;
   }
 
-  # Traitement PHP
+  # PHP processing
   location ~ \.php$ {
     fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
     fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
@@ -103,14 +103,14 @@ server {
     fastcgi_hide_header X-Powered-By;
   }
 
-  # Sécurité : bloquer l'accès aux fichiers sensibles
+  # Security: block access to sensitive files
   location ~ /\.(env|git|htaccess) {
     deny all;
   }
 }
 ```
 
-Activez le site :
+Enable the site:
 
 ```bash
 sudo ln -s /etc/nginx/sites-available/domain /etc/nginx/sites-enabled/
@@ -118,26 +118,26 @@ sudo nginx -t
 sudo systemctl restart nginx
 ```
 
-## Déploiement avec Docker
+## Deployment with Docker
 
 ### Dockerfile
 
 ```dockerfile title="Dockerfile"
 FROM php:8.2-fpm-alpine
 
-# Installation des extensions PHP
+# Install PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql opcache
 
-# Installation de Composer
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Dossier de travail
+# Working directory
 WORKDIR /var/www/html
 
-# Copie des fichiers
+# Copy files
 COPY . .
 
-# Installation des dépendances
+# Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
 # Permissions
@@ -217,17 +217,17 @@ server {
 }
 ```
 
-Démarrez les conteneurs :
+Start the containers:
 
 ```bash
 docker-compose up -d
 ```
 
-## Configuration de production
+## Production configuration
 
-### Variables d'environnement
+### Environment variables
 
-Configurez votre fichier `.env.json` pour la production :
+Configure your `.env.json` file for production:
 
 ```json title=".env.json"
 {
@@ -247,89 +247,89 @@ Configurez votre fichier `.env.json` pour la production :
 ```
 
 :::danger Important
-- Mettez `APP_DEBUG` à `false` en production
-- Utilisez des mots de passe forts et uniques
-- Générez une nouvelle `APP_KEY` pour chaque environnement
+- Set `APP_DEBUG` to `false` in production
+- Use strong, unique passwords
+- Generate a new `APP_KEY` for each environment
 :::
 
-### Optimisations
+### Optimizations
 
-Après le déploiement, exécutez ces commandes pour optimiser les performances :
+After deployment, run these commands to optimize performance:
 
 ```bash
-# Installer les dépendances sans les dev
+# Install dependencies without dev packages
 composer install --no-dev --optimize-autoloader
 
-# Vider et préchauffer le cache
+# Clear and warm up the cache
 php bow cache:clear
 php bow config:cache
 
-# Optimiser l'autoloader
+# Optimize the autoloader
 composer dump-autoload --optimize
 ```
 
-### Permissions des dossiers
+### Directory permissions
 
 ```bash
-# Propriétaire www-data pour le serveur web
+# www-data owner for the web server
 sudo chown -R www-data:www-data /var/www/domain
 
-# Permissions d'écriture pour les dossiers nécessaires
+# Write permissions for the required directories
 sudo chmod -R 755 /var/www/domain
 sudo chmod -R 775 /var/www/domain/var
 sudo chmod -R 775 /var/www/domain/public
 ```
 
-## Hébergement mutualisé
+## Shared hosting
 
-Pour les hébergeurs mutualisés (OVH, o2switch, etc.) :
+For shared hosting providers (OVH, o2switch, etc.):
 
-1. **Uploadez** votre projet via FTP ou Git
-2. **Pointez** le domaine vers le dossier `public/`
-3. **Configurez** le fichier `.env.json` avec vos paramètres
-4. **Exécutez** Composer via SSH si disponible :
+1. **Upload** your project via FTP or Git
+2. **Point** the domain to the `public/` directory
+3. **Configure** the `.env.json` file with your settings
+4. **Run** Composer via SSH if available:
 
 ```bash
 cd /home/user/www/domain
 composer install --no-dev --optimize-autoloader
 ```
 
-:::tip Configuration du Document Root
-Si vous ne pouvez pas modifier le document root, déplacez le contenu de `public/` à la racine et ajustez les chemins dans `index.php`.
+:::tip Document Root configuration
+If you cannot change the document root, move the contents of `public/` to the root and adjust the paths in `index.php`.
 :::
 
 ## SSL/HTTPS
 
-### Let's Encrypt avec Certbot
+### Let's Encrypt with Certbot
 
 ```bash
-# Installation de Certbot
+# Install Certbot
 sudo apt install certbot python3-certbot-nginx
 
-# Génération du certificat
+# Generate the certificate
 sudo certbot --nginx -d domain.com -d www.domain.com
 
-# Renouvellement automatique
+# Automatic renewal
 sudo certbot renew --dry-run
 ```
 
-## Surveillance et Logs
+## Monitoring and Logs
 
-### Logs de l'application
+### Application logs
 
-Les logs de BowPHP se trouvent dans `var/logs/` :
+BowPHP logs are located in `var/logs/`:
 
 ```bash
-# Suivre les logs en temps réel
+# Follow the logs in real time
 tail -f var/logs/bow.log
 
-# Rechercher les erreurs
+# Search for errors
 grep -i "error" var/logs/bow.log
 ```
 
-### Rotation des logs
+### Log rotation
 
-Configurez logrotate pour éviter que les fichiers de logs ne grossissent indéfiniment :
+Configure logrotate to prevent log files from growing indefinitely:
 
 ```bash title="/etc/logrotate.d/bow-app"
 /var/www/domain/var/logs/*.log {

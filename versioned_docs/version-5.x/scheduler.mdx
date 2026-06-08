@@ -1,32 +1,32 @@
 ---
 id: scheduler
-title: "Planificateur de tâches"
+title: "Task Scheduler"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le planificateur de BowPHP offre une manière simple et élégante de définir des tâches planifiées. Il vous permet d'automatiser des tâches récurrentes comme les sauvegardes de bases de données, l'envoi d'emails, le nettoyage de cache, et bien plus encore.
+The BowPHP scheduler offers a simple and elegant way to define scheduled tasks. It lets you automate recurring tasks such as database backups, sending emails, clearing caches, and much more.
 
-:::info À propos du Scheduler
-Le planificateur utilise les expressions cron en interne, mais vous permet de les définir avec une API fluide en PHP, plus lisible et maintenable.
+:::info About the Scheduler
+The scheduler uses cron expressions under the hood, but lets you define them with a fluent PHP API that is more readable and maintainable.
 :::
 
-## Méthodes principales
+## Main methods
 
-Le planificateur fournit quatre méthodes principales pour planifier différents types de tâches :
+The scheduler provides four main methods for scheduling different types of tasks:
 
-| **Méthode** | **Description** |
+| **Method** | **Description** |
 |-------------|-----------------|
-| `command()` | Exécute des commandes console Bow |
-| `task()` | Exécute des classes QueueTask |
-| `exec()` | Exécute des commandes shell/bash |
-| `call()` | Exécute des closures/callbacks |
+| `command()` | Run Bow console commands |
+| `task()` | Run QueueTask classes |
+| `exec()` | Run shell/bash commands |
+| `call()` | Run closures/callbacks |
 
-## Définition des tâches
+## Defining tasks
 
-Les tâches planifiées sont définies dans la méthode `schedules()` de votre classe `App\Kernel`. Cette approche offre une meilleure intégration avec le framework et une configuration centralisée :
+Scheduled tasks are defined in the `schedules()` method of your `App\Kernel` class. This approach offers better integration with the framework and a centralized configuration:
 
 ```php title="app/Kernel.php"
 <?php
@@ -46,79 +46,79 @@ class Kernel extends ApplicationLoader
    */
   public function schedules(Scheduler $schedule): void
   {
-    // Planifier une commande console Bow
+    // Schedule a Bow console command
     $schedule->command('cache:clear')
       ->dailyAt('02:00')
-      ->description('Nettoyer le cache de l\'application');
+      ->description('Clear the application cache');
 
-    // Planifier une commande shell
+    // Schedule a shell command
     $schedule->exec('mysqldump -u root mydb > /backups/db.sql')
       ->dailyAt('03:00')
-      ->description('Sauvegarder la base de données')
+      ->description('Back up the database')
       ->runInBackground();
 
-    // Planifier une closure
+    // Schedule a closure
     $schedule->call(function () {
-      logger('Tâche de nettoyage exécutée...');
+      logger('Cleanup task executed...');
     })
       ->hourly()
-      ->description('Tâche de nettoyage');
+      ->description('Cleanup task');
 
-    // Planifier un QueueTask le dimanche à 10h00
-    // (1 = lundi … 7 = dimanche)
+    // Schedule a QueueTask on Sunday at 10:00
+    // (1 = Monday … 7 = Sunday)
     $schedule->task(App\Tasks\SendWeeklyReportTask::class)
       ->weeklyOn(7, '10:00')
-      ->description('Envoyer les rapports hebdomadaires');
+      ->description('Send the weekly reports');
   }
 
-  // ... autres méthodes du Kernel
+  // ... other Kernel methods
 }
 ```
 
-:::tip Configuration centralisée
-La méthode `schedules()` est automatiquement appelée lors de l'exécution des commandes du planificateur. Toutes vos tâches sont définies au même endroit que vos autres configurations d'application.
+:::tip Centralized configuration
+The `schedules()` method is automatically called when running the scheduler commands. All of your tasks are defined in the same place as your other application configuration.
 :::
 
-## Planifier des commandes console
+## Scheduling console commands
 
-La méthode `command()` permet de planifier une commande console Bow :
+The `command()` method lets you schedule a Bow console command:
 
 ```php
-// Commande simple
+// Simple command
 $schedule->command('migration:migrate')->daily();
 
-// Commande avec paramètres
+// Command with parameters
 $schedule->command('email:send', ['--to' => 'admin@example.com'])->hourly();
 
-// Commande avec description
+// Command with a description
 $schedule->command('cache:clear')
   ->dailyAt('02:00')
-  ->description('Vider le cache quotidiennement');
+  ->description('Clear the cache daily');
 ```
 
-## Planifier des QueueTask
+## Scheduling QueueTasks
 
-La méthode `task()` permet de planifier l'exécution de classes QueueTask :
+The `task()` method lets you schedule the execution of QueueTask classes:
 
 ```php
-// Par nom de classe
+// By class name
 $schedule->task(App\Tasks\ProcessReportsTask::class)->daily();
 
-// Avec paramètres de constructeur
+// With constructor parameters
 $schedule->task(App\Tasks\SendNotificationTask::class, ['user', 'message'])->hourly();
 
-// Avec une instance
+// With an instance
 $task = new App\Tasks\GenerateStats($config);
 $schedule->task($task)->weekly();
 ```
 
-:::info File d'attente
-Les QueueTask planifiées sont automatiquement poussées vers la file d'attente configurée.
+:::info Queue
+Scheduled QueueTasks are automatically pushed to the configured queue.
 :::
 
-### Spécifier la connexion de la file d'attente
+### Specifying the queue connection
 
-Vous pouvez spécifier quelle connexion de file d'attente utiliser :
+You can specify which queue connection to use:
 
 ```php
 $schedule->task(App\Tasks\ProcessReportsTask::class)
@@ -126,125 +126,125 @@ $schedule->task(App\Tasks\ProcessReportsTask::class)
   ->onConnection('redis');
 ```
 
-## Planifier des commandes shell
+## Scheduling shell commands
 
-La méthode `exec()` permet d'exécuter des commandes shell/bash :
+The `exec()` method lets you run shell/bash commands:
 
 ```php
-// Commande simple
+// Simple command
 $schedule->exec('rm -rf /tmp/cache/*')->dailyAt('04:00');
 
-// Avec paramètres (automatiquement échappés)
+// With parameters (automatically escaped)
 $schedule->exec('tar -czf backup.tar.gz', ['/var/www/files'])->weekly();
 
-// En arrière-plan
+// In the background
 $schedule->exec('php process-heavy-task.php')
   ->daily()
   ->runInBackground();
 ```
 
-## Planifier des closures
+## Scheduling closures
 
-La méthode `call()` permet d'exécuter des closures ou callbacks :
+The `call()` method lets you run closures or callbacks:
 
 ```php
-// Closure simple
+// Simple closure
 $schedule->call(function () {
-  // Votre code ici
+  // Your code here
 })->everyFiveMinutes();
 
-// Avec paramètres
+// With parameters
 $schedule->call(function ($name, $email) {
-  logger("Traitement: {$name} ({$email})");
+  logger("Processing: {$name} ({$email})");
 }, ['John', 'john@example.com'])->hourly();
 ```
 
-## Fréquences de planification
+## Scheduling frequencies
 
-Le planificateur propose de nombreuses méthodes pour définir la fréquence d'exécution :
+The scheduler offers many methods for defining the execution frequency:
 
-### Intervalles en minutes
+### Minute intervals
 
-| **Méthode** | **Description** |
+| **Method** | **Description** |
 |-------------|-----------------|
-| `everyMinute()` | Exécuter chaque minute |
-| `everyTwoMinutes()` | Exécuter toutes les 2 minutes |
-| `everyFiveMinutes()` | Exécuter toutes les 5 minutes |
-| `everyTenMinutes()` | Exécuter toutes les 10 minutes |
-| `everyFifteenMinutes()` | Exécuter toutes les 15 minutes |
-| `everyThirtyMinutes()` | Exécuter toutes les 30 minutes |
+| `everyMinute()` | Run every minute |
+| `everyTwoMinutes()` | Run every 2 minutes |
+| `everyFiveMinutes()` | Run every 5 minutes |
+| `everyTenMinutes()` | Run every 10 minutes |
+| `everyFifteenMinutes()` | Run every 15 minutes |
+| `everyThirtyMinutes()` | Run every 30 minutes |
 
-### Intervalles en heures
+### Hour intervals
 
-| **Méthode** | **Description** |
+| **Method** | **Description** |
 |-------------|-----------------|
-| `hourly()` | Exécuter chaque heure |
-| `hourlyAt(17)` | Exécuter chaque heure à 17 minutes |
-| `everyTwoHours()` | Exécuter toutes les 2 heures |
-| `everyThreeHours()` | Exécuter toutes les 3 heures |
-| `everyFourHours()` | Exécuter toutes les 4 heures |
-| `everySixHours()` | Exécuter toutes les 6 heures |
+| `hourly()` | Run every hour |
+| `hourlyAt(17)` | Run every hour at minute 17 |
+| `everyTwoHours()` | Run every 2 hours |
+| `everyThreeHours()` | Run every 3 hours |
+| `everyFourHours()` | Run every 4 hours |
+| `everySixHours()` | Run every 6 hours |
 
-### Intervalles quotidiens et hebdomadaires
+### Daily and weekly intervals
 
-| **Méthode** | **Description** |
+| **Method** | **Description** |
 |-------------|-----------------|
-| `daily()` | Exécuter quotidiennement à minuit |
-| `dailyAt('13:00')` | Exécuter quotidiennement à 13h00 |
-| `twiceDaily(1, 13)` | Exécuter quotidiennement à 1h00 et 13h00 |
-| `weekly()` | Exécuter hebdomadairement le dimanche |
-| `weeklyOn(1, '8:00')` | Exécuter hebdomadairement le lundi à 8h00 |
+| `daily()` | Run daily at midnight |
+| `dailyAt('13:00')` | Run daily at 13:00 |
+| `twiceDaily(1, 13)` | Run daily at 1:00 and 13:00 |
+| `weekly()` | Run weekly on Sunday |
+| `weeklyOn(1, '8:00')` | Run weekly on Monday at 8:00 |
 
-### Intervalles mensuels et annuels
+### Monthly and yearly intervals
 
-| **Méthode** | **Description** |
+| **Method** | **Description** |
 |-------------|-----------------|
-| `monthly()` | Exécuter mensuellement le 1er à minuit |
-| `monthlyOn(15, '15:00')` | Exécuter mensuellement le 15 à 15h00 |
-| `twiceMonthly(1, 16, '13:00')` | Exécuter deux fois par mois |
-| `quarterly()` | Exécuter trimestriellement |
-| `yearly()` | Exécuter annuellement |
-| `yearlyOn(6, 1, '17:00')` | Exécuter le 1er juin à 17h00 |
+| `monthly()` | Run monthly on the 1st at midnight |
+| `monthlyOn(15, '15:00')` | Run monthly on the 15th at 15:00 |
+| `twiceMonthly(1, 16, '13:00')` | Run twice a month |
+| `quarterly()` | Run quarterly |
+| `yearly()` | Run yearly |
+| `yearlyOn(6, 1, '17:00')` | Run on June 1st at 17:00 |
 
-### Heure spécifique
+### Specific time
 
-Pour fixer l'heure d'une exécution récurrente, utilisez la variante `*At`
-correspondante à la fréquence — il n'existe **pas** de méthode `at()`
-chaînable autonome.
+To set the time of a recurring execution, use the `*At` variant
+corresponding to the frequency — there is **no** standalone chainable
+`at()` method.
 
 ```php
 $schedule->command('report:generate')->dailyAt('09:00');
-$schedule->command('report:generate')->hourlyAt(15);          // chaque heure à hh:15
-$schedule->command('report:generate')->weeklyOn(1, '08:00');   // lundi 8h
-$schedule->command('report:generate')->monthlyOn(15, '15:00'); // le 15 à 15h
-$schedule->command('report:generate')->yearlyOn(6, 1, '17:00'); // 1er juin 17h
+$schedule->command('report:generate')->hourlyAt(15);          // every hour at hh:15
+$schedule->command('report:generate')->weeklyOn(1, '08:00');   // Monday 8am
+$schedule->command('report:generate')->monthlyOn(15, '15:00'); // the 15th at 3pm
+$schedule->command('report:generate')->yearlyOn(6, 1, '17:00'); // June 1st 5pm
 ```
 
-### Expression cron personnalisée
+### Custom cron expression
 
-Si vous avez besoin d'une expression plus complexe, utilisez la méthode `cron()` :
+If you need a more complex expression, use the `cron()` method:
 
 ```php
 $schedule->command('custom:task')
-  ->cron('0 */4 * * 1-5');  // Toutes les 4 heures, du lundi au vendredi
+  ->cron('0 */4 * * 1-5');  // Every 4 hours, Monday through Friday
 ```
 
-## Contraintes de jours
+## Day constraints
 
-Vous pouvez restreindre l'exécution à certains jours :
+You can restrict execution to certain days:
 
 ```php
-// Seulement en semaine
+// Weekdays only
 $schedule->command('report:generate')
   ->daily()
   ->weekdays();
 
-// Seulement le week-end
+// Weekends only
 $schedule->command('cleanup')
   ->daily()
   ->weekends();
 
-// Jours spécifiques
+// Specific days
 $schedule->command('backup')
   ->daily()
   ->mondays();
@@ -254,26 +254,26 @@ $schedule->command('reports')
   ->fridays();
 ```
 
-### Méthodes de jours disponibles
+### Available day methods
 
-| **Méthode** | **Description** |
+| **Method** | **Description** |
 |-------------|-----------------|
-| `mondays()` | Seulement le lundi |
-| `tuesdays()` | Seulement le mardi |
-| `wednesdays()` | Seulement le mercredi |
-| `thursdays()` | Seulement le jeudi |
-| `fridays()` | Seulement le vendredi |
-| `saturdays()` | Seulement le samedi |
-| `sundays()` | Seulement le dimanche |
-| `weekdays()` | Du lundi au vendredi |
-| `weekends()` | Samedi et dimanche |
-| `days(1, 3, 5)` | Jours personnalisés (lundi, mercredi, vendredi) |
+| `mondays()` | Monday only |
+| `tuesdays()` | Tuesday only |
+| `wednesdays()` | Wednesday only |
+| `thursdays()` | Thursday only |
+| `fridays()` | Friday only |
+| `saturdays()` | Saturday only |
+| `sundays()` | Sunday only |
+| `weekdays()` | Monday through Friday |
+| `weekends()` | Saturday and Sunday |
+| `days(1, 3, 5)` | Custom days (Monday, Wednesday, Friday) |
 
-## Options avancées
+## Advanced options
 
-### Exécution en arrière-plan
+### Running in the background
 
-Pour les commandes de longue durée, exécutez-les en arrière-plan :
+For long-running commands, run them in the background:
 
 ```php
 $schedule->exec('php process-heavy-task.php')
@@ -281,33 +281,33 @@ $schedule->exec('php process-heavy-task.php')
   ->runInBackground();
 ```
 
-### Prévention du chevauchement
+### Preventing overlaps
 
-Empêchez une tâche planifiée de s'exécuter si une instance précédente est toujours en cours :
+Prevent a scheduled task from running if a previous instance is still in progress:
 
 ```php
 $schedule->command('slow:process')
   ->hourly()
-  ->withoutOverlapping(60);  // Le verrou expire après 60 minutes
+  ->withoutOverlapping(60);  // The lock expires after 60 minutes
 ```
 
-:::warning Attention
-Assurez-vous que le cache est configuré pour que la prévention du chevauchement fonctionne correctement.
+:::warning Warning
+Make sure the cache is configured so that overlap prevention works correctly.
 :::
 
-### Planification conditionnelle
+### Conditional scheduling
 
-Exécutez des tâches uniquement lorsque certaines conditions sont remplies :
+Run tasks only when certain conditions are met:
 
 ```php
-// Exécuter seulement si la condition est vraie
+// Run only if the condition is true
 $schedule->command('send:emails')
   ->daily()
   ->when(function () {
   return app()->environment('production');
   });
 
-// Sauter si la condition est vraie
+// Skip if the condition is true
 $schedule->command('debug:task')
   ->daily()
   ->skip(function () {
@@ -315,9 +315,9 @@ $schedule->command('debug:task')
   });
 ```
 
-### Fuseau horaire
+### Timezone
 
-Définissez un fuseau horaire spécifique pour la planification :
+Set a specific timezone for the scheduling:
 
 ```php
 $schedule->command('report:generate')
@@ -327,61 +327,61 @@ $schedule->command('report:generate')
 
 ### Description
 
-Ajoutez une description pour identifier facilement vos tâches :
+Add a description to easily identify your tasks:
 
 ```php
 $schedule->command('cache:clear')
   ->daily()
-  ->description('Nettoyer le cache quotidiennement');
+  ->description('Clear the cache daily');
 ```
 
-## Commandes console
+## Console commands
 
-### Exécuter les tâches en attente
+### Run pending tasks
 
-Exécute toutes les tâches qui sont dues :
+Runs all tasks that are due:
 
 ```bash
 php bow schedule:run
 ```
 
-### Démarrer le démon du planificateur
+### Start the scheduler daemon
 
-Démarre le planificateur en mode continu (recommandé en production) :
+Starts the scheduler in continuous mode (recommended in production):
 
 ```bash
 php bow schedule:work
 ```
 
-### Lister les tâches planifiées
+### List scheduled tasks
 
-Affiche toutes les tâches planifiées enregistrées :
+Displays all registered scheduled tasks:
 
 ```bash
 php bow schedule:list
 ```
 
-### Afficher les prochaines exécutions
+### Show the next executions
 
-Affiche quand chaque tâche sera prochainement exécutée :
+Displays when each task will next be executed:
 
 ```bash
 php bow schedule:next
 ```
 
-### Tester une tâche
+### Test a task
 
-Exécute manuellement une tâche planifiée par le nom complet de sa classe :
+Manually runs a scheduled task by its fully qualified class name:
 
 ```bash
 php bow schedule:test App\\Tasks\\SendWeeklyReportTask
 ```
 
-## Configuration en production
+## Production configuration
 
 ### Cron
 
-Ajoutez cette entrée cron pour exécuter le planificateur chaque minute :
+Add this cron entry to run the scheduler every minute:
 
 ```bash
 * * * * * cd /var/www/bow-app && php bow schedule:run >> /var/log/bow-scheduler.log 2>&1
@@ -438,9 +438,9 @@ services:
       - mysql
 ```
 
-## Exemple complet
+## Full example
 
-Voici un exemple complet de configuration du planificateur dans le Kernel :
+Here is a complete example of configuring the scheduler in the Kernel:
 
 ```php title="app/Kernel.php"
 <?php
@@ -454,24 +454,24 @@ class Kernel extends ApplicationLoader
 {
   public function schedules(Scheduler $schedule): void
   {
-  // Sauvegarde quotidienne de la base de données (1h00)
+  // Daily database backup (1:00)
   $schedule->exec('mysqldump mydb > /backups/daily.sql')
     ->dailyAt('01:00')
-    ->description('Sauvegarde quotidienne de la base de données')
+    ->description('Daily database backup')
     ->runInBackground();
 
-  // Vider le cache chaque dimanche à 2h00 (1 = lundi, 7 = dimanche)
+  // Clear the cache every Sunday at 2:00 (1 = Monday, 7 = Sunday)
   $schedule->command('cache:clear')
     ->weeklyOn(7, '02:00')
-    ->description('Nettoyage hebdomadaire du cache');
+    ->description('Weekly cache cleanup');
 
-  // Traiter les rapports en attente chaque heure
+  // Process pending reports every hour
   $schedule->task(\App\Tasks\ProcessPendingReportsTask::class)
     ->hourly()
     ->withoutOverlapping()
-    ->description('Traiter les rapports en attente');
+    ->description('Process pending reports');
 
-  // Vérifier l'état du système toutes les 5 minutes
+  // Check the system status every 5 minutes
   $schedule->call(function () {
     $health = \App\Services\HealthChecker::check();
     if (!$health->isHealthy()) {
@@ -479,19 +479,19 @@ class Kernel extends ApplicationLoader
     }
   })
     ->everyFiveMinutes()
-    ->description('Vérification de l\'état du système');
+    ->description('System status check');
 
-  // Envoyer les rapports hebdomadaires le vendredi 17h00 (seulement en production)
+  // Send the weekly reports on Friday at 17:00 (production only)
   $schedule->task(\App\Tasks\SendWeeklyReportTask::class)
     ->weeklyOn(5, '17:00')
     ->timezone('Europe/Paris')
     ->when(function () {
       return app()->environment('production');
     })
-    ->description('Envoi des rapports hebdomadaires');
+    ->description('Send the weekly reports');
   }
 
-  // ... autres méthodes
+  // ... other methods
 }
 ```
 

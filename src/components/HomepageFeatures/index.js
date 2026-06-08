@@ -1,50 +1,43 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
+import Translate from '@docusaurus/Translate';
 
 const FeatureList = [
   {
     title: 'S2R',
     Svg: require('@site/static/img/idea.svg').default,
     description: (
-      <>
-        Simple, Rapide et Robuste. Concentrez-vous sur votre projet sans vous soucier de la complexité. 
-        BowPHP offre une architecture claire et intuitive qui vous permet de développer rapidement 
-        tout en maintenant un code propre et maintenable.
-      </>
+      <Translate id="home.feature.s2r">
+        Simple, Fast and Robust. Focus on your project without worrying about complexity. BowPHP offers a clear and intuitive architecture that lets you develop quickly while keeping your code clean and maintainable.
+      </Translate>
     ),
   },
   {
     title: 'ORM',
     Svg: require('@site/static/img/orm.svg').default,
     description: (
-      <>
-        Un ORM extrêmement simple qui se nomme Barry. Interagissez avec votre base de données de manière 
-        élégante et expressive. Barry simplifie les opérations CRUD et les relations entre modèles, 
-        rendant la gestion des données plus naturelle et productive.
-      </>
+      <Translate id="home.feature.orm">
+        An extremely simple ORM named Barry. Interact with your database in an elegant and expressive way. Barry simplifies CRUD operations and relationships between models, making data management more natural and productive.
+      </Translate>
     ),
   },
   {
     title: 'Extensible',
     Svg: require('@site/static/img/compose.svg').default,
     description: (
-      <>
-        Structure personnalisable à l'infini. Support de plugin et composants réutilisables. 
-        BowPHP s'adapte à vos besoins spécifiques grâce à son architecture modulaire 
-        et son système de packages, vous permettant d'étendre les fonctionnalités selon vos exigences.
-      </>
+      <Translate id="home.feature.extensible">
+        Infinitely customizable structure. Plugin support and reusable components. BowPHP adapts to your specific needs thanks to its modular architecture and package system, letting you extend functionality to fit your requirements.
+      </Translate>
     ),
   },
   {
     title: 'Reactjs / Vuejs',
     Svg: require('@site/static/img/layers.svg').default,
     description: (
-      <>
-        Par défaut Bow est preset Reactjs et Vuejs. Créez des interfaces utilisateur modernes et 
-        réactives avec vos frameworks JavaScript préférés. L'intégration native facilite le développement 
-        d'applications web full-stack performantes et évolutives.
-      </>
+      <Translate id="home.feature.frontend">
+        By default, Bow ships with React and Vue presets. Build modern, reactive user interfaces with your favorite JavaScript frameworks. Native integration makes it easy to develop performant, scalable full-stack web applications.
+      </Translate>
     ),
   },
 ];
@@ -80,7 +73,7 @@ export default function HomepageFeatures() {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text'
             }}>
-              Pourquoi choisir BowPHP ?
+              <Translate id="home.features.title">Why choose BowPHP?</Translate>
             </h2>
             <p className="text--center" style={{
               fontSize: '1.125rem',
@@ -89,7 +82,9 @@ export default function HomepageFeatures() {
               margin: '0 auto',
               lineHeight: 1.7
             }}>
-              Un framework PHP moderne qui combine simplicité et puissance pour accélérer votre développement
+              <Translate id="home.features.subtitle">
+                A modern PHP framework that combines simplicity and power to accelerate your development
+              </Translate>
             </p>
           </div>
         </div>

@@ -1,21 +1,21 @@
 ---
 id: http-upload
-title: "Envoi de fichiers dans BowPHP"
+title: "Uploading files in BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-- [Traiter les fichiers envoyés](#traiter-les-fichiers-envoyés)
-- [Déterminer si un fichier existe](#determiner-si-un-fichier-existe)
-- [Validation des téléchargements réussis](#validation-des-téléchargements-réussis)
-- [Sauvegarder le fichier](#savegarder-le-fichier)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
+- [Handling uploaded files](#handling-uploaded-files)
+- [Determining whether a file exists](#determining-whether-a-file-exists)
+- [Validating successful uploads](#validating-successful-uploads)
+- [Saving the file](#saving-the-file)
+- [Is something missing?](#il-manque-quelque-chose-)
 
-## Traiter les fichiers envoyés
+## Handling uploaded files
 
-Souvent les requêtes sont associées à des fichiers envoyés par l'utilisateur, vous pouvez traiter ces fichiers avec [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html) via la méthode `file` et le helper du même nom.
+Requests are often associated with files uploaded by the user. You can handle these files with [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html) through the `file` method and the helper of the same name.
 
-Considérons le formulaire suivant:
+Consider the following form:
 
 ```html
 <form action="/upload" method="post" enctype="multipart/form-data">
@@ -24,16 +24,16 @@ Considérons le formulaire suivant:
 </form>
 ```
 
-> Comment avoir accès au fichier envoyé ?
+> How do you access the uploaded file?
 
-Ici nous pouvons utiliser la méthode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadFile`](https://bowphp.com/api/master/Bow/Http/UploadFile.html).
+Here we can use the `file` method, which returns `null` or an instance of [`Bow\Http\UploadFile`](https://bowphp.com/api/master/Bow/Http/UploadFile.html).
 
 ```php
 use Bow\Http\Request;
 
 $app->post('/upload', function(Request $request) {
   $file = $request->file('photo');
-  // ou
+  // or
   $file = file('photo');
 
   debug($file);
@@ -53,9 +53,9 @@ UploadFile {#92 ▼
 }
 ```
 
-## Déterminer si un fichier existe
+## Determining whether a file exists
 
-Vous pouvez déterminer si un fichier est présent sur la requête en utilisant la méthode `hasFile`:
+You can determine whether a file is present on the request using the `hasFile` method:
 
 ```php
 if ($request->hasFile('photo')) {
@@ -63,21 +63,21 @@ if ($request->hasFile('photo')) {
 }
 ```
 
-## Validation des téléchargements réussis
+## Validating successful uploads
 
-Vous pouvez vérifier qu'il n'y a pas eu de problèmes lors du téléchargement avec la méthode `isUploaded`:
+You can check that there were no problems during the upload with the `isUploaded` method:
 
 ```php
 $file = $request->file('photo');
 
 if ($file->isUploaded()) {
-  // Code ici
+  // Code here
 }
 ```
 
-## Savegarder le fichier
+## Saving the file
 
-Cela consiste juste à déplacer le fichier uploader dans une autre dossier et ceci grace à la méthode `moveTo`.
+This simply consists of moving the uploaded file to another directory, and this is done through the `moveTo` method.
 
 ```php
 $file = $request->file('photo');
@@ -85,9 +85,9 @@ $file = $request->file('photo');
 $file->moveTo("/path/to/your/store/directory", $filename = null);
 ```
 
-Si `$filename` est `null`, sa valeur sera le nom du fichier hasher avec la méthode [`getHashName`](https://bowphp.com/api/master/Bow/Http/UploadFile.html#method_getHashName).
+If `$filename` is `null`, its value will be the file name hashed with the [`getHashName`](https://bowphp.com/api/master/Bow/Http/UploadFile.html#method_getHashName) method.
 
-Souvent dans le cas où vous attendez des fichiers envoyé via un formulaire dont le champs est sous la forme `photo[]`. la méthode `file` retourne une [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html):
+Often, when you expect files uploaded via a form whose field takes the form `photo[]`, the `file` method returns a [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html):
 
 ```html
 <form action="/upload" method="post" enctype="multipart/form-data">
@@ -97,7 +97,7 @@ Souvent dans le cas où vous attendez des fichiers envoyé via un formulaire don
 </form>
 ```
 
-Dans cette exemple, la méthode `file` retournera une [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html) qui contiendra pour chaque oruccencre une instance de [`Bow\Http\UploadFile`](https://bowphp.com/api/master/Bow/Http/UploadFile.html).
+In this example, the `file` method will return a [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html) that will contain, for each occurrence, an instance of [`Bow\Http\UploadFile`](https://bowphp.com/api/master/Bow/Http/UploadFile.html).
 
 ```php
 use Bow\Http\Request;

@@ -1,50 +1,50 @@
 ---
 id: storage
-title: "Stockage de fichiers dans BowPHP"
+title: "File storage in BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
-- [Fonctionnement](#fonctionnement)
-  - [Système de fichier local](#système-de-fichier-local)
-    - [Explication du concept](#explication-du-concept)
-  - [Les services S3 et FTP](#les-services-s3-et-ftp)
-- [Manipulation des fichiers](#manipulation-des-fichiers)
-  - [Récupérer le contenu d'un fichier](#récupérer-le-contenu-dun-fichier)
-  - [Ajouter/Modifier le contenu d'un fichier](#ajoutermodifier-le-contenu-dun-fichier)
-  - [Ajouter du contenu au début ou à la fin d'un fichier](#ajouter-du-contenu-au-début-ou-à-la-fin-dun-fichier)
-  - [Supprimer un fichier](#supprimer-un-fichier)
-  - [Copier un fichier](#copier-un-fichier)
-  - [Créer un dossier](#créer-un-dossier)
+- [How it works](#how-it-works)
+  - [Local file system](#local-file-system)
+    - [Explaining the concept](#explaining-the-concept)
+  - [The S3 and FTP services](#the-s3-and-ftp-services)
+- [Working with files](#working-with-files)
+  - [Retrieving the content of a file](#retrieving-the-content-of-a-file)
+  - [Adding/Modifying the content of a file](#addingmodifying-the-content-of-a-file)
+  - [Adding content at the beginning or end of a file](#adding-content-at-the-beginning-or-end-of-a-file)
+  - [Deleting a file](#deleting-a-file)
+  - [Copying a file](#copying-a-file)
+  - [Creating a directory](#creating-a-directory)
     - [Prototype](#prototype)
-  - [Vérifier si un fichier existe](#vérifier-si-un-fichier-existe)
-  - [Vérifier si le paramètre est un fichier](#vérifier-si-le-paramètre-est-un-fichier)
-  - [Vérifier si le paramètre est un dossier](#vérifier-si-le-paramètre-est-un-dossier)
-  - [Obtenir le chemin absolu d'un fichier ou dossier](#obtenir-le-chemin-absolu-dun-fichier-ou-dossier)
+  - [Checking whether a file exists](#checking-whether-a-file-exists)
+  - [Checking whether the parameter is a file](#checking-whether-the-parameter-is-a-file)
+  - [Checking whether the parameter is a directory](#checking-whether-the-parameter-is-a-directory)
+  - [Getting the absolute path of a file or directory](#getting-the-absolute-path-of-a-file-or-directory)
 
 ## Introduction
 
-BowPHP intègre un système de gestion de fichier permettant de manipuler des fichiers avec une grande simplicité.
+BowPHP includes a file management system that lets you work with files with great simplicity.
 
 ## Configuration
 
-Le fichier de configuration du système de gestion de fichiers se trouve dans `config/resource.php`.
+The configuration file for the file management system is located at `config/resource.php`.
 
-## Fonctionnement
+## How it works
 
-Vous avez la possibilité d'utiliser les services ou travailler dans votre disque local. Les méthodes statiques `mount` et `service` permettent reciproquement de manipuler le système de disque et les services de stockage actuellement `ftp` et `s3`.
+You can use the services or work on your local disk. The static methods `mount` and `service` respectively let you work with the disk system and with the storage services, currently `ftp` and `s3`.
 
-### Système de fichier local
+### Local file system
 
-Pour gérer votre système de fichier local avec BowPHP vous allez utiliser la méthode statique `mount`.
+To manage your local file system with BowPHP, you will use the static method `mount`.
 
-#### Explication du concept
+#### Explaining the concept
 
-Nous appelerons les différents dossiers spécifiés `disk`.
+We will refer to the different specified directories as `disk`.
 
-Considérons la configuration suivante:
+Consider the following configuration:
 
 ```php
 'disk' =>[
@@ -56,61 +56,61 @@ Considérons la configuration suivante:
 ];
 ```
 
-> Vous pouvez spécifier autant de disques que vous voulez.
+> You can specify as many disks as you want.
 
-La classe `Storage` expose la méthode statique `mount` qui permet la manipulation de fichiers. La valeur passée à `mount` doit être un nom de disque valide spécifié dans la liste des `path`.
+The `Storage` class exposes the static method `mount`, which allows file manipulation. The value passed to `mount` must be a valid disk name specified in the `path` list.
 
 ```php
 use Bow\Storage\Storage;
 
 Storage::mount("public");
-// Ou
+// Or
 Storage::mount();
 ```
 
-> Si la méthode `mount` est appelée sans paramètre, elle utilisera par défaut la valeur de la clé `mount`.
+> If the `mount` method is called without a parameter, it will use the value of the `mount` key by default.
 
-Vous pouvez aussi utiliser le helper `mount()` qui fonctionne exactement de la même manière:
+You can also use the `mount()` helper, which works exactly the same way:
 
 ```php
 mount('public');
-// Ou
+// Or
 mount()->get('app.js');
 ```
 
-### Les services S3 et FTP
+### The S3 and FTP services
 
-Pour utiliser un système de stockage externe, cela se fait via la méthode `service`. Cette méthode vous permet de sélectionner le type de stockage externe que vous voulez utiliser. Vous trouverez la configuration nécessaire des services dans la section `services` du fichier `config/resource.php`.
+To use an external storage system, you do so through the `service` method. This method lets you select the type of external storage you want to use. You will find the required service configuration in the `services` section of the `config/resource.php` file.
 
-Exemple avec le service `ftp`:
+Example with the `ftp` service:
 
 ```php
 $service = Storage::service('ftp');
 $service->get('app.js');
 ```
 
-## Manipulation des fichiers
+## Working with files
 
-Cette section décrit les différentes méthodes disponible pour la manipulation de fichiers et leur utilisation.
+This section describes the different methods available for working with files and how to use them.
 
-Supposons que nous avons le fichier `app.txt` dans le disque `public`:
+Let's assume we have the file `app.txt` on the `public` disk:
 
 ```plain
-// contenu du fichier app.txt
+// content of the app.txt file
 Hello, world
 ```
 
-> Notez que ces méthodes (sauf la méthode `get`) retournent respectivement `true` ou `false` en cas de succès ou d'échec
+> Note that these methods (except the `get` method) return `true` or `false` respectively on success or failure.
 
-### Récupérer le contenu d'un fichier
+### Retrieving the content of a file
 
-La méthode `get` sert à recupérer le contenu d'un fichier. Elle prend comme paramètre le nom du fichier.
+The `get` method is used to retrieve the content of a file. It takes the file name as its parameter.
 
 ```php
 $mount = mount('public');
 $content = $mount->get("app.txt");
 
-// Avec un service
+// With a service
 $service = Storage::service('ftp');
 $content = $service->get("app.txt");
 
@@ -118,11 +118,11 @@ echo $content;
 // => Hello, world
 ```
 
-> `service` et `mount` utilise la même interface de manipulation. Ce qui veux dire que les méthodes disponibles pour `mount` existe aussi pour `service`.
+> `service` and `mount` use the same manipulation interface. This means that the methods available for `mount` also exist for `service`.
 
-### Ajouter/Modifier le contenu d'un fichier
+### Adding/Modifying the content of a file
 
-La méthode `put` permet d'ajouter ou de modifier le contenu d'un fichier:
+The `put` method lets you add or modify the content of a file:
 
 ```php
 $mount = mount('public');
@@ -131,20 +131,20 @@ $content = 'console.log("Hello, world")';
 $mount->put('app.js', $content );
 ```
 
-### Ajouter du contenu au début ou à la fin d'un fichier
+### Adding content at the beginning or end of a file
 
-Les méthodes `preprend` et `append` vous permettent d'ajouter respectivement du contenu au debut ou la fin d'un fichier:
+The `preprend` and `append` methods let you add content at the beginning or end of a file respectively:
 
 ```php
 $mount = mount('public');
 
-$mount->prepend('app.txt', 'Contenu ajouté au début');
-$mount->append('app.txt', 'Contenu ajouté à la fin');
+$mount->prepend('app.txt', 'Content added at the beginning');
+$mount->append('app.txt', 'Content added at the end');
 ```
 
-### Supprimer un fichier
+### Deleting a file
 
-La méthode `delete` permet de supprimer un fichier.
+The `delete` method lets you delete a file.
 
 ```php
 $mount = mount('public');
@@ -152,7 +152,7 @@ $mount = mount('public');
 $mount->delete('app.js');
 ```
 
-### Copier un fichier
+### Copying a file
 
 ```php
 $mount = mount('public');
@@ -160,9 +160,9 @@ $mount = mount('public');
 $mount->copy('app.txt', 'sous-dossier/app.txt');
 ```
 
-### Créer un dossier
+### Creating a directory
 
-Vous pouvez créer un nouveau dossier à l'aide de la méthode `makeDirectory`:
+You can create a new directory using the `makeDirectory` method:
 
 #### Prototype
 
@@ -172,11 +172,11 @@ $mount = mount('public');
 $mount->makeDirectory($dirname, $mode = 0777, $recursive = false);
 ```
 
-| Paramètre | Type |
+| Parameter | Type |
 |----------|------|
-| path | `String` - le dossier à créer |
-| mode | `Int` - Le mode du dossier par défaut 777 |
-| recursive | `Boolean` - Permet de créer récursivement |
+| path | `String` - the directory to create |
+| mode | `Int` - The directory mode, default 777 |
+| recursive | `Boolean` - Allows recursive creation |
 
 ```php
 $mount = mount('public');
@@ -184,13 +184,13 @@ $mount = mount('public');
 $mount->makeDirectory('dossier');
 ```
 
-> Notez que vous pouvez changer le mode du dossier et choisir de le créer de manière récursif.
+> Note that you can change the directory mode and choose to create it recursively.
 
 ```php
 $mount->makeDirectory('chemin/vers/un/dossier', 777, true);
 ```
 
-### Vérifier si un fichier existe
+### Checking whether a file exists
 
 ```php
 $mount = mount('public');
@@ -200,27 +200,27 @@ if ($mount->exists('app.txt')) {
 }
 ```
 
-### Vérifier si le paramêtre est un fichier
+### Checking whether the parameter is a file
 
 ```php
 $mount = mount('public');
 
 if ($mount->isFile('app.txt')) {
-  echo "C'est un fichier";
+  echo "It's a file";
 }
 ```
 
-### Vérifier si le paramêtre est un dossier
+### Checking whether the parameter is a directory
 
 ```php
 $mount = mount('public');
 
 if ($mount->isDirectory('nom_du_dossier')) {
-  echo "C'est un dossier";
+  echo "It's a directory";
 }
 ```
 
-### Obtenir le chemin absolu d'un fichier ou dossier
+### Getting the absolute path of a file or directory
 
 ```php
 $mount = mount('public');

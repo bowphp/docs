@@ -6,45 +6,45 @@ title: "Bow Package"
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 - [Introduction](#introduction)
-- [Création de plugin](#création-de-plugin)
-  - [Exemple de création](#exemple-de-création)
-  - [Testons notre package](#testons-notre-package)
-- [Il manque quelque chose ?](#il-manque-quelque-chose-)
+- [Creating a plugin](#creating-a-plugin)
+  - [Creation example](#creation-example)
+  - [Testing our package](#testing-our-package)
+- [Something missing?](#il-manque-quelque-chose-)
 
 ## Introduction
 
-Ce système permet d'étendre votre application, de gréffer des package externe dans une application Bow.
+This system lets you extend your application by grafting external packages into a Bow application.
 
-## Création de plugin
+## Creating a plugin
 
-Si vous avez une application Bow, il vous suffit de faire la création via `php bow` et lancer la commande `add:configuration` ensuite vous donnez le nom de votre configuration:
+If you have a Bow application, you simply create it through `php bow` by running the `add:configuration` command, then provide the name of your configuration:
 
 ```bash
 php bow add:configuration PluginConfiguration
 ```
 
-Le fichier `PluginConfiguration.php` sera créé dans le dossier `app/Configuration` qui contient deux méthode `create` et `run`.
+The `PluginConfiguration.php` file will be created in the `app/Configuration` folder, which contains two methods, `create` and `run`.
 
-- `create` permet d'initialiser le package
-- `run` permet de lancer d'initialisation le package.
+- `create` initializes the package
+- `run` runs the package initialization.
 
-Dans l'initialisation des packages c'est la methode create qui ce lancera avant pour tous le autre packages qui seront defini au dessus dans votre configuration ensuite la methode run sera sera dans le meme orde.
+When initializing packages, the `create` method runs first for all the other packages defined above it in your configuration, and then the `run` method runs in the same order.
 
-> N'Essayez pas de contacter un package ici si vous attendez qu'il soit dabort configurer.
+> Do not try to reach a package here if you are expecting it to be configured first.
 
-Dans le fichier de configuration, Bow va injecté le [DIC](https://fr.wikipedia.org/wiki/Injection_de_d%C3%A9pendances) et sera accéssible via la proprété `$this->container`. Plus d'information sur le [DIC](./container) de Bow.
+In the configuration file, Bow injects the [DIC](https://fr.wikipedia.org/wiki/Injection_de_d%C3%A9pendances), which is accessible through the `$this->container` property. More information about Bow's [DIC](./container).
 
-### Exemple de création
+### Creation example
 
-Vous allons faire un plugin aui va vérifier un email, alors on crée la configuration avec le nom `EmailCheckerConfiguration`:
+We are going to build a plugin that validates an email, so we create the configuration with the name `EmailCheckerConfiguration`:
 
-> Notez que c'est un exemple pour vous montrez comment vous ici prendre, cet exemple dans un vrai projet aurai pu être traiter autrement.
+> Note that this is an example to show you how to get started here; in a real project, this example could have been handled differently.
 
 ```bash
 php bow add:configuration EmailCheckerConfiguration
 ```
 
-Dans le dossier `app` nous allons ajouter un dossier `Packages` dans ce dossier, nous allons encore ajouter le fichier `EmailCheckController.php`:
+In the `app` folder we will add a `Packages` folder, and inside that folder we will also add the `EmailCheckController.php` file:
 
 ```php
 namespace App\Packages;
@@ -81,7 +81,7 @@ class EmailCheckController
 }
 ```
 
-Vous allons maintenant créer note configuration:
+We will now create our configuration:
 
 ```php
 namespace App\Configurations;
@@ -105,11 +105,11 @@ class EmailCheckController extends Configuration
 }
 ```
 
-Allons tester notre application BowPHP avec la commande `php bow run:server` pour lancer le serveur de développement.
+Let's test our BowPHP application with the `php bow run:server` command to start the development server.
 
-### Testons notre package
+### Testing our package
 
-Pour cette exemple nous allons texter node code avec `curl`:
+For this example we will test our code with `curl`:
 
 ```bash
 curl -X POST -d "email=exemple@exemple.com" http://localhost:5000/email/checker

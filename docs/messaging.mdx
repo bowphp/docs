@@ -1,23 +1,23 @@
 ---
 id: messaging
-title: "Système de Notification"
+title: "Notification System"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-:::info À propos du système de messaging
-Le système de messaging de BowPHP est un outil puissant qui permet d'envoyer des notifications via différents canaux (email, base de données, SMS). Il est conçu pour être flexible, extensible et facile à utiliser.
+:::info About the messaging system
+BowPHP's messaging system is a powerful tool that lets you send notifications through various channels (email, database, SMS). It is designed to be flexible, extensible, and easy to use.
 :::
 
-Que vous ayez besoin d'envoyer des emails de bienvenue, des notifications d'activité ou des alertes système, le système de messaging vous couvre.
+Whether you need to send welcome emails, activity notifications, or system alerts, the messaging system has you covered.
 
 ## Configuration
 
-### Préparation du Modèle
+### Preparing the Model
 
-Pour commencer, votre modèle doit utiliser le trait `WithNotifier`. Ce trait ajoute toutes les méthodes nécessaires pour envoyer des notifications.
+To get started, your model must use the `WithNotifier` trait. This trait adds all the methods needed to send notifications.
 
 ```php
 use Bow\Notifier\WithNotifier;
@@ -29,11 +29,11 @@ class User extends Model
 }
 ```
 
-## Création de Notifications
+## Creating Notifications
 
-### Structure de Base
+### Basic Structure
 
-Une notification est une classe qui étend `Notifier`. Voici un exemple complet d'une notification de bienvenue :
+A notification is a class that extends `Notifier`. Here is a complete example of a welcome notification:
 
 ```php
 use Bow\Notifier\Notifier;
@@ -43,7 +43,7 @@ use Bow\Database\Barry\Model;
 class WelcomeNotifier extends Notifier
 {
   /**
-   * Constructeur - passe des données à la notification
+   * Constructor - passes data to the notification
    */
   public function __construct(
     private string $customMessage = "Bienvenue!"
@@ -51,7 +51,7 @@ class WelcomeNotifier extends Notifier
   }
 
   /**
-   * Configure le message email
+   * Configures the email message
    */
   public function toMail(Model $context): ?Envelop
   {
@@ -65,7 +65,7 @@ class WelcomeNotifier extends Notifier
   }
 
   /**
-   * Configure la notification en base de données
+   * Configures the database notification
    */
   public function toDatabase(Model $context): array
   {
@@ -80,11 +80,11 @@ class WelcomeNotifier extends Notifier
   }
 
   /**
-   * Définit les canaux à utiliser
+   * Defines the channels to use
    */
   public function channels(Model $context): array
   {
-    // Vous pouvez ajouter une logique conditionnelle
+    // You can add conditional logic
     if ($context->preferences['email_notifications']) {
       return ['mail', 'database'];
     }
@@ -94,9 +94,9 @@ class WelcomeNotifier extends Notifier
 }
 ```
 
-### Exemples de Notifications Courantes
+### Common Notification Examples
 
-#### Notification de Réinitialisation de Mot de Passe
+#### Password Reset Notification
 
 ```php
 class PasswordResetNotifier extends Notifier
@@ -127,7 +127,7 @@ class PasswordResetNotifier extends Notifier
 }
 ```
 
-#### Notification d'Activité
+#### Activity Notification
 
 ```php
 class NewCommentNotifier extends Notifier
@@ -168,23 +168,23 @@ class NewCommentNotifier extends Notifier
 }
 ```
 
-## Envoi de Notifications
+## Sending Notifications
 
-### Envoi Simple
+### Simple Sending
 
-L'envoi simple est synchrone et immédiat :
+Simple sending is synchronous and immediate:
 
 ```php
-// Envoi d'une notification de bienvenue basique
+// Send a basic welcome notification
 $user->sendMessage(new WelcomeNotifier());
 
-// Envoi avec un message personnalisé
+// Send with a custom message
 $user->sendMessage(new WelcomeNotifier("Ravi de vous avoir parmi nous!"));
 
-// Envoi d'une notification de réinitialisation de mot de passe
+// Send a password reset notification
 $user->sendMessage(new PasswordResetNotifier($token));
 
-// Envoi d'une notification de nouveau commentaire
+// Send a new comment notification
 $user->sendMessage(new NewCommentNotifier([
   'id' => 1,
   'post_id' => 123,
@@ -193,26 +193,26 @@ $user->sendMessage(new NewCommentNotifier([
 ]));
 ```
 
-### Envoi en File d'Attente
+### Queued Sending
 
-:::tip Performances optimales
-L'envoi en file d'attente est asynchrone et permet de meilleures performances. Utilisez cette méthode pour les notifications non critiques.
+:::tip Optimal performance
+Queued sending is asynchronous and delivers better performance. Use this method for non-critical notifications.
 :::
 
 ```php
-// File d'attente par défaut
+// Default queue
 $user->setMessageQueue(new WelcomeNotifier());
 
-// File d'attente spécifique avec priorité
+// Specific queue with priority
 $user->sendMessageQueueOn('high-priority', new PasswordResetMessage($token));
 
-// Envoi différé (utile pour les rappels)
+// Delayed sending (useful for reminders)
 $user->sendMessageLater(
-  3600, // délai en secondes (1 heure)
+  3600, // delay in seconds (1 hour)
   new ReminderMessage("N'oubliez pas de compléter votre profil!")
 );
 
-// Envoi différé sur une file spécifique
+// Delayed sending on a specific queue
 $user->sendMessageLaterOn(
   1800, // 30 minutes
   'reminders',
@@ -220,26 +220,26 @@ $user->sendMessageLaterOn(
 );
 ```
 
-## Canaux de Notification
+## Notification Channels
 
-BowPHP livre cinq canaux par défaut. Chacun correspond à une méthode
-`to<Canal>()` que vous pouvez (ou non) implémenter dans votre notification :
+BowPHP ships with five channels by default. Each one corresponds to a
+`to<Channel>()` method that you may (or may not) implement in your notification:
 
-| Canal       | Clé         | Méthode à implémenter | Adaptateur livré |
+| Channel     | Key         | Method to implement   | Bundled adapter  |
 |-------------|-------------|-----------------------|------------------|
 | Email       | `mail`      | `toMail(Model)`       | `MailChannelAdapter` |
-| Base de données | `database` | `toDatabase(Model)` | `DatabaseChannelAdapter` |
+| Database    | `database`  | `toDatabase(Model)`   | `DatabaseChannelAdapter` |
 | SMS         | `sms`       | `toSms(Model)`        | `SmsChannelAdapter` |
 | Slack       | `slack`     | `toSlack(Model)`      | `SlackChannelAdapter` |
 | Telegram    | `telegram`  | `toTelegram(Model)`   | `TelegramChannelAdapter` |
 
-La méthode `channels(Model)` de votre notification décide quels canaux activer
-pour un contexte donné. Seuls les canaux retournés appellent leur méthode
-`to<Canal>()` ; les autres `to*` héritées du `Notifier` restent inutilisées.
+Your notification's `channels(Model)` method decides which channels to enable
+for a given context. Only the returned channels call their `to<Channel>()`
+method; the other `to*` methods inherited from `Notifier` remain unused.
 
 ### Email
 
-Le canal email est parfait pour les communications importantes. Exemple complet d'une notification par email :
+The email channel is perfect for important communications. A complete example of an email notification:
 
 ```php
 public function toMail(Model $context): Envelop
@@ -258,12 +258,12 @@ public function toMail(Model $context): Envelop
 }
 ```
 
-### Base de Données
+### Database
 
-Le canal de base de données est idéal pour les notifications in-app.
+The database channel is ideal for in-app notifications.
 
-:::info Structure de la table
-Voici la structure complète de la table `notifications` nécessaire pour le canal database :
+:::info Table structure
+Here is the complete structure of the `notifications` table required for the database channel:
 :::
 
 ```sql
@@ -278,7 +278,7 @@ CREATE TABLE notifications (
 );
 ```
 
-Exemple d'utilisation avancée :
+Advanced usage example:
 
 ```php
 public function toDatabase(Model $context): array
@@ -301,19 +301,19 @@ public function toDatabase(Model $context): array
 }
 ```
 
-## Extension du Système
+## Extending the System
 
-:::tip Extensibilité
-Vous pouvez créer vos propres canaux personnalisés pour envoyer des notifications via d'autres moyens (SMS, Slack, Push, etc.).
+:::tip Extensibility
+You can create your own custom channels to send notifications through other means (SMS, Slack, Push, etc.).
 :::
 
-### Création d'un Nouveau Canal
+### Creating a New Channel
 
-Un canal personnalisé est une classe qui implémente
-`Bow\Notifier\Contracts\ChannelAdapterInterface` et expose une méthode
-`send(Model $context, Notifier $notifier): void`.
+A custom channel is a class that implements
+`Bow\Notifier\Contracts\ChannelAdapterInterface` and exposes a
+`send(Model $context, Notifier $notifier): void` method.
 
-Exemple de canal pour journaliser les notifications :
+Example of a channel that logs notifications:
 
 ```php
 namespace App\Notifier\Channels;
@@ -337,9 +337,9 @@ class LogChannel implements ChannelAdapterInterface
 }
 ```
 
-### Enregistrement du Nouveau Canal
+### Registering the New Channel
 
-Pour enregistrer votre nouveau canal, vous devez l'ajouter dans la configuration de l'application. Dans votre fichier `App\Configurations\ApplicationConfiguration.php`, ajoutez le code suivant dans la méthode `create()` :
+To register your new channel, you must add it to the application configuration. In your `App\Configurations\ApplicationConfiguration.php` file, add the following code to the `create()` method:
 
 ```php title="app/Configurations/ApplicationConfiguration.php"
 public function create(Loader $config): void  
@@ -350,31 +350,31 @@ public function create(Loader $config): void
 }
 ```
 
-## Bonnes Pratiques
+## Best Practices
 
-:::warning Recommandations importantes
-Suivez ces bonnes pratiques pour un système de messaging robuste et performant.
+:::warning Important recommendations
+Follow these best practices for a robust and high-performing messaging system.
 :::
 
-1. **Segmentation** - Créez des notifications spécifiques pour chaque cas d'utilisation
-2. **Files d'attente** - Utilisez les files d'attente pour les notifications non urgentes
-3. **Personnalisation** - Permettez aux utilisateurs de choisir leurs canaux préférés
-4. **Tests** - Testez vos notifications avec des cas réels
-5. **Monitoring** - Surveillez les échecs d'envoi et mettez en place des stratégies de nouvelle tentative
+1. **Segmentation** - Create specific notifications for each use case
+2. **Queues** - Use queues for non-urgent notifications
+3. **Personalization** - Let users choose their preferred channels
+4. **Testing** - Test your notifications with real-world scenarios
+5. **Monitoring** - Watch for delivery failures and put retry strategies in place
 
-## Débogage
+## Debugging
 
-Pour déboguer vos notifications, vous pouvez :
+To debug your notifications, you can:
 
 ```php
-// Journaliser les envois
+// Log the sends
 Log::info('Envoi de notification', [
   'type' => get_class($notification),
   'user' => $context->id,
   'channels' => $notification->channels($context)
 ]);
 
-// Tester en environnement local (le second argument écrit dans la config)
+// Test in a local environment (the second argument writes to the config)
 config('mail.default', 'log');
 ```
 

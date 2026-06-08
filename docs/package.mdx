@@ -1,59 +1,59 @@
 ---
 id: package
-title: "Développement de packages externes"
+title: "Developing external packages"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Le système de packages de BowPHP permet d'étendre votre application en greffant des modules externes réutilisables. Cette architecture modulaire facilite la maintenance et le partage de fonctionnalités entre projets.
+BowPHP's package system lets you extend your application by plugging in reusable external modules. This modular architecture makes maintenance easier and allows features to be shared across projects.
 
-## Création d'un package
+## Creating a package
 
-### Générer la configuration
+### Generating the configuration
 
-Pour créer un nouveau package, utilisez la commande `add:configuration` :
+To create a new package, use the `add:configuration` command:
 
 ```bash
 php bow add:configuration PluginConfiguration
 ```
 
-Le fichier `PluginConfiguration.php` sera créé dans le dossier `app/Configurations`. Ce fichier contient deux méthodes essentielles :
+The `PluginConfiguration.php` file will be created in the `app/Configurations` folder. This file contains two essential methods:
 
-| Méthode | Signature | Description |
+| Method | Signature | Description |
 |---------|-----------|-------------|
-| `create` | `create(Loader $config): void` | Initialise le package (enregistrement des bindings, configuration) |
-| `run` | `run(): void` | Lance le package (définition des routes, démarrage des services) |
+| `create` | `create(Loader $config): void` | Initializes the package (registering bindings, configuration) |
+| `run` | `run(): void` | Launches the package (defining routes, starting services) |
 
-### Cycle de vie
+### Life cycle
 
-Lors du démarrage de l'application, Bow exécute les configurations dans cet ordre :
+When the application starts, Bow runs the configurations in this order:
 
-1. Appel de `create()` sur tous les packages
-2. Appel de `run()` sur tous les packages (dans le même ordre)
+1. Call `create()` on all packages
+2. Call `run()` on all packages (in the same order)
 
-:::warning Attention
-Dans la méthode `create()`, n'utilisez pas de dépendances d'autres packages qui ne sont pas encore configurés.
+:::warning Warning
+In the `create()` method, do not use dependencies from other packages that are not yet configured.
 :::
 
-### Accès au conteneur
+### Accessing the container
 
-Dans le fichier de configuration, le [conteneur d'injection de dépendances](./container) est accessible via `$this->container`.
+In the configuration file, the [dependency injection container](./container) is accessible via `$this->container`.
 
-## Exemple complet
+## Complete example
 
-Créons un package de vérification d'emails avec un service dédié.
+Let's create an email verification package with a dedicated service.
 
-### Étape 1 : Créer la configuration
+### Step 1: Create the configuration
 
 ```bash
 php bow add:configuration EmailCheckerConfiguration
 ```
 
-### Étape 2 : Créer le service
+### Step 2: Create the service
 
-Créez le dossier `app/Packages/EmailChecker` et ajoutez le fichier `EmailCheckerService.php` :
+Create the `app/Packages/EmailChecker` folder and add the `EmailCheckerService.php` file:
 
 ```php title="app/Packages/EmailChecker/EmailCheckerService.php"
 <?php
@@ -67,14 +67,14 @@ use Bow\Support\Str;
 class EmailCheckerService
 {
   /**
-   * Liste des domaines bloqués
+   * List of blocked domains
    *
    * @var array
    */
   private array $blockedDomains = [];
 
   /**
-   * Constructeur
+   * Constructor
    *
    * @param array $blockedDomains
    */
@@ -84,7 +84,7 @@ class EmailCheckerService
   }
 
   /**
-   * Vérifie si l'email est valide
+   * Checks whether the email is valid
    *
    * @param string $email
    * @return bool
@@ -95,7 +95,7 @@ class EmailCheckerService
   }
 
   /**
-   * Vérifie si le domaine est autorisé
+   * Checks whether the domain is allowed
    *
    * @param string $email
    * @return bool
@@ -112,7 +112,7 @@ class EmailCheckerService
   }
 
   /**
-   * Valide complètement un email
+   * Fully validates an email
    *
    * @param string $email
    * @return array
@@ -144,7 +144,7 @@ class EmailCheckerService
 }
 ```
 
-### Étape 3 : Créer le contrôleur
+### Step 3: Create the controller
 
 ```php title="app/Packages/EmailChecker/EmailCheckerController.php"
 <?php
@@ -158,7 +158,7 @@ use Bow\Http\Request;
 class EmailCheckerController
 {
   /**
-   * Constructeur
+   * Constructor
    *
    * @param EmailCheckerService $service
    */
@@ -168,7 +168,7 @@ class EmailCheckerController
   }
 
   /**
-   * Vérifie un email unique
+   * Checks a single email
    *
    * @param Request $request
    * @return array
@@ -181,7 +181,7 @@ class EmailCheckerController
   }
 
   /**
-   * Vérifie plusieurs emails
+   * Checks multiple emails
    *
    * @param Request $request
    * @return array
@@ -204,14 +204,14 @@ class EmailCheckerController
 }
 ```
 
-### Étape 4 : Créer le fichier de configuration
+### Step 4: Create the configuration file
 
 ```php title="config/email-checker.php"
 <?php
 
 return [
   /**
-   * Liste des domaines bloqués
+   * List of blocked domains
    */
   'blocked_domains' => [
     'spam.com',
@@ -221,7 +221,7 @@ return [
 ];
 ```
 
-### Étape 5 : Configurer le package
+### Step 5: Configure the package
 
 ```php title="app/Configurations/EmailCheckerConfiguration.php"
 <?php
@@ -238,17 +238,17 @@ use Bow\Configuration\Loader;
 class EmailCheckerConfiguration extends Configuration
 {
   /**
-   * Initialisation du package
+   * Package initialization
    *
    * @param Loader $config
    * @return void
    */
   public function create(Loader $config): void
   {
-    // Les fichiers dans config/ sont chargés automatiquement.
-    // bind() met le service en cache après la première résolution — c'est
-    // le « singleton » de Bow. Pour une nouvelle instance à chaque appel,
-    // utilisez factory() à la place.
+    // Files in config/ are loaded automatically.
+    // bind() caches the service after the first resolution — this is
+    // Bow's "singleton". For a new instance on every call,
+    // use factory() instead.
     $this->container->bind(EmailCheckerService::class, function () use ($config) {
       $blockedDomains = $config['email-checker.blocked_domains'] ?? [];
 
@@ -257,7 +257,7 @@ class EmailCheckerConfiguration extends Configuration
   }
 
   /**
-   * Lancement du package
+   * Package launch
    *
    * @return void
    */
@@ -265,61 +265,61 @@ class EmailCheckerConfiguration extends Configuration
   {
     $router = $this->container->make('router');
 
-    // Route pour vérifier un email
+    // Route to check a single email
     $router->post('/email/check', 'App\\Packages\\EmailChecker\\EmailCheckerController::check');
 
-    // Route pour vérifier plusieurs emails
+    // Route to check multiple emails
     $router->post('/email/check-bulk', 'App\\Packages\\EmailChecker\\EmailCheckerController::checkBulk');
   }
 }
 ```
 
-:::info Chargement automatique des configurations
-Les fichiers PHP placés dans le dossier `config/` sont automatiquement chargés par BowPHP. Accédez-y avec la notation pointée : `$config['email-checker.blocked_domains']`.
+:::info Automatic loading of configurations
+PHP files placed in the `config/` folder are loaded automatically by BowPHP. Access them using dot notation: `$config['email-checker.blocked_domains']`.
 :::
 
-:::tip Injection de dépendances
-Le contrôleur `EmailCheckerController` reçoit automatiquement le service `EmailCheckerService` grâce à l'[injection de dépendances](./container). Le conteneur résout automatiquement les dépendances du constructeur.
+:::tip Dependency injection
+The `EmailCheckerController` controller automatically receives the `EmailCheckerService` service thanks to [dependency injection](./container). The container automatically resolves the constructor's dependencies.
 :::
 
-### Étape 6 : Enregistrer la configuration
+### Step 6: Register the configuration
 
-Ajoutez votre configuration dans `app/Kernel.php` :
+Add your configuration in `app/Kernel.php`:
 
 ```php
 public function configurations(): array
 {
   return [
-    // ... autres configurations
+    // ... other configurations
     \App\Configurations\EmailCheckerConfiguration::class,
   ];
 }
 ```
 
-### Étape 7 : Tester le package
+### Step 7: Test the package
 
-Lancez le serveur de développement :
+Start the development server:
 
 ```bash
 php bow run:server
 ```
 
-Testez avec `curl` :
+Test with `curl`:
 
 ```bash
-# Vérifier un email valide
+# Check a valid email
 curl -X POST -d "email=john@example.com" http://localhost:8080/email/check
 # {"valid": true, "message": "Email valide", "email": "john@example.com"}
 
-# Vérifier un email invalide
+# Check an invalid email
 curl -X POST -d "email=invalid-email" http://localhost:8080/email/check
 # {"valid": false, "message": "Format d'email invalide", "email": "invalid-email"}
 
-# Vérifier un domaine bloqué
+# Check a blocked domain
 curl -X POST -d "email=user@spam.com" http://localhost:8080/email/check
 # {"valid": false, "message": "Ce domaine n'est pas autorisé", "email": "user@spam.com"}
 
-# Vérifier plusieurs emails
+# Check multiple emails
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"emails": ["john@example.com", "invalid", "user@spam.com"]}' \
@@ -327,9 +327,9 @@ curl -X POST \
 # {"total": 3, "valid": 1, "results": [...]}
 ```
 
-## Structure du package
+## Package structure
 
-Voici la structure finale du package :
+Here is the final structure of the package:
 
 ```
 app/
@@ -343,11 +343,11 @@ config/
 └── email-checker.php
 ```
 
-## Voir aussi
+## See also
 
-- [Conteneur d'injection de dépendances](./container) - Comprendre le DIC de BowPHP
-- [Services](./service) - Créer et utiliser des services
-- [Configuration](./configuration) - Gérer les fichiers de configuration
-- [Routing](./routing) - Définir des routes dans votre application
+- [Dependency injection container](./container) - Understanding BowPHP's DIC
+- [Services](./service) - Creating and using services
+- [Configuration](./configuration) - Managing configuration files
+- [Routing](./routing) - Defining routes in your application
 
 <SuggestionFeature />

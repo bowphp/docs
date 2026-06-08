@@ -1,17 +1,17 @@
 ---
 id: policier
-title: "Authentification JWT avec Policier"
+title: "JWT Authentication with Policier"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Policier permet de valider les requêtes via [JWT](https://jwt.io) (JSON Web Tokens).
+Policier lets you validate requests using [JWT](https://jwt.io) (JSON Web Tokens).
 
 ## Installation
 
-Pour installer le package, vous devez utiliser `composer` (gestionnaire de paquets PHP) comme ceci :
+To install the package, you need to use `composer` (the PHP package manager) like this:
 
 ```bash
 composer require bowphp/policier
@@ -19,67 +19,67 @@ composer require bowphp/policier
 
 ## Configuration
 
-Vous pouvez regarder toutes les options de configuration ici.
+You can review all the configuration options here.
 
 ```php title="config/policier.php"
 return [
   /**
-   * Heure d'expiration du token
+   * Token expiration time
    */
   "exp" => 3600,
 
   /**
-   * Le token est utilisable après cette heure
+   * The token is usable after this time
    */
   "nbf" => 60,
 
   /**
-   * Le token était émis
+   * The token was issued
    */
   "iat" => 60,
 
   /**
-   * Configure l'émetteur
+   * Configure the issuer
    */
   "iss" => "localhost",
 
   /**
-   * Configure le public
+   * Configure the audience
    */
   "aud" => "localhost",
 
   /**
-   * Algorithme de hachage utilisé
+   * Hashing algorithm used
    *
    * HS256, HS384, HS512, RS256, RS384, RS512, ES256, ES384, ES512,
    */
   "alg" => "HS512",
 
   /**
-   * Votre Signature, ce champs est obligatoire pour les autres type de hachage sauf RSA
+   * Your signature, this field is required for all hashing types except RSA
    */
   'signkey' => null,
 
   /**
-   * Signature en utilisant votre RSA, ce qui se chargera automatiquement si la clé de hachage est de type RSA
+   * Signature using your RSA, which loads automatically if the hashing key is of RSA type
    */
   "keychain" => [
     /**
-     * Chemin vers votre clé privée
+     * Path to your private key
      */
     "private" => null,
 
     /**
-     * Chemin vers votre clé publique
+     * Path to your public key
      */
     "public" => null
   ]
 ];
 ```
 
-## Utilisation
+## Usage
 
-Policier est très simple d'utilisation et possède une API claire. La configuration retourne un singleton.
+Policier is very simple to use and has a clear API. The configuration returns a singleton.
 
 ```php
 use Policier\Policier;
@@ -89,7 +89,7 @@ $configure = require "/path/to/config/file.php";
 $policier = Policier::configure($configure);
 ```
 
-Vous pouvez aussi faire comme ceci:
+You can also do it like this:
 
 ```php
 use Policier\Policier;
@@ -101,22 +101,22 @@ Policier::configure($configure);
 $policier = Policier::getInstance();
 ```
 
-Après la configuration, vous pouvez utiliser le helper `policier` :
+After configuration, you can use the `policier` helper:
 
 ```php
 policier($action, ...$args);
 ```
 
-:::tip Actions disponibles
-La valeur d'action doit être l'une de ces valeurs : `encode`, `decode`, `parse`, `verify`, `validate`.
+:::tip Available actions
+The action value must be one of these values: `encode`, `decode`, `parse`, `verify`, `validate`.
 :::
 
-### Mise à jour ou Récupération de la configuration
+### Updating or Retrieving the Configuration
 
-#### Mise à jour de la Configuration
+#### Updating the Configuration
 
-Vous pouvez mettre à jour la configuration de base avec la méthode `setConfig`.
-Elle prend un **tableau** de clés à fusionner avec la configuration existante :
+You can update the base configuration with the `setConfig` method.
+It takes an **array** of keys to merge with the existing configuration:
 
 ```php
 $policier->setConfig([
@@ -125,17 +125,17 @@ $policier->setConfig([
 ]);
 ```
 
-#### Récupération de la Configuration
+#### Retrieving the Configuration
 
-Vous pouvez également obtenir les informations de configuration avec la méthode `getConfig`:
+You can also get configuration information with the `getConfig` method:
 
 ```php
 $policier->getConfig('exp');
 ```
 
-### Encoder un Token
+### Encoding a Token
 
-Encoder rapidement un token:
+Quickly encode a token:
 
 ```php
 $id = uniqid();
@@ -155,21 +155,21 @@ echo $token;
 //=> eyJ0eX...OiJKV1.eyJpc3Mi...OiJsb2.l7v0bS0r...qnK1IeR
 ```
 
-:::info Instance Token
-`$token` est une instance de `Policier\Token` et implémente la méthode magique `__toString`. Vous pouvez obtenir l'heure d'expiration avec `expireIn` et `getToken` pour prendre la valeur du token.
+:::info Token Instance
+`$token` is an instance of `Policier\Token` and implements the magic method `__toString`. You can get the expiration time with `expireIn` and use `getToken` to retrieve the token value.
 :::
 
-Via l'assistant:
+Via the helper:
 
 ```php
 policier('encode', $id, $claims);
 ```
 
-### Décoder un Token
+### Decoding a Token
 
-`decode()` retourne une instance de `Policier\Token`. Utilisez ses méthodes
-`getHeaders()` / `getHeader($name)` / `getClaim($name)` / `getClaims()` pour
-en extraire les informations :
+`decode()` returns an instance of `Policier\Token`. Use its methods
+`getHeaders()` / `getHeader($name)` / `getClaim($name)` / `getClaims()` to
+extract its information:
 
 ```php
 $result = $policier->decode($token);
@@ -178,40 +178,40 @@ $result->getHeaders();          // array
 echo $result->getClaim('name'); // => Franck
 ```
 
-Via l'assistant:
+Via the helper:
 
 ```php
 policier('decode', $token);
 ```
 
-### Transformer un Token
+### Parsing a Token
 
 ```php
 $token = $policier->parse($token);
 
-$token->hasHeader("old") // Vérifier si l'en-tête existe
-$token->getHeader("alg", $default = null); // Obtenez un en-tête
-$token->getHeaders(); // Obtenir tous les en-têtes
+$token->hasHeader("old") // Check if the header exists
+$token->getHeader("alg", $default = null); // Get a header
+$token->getHeaders(); // Get all headers
 
-$token->hasClaim("name") // Vérifier si la réclamation existe
-$token->getClaim("name", $default = null); // Obtenez une réclamation
-$token->getClaims(); // Obtenez toutes les réclamations
+$token->hasClaim("name") // Check if the claim exists
+$token->getClaim("name", $default = null); // Get a claim
+$token->getClaims(); // Get all claims
 
-$token->isExpired(); // Vérifier si le token a expiré
+$token->isExpired(); // Check if the token has expired
 
 echo $token->getClaim("name");
 //=> Franck
 ```
 
-Via l'assistant:
+Via the helper:
 
 ```php
 policier('parse', $token);
 ```
 
-### Vérifier un Token
+### Verifying a Token
 
-Vérifier si le jeton est valide avec tous les attributs JWT.
+Check whether the token is valid against all JWT attributes.
 
 ```php
 $verified = $policier->verify($token);
@@ -223,20 +223,20 @@ if ($verified) {
 }
 ```
 
-Via l'assistant:
+Via the helper:
 
 ```php
 policier('verify', $token);
 ```
 
-### Valider un Token
+### Validating a Token
 
-Vérifiez à la fois la signature du jeton et qu'il appartient bien à un sujet
-donné (le même `$id` que vous avez passé à `encode()`). La méthode `validate`
-prend en deuxième argument cet identifiant — **pas** un tableau de claims.
+Check both the token's signature and that it actually belongs to a given
+subject (the same `$id` you passed to `encode()`). As its second argument, the
+`validate` method takes that identifier — **not** an array of claims.
 
 ```php
-$id = $token->getClaim('jti'); // ou tout autre identifiant que vous avez utilisé
+$id = $token->getClaim('jti'); // or any other identifier you used
 
 $validated = $policier->validate((string) $token, $id);
 
@@ -247,29 +247,29 @@ if ($validated) {
 }
 ```
 
-Via l'assistant:
+Via the helper:
 
 ```php
 policier('validate', $token, $id);
 ```
 
-:::tip Vérification des claims arbitraires
-Si vous voulez aussi confronter des claims côté application (nom, rôle, etc.),
-faites la comparaison vous-même après `decode()` :
+:::tip Verifying arbitrary claims
+If you also want to check application-level claims (name, role, etc.),
+do the comparison yourself after `decode()`:
 
 ```php
 $decoded = $policier->decode($token);
 if ($decoded->getClaim('nickname') !== 'papac') {
-  // claim inattendu
+  // unexpected claim
 }
 ```
 :::
 
-## BowPHP et Policier
+## BowPHP and Policier
 
-Si vous utilisez [BowPHP](https://github.com/bowphp/app), vous pouvez utiliser le plugin de configuration `Policier\Bow\PolicierConfiguration::class` et le middleware `Policier\Bow\PolicierMiddleware::class`.
+If you are using [BowPHP](https://github.com/bowphp/app), you can use the configuration plugin `Policier\Bow\PolicierConfiguration::class` and the middleware `Policier\Bow\PolicierMiddleware::class`.
 
-Relier la configuration sur `app\Kernel.php` :
+Wire up the configuration in `app\Kernel.php`:
 
 ```php title="app\Kernel.php"
 public function middlewares()
@@ -291,7 +291,7 @@ public function configurations()
 }
 ```
 
-Utilisez le middleware:
+Use the middleware:
 
 ```php
 $app->get('/api', function () {
@@ -299,23 +299,23 @@ $app->get('/api', function () {
 })->middleware('policier');
 ```
 
-Le token a été analysé dans l'instance de Policier dans le processus middleware via la méthode `plug`. Après l'exécution du middleware, vous pouvez:
+The token has been parsed into the Policier instance during the middleware process via the `plug` method. After the middleware runs, you can:
 
-- Obtenez le token avec `getToken`
-- [Décoder](#decode-token) le token avec `getDecodeToken`
-- [Analyser](#parse-token) le token avec `getParsedToken`
+- Get the token with `getToken`
+- [Decode](#decode-token) the token with `getDecodeToken`
+- [Parse](#parse-token) the token with `getParsedToken`
 
-### Personnalisation du Middleware
+### Customizing the Middleware
 
-:::tip Personnalisation avancée
-Vous pouvez créer un autre middleware qui étendra le middleware par défaut `Policier\Bow\PolicierMiddleware::class`. Ce qui vous donne la possibilité de changer les messages d'erreur en surchargeant les méthodes `getUnauthorizedMessage`, `getExpirationMessage`, `getExpirationStatusCode` et `getUnauthorizedStatusCode`.
+:::tip Advanced customization
+You can create another middleware that extends the default middleware `Policier\Bow\PolicierMiddleware::class`. This gives you the ability to change the error messages by overriding the `getUnauthorizedMessage`, `getExpirationMessage`, `getExpirationStatusCode`, and `getUnauthorizedStatusCode` methods.
 :::
 
 ```bash
 php bow add:middleware CustomPolicierMiddleware
 ```
 
-Et ensuite, vous pouvez faire ceci :
+And then, you can do this:
 
 ```php
 use Bow\Http\Request;
@@ -324,7 +324,7 @@ use Policier\Bow\PolicierMiddleware;
 class CustomPolicierMiddleware extends PolicierMiddleware
 {
   /**
-   * Obtenir le message d'erreur
+   * Get the error message
    *
    * @return array
    */
@@ -337,7 +337,7 @@ class CustomPolicierMiddleware extends PolicierMiddleware
   }
 
   /**
-   * Obtenir le message d'expiration du token
+   * Get the token expiration message
    *
    * @return array
    */
@@ -351,7 +351,7 @@ class CustomPolicierMiddleware extends PolicierMiddleware
   }
 
   /**
-   * Obtenir le code de réponse non autorisé
+   * Get the unauthorized response code
    *
    * @return int
    */
@@ -361,7 +361,7 @@ class CustomPolicierMiddleware extends PolicierMiddleware
   }
 
   /**
-   * Obtenir le code de réponse pour l'expiration
+   * Get the response code for expiration
    *
    * @return int
    */
@@ -372,10 +372,10 @@ class CustomPolicierMiddleware extends PolicierMiddleware
 }
 ```
 
-#### Publier le middleware
+#### Publishing the middleware
 
-:::info Publication du middleware personnalisé
-Pour publier le middleware personnalisé et écraser celui par défaut de Policier, il suffit d'ajouter le middleware dans le fichier `app/Kernel.php` avec la clé `policier`.
+:::info Publishing the custom middleware
+To publish the custom middleware and override Policier's default one, simply add the middleware to the `app/Kernel.php` file with the `policier` key.
 :::
 
 ```php

@@ -1,15 +1,15 @@
 ---
 id: http-upload
-title: "Envoi de fichiers"
+title: "File uploads"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
-## Traiter les fichiers envoyés
+## Handling uploaded files
 
-Souvent les requêtes sont associées à des fichiers envoyés par l'utilisateur. Vous pouvez traiter ces fichiers avec [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html) via la méthode `file` et le helper du même nom.
+Requests are often associated with files sent by the user. You can handle these files with [`Bow\Http\Request`](https://bowphp.com/api/master/Bow/Http/Request.html) through the `file` method and the helper of the same name.
 
-Considérons le formulaire suivant :
+Consider the following form:
 
 ```html
 <form action="/upload" method="post" enctype="multipart/form-data">
@@ -19,10 +19,10 @@ Considérons le formulaire suivant :
 ```
 
 :::tip Question
-Comment avoir accès au fichier envoyé ?
+How do you access the uploaded file?
 :::
 
-Ici nous pouvons utiliser la méthode `file` qui retourne `null` ou une instance de [`Bow\Http\UploadedFile`](https://bowphp.com/api/master/Bow/Http/UploadedFile.html).
+Here we can use the `file` method, which returns `null` or an instance of [`Bow\Http\UploadedFile`](https://bowphp.com/api/master/Bow/Http/UploadedFile.html).
 
 ```php
 use Bow\Http\Request;
@@ -34,7 +34,7 @@ $app->post('/upload', function(Request $request) {
 });
 ```
 
-Le résultat de `debug` :
+The result of `debug`:
 
 ```php
 // Debug output
@@ -49,9 +49,9 @@ UploadedFile {#92 ▼
 }
 ```
 
-## Déterminer si un fichier existe
+## Determining whether a file exists
 
-Vous pouvez déterminer si un fichier est présent sur la requête en utilisant la méthode `hasFile` :
+You can determine whether a file is present on the request using the `hasFile` method:
 
 ```php
 if ($request->hasFile('photo')) {
@@ -59,21 +59,21 @@ if ($request->hasFile('photo')) {
 }
 ```
 
-## Validation des téléchargements réussis
+## Validating successful uploads
 
-Vous pouvez vérifier qu'il n'y a pas eu de problèmes lors du téléchargement avec la méthode `isUploaded`:
+You can verify that there were no problems during the upload with the `isUploaded` method:
 
 ```php
 $file = $request->file('photo');
 
 if ($file->isUploaded()) {
-  // Code ici
+  // Code here
 }
 ```
 
-## Sauvegarder le fichier
+## Saving the file
 
-Cela consiste juste à déplacer le fichier téléchargé dans un autre dossier et ceci grâce à la méthode `moveTo`.
+This simply consists of moving the uploaded file to another directory, using the `moveTo` method.
 
 ```php
 $file = $request->file('photo');
@@ -81,10 +81,10 @@ $file = $request->file('photo');
 $file->moveTo("/path/to/your/store/directory", $filename = null);
 ```
 
-Si `$filename` est `null`, sa valeur sera le nom du fichier hashé avec la méthode [`getHashName`](https://bowphp.com/api/master/Bow/Http/UploadFile.html#method_getHashName).
+If `$filename` is `null`, its value will be the file name hashed with the [`getHashName`](https://bowphp.com/api/master/Bow/Http/UploadFile.html#method_getHashName) method.
 
-:::tip Fichiers multiples
-Souvent dans le cas où vous attendez des fichiers envoyés via un formulaire dont le champ est sous la forme `photo[]`, la méthode `file` retourne une [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html).
+:::tip Multiple files
+Often, when you expect files sent through a form whose field is in the form `photo[]`, the `file` method returns a [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html).
 :::
 
 ```html
@@ -95,7 +95,7 @@ Souvent dans le cas où vous attendez des fichiers envoyés via un formulaire do
 </form>
 ```
 
-Dans cet exemple, la méthode `file` retournera une [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html) qui contiendra pour chaque occurrence une instance de [`Bow\Http\UploadedFile`](https://bowphp.com/api/master/Bow/Http/UploadedFile.html).
+In this example, the `file` method will return a [`Bow\Support\Collection`](https://bowphp.com/api/master/Bow/Support/Collection.html) that will contain an instance of [`Bow\Http\UploadedFile`](https://bowphp.com/api/master/Bow/Http/UploadedFile.html) for each occurrence.
 
 ```php
 use Bow\Http\Request;

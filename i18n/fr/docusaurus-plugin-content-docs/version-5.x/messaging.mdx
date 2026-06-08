@@ -1,0 +1,381 @@
+---
+id: messaging
+title: "Système de Notification"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+:::info À propos du système de messaging
+Le système de messaging de BowPHP est un outil puissant qui permet d'envoyer des notifications via différents canaux (email, base de données, SMS). Il est conçu pour être flexible, extensible et facile à utiliser.
+:::
+
+Que vous ayez besoin d'envoyer des emails de bienvenue, des notifications d'activité ou des alertes système, le système de messaging vous couvre.
+
+## Configuration
+
+### Préparation du Modèle
+
+Pour commencer, votre modèle doit utiliser le trait `WithNotifier`. Ce trait ajoute toutes les méthodes nécessaires pour envoyer des notifications.
+
+```php
+use Bow\Notifier\WithNotifier;
+use Bow\Database\Barry\Model;
+
+class User extends Model 
+{
+  use WithNotifier;
+}
+```
+
+## Création de Notifications
+
+### Structure de Base
+
+Une notification est une classe qui étend `Notifier`. Voici un exemple complet d'une notification de bienvenue :
+
+```php
+use Bow\Notifier\Notifier;
+use Bow\Mail\Envelop;
+use Bow\Database\Barry\Model;
+
+class WelcomeNotifier extends Notifier
+{
+  /**
+   * Constructeur - passe des données à la notification
+   */
+  public function __construct(
+    private string $customMessage = "Bienvenue!"
+  ) {
+  }
+
+  /**
+   * Configure le message email
+   */
+  public function toMail(Model $context): ?Envelop
+  {
+    return (new Envelop())
+      ->to($context->email)
+      ->subject('Bienvenue sur notre plateforme!')
+      ->view('emails.welcome', [
+        'user' => $context,
+        'message' => $this->customMessage
+      ]);
+  }
+
+  /**
+   * Configure la notification en base de données
+   */
+  public function toDatabase(Model $context): array
+  {
+    return [
+      'type' => 'welcome_notification',
+      'data' => [
+        'user_id' => $context->id,
+        'message' => $this->customMessage,
+        'created_at' => now()
+      ]
+    ];
+  }
+
+  /**
+   * Définit les canaux à utiliser
+   */
+  public function channels(Model $context): array
+  {
+    // Vous pouvez ajouter une logique conditionnelle
+    if ($context->preferences['email_notifications']) {
+      return ['mail', 'database'];
+    }
+    
+    return ['database'];
+  }
+}
+```
+
+### Exemples de Notifications Courantes
+
+#### Notification de Réinitialisation de Mot de Passe
+
+```php
+class PasswordResetNotifier extends Notifier
+{
+  public function __construct(
+    private string $token
+  ) {
+  }
+
+  public function toMail(Model $context): Envelop
+  {
+    $resetUrl = url("/password/reset/{$this->token}");
+
+    return (new Envelop())
+      ->to($context->email)
+      ->subject('Réinitialisation de votre mot de passe')
+      ->view('emails.password-reset', [
+        'user' => $context,
+        'resetUrl' => $resetUrl,
+        'expiresIn' => '60 minutes'
+      ]);
+  }
+
+  public function channels(Model $context): array
+  {
+    return ['mail'];
+  }
+}
+```
+
+#### Notification d'Activité
+
+```php
+class NewCommentNotifier extends Notifier
+{
+  public function __construct(
+    private array $commentData
+  ) {
+  }
+
+  public function toMail(Model $context): Envelop
+  {
+    return (new Envelop())
+      ->to($context->email)
+      ->subject('Nouveau commentaire sur votre post')
+      ->view('emails.new-comment', [
+        'user' => $context,
+        'comment' => $this->commentData
+      ]);
+  }
+
+  public function toDatabase(Model $context): array
+  {
+    return [
+      'type' => 'new_comment',
+      'data' => [
+        'post_id' => $this->commentData['post_id'],
+        'comment_id' => $this->commentData['id'],
+        'commenter' => $this->commentData['user_name'],
+        'excerpt' => substr($this->commentData['content'], 0, 100)
+      ]
+    ];
+  }
+
+  public function channels(Model $context): array
+  {
+    return ['mail', 'database'];
+  }
+}
+```
+
+## Envoi de Notifications
+
+### Envoi Simple
+
+L'envoi simple est synchrone et immédiat :
+
+```php
+// Envoi d'une notification de bienvenue basique
+$user->sendMessage(new WelcomeNotifier());
+
+// Envoi avec un message personnalisé
+$user->sendMessage(new WelcomeNotifier("Ravi de vous avoir parmi nous!"));
+
+// Envoi d'une notification de réinitialisation de mot de passe
+$user->sendMessage(new PasswordResetNotifier($token));
+
+// Envoi d'une notification de nouveau commentaire
+$user->sendMessage(new NewCommentNotifier([
+  'id' => 1,
+  'post_id' => 123,
+  'user_name' => 'John Doe',
+  'content' => 'Super article!'
+]));
+```
+
+### Envoi en File d'Attente
+
+:::tip Performances optimales
+L'envoi en file d'attente est asynchrone et permet de meilleures performances. Utilisez cette méthode pour les notifications non critiques.
+:::
+
+```php
+// File d'attente par défaut
+$user->setMessageQueue(new WelcomeNotifier());
+
+// File d'attente spécifique avec priorité
+$user->sendMessageQueueOn('high-priority', new PasswordResetMessage($token));
+
+// Envoi différé (utile pour les rappels)
+$user->sendMessageLater(
+  3600, // délai en secondes (1 heure)
+  new ReminderMessage("N'oubliez pas de compléter votre profil!")
+);
+
+// Envoi différé sur une file spécifique
+$user->sendMessageLaterOn(
+  1800, // 30 minutes
+  'reminders',
+  new ReminderMessage("Finalisez votre commande!")
+);
+```
+
+## Canaux de Notification
+
+BowPHP livre cinq canaux par défaut. Chacun correspond à une méthode
+`to<Canal>()` que vous pouvez (ou non) implémenter dans votre notification :
+
+| Canal       | Clé         | Méthode à implémenter | Adaptateur livré |
+|-------------|-------------|-----------------------|------------------|
+| Email       | `mail`      | `toMail(Model)`       | `MailChannelAdapter` |
+| Base de données | `database` | `toDatabase(Model)` | `DatabaseChannelAdapter` |
+| SMS         | `sms`       | `toSms(Model)`        | `SmsChannelAdapter` |
+| Slack       | `slack`     | `toSlack(Model)`      | `SlackChannelAdapter` |
+| Telegram    | `telegram`  | `toTelegram(Model)`   | `TelegramChannelAdapter` |
+
+La méthode `channels(Model)` de votre notification décide quels canaux activer
+pour un contexte donné. Seuls les canaux retournés appellent leur méthode
+`to<Canal>()` ; les autres `to*` héritées du `Notifier` restent inutilisées.
+
+### Email
+
+Le canal email est parfait pour les communications importantes. Exemple complet d'une notification par email :
+
+```php
+public function toMail(Model $context): Envelop
+{
+  return (new Envelop())
+    ->to($context->email)
+    ->cc('support@example.com')
+    ->bcc('archives@example.com')
+    ->subject('Sujet Important')
+    ->view('emails.template', [
+      'user' => $context,
+      'data' => $this->data
+    ])
+    ->attach('/chemin/vers/fichier.pdf')
+    ->priority('high');
+}
+```
+
+### Base de Données
+
+Le canal de base de données est idéal pour les notifications in-app.
+
+:::info Structure de la table
+Voici la structure complète de la table `notifications` nécessaire pour le canal database :
+:::
+
+```sql
+CREATE TABLE notifications (
+  id CHAR(36) PRIMARY KEY,
+  concern_id BIGINT NOT NULL,
+  concern_type VARCHAR(255) NOT NULL,
+  type VARCHAR(255) NOT NULL,
+  data JSON NOT NULL,
+  read_at TIMESTAMP NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+Exemple d'utilisation avancée :
+
+```php
+public function toDatabase(Model $context): array
+{
+  return [
+    'type' => 'system_notification',
+    'data' => [
+      'title' => 'Mise à jour Système',
+      'message' => 'Une nouvelle version est disponible',
+      'action_url' => '/settings/updates',
+      'action_text' => 'Mettre à jour maintenant',
+      'severity' => 'high',
+      'icon' => 'update-icon',
+      'metadata' => [
+        'version' => '2.0.0',
+        'changes' => ['feature1', 'feature2']
+      ]
+    ]
+  ];
+}
+```
+
+## Extension du Système
+
+:::tip Extensibilité
+Vous pouvez créer vos propres canaux personnalisés pour envoyer des notifications via d'autres moyens (SMS, Slack, Push, etc.).
+:::
+
+### Création d'un Nouveau Canal
+
+Un canal personnalisé est une classe qui implémente
+`Bow\Notifier\Contracts\ChannelAdapterInterface` et expose une méthode
+`send(Model $context, Notifier $notifier): void`.
+
+Exemple de canal pour journaliser les notifications :
+
+```php
+namespace App\Notifier\Channels;
+
+use Bow\Database\Barry\Model;
+use Bow\Notifier\Contracts\ChannelAdapterInterface;
+use Bow\Notifier\Notifier;
+
+class LogChannel implements ChannelAdapterInterface
+{
+  public function send(Model $context, Notifier $notifier): void
+  {
+    if (!method_exists($notifier, 'toLog')) {
+      throw new \InvalidArgumentException('The notifier must define a toLog method.');
+    }
+
+    $log = $notifier->toLog($context);
+
+    logger()->log($log);
+  }
+}
+```
+
+### Enregistrement du Nouveau Canal
+
+Pour enregistrer votre nouveau canal, vous devez l'ajouter dans la configuration de l'application. Dans votre fichier `App\Configurations\ApplicationConfiguration.php`, ajoutez le code suivant dans la méthode `create()` :
+
+```php title="app/Configurations/ApplicationConfiguration.php"
+public function create(Loader $config): void  
+{
+  Notifier::pushChannels([
+    'log' => LogChannel::class
+  ]);
+}
+```
+
+## Bonnes Pratiques
+
+:::warning Recommandations importantes
+Suivez ces bonnes pratiques pour un système de messaging robuste et performant.
+:::
+
+1. **Segmentation** - Créez des notifications spécifiques pour chaque cas d'utilisation
+2. **Files d'attente** - Utilisez les files d'attente pour les notifications non urgentes
+3. **Personnalisation** - Permettez aux utilisateurs de choisir leurs canaux préférés
+4. **Tests** - Testez vos notifications avec des cas réels
+5. **Monitoring** - Surveillez les échecs d'envoi et mettez en place des stratégies de nouvelle tentative
+
+## Débogage
+
+Pour déboguer vos notifications, vous pouvez :
+
+```php
+// Journaliser les envois
+Log::info('Envoi de notification', [
+  'type' => get_class($notification),
+  'user' => $context->id,
+  'channels' => $notification->channels($context)
+]);
+
+// Tester en environnement local (le second argument écrit dans la config)
+config('mail.default', 'log');
+```
+
+<SuggestionFeature />

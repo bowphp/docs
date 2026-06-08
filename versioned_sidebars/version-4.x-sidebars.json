@@ -1,6 +1,6 @@
 {
   "docs": {
-    "Démarrage": [
+    "Getting Started": [
       "concept",
       "installation",
       "configuration",
@@ -17,19 +17,19 @@
       "i18n",
       "testing"
     ],
-    "Base de donnée": [
+    "Database": [
       "database",
       "query-builder",
       "orm",
       "migration",
       "seeding"
     ],
-    "Http": [
+    "HTTP": [
       "http-request",
       "http-response",
       "http-session"
     ],
-    "Sécurités": [
+    "Security": [
       "auth",
       "policier",
       "csrf-protection"

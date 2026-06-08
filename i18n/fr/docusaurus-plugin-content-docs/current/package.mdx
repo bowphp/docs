@@ -1,0 +1,353 @@
+---
+id: package
+title: "Développement de packages externes"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Le système de packages de BowPHP permet d'étendre votre application en greffant des modules externes réutilisables. Cette architecture modulaire facilite la maintenance et le partage de fonctionnalités entre projets.
+
+## Création d'un package
+
+### Générer la configuration
+
+Pour créer un nouveau package, utilisez la commande `add:configuration` :
+
+```bash
+php bow add:configuration PluginConfiguration
+```
+
+Le fichier `PluginConfiguration.php` sera créé dans le dossier `app/Configurations`. Ce fichier contient deux méthodes essentielles :
+
+| Méthode | Signature | Description |
+|---------|-----------|-------------|
+| `create` | `create(Loader $config): void` | Initialise le package (enregistrement des bindings, configuration) |
+| `run` | `run(): void` | Lance le package (définition des routes, démarrage des services) |
+
+### Cycle de vie
+
+Lors du démarrage de l'application, Bow exécute les configurations dans cet ordre :
+
+1. Appel de `create()` sur tous les packages
+2. Appel de `run()` sur tous les packages (dans le même ordre)
+
+:::warning Attention
+Dans la méthode `create()`, n'utilisez pas de dépendances d'autres packages qui ne sont pas encore configurés.
+:::
+
+### Accès au conteneur
+
+Dans le fichier de configuration, le [conteneur d'injection de dépendances](./container) est accessible via `$this->container`.
+
+## Exemple complet
+
+Créons un package de vérification d'emails avec un service dédié.
+
+### Étape 1 : Créer la configuration
+
+```bash
+php bow add:configuration EmailCheckerConfiguration
+```
+
+### Étape 2 : Créer le service
+
+Créez le dossier `app/Packages/EmailChecker` et ajoutez le fichier `EmailCheckerService.php` :
+
+```php title="app/Packages/EmailChecker/EmailCheckerService.php"
+<?php
+
+declare(strict_types=1);
+
+namespace App\Packages\EmailChecker;
+
+use Bow\Support\Str;
+
+class EmailCheckerService
+{
+  /**
+   * Liste des domaines bloqués
+   *
+   * @var array
+   */
+  private array $blockedDomains = [];
+
+  /**
+   * Constructeur
+   *
+   * @param array $blockedDomains
+   */
+  public function __construct(array $blockedDomains = [])
+  {
+    $this->blockedDomains = $blockedDomains;
+  }
+
+  /**
+   * Vérifie si l'email est valide
+   *
+   * @param string $email
+   * @return bool
+   */
+  public function isValid(string $email): bool
+  {
+    return Str::isMail($email);
+  }
+
+  /**
+   * Vérifie si le domaine est autorisé
+   *
+   * @param string $email
+   * @return bool
+   */
+  public function isDomainAllowed(string $email): bool
+  {
+    if (!$this->isValid($email)) {
+      return false;
+    }
+
+    $domain = substr($email, strpos($email, '@') + 1);
+
+    return !in_array($domain, $this->blockedDomains);
+  }
+
+  /**
+   * Valide complètement un email
+   *
+   * @param string $email
+   * @return array
+   */
+  public function validate(string $email): array
+  {
+    if (!$this->isValid($email)) {
+      return [
+        'valid' => false,
+        'message' => 'Format d\'email invalide',
+        'email' => $email
+      ];
+    }
+
+    if (!$this->isDomainAllowed($email)) {
+      return [
+        'valid' => false,
+        'message' => 'Ce domaine n\'est pas autorisé',
+        'email' => $email
+      ];
+    }
+
+    return [
+      'valid' => true,
+      'message' => 'Email valide',
+      'email' => $email
+    ];
+  }
+}
+```
+
+### Étape 3 : Créer le contrôleur
+
+```php title="app/Packages/EmailChecker/EmailCheckerController.php"
+<?php
+
+declare(strict_types=1);
+
+namespace App\Packages\EmailChecker;
+
+use Bow\Http\Request;
+
+class EmailCheckerController
+{
+  /**
+   * Constructeur
+   *
+   * @param EmailCheckerService $service
+   */
+  public function __construct(
+    private EmailCheckerService $service
+  ) {
+  }
+
+  /**
+   * Vérifie un email unique
+   *
+   * @param Request $request
+   * @return array
+   */
+  public function check(Request $request): array
+  {
+    $email = $request->get('email', '');
+
+    return $this->service->validate($email);
+  }
+
+  /**
+   * Vérifie plusieurs emails
+   *
+   * @param Request $request
+   * @return array
+   */
+  public function checkBulk(Request $request): array
+  {
+    $emails = $request->get('emails', []);
+    $results = [];
+
+    foreach ($emails as $email) {
+      $results[] = $this->service->validate($email);
+    }
+
+    return [
+      'total' => count($emails),
+      'valid' => count(array_filter($results, fn($r) => $r['valid'])),
+      'results' => $results
+    ];
+  }
+}
+```
+
+### Étape 4 : Créer le fichier de configuration
+
+```php title="config/email-checker.php"
+<?php
+
+return [
+  /**
+   * Liste des domaines bloqués
+   */
+  'blocked_domains' => [
+    'spam.com',
+    'fake-email.com',
+    'temporary-mail.org',
+  ],
+];
+```
+
+### Étape 5 : Configurer le package
+
+```php title="app/Configurations/EmailCheckerConfiguration.php"
+<?php
+
+declare(strict_types=1);
+
+namespace App\Configurations;
+
+use App\Packages\EmailChecker\EmailCheckerController;
+use App\Packages\EmailChecker\EmailCheckerService;
+use Bow\Configuration\Configuration;
+use Bow\Configuration\Loader;
+
+class EmailCheckerConfiguration extends Configuration
+{
+  /**
+   * Initialisation du package
+   *
+   * @param Loader $config
+   * @return void
+   */
+  public function create(Loader $config): void
+  {
+    // Les fichiers dans config/ sont chargés automatiquement.
+    // bind() met le service en cache après la première résolution — c'est
+    // le « singleton » de Bow. Pour une nouvelle instance à chaque appel,
+    // utilisez factory() à la place.
+    $this->container->bind(EmailCheckerService::class, function () use ($config) {
+      $blockedDomains = $config['email-checker.blocked_domains'] ?? [];
+
+      return new EmailCheckerService($blockedDomains);
+    });
+  }
+
+  /**
+   * Lancement du package
+   *
+   * @return void
+   */
+  public function run(): void
+  {
+    $router = $this->container->make('router');
+
+    // Route pour vérifier un email
+    $router->post('/email/check', 'App\\Packages\\EmailChecker\\EmailCheckerController::check');
+
+    // Route pour vérifier plusieurs emails
+    $router->post('/email/check-bulk', 'App\\Packages\\EmailChecker\\EmailCheckerController::checkBulk');
+  }
+}
+```
+
+:::info Chargement automatique des configurations
+Les fichiers PHP placés dans le dossier `config/` sont automatiquement chargés par BowPHP. Accédez-y avec la notation pointée : `$config['email-checker.blocked_domains']`.
+:::
+
+:::tip Injection de dépendances
+Le contrôleur `EmailCheckerController` reçoit automatiquement le service `EmailCheckerService` grâce à l'[injection de dépendances](./container). Le conteneur résout automatiquement les dépendances du constructeur.
+:::
+
+### Étape 6 : Enregistrer la configuration
+
+Ajoutez votre configuration dans `app/Kernel.php` :
+
+```php
+public function configurations(): array
+{
+  return [
+    // ... autres configurations
+    \App\Configurations\EmailCheckerConfiguration::class,
+  ];
+}
+```
+
+### Étape 7 : Tester le package
+
+Lancez le serveur de développement :
+
+```bash
+php bow run:server
+```
+
+Testez avec `curl` :
+
+```bash
+# Vérifier un email valide
+curl -X POST -d "email=john@example.com" http://localhost:8080/email/check
+# {"valid": true, "message": "Email valide", "email": "john@example.com"}
+
+# Vérifier un email invalide
+curl -X POST -d "email=invalid-email" http://localhost:8080/email/check
+# {"valid": false, "message": "Format d'email invalide", "email": "invalid-email"}
+
+# Vérifier un domaine bloqué
+curl -X POST -d "email=user@spam.com" http://localhost:8080/email/check
+# {"valid": false, "message": "Ce domaine n'est pas autorisé", "email": "user@spam.com"}
+
+# Vérifier plusieurs emails
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"emails": ["john@example.com", "invalid", "user@spam.com"]}' \
+  http://localhost:8080/email/check-bulk
+# {"total": 3, "valid": 1, "results": [...]}
+```
+
+## Structure du package
+
+Voici la structure finale du package :
+
+```
+app/
+├── Configurations/
+│   └── EmailCheckerConfiguration.php
+└── Packages/
+    └── EmailChecker/
+        ├── EmailCheckerController.php
+        └── EmailCheckerService.php
+config/
+└── email-checker.php
+```
+
+## Voir aussi
+
+- [Conteneur d'injection de dépendances](./container) - Comprendre le DIC de BowPHP
+- [Services](./service) - Créer et utiliser des services
+- [Configuration](./configuration) - Gérer les fichiers de configuration
+- [Routing](./routing) - Définir des routes dans votre application
+
+<SuggestionFeature />

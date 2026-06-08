@@ -1,0 +1,469 @@
+---
+id: database
+title: "Base de données"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Bow rend l'interaction avec les bases de données extrêmement simple en utilisant le `SQL brut`, le générateur de requêtes fluide et l'[ORM](./orm) Barry.
+
+Actuellement, Bow prend en charge trois bases de données:
+
+- MySQL
+- PostgreSQL
+- SQLite
+
+## Configuration
+
+La configuration de la base de données de votre application se trouve dans le fichier `config/database.php`. Dans ce fichier, vous pouvez définir toutes les connexions à vos bases de données. Des exemples de configuration sont fournis pour tous les types de bases de données supportés.
+
+## Configuration SQLite
+
+Après avoir créé une nouvelle base de données SQLite à l'aide d'une commande telle que `touch var/database.sqlite`, vous pouvez facilement configurer vos variables d'environnement (dans le fichier `.env.json`) pour qu'elles pointent vers cette base de données en utilisant le chemin absolu:
+
+```json
+{
+  "DB_DEFAULT": "sqlite",
+  "SQLITE_DATABASE": "/absolute/path/to/database.sqlite"
+}
+```
+
+## Connexions multiples
+
+Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode statique `connection` de la classe [Bow\Database\Database::class](https://bowphp.com/api/master/Bow/Database/Database.html). Le nom passé à la méthode doit correspondre à l'une des connexions définies dans votre fichier de configuration `config/database.php`:
+
+```php
+use Bow\Database\Database;
+
+$users = Database::connection('sqlite')->select(...);
+```
+
+Ou via le helper `db`:
+
+```php
+$users = db('sqlite')->select(...);
+```
+
+Une fois la configuration modifiée, elle est directement appliquée sur la connexion des modèles. [Consultez la documentation ORM](./orm) pour plus d'informations sur les modèles.
+
+## Utilisation de requêtes SQL brutes
+
+Les requêtes brutes sont des requêtes SQL écrites directement sans passer par le Query Builder.
+Dans cette section, nous allons utiliser une table nommée `pets` pour effectuer nos exemples.
+
+Voici la structure de la table `pets`:
+
+```sql
+CREATE TABLE `pets` (
+  id int primary key,
+  name varchar(200),
+  color varchar(50)
+);
+```
+
+Description des colonnes de la table:
+
+| Colonne | Description |
+| ------- | ----------- |
+| `id`    | Clé primaire de la table |
+| `name`  | Nom de l'animal |
+| `color` | Couleur de l'animal |
+
+> 💡 Pour information, un `pet` est un animal domestique en anglais.
+
+### Exécution de requêtes SELECT
+
+Pour exécuter une requête brute de type `SELECT`, vous devez utiliser la méthode `Database::select` ou le helper `app_db_select`. Considérons notre table `pets` et supposons que nous sommes bien connectés à la base de données.
+
+Exemple pour récupérer toutes les informations de la table `pets`:
+
+```php
+use Bow\Database\Database;
+
+$pets = Database::select('select * from `pets`');
+```
+
+Via helper `app_db_select`:
+
+```php
+$pets = app_db_select('select * from `pets`');
+```
+
+### Sélection avec conditions
+
+Voici comment récupérer un enregistrement spécifique de la table `pets` en utilisant une condition WHERE:
+
+```php
+use Bow\Database\Database;
+
+$pets = Database::select('select * from `pets` where id = :id', ['id' => 1]);
+```
+
+Via helper `app_db_select`:
+
+```php
+$pets = app_db_select('select * from `pets` where id = :id', ['id' => 1]);
+```
+
+:::info
+La méthode `app_db_select` retourne un `array` d'objets `stdClass` ou un tableau vide s'il n'y a aucun résultat. Chaque élément du tableau est un objet contenant les colonnes de la table. Pour plus d'informations sur `stdClass`, consultez [la documentation PHP](http://php.net/manual/fr/language.types.object.php).
+:::
+
+### Récupérer une seule ligne
+
+Quand vous attendez exactement un résultat, `selectOne` retourne un seul
+objet (ou `null`) plutôt qu'un tableau :
+
+```php
+use Bow\Database\Database;
+
+$pet = Database::selectOne('select * from `pets` where id = :id', ['id' => 1]);
+
+// Via helper
+$pet = app_db_select_one('select * from `pets` where id = :id', ['id' => 1]);
+```
+
+### Exécution de requêtes INSERT
+
+Pour exécuter une requête brute de type `INSERT`, utilisez la méthode `Database::insert` ou le helper `app_db_insert`.
+
+Exemple d'insertion d'un enregistrement dans la table `pets`:
+
+```php
+use Bow\Database\Database;
+
+$pet = [
+  'id' => 1,
+  'name' => 'Medor',
+  'color' => 'Green'
+];
+
+$inserted = Database::insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
+```
+
+Via helper `app_db_insert`:
+
+```php
+$pet = [
+  'id' => 2,
+  'name' => 'Marshmallow',
+  'color' => 'White'
+];
+
+$inserted = app_db_insert('insert into `pets` (id, name, color) values (:id, :name, :color);', $pet);
+```
+
+:::info
+La méthode `app_db_insert` retourne un entier représentant le nombre de lignes insérées.
+:::
+
+#### Insertion multiple
+
+Vous pouvez également insérer plusieurs enregistrements simultanément.
+
+```php
+use Bow\Database\Database;
+
+// Liste de plusieurs animaux
+$pets = [
+  [
+    'id' => 1,
+    'name' => 'Médor',
+    'color' => 'Black'
+  ],
+  [
+    'id' => 2,
+    'name' => 'Milou',
+    'color' => 'White'
+  ]
+];
+
+$inserted = Database::insert(
+  'insert into `pets` (id, name, color) values (:id, :name, :color);',
+  $pets
+);
+```
+
+Via helper `app_db_insert`:
+
+```php
+$updated = app_db_insert(
+  'insert into `pets` (id, name, color) values (:id, :name, :color);',
+  $pets
+);
+```
+
+### Exécution de requêtes UPDATE
+
+Pour exécuter une requête brute de type `UPDATE`, utilisez la méthode `Database::update` ou le helper `app_db_update`.
+
+Exemple de mise à jour d'un enregistrement dans la table `pets`:
+
+```php
+use Bow\Database\Database;
+
+$pet = [
+  'id' => 1,
+  'name' => 'Medora',
+  'color' => 'Purple'
+];
+
+$updated = Database::update(
+  'update `pets` set id = :id, name = :name, color = :color where id = :id',
+  $pet
+);
+```
+
+Via le helper `app_db_update`:
+
+```php
+$pet = [
+  'id' => 2,
+  'name' => 'Spark',
+  'color' => 'Yellow'
+];
+
+$updated = app_db_update(
+  'update `pets` set id = :id, name = :name, color = :color where id = :id',
+  $pet
+);
+```
+
+### Exécution de requêtes DELETE
+
+Pour exécuter une requête brute de type `DELETE`, utilisez la méthode `Database::delete` ou le helper `app_db_delete`.
+
+Exemple de suppression d'un enregistrement dans la table `pets`:
+
+```php
+use Bow\Database\Database;
+
+$deleted = Database::delete(
+  'delete from `pets` where id = :id',
+  ['id' => 1]
+);
+```
+
+Via le helper `app_db_delete`:
+
+```php
+$deleted = app_db_delete(
+  'delete from `pets` where id = :id',
+  ['id' => 2]
+);
+```
+
+### Exécution de requêtes génériques
+
+Pour exécuter des requêtes autres que `SELECT`, `UPDATE`, `INSERT` ou `DELETE` (comme `ALTER TABLE`, `CREATE TABLE`, etc.), utilisez la méthode `Database::statement` ou le helper `app_db_statement`.
+
+```php
+use Bow\Database\Database;
+
+Database::statement('alter table `pets` add `owner` varchar(80) default null;');
+```
+
+Via le helper `app_db_statement`:
+
+```php
+app_db_statement('alter table `pets` add `owner` varchar(80) default null;');
+```
+
+## Transactions de base de données
+
+Bow offre deux styles de transactions : **automatique** (callback) et
+**manuelle** (begin / commit / rollback).
+
+### Transaction automatique avec `Database::transaction()`
+
+Passez votre logique dans une closure à `Database::transaction()` : si une
+exception est levée, la transaction est annulée (rollback) ; sinon elle est
+validée (commit). C'est l'approche recommandée pour la plupart des cas.
+
+```php
+use Bow\Database\Database;
+
+$result = Database::transaction(function () {
+  Database::update('update users set votes = :votes', ['votes' => 1]);
+  Database::delete('delete from posts');
+
+  return 'ok'; // valeur renvoyée par transaction()
+});
+```
+
+:::warning Ne pas confondre
+`Database::startTransaction()` n'accepte **pas** de callback : c'est la
+méthode bas-niveau qui démarre simplement la transaction. Pour le style
+callback, utilisez `Database::transaction($callback)`.
+:::
+
+### Transaction manuelle
+
+Pour un contrôle plus fin, vous pouvez gérer le cycle vous-même :
+
+```php
+use Bow\Database\Database;
+
+Database::startTransaction();
+
+try {
+  Database::update('update users set votes = :votes', ['votes' => 1]);
+  Database::delete('delete from posts');
+
+  Database::commit();
+} catch (\Throwable $e) {
+  Database::rollback();
+  throw $e;
+}
+```
+
+Les helpers équivalents :
+
+```php
+app_db_transaction();           // démarre une transaction (alias de startTransaction)
+app_db_commit();                // valide
+app_db_rollback();              // annule
+app_db_transaction_started();   // bool : transaction en cours ?
+```
+
+:::note Helpers et callbacks
+Les helpers `app_db_transaction()`, `app_db_commit()`, `app_db_rollback()`
+n'acceptent pas d'arguments. Pour le style callback, appelez directement
+`Database::transaction($callback)`.
+:::
+
+## Dernier identifiant inséré
+
+Après une insertion, vous pouvez récupérer la dernière valeur auto-incrémentée :
+
+```php
+use Bow\Database\Database;
+
+Database::insert('insert into `pets` (name, color) values (:name, :color)', [
+  'name'  => 'Médor',
+  'color' => 'Black',
+]);
+
+$id = Database::lastInsertId();
+
+// Pour PostgreSQL avec sequence nommée :
+$id = Database::lastInsertId('pets_id_seq');
+```
+
+## Événement de requête
+
+À chaque exécution d'une requête préparée d'écriture, Bow émet un événement
+`Bow\Database\QueryEvent`. C'est le point d'accroche idéal pour journaliser le
+SQL exécuté, mesurer les requêtes lentes ou débugger en développement.
+
+L'événement expose deux propriétés en **lecture seule** :
+
+| Propriété | Type | Description |
+| --------- | ---- | ----------- |
+| `$event->sql` | `string` | La requête SQL exécutée |
+| `$event->bindings` | `array` | Les valeurs liées (paramètres) |
+
+### Écouter l'événement
+
+Enregistrez un écouteur sur la classe de l'événement via le helper `event()`.
+L'instance `QueryEvent` est passée à votre callback :
+
+```php
+use Bow\Database\QueryEvent;
+
+event()->on(QueryEvent::class, function (QueryEvent $event) {
+    logger()->debug($event->sql, $event->bindings);
+});
+```
+
+Le plus souvent, on déclare cet écouteur dans la méthode `boot()` d'un
+[service provider](./service) pour qu'il soit actif sur toute l'application.
+
+:::info Requêtes concernées
+L'événement est déclenché par les requêtes d'écriture préparées :
+`Database::insert()` (avec des valeurs liées), `Database::update()` et
+`Database::delete()` — donc également par les écritures du Query Builder et de
+l'[ORM Barry](./orm) qui passent par ces méthodes.
+
+Il n'est **pas** émis par `Database::select()` / `selectOne()`, ni par
+`Database::statement()` (requêtes DDL telles que `CREATE`, `ALTER`,
+`TRUNCATE`), ni par un `insert()` sans valeurs liées.
+:::
+
+:::tip Événements de modèle
+Pour réagir aux opérations d'un modèle précis (`creating`, `updated`,
+`deleting`, etc.) plutôt qu'à toutes les requêtes SQL, utilisez les
+[événements de modèle](./orm#événements-de-modèle) de Barry.
+:::
+
+## Jointures SQL
+
+Les jointures permettent de combiner des données de plusieurs tables. Considérons les tables suivantes:
+
+```sql
+create table `authors` (
+  `id` int primary key,
+  `name` varchar(200)
+);
+
+create table `pets` (
+  `id` int primary key,
+  `name` varchar(200),
+  `color` varchar(50),
+  `author_id` int default 0
+);
+```
+
+Pour effectuer une jointure dans BowPHP, ouvrez un Query Builder via
+`Database::table()` (ou le helper `app_db_table()`) puis chaînez `join()` :
+
+```php
+use Bow\Database\Database;
+
+$results = Database::table('pets')
+  ->join('authors', 'authors.id', '=', 'pets.author_id')
+  ->get();
+
+// Via helper
+$results = app_db_table('pets')
+  ->join('authors', 'authors.id', '=', 'pets.author_id')
+  ->get();
+```
+
+Vous pouvez ajouter des conditions avec la clause `WHERE` pour filtrer les résultats:
+
+```php
+$results = app_db_table('pets')
+  ->join('authors', 'authors.id', '=', 'pets.author_id')
+  ->where('pets.author_id', 1)
+  ->get();
+```
+
+Vous pouvez chaîner plusieurs jointures pour combiner plus de deux tables.
+Par exemple, si nous avons une table `countries` contenant les pays des propriétaires, et que la table `authors` devient:
+
+```sql
+create table `authors` (
+  `id` int primary key,
+  `name` varchar(200),
+  `country_id` int
+);
+```
+
+Notre requête avec deux jointures sera:
+
+```php
+$results = app_db_table('pets')
+  ->join('authors',    'authors.id',    '=', 'pets.author_id')
+  ->join('countries',  'countries.id',  '=', 'authors.country_id')
+  ->where('pets.author_id', 1)
+  ->get();
+```
+
+:::note
+Vous pouvez consulter l'API de la classe [Database](./api/5.x/Bow/Database/Database.html) pour plus d'information.
+:::
+
+<SuggestionFeature />

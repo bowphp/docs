@@ -1,45 +1,45 @@
 ---
 id: concept
-title: "Concept et Architecture"
+title: "Concept and Architecture"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-BowPHP est un framework PHP léger, conçu pour offrir une structure claire et modulaire. Lorsqu'une requête arrive, elle suit un chemin bien défini appelé **cycle de vie d'une requête**. Ce cycle est organisé pour séparer les responsabilités, rendre le code facile à maintenir et améliorer les performances.
+BowPHP is a lightweight PHP framework designed to provide a clear and modular structure. When a request comes in, it follows a well-defined path called the **request lifecycle**. This cycle is organized to separate responsibilities, make the code easy to maintain, and improve performance.
 
-### Le cycle de vie d'une requête expliqué
+### The request lifecycle explained
 
-Chaque requête passe par plusieurs étapes avant de générer une réponse pour l'utilisateur.
+Every request goes through several stages before generating a response for the user.
 
-Voici les étapes principales :
+Here are the main stages:
 
-1. **Requête HTTP** : L'utilisateur envoie une requête via son navigateur ou une API.
-2. **Request** : Le framework capture cette requête et extrait les données nécessaires (URL, paramètres, corps, etc.).
-3. **Kernel** : Le Kernel est le cœur du framework. Il :
-  - Charge les fichiers de configuration situés dans le dossier `config` (comme `config/database.php`).
-  - Initialise les modules nécessaires à l'application.
-4. **Application** : Elle démarre le Kernel et prépare l'environnement pour traiter la requête.
-5. **Routeur** :
-  - Le routeur détecte la route correspondant à la requête (par exemple, `/users/42` ou `/api/login`).
-  - Il associe cette route à un contrôleur et une méthode spécifique, définis directement dans le code des routes.
-  - Si des middlewares sont définis pour cette route, ils sont exécutés avant d'appeler le contrôleur.
-6. **Middleware** : Les middlewares effectuent des traitements spécifiques, comme vérifier l'authentification ou valider les données.
-7. **Contrôleur** : Une fois la route validée, le contrôleur exécute la logique métier (par exemple, récupérer des données ou effectuer une action).
-8. **Modèle** : Si des données sont nécessaires, le modèle interagit avec la base de données pour les récupérer ou les mettre à jour.
-9. **Vue** : Le contrôleur renvoie les données récupérées au composant Vue, qui génère le contenu final (HTML, JSON, etc.).
-10. **Réponse HTTP** : La réponse est envoyée à l'utilisateur.
+1. **HTTP Request**: The user sends a request through their browser or an API.
+2. **Request**: The framework captures this request and extracts the necessary data (URL, parameters, body, etc.).
+3. **Kernel**: The Kernel is the heart of the framework. It:
+  - Loads the configuration files located in the `config` folder (such as `config/database.php`).
+  - Initializes the modules required by the application.
+4. **Application**: It starts the Kernel and prepares the environment to handle the request.
+5. **Router**:
+  - The router detects the route matching the request (for example, `/users/42` or `/api/login`).
+  - It associates this route with a specific controller and method, defined directly in the route code.
+  - If middlewares are defined for this route, they are executed before calling the controller.
+6. **Middleware**: Middlewares perform specific tasks, such as checking authentication or validating data.
+7. **Controller**: Once the route is validated, the controller runs the business logic (for example, retrieving data or performing an action).
+8. **Model**: If data is needed, the model interacts with the database to retrieve or update it.
+9. **View**: The controller passes the retrieved data to the View component, which generates the final content (HTML, JSON, etc.).
+10. **HTTP Response**: The response is sent to the user.
 
-### Le rôle du routeur en détail
+### The role of the router in detail
 
-Le routeur est un composant clé de BowPHP. Il agit comme une "boussole" qui oriente chaque requête vers le bon contrôleur et la bonne méthode.
+The router is a key component of BowPHP. It acts as a "compass" that directs each request to the right controller and the right method.
 
-#### Détection de la route
+#### Route detection
 
-Le routeur examine l'URL de la requête et détermine quelle route correspond. Les routes sont définies dans des fichiers dédiés.
+The router examines the request URL and determines which route matches. Routes are defined in dedicated files.
 
-Exemple de définition de route :
+Example of a route definition:
 
 ```php title="routes/app.php"
 $app->get('/users/:id', 'UserController::show');
@@ -47,14 +47,14 @@ $app->post('/api/login', 'AuthController::login');
 ```
 
 :::tip
-Ici :
-- La requête `GET /users/42` est associée à la méthode `show` du `UserController`.
-- La requête `POST /api/login` est associée à la méthode `login` du `AuthController`.
+Here:
+- The `GET /users/42` request is associated with the `show` method of `UserController`.
+- The `POST /api/login` request is associated with the `login` method of `AuthController`.
 :::
 
-Bow supporte aussi le **routage par attributs PHP 8**, qui permet de déclarer
-les routes directement sur la classe contrôleur sans fichier de routes
-centralisé :
+Bow also supports **PHP 8 attribute-based routing**, which lets you declare
+routes directly on the controller class without a centralized routes
+file:
 
 ```php
 use Bow\Router\Attributes\{Controller, Get};
@@ -70,48 +70,48 @@ final class UserController
 $app->register(UserController::class);
 ```
 
-Voir [Routage > Routage par attributs](./routing) pour le détail des attributs
-disponibles.
+See [Routing > Attribute-based routing](./routing) for details on the
+available attributes.
 
-#### Association au contrôleur
+#### Association with the controller
 
-Une fois la route détectée, le routeur :
+Once the route is detected, the router:
 
-- Valide les paramètres de l'URL (comme `:id`).
-- Exécute les middlewares définis pour cette route (s'il y en a).
-- Appelle le contrôleur et la méthode associés à la route.
+- Validates the URL parameters (such as `:id`).
+- Runs the middlewares defined for this route (if any).
+- Calls the controller and method associated with the route.
 
-### Une architecture modulaire
+### A modular architecture
 
 :::tip
-BowPHP repose sur une architecture modulaire. Chaque module est
-indépendant, possède sa propre configuration et remplit un rôle spécifique.
-Cela rend l'application facile à gérer et à étendre. Le routeur en est un
-exemple ; le module Database, qui gère les connexions à la base de données,
-en est un autre.
+BowPHP is built on a modular architecture. Each module is
+independent, has its own configuration, and serves a specific role.
+This makes the application easy to manage and extend. The router is one
+example; the Database module, which manages database connections,
+is another.
 :::
 
-#### Le contrat : `Bow\Configuration\Configuration`
+#### The contract: `Bow\Configuration\Configuration`
 
-Tous les modules suivent le **même contrat** : chacun expose une classe qui
-étend `Bow\Configuration\Configuration` et implémente deux méthodes :
+All modules follow the **same contract**: each one exposes a class that
+extends `Bow\Configuration\Configuration` and implements two methods:
 
-- `create(Loader $config)` — déclare les liaisons dans le container
-- `run()` — démarre le module (utile pour les ressources eager)
+- `create(Loader $config)` — declares the bindings in the container
+- `run()` — starts the module (useful for eager resources)
 
-Le Kernel (votre `app/Kernel.php`, qui étend `Bow\Configuration\Loader`)
-liste ces providers dans sa méthode `configurations()`. Au démarrage, le
-Kernel les instancie, charge les fichiers `config/*.php`, puis appelle
-`create()` puis `run()` sur chacun.
+The Kernel (your `app/Kernel.php`, which extends `Bow\Configuration\Loader`)
+lists these providers in its `configurations()` method. At startup, the
+Kernel instantiates them, loads the `config/*.php` files, then calls
+`create()` followed by `run()` on each one.
 
-#### Exemple : Le module Database
+#### Example: The Database module
 
-Prenons le cas du module **Database**, qui gère les connexions à la base de
-données :
+Let's take the case of the **Database** module, which manages connections to the
+database:
 
-**Fichier de configuration : `config/database.php`**
+**Configuration file: `config/database.php`**
 
-Ce fichier contient les paramètres nécessaires pour se connecter à la base de données. Voici un exemple simple :
+This file contains the parameters needed to connect to the database. Here is a simple example:
 
 ```php title="config/database.php"
 return [
@@ -131,12 +131,12 @@ return [
 ];
 ```
 
-**Classe `Bow\Database\DatabaseConfiguration`**
+**The `Bow\Database\DatabaseConfiguration` class**
 
-Cette classe (qui étend `Bow\Configuration\Configuration`) lit `config/database.php`,
-configure les connexions PDO et expose `db` / `database` dans le container.
+This class (which extends `Bow\Configuration\Configuration`) reads `config/database.php`,
+configures the PDO connections, and exposes `db` / `database` in the container.
 
-**Enregistrement dans le Kernel**
+**Registration in the Kernel**
 
 ```php title="app/Kernel.php"
 namespace App;
@@ -150,20 +150,20 @@ class Kernel extends Loader
     {
         return [
             DatabaseConfiguration::class,
-            // ... d'autres providers (Cache, Mail, Queue, etc.)
+            // ... other providers (Cache, Mail, Queue, etc.)
         ];
     }
 }
 ```
 
-Au démarrage, le Kernel charge `config/database.php`, instancie
-`DatabaseConfiguration` puis appelle ses méthodes `create()` et `run()`. La
-connexion est alors prête à être utilisée par les contrôleurs, les modèles
-Barry et les autres composants.
+At startup, the Kernel loads `config/database.php`, instantiates
+`DatabaseConfiguration`, then calls its `create()` and `run()` methods. The
+connection is then ready to be used by controllers, Barry models,
+and the other components.
 
-### Visualisation avec un diagramme
+### Visualization with a diagram
 
-Voici une représentation visuelle pour mieux comprendre le cycle de vie d'une requête et l'intégration modulaire (exemple avec **Database**) :
+Here is a visual representation to better understand the request lifecycle and modular integration (example with **Database**):
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -196,20 +196,20 @@ Voici une représentation visuelle pour mieux comprendre le cycle de vie d'une r
 Flux : Request → Kernel → Routeur → Middleware → Contrôleur → Modèle → Vue → Réponse
 ```
 
-### Résumé des points importants
+### Summary of the key points
 
-:::info Résumé
-- **Cycle de vie structuré** : Une requête suit un chemin précis (Request → Kernel → Routeur → Middleware → Contrôleur → Modèle → Vue → Réponse).
-- **Rôle du routeur** : Le routeur détecte la route correspondant à la requête et appelle le contrôleur et la méthode associés.
-- **Kernel** : Orchestre le chargement des configurations depuis le dossier `config` et initialise les modules.
-- **Modularité** : Chaque composant (routeur, base de données, etc.) est indépendant, ce qui simplifie la gestion et améliore la maintenabilité.
+:::info Summary
+- **Structured lifecycle**: A request follows a precise path (Request → Kernel → Router → Middleware → Controller → Model → View → Response).
+- **Role of the router**: The router detects the route matching the request and calls the associated controller and method.
+- **Kernel**: Orchestrates the loading of configurations from the `config` folder and initializes the modules.
+- **Modularity**: Each component (router, database, etc.) is independent, which simplifies management and improves maintainability.
 :::
 
-## Merci aux contributeurs
+## Thanks to the contributors
 
-Merci d'avoir envisagé de contribuer à BowPHP ! Le guide de contribution se trouve dans la documentation.
+Thank you for considering contributing to BowPHP! The contribution guide can be found in the documentation.
 
 - [Franck DAKIA](https://github.com/papac)
-- [Merci aux collaborateurs](https://github.com/bowphp/app/graphs/contributors)
+- [Thanks to the collaborators](https://github.com/bowphp/app/graphs/contributors)
 
 <SuggestionFeature />

@@ -1,39 +1,39 @@
 ---
 id: routing
-title: "Routage dans BowPHP"
+title: "Routing in BowPHP"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-:::info À propos du routage
-Le routage est un élément essentiel dans le développement d'une application web. Il permet de relier une URL à une action spécifique dans le contrôleur de l'application.
+:::info About routing
+Routing is an essential part of developing a web application. It links a URL to a specific action in the application's controller.
 :::
 
-Dans BowPHP, le système de routage est intégré à l'instance de l'application et exposé dans vos fichiers de routes via la variable `$router`.
+In BowPHP, the routing system is built into the application instance and exposed in your route files through the `$router` variable.
 
-Les routes de l'application se définissent dans le fichier `app.php`, qui se trouve dans le dossier `routes` de votre projet.
+The application's routes are defined in the `app.php` file, located in the `routes` folder of your project.
 
-## Mappage d'URL
+## URL Mapping
 
-Le système de routage de BowPHP permet de faire correspondre une URL à un contrôleur ou une action. Cela se fait en associant une URL à une méthode HTTP (`GET`, `POST`, `PUT`, `DELETE`, etc.) et en définissant l'action à exécuter lorsqu'une requête correspond à cette route.
+BowPHP's routing system lets you match a URL to a controller or an action. This is done by associating a URL with an HTTP method (`GET`, `POST`, `PUT`, `DELETE`, etc.) and defining the action to execute when a request matches that route.
 
-### Structure du Routage
+### Routing Structure
 
-Le routage dans BowPHP s'écrit ainsi :
+Routing in BowPHP is written as follows:
 
 ```php
 $router->[method](url, action);
 ```
 
-- **`method`** : Le verbe HTTP (`GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`), toujours écrit en minuscule.
-- **`url`** : L'URL à matcher.
-- **`action`** : L'action à exécuter. Cela peut être une closure (fonction anonyme), un tableau de closures, ou le nom d'un contrôleur.
+- **`method`**: The HTTP verb (`GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`), always written in lowercase.
+- **`url`**: The URL to match.
+- **`action`**: The action to execute. This can be a closure (anonymous function), an array of closures, or the name of a controller.
 
-### Exemple de Routage
+### Routing Example
 
-#### Avec une Closure :
+#### With a Closure:
 
 ```php
 $router->get('/', function () {
@@ -41,18 +41,18 @@ $router->get('/', function () {
 });
 ```
 
-:::tip Qu'est-ce qu'une closure ?
-Une *closure* est une fonction anonyme qui peut être définie à la volée et utilisée dans le routage de BowPHP. Pour plus d'informations, consultez la [documentation sur les closures](http://php.net/manual/fr/class.closure.php).
+:::tip What is a closure?
+A *closure* is an anonymous function that can be defined on the fly and used in BowPHP routing. For more information, see the [closures documentation](http://php.net/manual/fr/class.closure.php).
 :::
 
-#### Avec un tableau de fonctions (callables) :
+#### With an array of functions (callables):
 
 ```php
 $callables = [];
 
 $callables[] = function () {
   echo 'Hello World';
-  return true; // Retourne true pour exécuter la fonction suivante
+  return true; // Return true to execute the next function
 };
 
 $callables[] = function () {
@@ -62,33 +62,33 @@ $callables[] = function () {
 $router->get('/', $callables);
 ```
 
-:::warning Attention
-La première fonction doit retourner `true` pour permettre à la suivante de s'exécuter. Si elle retourne `false`, l'exécution des fonctions suivantes s'arrêtera.
+:::warning Warning
+The first function must return `true` to allow the next one to run. If it returns `false`, the execution of the following functions will stop.
 :::
 
-#### Avec un contrôleur :
+#### With a controller:
 
 ```php
 $router->get('/', 'UserController::action');
 ```
 
-#### Avec un contrôleur et un middleware :
+#### With a controller and a middleware:
 
 ```php
 $router->get('/', ['middleware' => 'ip', 'controller' => 'UserController::action']);
 ```
 
-#### Utilisation d'un contrôleur avec la méthode `__invoke` :
+#### Using a controller with the `__invoke` method:
 
-Si le contrôleur implémente la méthode magique `__invoke`, vous pouvez l'utiliser directement comme une fonction :
+If the controller implements the magic method `__invoke`, you can use it directly as a function:
 
 ```php
 $router->get('/', UserController::class);
 ```
 
-## Liste des Méthodes de Mappage
+## List of Mapping Methods
 
-Voici les principales méthodes de routage dans BowPHP :
+Here are the main routing methods in BowPHP:
 
 ```php
 $router->get($url, $action);
@@ -101,9 +101,9 @@ $router->match(['GET', 'POST'], $url, $action);
 $router->any($url, $action);
 ```
 
-### Exemples de Routage avec différentes Méthodes HTTP
+### Routing Examples with Different HTTP Methods
 
-- **`GET`** : Pour récupérer des données
+- **`GET`**: To retrieve data
 
 ```php
 $router->get('/', function () {
@@ -111,7 +111,7 @@ $router->get('/', function () {
 });
 ```
 
-- **`POST`** : Pour envoyer des données au serveur
+- **`POST`**: To send data to the server
 
 ```php
 $router->post('/', function () {
@@ -119,7 +119,7 @@ $router->post('/', function () {
 });
 ```
 
-- **`PUT`** : Pour mettre à jour des ressources existantes
+- **`PUT`**: To update existing resources
 
 ```php
 $router->put('/', function () {
@@ -127,7 +127,7 @@ $router->put('/', function () {
 });
 ```
 
-- **`DELETE`** : Pour supprimer une ressource
+- **`DELETE`**: To delete a resource
 
 ```php
 $router->delete('/', function () {
@@ -135,7 +135,7 @@ $router->delete('/', function () {
 });
 ```
 
-- **`PATCH`** : Pour appliquer des modifications partielles à une ressource
+- **`PATCH`**: To apply partial changes to a resource
 
 ```php
 $router->patch('/', function () {
@@ -143,7 +143,7 @@ $router->patch('/', function () {
 });
 ```
 
-- **`OPTIONS`** : Pour récupérer les options disponibles pour une ressource
+- **`OPTIONS`**: To retrieve the available options for a resource
 
 ```php
 $router->options('/', function () {
@@ -151,85 +151,85 @@ $router->options('/', function () {
 });
 ```
 
-:::note Note importante
-Les navigateurs ne supportent pas les méthodes `DELETE`, `PUT` et `PATCH` nativement. Pour contourner cette limitation, vous pouvez ajouter un champ caché dans vos formulaires HTML :
+:::note Important note
+Browsers do not natively support the `DELETE`, `PUT`, and `PATCH` methods. To work around this limitation, you can add a hidden field to your HTML forms:
 
 ```html
 <input type="hidden" name="_method" value="DELETE">
 ```
 
-Ceci va permettre à BowPHP de comprendre que vous voulez contacter la route associée à la méthode `DELETE`.
+This allows BowPHP to understand that you want to reach the route associated with the `DELETE` method.
 :::
 
-## Mappage Multiple
+## Multiple Mapping
 
-### `match` - Mappage avec plusieurs Méthodes HTTP
+### `match` - Mapping with Multiple HTTP Methods
 
-:::tip Méthode match
-Si vous souhaitez faire correspondre plusieurs méthodes HTTP (comme `GET` et `POST`) à une même URL, vous pouvez utiliser la méthode `match`.
+:::tip The match method
+If you want to match multiple HTTP methods (such as `GET` and `POST`) to the same URL, you can use the `match` method.
 :::
 
 ```php
 $router->match(['GET', 'POST'], '/users', function () {
-  // Code ici
+  // Code here
 });
 ```
 
-Vous pouvez également traiter les différents types de requêtes dans une seule action :
+You can also handle the different request types within a single action:
 
 ```php
 use Bow\Http\Request;
 
 $router->match(['GET', 'POST'], '/users', function (Request $request) {
   if ($request->isPost()) {
-    // Traitement pour la requête POST
+    // Handling for the POST request
   } else {
-    // Traitement pour la requête GET
+    // Handling for the GET request
   }
 });
 ```
 
-### `any` - Mappage avec n'importe quelle Méthode HTTP
+### `any` - Mapping with Any HTTP Method
 
-Si vous souhaitez que n'importe quelle méthode HTTP corresponde à une URL, vous pouvez utiliser `any` :
+If you want any HTTP method to match a URL, you can use `any`:
 
 ```php
 $router->any('/', function () {
-  // Code ici
+  // Code here
 });
 ```
 
-## Groupes de Routes avec `prefix`
+## Route Groups with `prefix`
 
-Lorsque vous avez plusieurs routes qui partagent un préfixe similaire (par exemple, `/users`, `/users/:id`, `/users/:id/delete`), vous pouvez utiliser la méthode `prefix` pour organiser votre code de manière plus propre.
+When you have several routes that share a similar prefix (for example, `/users`, `/users/:id`, `/users/:id/delete`), you can use the `prefix` method to organize your code more cleanly.
 
 ```php
 $router->prefix('/users', function () use ($router) {
   $router->get('/', function () {
-    // Code pour récupérer tous les utilisateurs
+    // Code to retrieve all users
   });
 
   $router->get('/:id', function ($id) {
-    // Code pour récupérer un utilisateur par ID
+    // Code to retrieve a user by ID
   });
 
   $router->get('/:id/delete', function ($id) {
-    // Code pour supprimer un utilisateur
+    // Code to delete a user
   });
 });
 ```
 
-:::danger Limitation importante
-Évitez d'imbriquer des groupes `prefix` : le préfixe courant est réinitialisé après l'exécution du callback.
+:::danger Important limitation
+Avoid nesting `prefix` groups: the current prefix is reset after the callback runs.
 :::
 
-## Contraintes de Sous-domaine
+## Subdomain Constraints
 
-BowPHP permet de restreindre des routes à un domaine ou sous-domaine spécifique.
+BowPHP lets you restrict routes to a specific domain or subdomain.
 
-### Contrainte sur une route individuelle avec `withDomain`
+### Constraint on an individual route with `withDomain`
 
-Utilisez la méthode `withDomain` chaînée sur l'objet `Route` :
+Use the `withDomain` method chained on the `Route` object:
 
 ```php
 $router->get('/dashboard', function () {
@@ -237,11 +237,11 @@ $router->get('/dashboard', function () {
 })->withDomain('admin.example.com');
 ```
 
-### Contrainte sur un groupe de routes avec `$router->domain`
+### Constraint on a group of routes with `$router->domain`
 
-La méthode `$router->domain()` applique une contrainte de domaine à toutes les
-routes définies dans son callback. Pratique pour isoler une API, une zone
-admin, ou un sous-domaine tenant sans répéter `withDomain()` partout.
+The `$router->domain()` method applies a domain constraint to all the
+routes defined in its callback. Handy for isolating an API, an admin
+area, or a tenant subdomain without repeating `withDomain()` everywhere.
 
 ```php
 $router->domain('api.example.com', function () use ($router) {
@@ -250,8 +250,8 @@ $router->domain('api.example.com', function () use ($router) {
 });
 ```
 
-Le motif accepte les paramètres dynamiques (`:tenant`, `<tenant>`) et les
-wildcards (`*`) tout comme `withDomain()` :
+The pattern accepts dynamic parameters (`:tenant`, `<tenant>`) and
+wildcards (`*`), just like `withDomain()`:
 
 ```php
 $router->domain(':tenant.example.com', function () use ($router) {
@@ -259,12 +259,12 @@ $router->domain(':tenant.example.com', function () use ($router) {
 });
 ```
 
-:::note Réinitialisation après le callback
-Le motif de domaine n'est actif que pendant l'exécution du callback. Toute
-route définie après l'appel à `domain()` retrouve un domaine vide.
+:::note Reset after the callback
+The domain pattern is only active while the callback runs. Any
+route defined after the call to `domain()` reverts to an empty domain.
 :::
 
-### Sous-domaine statique
+### Static subdomain
 
 ```php
 $router->get('/dashboard', function () {
@@ -272,9 +272,9 @@ $router->get('/dashboard', function () {
 })->withDomain('admin.example.com');
 ```
 
-### Sous-domaine dynamique avec paramètre
+### Dynamic subdomain with a parameter
 
-Vous pouvez capturer une partie du sous-domaine comme paramètre en utilisant la notation `:param` ou `<param>` :
+You can capture part of the subdomain as a parameter using the `:param` or `<param>` notation:
 
 ```php
 $router->get('/dashboard', function ($tenant) {
@@ -282,11 +282,11 @@ $router->get('/dashboard', function ($tenant) {
 })->withDomain(':tenant.example.com');
 ```
 
-Le paramètre `$tenant` sera automatiquement injecté dans votre action avec la valeur extraite du sous-domaine.
+The `$tenant` parameter will be automatically injected into your action with the value extracted from the subdomain.
 
-### Utilisation d'un wildcard
+### Using a wildcard
 
-Pour accepter n'importe quel sous-domaine, utilisez `*` :
+To accept any subdomain, use `*`:
 
 ```php
 $router->get('/', function () {
@@ -294,27 +294,27 @@ $router->get('/', function () {
 })->withDomain('*.example.com');
 ```
 
-:::tip Cas d'utilisation
-Les contraintes de sous-domaine sont particulièrement utiles pour :
-- Les applications multi-tenant (`client1.app.com`, `client2.app.com`)
-- Séparer les interfaces admin et publique (`admin.site.com` vs `www.site.com`)
-- Les API versionnées (`v1.api.example.com`, `v2.api.example.com`)
+:::tip Use cases
+Subdomain constraints are especially useful for:
+- Multi-tenant applications (`client1.app.com`, `client2.app.com`)
+- Separating the admin and public interfaces (`admin.site.com` vs `www.site.com`)
+- Versioned APIs (`v1.api.example.com`, `v2.api.example.com`)
 :::
 
 
-## Personnalisation des Routes
+## Customizing Routes
 
-BowPHP permet de personnaliser vos routes de plusieurs façons, notamment :
+BowPHP lets you customize your routes in several ways, including:
 
-- Capturer des variables dans l'URL
-- Ajouter des critères de validation sur les variables capturées
-- Nommer les routes pour une gestion plus facile
-- Associer des middlewares à des routes spécifiques
-- Combiner différentes actions (middleware, contrôleur)
+- Capturing variables in the URL
+- Adding validation criteria on the captured variables
+- Naming routes for easier management
+- Attaching middlewares to specific routes
+- Combining different actions (middleware, controller)
 
-### Capturer des Variables dans l'URL
+### Capturing Variables in the URL
 
-Pour capturer des variables dans l'URL, utilisez la notation `:variable_name`. Ces variables seront ensuite passées à l'action correspondante.
+To capture variables in the URL, use the `:variable_name` notation. These variables will then be passed to the corresponding action.
 
 ```php
 $router->get('/:name', function ($name) {
@@ -322,7 +322,7 @@ $router->get('/:name', function ($name) {
 });
 ```
 
-Vous pouvez aussi utiliser des paramètres optionnels :
+You can also use optional parameters:
 
 ```php
 $router->get('/users/:id?', function ($id = null) {
@@ -330,11 +330,11 @@ $router->get('/users/:id?', function ($id = null) {
 });
 ```
 
-### Ajouter des Critères de Validation sur les Variables
+### Adding Validation Criteria on Variables
 
-Lorsque vous capturez des variables, vous pouvez les valider à l'aide de la méthode `where` pour garantir que les données sont bien conformes à une certaine règle.
+When you capture variables, you can validate them using the `where` method to ensure the data complies with a given rule.
 
-#### Exemple avec une seule variable :
+#### Example with a single variable:
 
 ```php
 $router->get('/:name', function ($name) {
@@ -342,7 +342,7 @@ $router->get('/:name', function ($name) {
 })->where('name', '[a-z]+');
 ```
 
-#### Exemple avec plusieurs variables :
+#### Example with multiple variables:
 
 ```php
 $router->get('/:name/:lastname/:number', function ($name, $lastname, $number) {
@@ -354,13 +354,13 @@ $router->get('/:name/:lastname/:number', function ($name, $lastname, $number) {
 ]);
 ```
 
-:::tip Validation des variables
-La méthode `where` permet de définir des règles de validation pour chaque variable capturée dans l'URL.
+:::tip Variable validation
+The `where` method lets you define validation rules for each variable captured in the URL.
 :::
 
-### Nommer les Routes
+### Naming Routes
 
-Pour faciliter la gestion des routes dans les grandes applications, vous pouvez leur attribuer des noms. Cela permet de référencer facilement une route dans votre code.
+To make managing routes easier in large applications, you can assign them names. This makes it easy to reference a route in your code.
 
 ```php
 $router->get('/:name', function ($name) {
@@ -368,11 +368,11 @@ $router->get('/:name', function ($name) {
 })->name('greeting');
 ```
 
-### Utilisation des Middlewares
+### Using Middlewares
 
-Un middleware est une fonction ou un ensemble de fonctions qui interviennent entre la requête et l'action à exécuter. Vous pouvez associer un ou plusieurs middlewares à une route.
+A middleware is a function or a set of functions that run between the request and the action to be executed. You can attach one or more middlewares to a route.
 
-#### Exemple d'association de middleware :
+#### Example of attaching a middleware:
 
 ```php
 $router->get('/:name', [
@@ -380,15 +380,15 @@ $router->get('/:name', [
   'controller' => 'UserController::show'
 ]);
 
-// Ou avec la méthode `middleware()` :
+// Or with the `middleware()` method:
 $router->get('/:name', function ($name) {
   return 'Bonjour ' . $name;
 })->middleware('auth');
 ```
 
-### Composition d'Actions
+### Composing Actions
 
-BowPHP permet également de combiner un contrôleur et un middleware pour une route spécifique. Voici un exemple :
+BowPHP also lets you combine a controller and a middleware for a specific route. Here is an example:
 
 ```php
 $router->get('/:name', [
@@ -397,11 +397,11 @@ $router->get('/:name', [
 ]);
 ```
 
-## Utilisation de la méthode `route`
+## Using the `route` Method
 
-La méthode `route` dans BowPHP permet de définir une route de manière plus simple et flexible. Elle accepte un tableau de paramètres, ce qui vous permet de personnaliser la route de façon plus détaillée.
+The `route` method in BowPHP lets you define a route in a simpler and more flexible way. It accepts an array of parameters, which allows you to customize the route in more detail.
 
-### Prototype de la méthode `route`
+### Prototype of the `route` method
 
 ```php
 $router->route([
@@ -411,21 +411,21 @@ $router->route([
 ]);
 ```
 
-### Liste des options disponibles dans `route`
+### List of options available in `route`
 
-| Paramètre   | Type         | Description                                           |
+| Parameter   | Type         | Description                                           |
 |-------------|--------------|-------------------------------------------------------|
-| `path`      | `String`     | Le chemin de l'URL à matcher                         |
-| `method`    | `String`, `Array` | Méthode HTTP (`GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`) |
-| `handler`   | `String`, `Closure`, `Array` | Action à exécuter |
-| `middleware`| `String`, `Array` | Middleware(s) à appliquer avant d'exécuter l'action |
-| `where`     | `String`, `Array` | Contrainte(s) appliquée(s) sur les variables dans l'URL |
+| `path`      | `String`     | The URL path to match                                |
+| `method`    | `String`, `Array` | HTTP method (`GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`) |
+| `handler`   | `String`, `Closure`, `Array` | Action to execute |
+| `middleware`| `String`, `Array` | Middleware(s) to apply before executing the action |
+| `where`     | `String`, `Array` | Constraint(s) applied to the variables in the URL |
 
 :::note Important
-La méthode `route()` retourne `void` et ne permet pas de chaîner `->name()` directement. Pour nommer une route, utilisez les méthodes HTTP (`get`, `post`, etc.) puis `->name(...)`.
+The `route()` method returns `void` and does not allow chaining `->name()` directly. To name a route, use the HTTP methods (`get`, `post`, etc.) followed by `->name(...)`.
 :::
 
-### Exemple d'utilisation de `route` avec une closure
+### Example of using `route` with a closure
 
 ```php
 $router->route([
@@ -437,7 +437,7 @@ $router->route([
 ]);
 ```
 
-### Exemple d'utilisation de `route` avec un contrôleur
+### Example of using `route` with a controller
 
 ```php
 $router->route([
@@ -447,11 +447,11 @@ $router->route([
 ]);
 ```
 
-:::info En savoir plus
-Pour plus d'informations sur les contrôleurs, consultez la section [Contrôleurs](./controller).
+:::info Learn more
+For more information about controllers, see the [Controllers](./controller) section.
 :::
 
-### Exemple d'utilisation de `route` avec un contrôleur et un middleware
+### Example of using `route` with a controller and a middleware
 
 ```php
 $router->route([
@@ -462,11 +462,11 @@ $router->route([
 ]);
 ```
 
-:::info En savoir plus
-Pour en savoir plus sur les middlewares, consultez la section [Middlewares](./middleware).
+:::info Learn more
+To learn more about middlewares, see the [Middlewares](./middleware) section.
 :::
 
-### Exemple d'utilisation de `route` avec un contrôleur, un middleware et une restriction
+### Example of using `route` with a controller, a middleware, and a constraint
 
 ```php
 $router->route([
@@ -478,16 +478,16 @@ $router->route([
 ]);
 ```
 
-:::tip Avantage de la méthode route
-Cette méthode est particulièrement utile lorsque vous avez besoin d'une syntaxe plus concise et que vous souhaitez avoir plus de contrôle sur les paramètres de votre route.
+:::tip Advantage of the route method
+This method is especially useful when you need a more concise syntax and want more control over your route's parameters.
 :::
 
-## Middleware au niveau du Routeur
+## Router-level Middleware
 
-En plus de la méthode `->middleware()` chaînée sur une route, le routeur expose
-sa propre méthode `middleware()` qui retourne une nouvelle instance de routeur
-avec les middlewares déjà appliqués. Pratique pour partager des middlewares
-entre plusieurs routes sans groupe `prefix`.
+In addition to the `->middleware()` method chained on a route, the router exposes
+its own `middleware()` method, which returns a new router instance
+with the middlewares already applied. Handy for sharing middlewares
+across several routes without a `prefix` group.
 
 ```php
 $router->middleware('auth')->get('/profile', 'UserController::show');
@@ -497,16 +497,16 @@ $router->middleware(['auth', 'admin'])->prefix('/admin', function () use ($route
 });
 ```
 
-Les middlewares passés à `Router::middleware()` peuvent être :
-- Une chaîne (alias enregistré dans le Kernel, ex. `'auth'`)
-- Une classe FQCN (qui sera instanciée et son `process()` appelé)
-- Un tableau combinant les deux
+The middlewares passed to `Router::middleware()` can be:
+- A string (alias registered in the Kernel, e.g. `'auth'`)
+- An FQCN class (which will be instantiated and its `process()` called)
+- An array combining both
 
-## Gestion des codes d'erreur
+## Handling Error Codes
 
-La méthode `code()` permet d'enregistrer un handler global pour un code HTTP
-spécifique (404, 500, etc.). Le handler est appelé lorsque le framework émet
-une réponse avec ce code.
+The `code()` method lets you register a global handler for a specific HTTP
+code (404, 500, etc.). The handler is called when the framework emits
+a response with that code.
 
 ```php
 $router->code(404, function () {
@@ -520,16 +520,16 @@ $router->code(403, [
 ]);
 ```
 
-`code()` accepte les mêmes types de handler que les méthodes verbales : closure,
-chaîne `Controller::method`, ou tableau avec `controller` / `middleware`.
+`code()` accepts the same handler types as the verb methods: closure,
+`Controller::method` string, or array with `controller` / `middleware`.
 
-## Routage par attributs
+## Attribute-based Routing
 
-Pour les projets en PHP 8+, BowPHP permet de déclarer les routes
-directement sur les classes contrôleurs via des attributs. Plus besoin de
-maintenir un fichier de routes central.
+For projects on PHP 8+, BowPHP lets you declare routes
+directly on controller classes using attributes. No need to
+maintain a central route file.
 
-### Déclaration
+### Declaration
 
 ```php
 use Bow\Router\Attributes\{Controller, Get, Post, Put, Delete};
@@ -554,15 +554,15 @@ final class UserController
 }
 ```
 
-### Enregistrement
+### Registration
 
-Dans votre fichier de routes, appelez `register()` avec le contrôleur (ou un
-tableau de contrôleurs) :
+In your route file, call `register()` with the controller (or an
+array of controllers):
 
 ```php
 $router->register(UserController::class);
 
-// Ou plusieurs à la fois
+// Or several at once
 $router->register([
   UserController::class,
   PostController::class,
@@ -570,46 +570,46 @@ $router->register([
 ]);
 ```
 
-### Attributs disponibles
+### Available attributes
 
-| Attribut       | Cible    | Description                                                          |
+| Attribute      | Target   | Description                                                          |
 |----------------|----------|----------------------------------------------------------------------|
-| `#[Controller]` | Classe   | Préfixe, middlewares et préfixe de nom partagés par toutes les routes |
-| `#[Get]`       | Méthode  | Route GET                                                            |
-| `#[Post]`      | Méthode  | Route POST                                                           |
-| `#[Put]`       | Méthode  | Route PUT                                                            |
-| `#[Patch]`     | Méthode  | Route PATCH                                                          |
-| `#[Delete]`    | Méthode  | Route DELETE                                                         |
-| `#[Options]`   | Méthode  | Route OPTIONS                                                        |
-| `#[Route]`     | Méthode  | Route générique multi-méthodes : `#[Route('/path', methods: ['GET', 'POST'])]` |
+| `#[Controller]` | Class    | Prefix, middlewares, and name prefix shared by all routes            |
+| `#[Get]`       | Method   | GET route                                                           |
+| `#[Post]`      | Method   | POST route                                                          |
+| `#[Put]`       | Method   | PUT route                                                           |
+| `#[Patch]`     | Method   | PATCH route                                                         |
+| `#[Delete]`    | Method   | DELETE route                                                        |
+| `#[Options]`   | Method   | OPTIONS route                                                       |
+| `#[Route]`     | Method   | Generic multi-method route: `#[Route('/path', methods: ['GET', 'POST'])]` |
 
-Chaque attribut de méthode est répétable : une même méthode peut servir
-plusieurs chemins ou verbes.
+Each method attribute is repeatable: the same method can serve
+multiple paths or verbs.
 
-### Composition des noms
+### Composing names
 
-Si le `#[Controller]` déclare un préfixe de nom (`name: 'users.'`), il est
-concaténé verbatim au nom de chaque route. Par exemple :
+If the `#[Controller]` declares a name prefix (`name: 'users.'`), it is
+concatenated verbatim to each route's name. For example:
 
 ```php
 #[Controller(name: 'users.')]
 class UserController {
-    #[Get('/', name: 'index')]        // -> nom final : "users.index"
+    #[Get('/', name: 'index')]        // -> final name: "users.index"
     public function index() { /* ... */ }
 
-    #[Get('/:id', name: 'show')]      // -> nom final : "users.show"
+    #[Get('/:id', name: 'show')]      // -> final name: "users.show"
     public function show() { /* ... */ }
 }
 ```
 
-Le séparateur (`.`, `:`, vide) est entièrement à votre charge — ajoutez-le au
-préfixe si vous en voulez un.
+The separator (`.`, `:`, empty) is entirely up to you — add it to the
+prefix if you want one.
 
-:::note Méthodes héritées
-Seules les méthodes déclarées sur le contrôleur lui-même sont scannées. Les
-attributs `#[Route]` portés par une classe parente ne sont **pas** réenregistrés
-sur la sous-classe — cela évite des routes en double si vous partagez du code
-via héritage.
+:::note Inherited methods
+Only the methods declared on the controller itself are scanned. The
+`#[Route]` attributes carried by a parent class are **not** re-registered
+on the subclass — this avoids duplicate routes if you share code
+via inheritance.
 :::
 
 <SuggestionFeature />

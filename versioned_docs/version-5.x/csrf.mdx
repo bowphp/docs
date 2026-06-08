@@ -1,21 +1,21 @@
 ---
 id: csrf
-title: "Protection CSRF"
+title: "CSRF Protection"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-La protection contre les attaques CSRF (*Cross-Site Request Forgery*) est essentielle pour sécuriser vos applications web. BowPHP fournit des outils simples et efficaces pour prévenir ces attaques en générant et en validant automatiquement des jetons CSRF.
+Protection against CSRF (*Cross-Site Request Forgery*) attacks is essential for securing your web applications. BowPHP provides simple and effective tools to prevent these attacks by automatically generating and validating CSRF tokens.
 
-:::info Qu'est-ce qu'une attaque CSRF ?
-Une attaque CSRF consiste à tromper un utilisateur authentifié pour qu'il exécute une action non autorisée sur une application. Pour prévenir cela, Bow génère un **jeton CSRF unique** pour chaque session utilisateur active. Ce jeton est utilisé pour valider toutes les requêtes envoyées à l'application.
+:::info What is a CSRF attack?
+A CSRF attack consists of tricking an authenticated user into performing an unauthorized action on an application. To prevent this, Bow generates a **unique CSRF token** for each active user session. This token is used to validate all requests sent to the application.
 :::
 
-## Protection CSRF
+## CSRF Protection
 
-Pour protéger vos formulaires, incluez un champ caché contenant le jeton CSRF :
+To protect your forms, include a hidden field containing the CSRF token:
 
 ```html
 <form method="POST" action="/upload">
@@ -24,11 +24,11 @@ Pour protéger vos formulaires, incluez un champ caché contenant le jeton CSRF 
 </form>
 ```
 
-Le middleware `Bow\Middleware\CsrfMiddleware::class`, inclus dans le groupe de middleware web par défaut, vérifie automatiquement que le jeton fourni correspond à celui stocké dans la session.
+The `Bow\Middleware\CsrfMiddleware::class` middleware, included in the default web middleware group, automatically verifies that the provided token matches the one stored in the session.
 
 ### Configuration
 
-Vous pouvez activer ou désactiver la vérification automatique dans le fichier `config/app.php`, avec la clé `auto_csrf` :
+You can enable or disable automatic verification in the `config/app.php` file, using the `auto_csrf` key:
 
 ```php
 return [
@@ -39,26 +39,26 @@ return [
 ```
 
 :::tip
-La vérification CSRF est activée par défaut (`true`). Il est recommandé de ne jamais la désactiver en production.
+CSRF verification is enabled by default (`true`). It is recommended that you never disable it in production.
 :::
 
-## Intégration avec JavaScript
+## Integration with JavaScript
 
-Lors de la création d'applications utilisant AJAX ou des bibliothèques JavaScript comme Axios ou jQuery, il est recommandé de configurer votre bibliothèque HTTP pour inclure automatiquement le jeton CSRF dans les en-têtes des requêtes.
+When building applications that use AJAX or JavaScript libraries such as Axios or jQuery, it is recommended to configure your HTTP library to automatically include the CSRF token in request headers.
 
-### Étape 1 : Ajouter le jeton CSRF dans une balise META
+### Step 1: Add the CSRF token in a META tag
 
-Ajoutez le jeton CSRF à une balise META HTML :
+Add the CSRF token to an HTML META tag:
 
 ```html
 <meta name="csrf-token" content="{{ csrf_token() }}">
 ```
 
-### Étape 2 : Configurer votre bibliothèque JavaScript
+### Step 2: Configure your JavaScript library
 
-Ensuite, configurez votre bibliothèque pour inclure cet en-tête dans chaque requête :
+Next, configure your library to include this header in every request:
 
-#### Exemple avec jQuery
+#### Example with jQuery
 
 ```js
 $.ajaxSetup({
@@ -68,7 +68,7 @@ $.ajaxSetup({
 });
 ```
 
-#### Exemple avec Axios
+#### Example with Axios
 
 ```js
 import axios from 'axios';
@@ -76,27 +76,27 @@ import axios from 'axios';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 ```
 
-## Gestion des jetons CSRF
+## Managing CSRF Tokens
 
-### Jetons dans les en-têtes HTTP
+### Tokens in HTTP Headers
 
-Outre les champs de formulaire, Bow permet d'utiliser l'en-tête `X-CSRF-TOKEN` pour valider les requêtes. Cela est particulièrement utile pour les requêtes AJAX.
+In addition to form fields, Bow allows you to use the `X-CSRF-TOKEN` header to validate requests. This is especially useful for AJAX requests.
 
-### Jetons dans les cookies
+### Tokens in Cookies
 
-Bow génère également un cookie nommé `XSRF-TOKEN` contenant le jeton CSRF actuel. Ce cookie peut être utilisé pour configurer automatiquement l'en-tête `X-XSRF-TOKEN`.
+Bow also generates a cookie named `XSRF-TOKEN` containing the current CSRF token. This cookie can be used to automatically set the `X-XSRF-TOKEN` header.
 
-Par exemple, des frameworks comme Angular et Axios utilisent ce cookie pour sécuriser les requêtes sans configuration supplémentaire.
+For example, frameworks such as Angular and Axios use this cookie to secure requests without any additional configuration.
 
 ## Conclusion
 
-Avec BowPHP, la mise en œuvre de la protection CSRF devient simple et efficace, vous permettant de vous concentrer sur le développement de fonctionnalités tout en assurant la sécurité de vos utilisateurs.
+With BowPHP, implementing CSRF protection becomes simple and effective, allowing you to focus on developing features while ensuring the security of your users.
 
-:::tip Bonnes pratiques
-- Toujours activer la protection CSRF en production
-- Utiliser `csrf_field()` dans tous vos formulaires POST/PUT/DELETE
-- Configurer correctement les en-têtes CSRF pour les requêtes AJAX
-- Ne jamais désactiver la vérification CSRF sauf pour des endpoints API spécifiques et sécurisés autrement
+:::tip Best practices
+- Always enable CSRF protection in production
+- Use `csrf_field()` in all your POST/PUT/DELETE forms
+- Properly configure CSRF headers for AJAX requests
+- Never disable CSRF verification except for specific API endpoints that are otherwise secured
 :::
 
 <SuggestionFeature />

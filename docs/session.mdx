@@ -1,6 +1,6 @@
 ---
 id: http-session
-title: "Session HTTP"
+title: "HTTP Session"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
@@ -8,16 +8,16 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 ## Introduction
 
 :::info
-Les applications HTTP étant sans état, les sessions offrent un moyen de stocker des informations sur l'utilisateur à travers plusieurs requêtes.
+Since HTTP applications are stateless, sessions provide a way to store information about the user across multiple requests.
 :::
 
-## Utilisation
+## Usage
 
-### Récupération des données
+### Retrieving Data
 
-Il existe deux manières principales de travailler avec les données de `session` dans Bow : le helper global `session` et via une instance `Bow\Http\Request`.
+There are two main ways to work with `session` data in Bow: the global `session` helper and an instance of `Bow\Http\Request`.
 
-Premièrement, examinons l'accès à la session via une instance `Bow\Http\Request`, qui peut être injectée sur une méthode de contrôleur. N'oubliez pas que les dépendances des méthodes du contrôleur sont automatiquement injectées via le conteneur Bow :
+First, let's look at accessing the session through an instance of `Bow\Http\Request`, which can be injected into a controller method. Remember that controller method dependencies are automatically injected via the Bow container:
 
 ```php
 namespace App\Controllers;
@@ -29,7 +29,7 @@ use Bow\Http\Request;
 class UserController extends Controller
 {
   /**
-   * Afficher un utilisateur
+   * Display a user
    *
    * @param Request $request
    * @param int $id
@@ -44,7 +44,7 @@ class UserController extends Controller
 }
 ```
 
-Lorsque vous récupérez un élément de la session, vous pouvez également transmettre une valeur par défaut comme deuxième argument de la méthode `get`. Cette valeur par défaut sera renvoyée si la clé spécifiée n'existe pas dans la session. Si vous transmettez une `closure` en tant que valeur par défaut à la méthode `get` et que la clé demandée n'existe pas, la `closure` sera exécutée et son résultat sera renvoyé:
+When you retrieve an item from the session, you can also pass a default value as the second argument to the `get` method. This default value will be returned if the specified key does not exist in the session. If you pass a `closure` as the default value to the `get` method and the requested key does not exist, the `closure` will be executed and its result returned:
 
 ```php
 $value = $request->session()->get('key', 'default');
@@ -54,46 +54,46 @@ $value = $request->session()->get('key', function () {
 });
 ```
 
-### Le helper global de session
+### The Global Session Helper
 
-Le helper `session()` est un **lecteur** (et un accesseur à l'instance) :
+The `session()` helper is a **reader** (and an accessor to the instance):
 
-- `session()` — retourne l'instance `Session`.
-- `session('key')` — retourne la valeur stockée (ou `null`).
-- `session('key', 'default')` — idem, avec une valeur de repli.
+- `session()` — returns the `Session` instance.
+- `session('key')` — returns the stored value (or `null`).
+- `session('key', 'default')` — same, with a fallback value.
 
 ```php
 $app->get('home', function () {
-  // Récupérer une donnée de la session
+  // Retrieve a piece of data from the session
   $value = session('key');
 
-  // Spécifier une valeur par défaut
+  // Specify a default value
   $value = session('key', 'default');
 
-  // Stocker une donnée : passez par l'instance
+  // Store data: go through the instance
   session()->set('key', 'value');
-  // ou : session()->put('key', 'value');
+  // or: session()->put('key', 'value');
 });
 ```
 
-:::warning Pas de forme tableau
-Contrairement à certains frameworks, `session(['key' => 'value'])` **ne
-fonctionne pas** dans Bow et lève une `TypeError` : le helper accepte
-uniquement `?string` comme premier argument. Pour écrire, utilisez
-`session()->set(...)` ou `session()->put(...)`.
+:::warning No array form
+Unlike some frameworks, `session(['key' => 'value'])` **does not
+work** in Bow and throws a `TypeError`: the helper only accepts
+`?string` as its first argument. To write data, use
+`session()->set(...)` or `session()->put(...)`.
 :::
 
-### Récupération de toutes les données de session
+### Retrieving All Session Data
 
-Si vous souhaitez récupérer toutes les données de la session, vous pouvez utiliser la méthode `all`:
+If you want to retrieve all the data from the session, you can use the `all` method:
 
 ```php
 $data = $request->session()->all();
 ```
 
-### Déterminer si un élément existe dans la session
+### Determining If an Item Exists in the Session
 
-Pour déterminer si un élément est présent dans la session, vous pouvez utiliser la méthode `has`. La méthode `has` renvoie `true` si l'élément est présent et n'est pas `null` :
+To determine if an item is present in the session, you can use the `has` method. The `has` method returns `true` if the item is present and is not `null`:
 
 ```php
 if ($request->session()->has('users')) {
@@ -101,7 +101,7 @@ if ($request->session()->has('users')) {
 }
 ```
 
-Pour déterminer si un élément est présent dans la session, même si sa valeur est `null`, vous pouvez utiliser la méthode `exists`. La méthode `exists` renvoie `true` si l'élément est présent:
+To determine if an item is present in the session, even if its value is `null`, you can use the `exists` method. The `exists` method returns `true` if the item is present:
 
 ```php
 if ($request->session()->exists('users')) {
@@ -109,50 +109,50 @@ if ($request->session()->exists('users')) {
 }
 ```
 
-### Stocker des données
+### Storing Data
 
-Pour stocker des données dans la session, utilisez la méthode `set` (ou son
-alias `put`) sur l'instance de session :
+To store data in the session, use the `set` method (or its
+alias `put`) on the session instance:
 
 ```php
-// Via une instance de requête
+// Via a request instance
 $request->session()->set('key', 'value');
 $request->session()->put('another', 42);
 
-// Via le helper (qui retourne l'instance Session quand appelé sans clé)
+// Via the helper (which returns the Session instance when called without a key)
 session()->set('key', 'value');
 ```
 
-## Données flash
+## Flash Data
 
 :::tip Information
-Parfois, vous souhaiterez peut-être stocker des éléments dans la session uniquement pour la prochaine requête. Les données flash sont principalement utiles pour les messages d'état de courte durée.
+Sometimes you may want to store items in the session only for the next request. Flash data is mainly useful for short-lived status messages.
 :::
 
-Vous pouvez le faire en utilisant la méthode `flash` ou le helper `flash`. Les données stockées dans la session à l'aide de cette méthode ne seront disponibles que lors de la requête HTTP suivante, puis seront supprimées.
+You can do this using the `flash` method or the `flash` helper. Data stored in the session using this method will only be available during the next HTTP request, and will then be deleted.
 
 ```php
 $request->session()->flash('status', 'Welcome !');
 ```
 
-Si vous devez supprimer vos données flash, vous pouvez utiliser la méthode `clearFlash` :
+If you need to remove your flash data, you can use the `clearFlash` method:
 
 ```php
 $request->session()->clearFlash();
 ```
 
-## Suppression de données
+## Deleting Data
 
-La méthode `remove` supprimera une donnée de la session. Si vous souhaitez supprimer toutes les données de la session, vous pouvez utiliser la méthode `flush`. Si par contre vous souhaitez supprimer toutes les informations sauf les informations de flash, vous pouvez utiliser la méthode `clear` :
+The `remove` method will delete a piece of data from the session. If you want to delete all the data from the session, you can use the `flush` method. If, on the other hand, you want to delete all information except the flash data, you can use the `clear` method:
 
 ```php
-// Supprimer une donnée de la session
+// Delete a piece of data from the session
 $request->session()->remove('key');
 
-// Supprimer toutes les informations sauf les informations de flash
+// Delete all information except the flash data
 $request->session()->clear();
 
-// Supprimer toutes les données de la session
+// Delete all data from the session
 $request->session()->flush();
 ```
 

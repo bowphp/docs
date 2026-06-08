@@ -1,47 +1,47 @@
 ---
 id: middleware
-title: "Middlewares HTTP"
+title: "HTTP Middlewares"
 ---
 
 import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-:::info À propos des middlewares
-Les middlewares constituent un mécanisme pratique pour filtrer les requêtes HTTP entrant dans votre application.
+:::info About middlewares
+Middlewares provide a convenient mechanism for filtering the HTTP requests entering your application.
 :::
 
-Par exemple, vous pouvez faire un middleware pour vérifier si un utilisateur est connecté et ensuite faire une action en fonction. Vous pouvez exécuter du code avant et après votre application Bow pour manipuler les objets `Request` et `Response` comme bon vous semble.
+For example, you can write a middleware to check whether a user is logged in and then take an action accordingly. You can run code before and after your Bow application to manipulate the `Request` and `Response` objects however you see fit.
 
 [![asciicast](https://asciinema.org/a/bfTIiqg1ew9x1QRxeMTufxJJU.svg)](https://asciinema.org/a/bfTIiqg1ew9x1QRxeMTufxJJU)
 
-## Comment ça marche
+## How it works
 
-Différents frameworks utilisent le système de middlewares différemment. Bow ajoute un middleware sous forme de file d'attente au-dessus de votre application principale. Chaque nouvelle couche de middleware est ajoutée à la file de middlewares existante. La structure de file se dilate vers l'extérieur au fur et à mesure que les couches intermédiaires supplémentaires sont ajoutées.
+Different frameworks use the middleware system in different ways. Bow adds a middleware as a queue on top of your main application. Each new middleware layer is added to the existing middleware queue. The queue structure expands outward as additional intermediate layers are added.
 
-Lorsque vous exécutez l'application Bow, les objets Request traversent la structure du middleware de l'extérieur vers l'intérieur. Ils entrent d'abord dans le middleware le plus externe, puis dans le prochain middleware le plus externe (et ainsi de suite), jusqu'à ce qu'ils atteignent l'application elle-même. Une fois que l'application Bow a distribué la route appropriée, l'objet Response résultant quitte l'application Bow et est sérialisé dans une réponse HTTP qui est renvoyée au client HTTP.
+When you run the Bow application, Request objects traverse the middleware structure from the outside in. They first enter the outermost middleware, then the next outermost middleware (and so on), until they reach the application itself. Once the Bow application has dispatched the appropriate route, the resulting Response object leaves the Bow application and is serialized into an HTTP response that is sent back to the HTTP client.
 
-La seule condition stricte est qu'un middleware doit renvoyer une valeur autre que `null`. Chaque middleware devra appeler le middleware suivant et lui transmettre les objets `Request` comme arguments via la méthode `$next`.
+The only strict condition is that a middleware must return a value other than `null`. Each middleware must call the next middleware and pass it the `Request` objects as arguments via the `$next` method.
 
-:::tip Middlewares par défaut
-Bow inclut plusieurs middlewares par défaut comme le middleware `csrf` et `auth`.
+:::tip Default middlewares
+Bow includes several default middlewares such as the `csrf` and `auth` middlewares.
 :::
 
-## Ajouter un middleware
+## Adding a middleware
 
-Pour ajouter un middleware il faut utiliser la commande `add:middleware` de `php bow`:
+To add a middleware, use the `add:middleware` command of `php bow`:
 
 ```bash
 php bow add:middleware IpMiddleware
 ```
 
-:::info Emplacement des middlewares
-Tous les middlewares sont sauvegardés par défaut dans le dossier `app/Middlewares`.
+:::info Middleware location
+By default, all middlewares are saved in the `app/Middlewares` folder.
 :::
 
-Le middleware que nous venons d'ajouter vérifiera l'adresse IP du client et si son adresse est égale à `127.0.0.1`, on dira que l'application est en mode développement.
+The middleware we just added will check the client's IP address, and if its address equals `127.0.0.1`, we will consider the application to be in development mode.
 
-Mais d'abord, regardons le contenu du fichier `IpMiddleware`. C'est la méthode `process` qui permet de lancer le middleware et le callable permet de lancer le prochain middleware.
+But first, let's look at the contents of the `IpMiddleware` file. The `process` method is what runs the middleware, and the callable is what runs the next middleware.
 
 ```php title="app/Middlewares/IpMiddleware.php"
 namespace App\Middlewares;
@@ -52,11 +52,11 @@ use Bow\Middleware\BaseMiddleware;
 class IpMiddleware implements BaseMiddleware
 {
   /**
-   * Fonction de lancement du middleware.
+   * Middleware entry point function.
    *
    * @param  Request  $request
    * @param  callable $next
-   * @param  array    $args   Paramètres optionnels (voir « Paramètres » plus bas)
+   * @param  array    $args   Optional parameters (see "Parameters" below)
    */
   public function process(Request $request, callable $next, array $args = []): mixed
   {
@@ -65,7 +65,7 @@ class IpMiddleware implements BaseMiddleware
 }
 ```
 
-Pour notre exemple on aura alors le `process` suivant:
+For our example we will then have the following `process`:
 
 ```php
 public function process(Request $request, callable $next, array $args = []): mixed
@@ -78,15 +78,15 @@ public function process(Request $request, callable $next, array $args = []): mix
 }
 ```
 
-:::tip Contrat `BaseMiddleware`
-L'interface `Bow\Middleware\BaseMiddleware` formalise la signature. Vos
-middlewares peuvent l'implémenter (recommandé) ou simplement définir une
-méthode `process()` compatible.
+:::tip The `BaseMiddleware` contract
+The `Bow\Middleware\BaseMiddleware` interface formalizes the signature. Your
+middlewares can implement it (recommended) or simply define a compatible
+`process()` method.
 :::
 
-## Enregistrement de middleware
+## Registering a middleware
 
-Généralement, l'enregistrement se fait dans le fichier `app/Kernel.php` avec une clé qui l'identifie.
+Generally, registration is done in the `app/Kernel.php` file with a key that identifies it.
 
 ```php
 public function middlewares()
@@ -99,13 +99,13 @@ public function middlewares()
 }
 ```
 
-Il est aussi possible d'ajouter les middlewares de façon globale dans l'application. Ceci se fait dans le fichier de `routes` avec la méthode `middleware` sur `$app` qui va nous retourner une instance de `\Bow\Router\Router::class`. Toutes les routes qui seront définies avec cette instance hériteront des middlewares spécifiés.
+It is also possible to add middlewares globally in the application. This is done in the `routes` file with the `middleware` method on `$app`, which returns an instance of `\Bow\Router\Router::class`. All routes defined with this instance will inherit the specified middlewares.
 
 ```php
 $router = $app->middleware(\App\Middlewares\IpMiddleware::class);
 $router->get('/', 'HomeController::index');
 
-// Ou
+// Or
 $router = $app->middleware([
   \App\Middlewares\IpMiddleware::class,
   \App\Middlewares\OtherMiddleware::class,
@@ -113,21 +113,21 @@ $router = $app->middleware([
 $router->get('/', 'HomeController::index');
 ```
 
-## Utilisation des middlewares
+## Using middlewares
 
-:::tip Application des middlewares
-Après avoir défini un middleware dans le fichier `app/Kernel.php`, vous pouvez l'appliquer à vos routes.
+:::tip Applying middlewares
+After defining a middleware in the `app/Kernel.php` file, you can apply it to your routes.
 :::
 
 ```php
 $app->get('/', 'HomeController::index')->middleware('ip');
 $app->get('/', 'HomeController::index')->middleware(['ip', 'autre']);
 
-// Vous pouvez aussi passer directement un FQCN sans déclarer d'alias :
+// You can also pass a FQCN directly without declaring an alias:
 $app->get('/', 'HomeController::index')
     ->middleware(\App\Middlewares\IpMiddleware::class);
 
-// Via la méthode route() :
+// Via the route() method:
 $app->route([
   'path' => '/',
   'method' => 'GET',
@@ -136,20 +136,20 @@ $app->route([
 ]);
 ```
 
-## Paramètres de middleware
+## Middleware parameters
 
-Vous pouvez passer des paramètres à un middleware en les ajoutant après le nom,
-séparés par un `:` (puis des virgules pour plusieurs valeurs) :
+You can pass parameters to a middleware by appending them after the name,
+separated by a `:` (then commas for multiple values):
 
 ```php
-// Un paramètre
+// One parameter
 $app->get('/admin', 'AdminController::index')->middleware('role:admin');
 
-// Plusieurs paramètres
+// Multiple parameters
 $app->get('/api/posts', 'PostController::index')->middleware('throttle:60,1');
 ```
 
-Les valeurs sont disponibles dans `$args` :
+The values are available in `$args`:
 
 ```php title="app/Middlewares/RoleMiddleware.php"
 namespace App\Middlewares;
@@ -174,10 +174,10 @@ class RoleMiddleware implements BaseMiddleware
 ```
 
 :::note Parsing
-Le nom et les paramètres sont séparés par le premier `:` rencontré
-(`explode(':', $middleware, 2)`). Les valeurs sont ensuite séparées par
-virgules. Aucun cast n'est fait — vos paramètres arrivent toujours sous forme
-de chaînes.
+The name and the parameters are separated by the first `:` encountered
+(`explode(':', $middleware, 2)`). The values are then separated by
+commas. No casting is performed — your parameters always arrive as
+strings.
 :::
 
 <SuggestionFeature />

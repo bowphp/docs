@@ -3,25 +3,25 @@
     "message": "4.x",
     "description": "The label for version 4.x"
   },
-  "sidebar.docs.category.Démarrage": {
+  "sidebar.docs.category.Getting Started": {
     "message": "Démarrage",
-    "description": "The label for category 'Démarrage' in sidebar 'docs'"
+    "description": "The label for category 'Getting Started' in sidebar 'docs'"
   },
   "sidebar.docs.category.Guide": {
     "message": "Guide",
     "description": "The label for category 'Guide' in sidebar 'docs'"
   },
-  "sidebar.docs.category.Base de donnée": {
+  "sidebar.docs.category.Database": {
     "message": "Base de donnée",
-    "description": "The label for category 'Base de donnée' in sidebar 'docs'"
+    "description": "The label for category 'Database' in sidebar 'docs'"
   },
-  "sidebar.docs.category.Http": {
+  "sidebar.docs.category.HTTP": {
     "message": "Http",
-    "description": "The label for category 'Http' in sidebar 'docs'"
+    "description": "The label for category 'HTTP' in sidebar 'docs'"
   },
-  "sidebar.docs.category.Sécurités": {
+  "sidebar.docs.category.Security": {
     "message": "Sécurités",
-    "description": "The label for category 'Sécurités' in sidebar 'docs'"
+    "description": "The label for category 'Security' in sidebar 'docs'"
   },
   "sidebar.docs.category.Misc": {
     "message": "Misc",

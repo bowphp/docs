@@ -1,0 +1,521 @@
+---
+id: task
+title: "Tâches asynchrones (Queue)"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Les tâches asynchrones permettent de différer l'exécution de processus lourds (envoi d'emails, génération de rapports, traitement d'images) en les plaçant dans une file d'attente. BowPHP supporte plusieurs backends de queue : **Sync**, **Database**, **Redis**, **Beanstalkd**, **RabbitMQ**, **Amazon SQS** et **Kafka**.
+
+## Création d'une tâche
+
+Utilisez la commande `add:task` pour générer une nouvelle tâche :
+
+```bash
+php bow add:task SendWelcomeEmail
+```
+
+Cette commande crée le fichier `app/Tasks/SendWelcomeEmail.php` :
+
+```php title="app/Tasks/SendWelcomeEmail.php"
+<?php
+
+namespace App\Tasks;
+
+use Bow\Queue\QueueTask;
+
+class SendWelcomeEmail extends QueueTask
+{
+  /**
+   * Les données de la tâche
+   */
+  private string $email;
+  private string $name;
+
+  /**
+   * Constructeur
+   */
+  public function __construct(string $email, string $name)
+  {
+    $this->email = $email;
+    $this->name = $name;
+  }
+
+  /**
+   * Exécute la tâche
+   */
+  public function process(): void
+  {
+    Mail::send("emails.welcome", ["name" => $this->name], function (Envelop $envelop) {
+      $envelop->to($this->email)
+              ->subject("Bienvenue, {$this->name} !");
+    });
+  }
+}
+```
+
+## Configuration
+
+La configuration des queues se trouve dans `config/queue.php` :
+
+```php title="config/queue.php"
+<?php
+
+return [
+  // Driver par défaut
+  "default" => app_env("QUEUE_DRIVER", "sync"),
+
+  "connections" => [
+    // Exécution synchrone (pour le développement)
+    "sync" => [
+      "queue" => "default",
+    ],
+
+    // Base de données
+    "database" => [
+      "queue" => "default",
+      "table" => "queues",
+    ],
+
+    // Redis
+    "redis" => [
+      "queue" => "default",
+      "block_timeout" => 5,
+    ],
+
+    // Beanstalkd
+    "beanstalkd" => [
+      "hostname" => "127.0.0.1",
+      "port" => 11300,
+      "timeout" => 10,
+      "queue" => "default",
+    ],
+
+    // RabbitMQ
+    "rabbitmq" => [
+      "queue" => "default",
+      "host" => app_env("RABBITMQ_HOST", "127.0.0.1"),
+      "port" => app_env("RABBITMQ_PORT", 5672),
+      "user" => app_env("RABBITMQ_USER", "guest"),
+      "password" => app_env("RABBITMQ_PASSWORD", "guest"),
+      "vhost" => app_env("RABBITMQ_VHOST", "/"),
+    ],
+
+    // Amazon SQS
+    "sqs" => [
+      "queue" => "default",
+      "url" => app_env("SQS_URL"),
+      "region" => app_env("AWS_REGION"),
+      "version" => "latest",
+      "credentials" => [
+        "key" => app_env("AWS_KEY"),
+        "secret" => app_env("AWS_SECRET"),
+      ],
+    ],
+
+    // Apache Kafka
+    "kafka" => [
+      "host" => "localhost",
+      "port" => 9092,
+      "topic" => "default",
+      "group_id" => "bow_queue_group",
+      "auto_offset_reset" => "earliest",
+      "enable_auto_commit" => "true",
+    ],
+  ],
+];
+```
+
+### Migration pour le driver database
+
+Si vous utilisez le driver `database`, créez la table de queue :
+
+```bash
+php bow add:migration create_queues_table
+```
+
+```php title="migrations/Version_CreateQueuesTable.php"
+<?php
+
+use Bow\Database\Migration\Table;
+use Bow\Database\Migration\Migration;
+
+class Version_CreateQueuesTable extends Migration
+{
+  public function up(): void
+  {
+    $this->create("queues", function (Table $table) {
+      $table->addUuidPrimary("id");
+      $table->addString("queue");
+      $table->addLongtext("payload");
+      $table->addInteger("attempts", ["default" => 0]);
+      $table->addInteger("delay", ["default" => 0]);
+      $table->addEnum("status", [
+        "size"    => ["pending", "processing", "completed", "failed"],
+        "default" => "pending",
+      ]);
+      $table->addTimestamp("available_at");
+      $table->addTimestamps();
+
+      $table->addIndex("queue");
+      $table->addIndex("status");
+    });
+  }
+
+  public function rollback(): void
+  {
+    $this->dropIfExists("queues");
+  }
+}
+```
+
+## Dispatcher une tâche
+
+### Avec la fonction helper
+
+```php
+use App\Tasks\SendWelcomeEmail;
+
+// Dispatcher immédiatement
+queue(new SendWelcomeEmail("john@example.com", "John"));
+```
+
+### Depuis un contrôleur
+
+```php title="app/Controllers/UserController.php"
+<?php
+
+namespace App\Controllers;
+
+use App\Tasks\SendWelcomeEmail;
+use App\Models\User;
+use Bow\Http\Request;
+
+class UserController extends Controller
+{
+  public function store(Request $request)
+  {
+    $user = User::create([
+      "name" => $request->get("name"),
+      "email" => $request->get("email"),
+      "password" => app_hash($request->get("password")),
+    ]);
+
+    // Envoyer l'email en arrière-plan
+    queue(new SendWelcomeEmail($user->email, $user->name));
+
+    return response_json([
+      "message" => "Utilisateur créé avec succès",
+      "user" => $user
+    ], 201);
+  }
+}
+```
+
+## Propriétés des tâches
+
+### File d'attente (queue)
+
+Par défaut, les tâches sont envoyées dans la queue `default`. Vous pouvez spécifier une queue différente :
+
+```php
+class ProcessOrderTask extends QueueTask
+{
+  protected string $queue = "orders";
+  
+  // ...
+}
+```
+
+### Délai d'exécution (delay)
+
+Différer l'exécution d'une tâche en secondes :
+
+```php
+class SendReminderTask extends QueueTask
+{
+  protected int $delay = 3600; // 1 heure
+  
+  // ...
+}
+```
+
+Ou dynamiquement :
+
+```php
+$task = new SendReminderTask($userId);
+$task->setDelay(1800); // 30 minutes
+queue($task);
+```
+
+### Tentatives (attempts & retry)
+
+Configurer le nombre de tentatives et le délai entre les tentatives :
+
+```php
+class ProcessPaymentTask extends QueueTask
+{
+  // Nombre maximum de tentatives
+  protected int $attempts = 3;
+  
+  // Délai entre les tentatives (en secondes)
+  protected int $retry = 60;
+  
+  public function process(): void
+  {
+    // Traiter le paiement
+  }
+}
+```
+
+### Priorité
+
+Les tâches avec une priorité plus élevée sont traitées en premier :
+
+```php
+class UrgentNotificationTask extends QueueTask
+{
+  protected int $priority = 10; // Haute priorité (défaut: 1)
+  
+  // ...
+}
+```
+
+## Gestion des erreurs
+
+### Méthode onException
+
+Implémentez `onException()` pour gérer les erreurs :
+
+```php
+use Throwable;
+
+class ProcessDataTask extends QueueTask
+{
+  public function process(): void
+  {
+    // Traitement qui peut échouer
+  }
+
+  public function onException(Throwable $e): void
+  {
+    // Logger l'erreur
+    logger()->error("Échec de ProcessDataTask: " . $e->getMessage());
+    
+    // Notifier l'administrateur
+    Mail::send("emails.task-error", ["error" => $e], function (Envelop $envelop) {
+      $envelop->to("admin@example.com")->subject("Erreur de tâche");
+    });
+  }
+}
+```
+
+### Supprimer une tâche échouée
+
+Pour empêcher les nouvelles tentatives :
+
+```php
+public function process(): void
+{
+  try {
+    // Traitement
+  } catch (IrrecoverableException $e) {
+    // Ne pas réessayer cette tâche
+    $this->deleteTask();
+    throw $e;
+  }
+}
+```
+
+## Exécuter le worker
+
+### Commande de base
+
+```bash
+# Traiter la queue par défaut sur la connexion par défaut
+php bow run:worker
+
+# Traiter une queue spécifique
+php bow run:worker --queue=orders
+
+# Spécifier une connexion (argument positionnel, pas une option)
+php bow run:worker redis
+
+# Combiner connexion + options
+php bow run:worker beanstalkd --queue=high --tries=5 --sleep=10
+```
+
+Options disponibles :
+
+| Option     | Défaut    | Description |
+|------------|-----------|-------------|
+| `--queue`  | `default` | Nom de la queue à consommer |
+| `--tries`  | `3`       | Nombre maximum de tentatives par job |
+| `--memory` | `126`     | Limite mémoire en Mo |
+| `--sleep`  | `3`       | Secondes à dormir quand la queue est vide |
+| `--timout` | `3`       | Timeout par job (orthographe historique du flag) |
+
+### En production avec Supervisor
+
+Créez un fichier de configuration Supervisor :
+
+```ini title="/etc/supervisor/conf.d/bow-worker.conf"
+[program:bow-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/html/bow run:worker --queue=default
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=2
+redirect_stderr=true
+stdout_logfile=/var/log/bow-worker.log
+stopwaitsecs=3600
+```
+
+Démarrez le worker :
+
+```bash
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start bow-worker:*
+```
+
+## Exemple complet
+
+### Tâche de génération de rapport
+
+```php title="app/Tasks/GenerateReportTask.php"
+<?php
+
+namespace App\Tasks;
+
+use Bow\Queue\QueueTask;
+use App\Models\Report;
+use App\Services\ReportGenerator;
+use Throwable;
+
+class GenerateReportTask extends QueueTask
+{
+  protected string $queue = "reports";
+  protected int $attempts = 3;
+  protected int $retry = 120;
+
+  private int $reportId;
+  private string $format;
+
+  public function __construct(int $reportId, string $format = "pdf")
+  {
+    $this->reportId = $reportId;
+    $this->format = $format;
+  }
+
+  public function process(): void
+  {
+    $report = Report::retrieveOrFail($this->reportId);
+    
+    $generator = new ReportGenerator();
+    $filePath = $generator->generate($report, $this->format);
+
+    $report->update([
+      "status" => "completed",
+      "file_path" => $filePath,
+      "generated_at" => date("Y-m-d H:i:s"),
+    ]);
+
+    // Notifier l'utilisateur
+    queue(new SendReportReadyNotification(
+      $report->user_id,
+      $filePath
+    ));
+  }
+
+  public function onException(Throwable $e): void
+  {
+    $report = Report::retrieve($this->reportId);
+    
+    if ($report) {
+      $report->update([
+        "status" => "failed",
+        "error_message" => $e->getMessage(),
+      ]);
+    }
+
+    logger()->error("Échec génération rapport #{$this->reportId}: " . $e->getMessage());
+  }
+}
+```
+
+### Dispatcher depuis un contrôleur
+
+```php title="app/Controllers/ReportController.php"
+<?php
+
+namespace App\Controllers;
+
+use App\Tasks\GenerateReportTask;
+use App\Models\Report;
+use Bow\Http\Request;
+
+class ReportController extends Controller
+{
+  public function generate(Request $request)
+  {
+    $report = Report::create([
+      "user_id" => auth()->id(),
+      "type" => $request->get("type"),
+      "parameters" => $request->get("parameters"),
+      "status" => "pending",
+    ]);
+
+    // Dispatcher la tâche
+    queue(new GenerateReportTask($report->id, $request->get("format", "pdf")));
+
+    return response_json([
+      "message" => "Génération du rapport en cours",
+      "report_id" => $report->id,
+    ], 202);
+  }
+}
+```
+
+## Intégration avec le Scheduler
+
+Combinez les tâches avec le planificateur pour des traitements récurrents :
+
+```php title="app/Kernel.php"
+public function schedules(Scheduler $schedule): void
+{
+  // Nettoyer les anciennes sessions toutes les heures
+  $schedule->task(App\Tasks\CleanupSessionsTask::class)
+    ->hourly()
+    ->description("Nettoyer les sessions expirées");
+
+  // Générer les rapports quotidiens
+  $schedule->task(App\Tasks\DailyReportTask::class)
+    ->dailyAt("06:00")
+    ->description("Générer les rapports quotidiens");
+}
+```
+
+## Bonnes pratiques
+
+:::tip Recommandations
+- **Tâches idempotentes** : Concevez vos tâches pour qu'elles puissent être exécutées plusieurs fois sans effets secondaires.
+- **Données minimales** : Passez uniquement les IDs au constructeur, récupérez les données complètes dans `process()`.
+- **Gestion des erreurs** : Implémentez toujours `onException()` pour logger et notifier les échecs.
+- **Timeouts** : Configurez des timeouts appropriés dans Supervisor pour éviter les tâches bloquées.
+- **Monitoring** : Surveillez la taille des queues et le temps de traitement en production.
+- **Queues séparées** : Utilisez des queues distinctes pour les tâches critiques (paiements) et non-critiques (emails).
+:::
+
+:::warning Attention
+- Les tâches sont sérialisées : n'incluez pas d'objets non-sérialisables (connexions DB, closures).
+- En mode `sync`, les tâches s'exécutent de manière synchrone (utile pour le développement).
+- Assurez-vous que le worker a les mêmes dépendances et configurations que l'application.
+:::
+
+<SuggestionFeature />
