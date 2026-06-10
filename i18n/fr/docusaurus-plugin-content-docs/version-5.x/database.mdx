@@ -48,6 +48,44 @@ $users = db('sqlite')->select(...);
 
 Une fois la configuration modifiée, elle est directement appliquée sur la connexion des modèles. [Consultez la documentation ORM](./orm) pour plus d'informations sur les modèles.
 
+## Connexions en lecture et en écriture
+
+Bow vous permet d'utiliser une connexion de base de données pour les instructions `SELECT` (lectures) et une autre pour les instructions `INSERT`, `UPDATE`, `DELETE` et autres (écritures). C'est utile lorsque vous utilisez une configuration primaire/réplica, où les écritures sont envoyées au serveur primaire tandis que les lectures sont servies par une ou plusieurs répliques.
+
+Pour scinder une connexion, ajoutez une clé `read` à cette connexion dans votre fichier `config/database.php` :
+
+```php
+'mysql' => [
+    'driver' => 'mysql',
+    'hostname' => '192.168.1.1',
+    'username' => getenv('MYSQL_USER'),
+    'password' => getenv('MYSQL_PASSWORD'),
+    'database' => getenv('MYSQL_DATABASE'),
+    'charset' => getenv('MYSQL_CHARSET'),
+    'port' => 3306,
+    'read' => [
+        'hostname' => '192.168.1.2',
+    ],
+],
+```
+
+Le tableau `read` n'a besoin que des clés qui diffèrent de la configuration principale (écriture). Toutes les autres clés — `username`, `password`, `database`, `charset`, etc. — sont héritées de la configuration d'écriture, de sorte qu'en pratique vous ne surchargez généralement que le `hostname` (ou le `socket`) qui pointe vers votre réplique.
+
+Lorsqu'une clé `read` est présente, les requêtes sont routées automatiquement :
+
+- Les requêtes de lecture (`Database::select`, `Database::selectOne`) sont servies par la connexion de **lecture (réplique)**.
+- Les requêtes d'écriture (`Database::insert`, `Database::update`, `Database::delete`, `Database::statement`) sont servies par la connexion d'**écriture (primaire)**.
+
+Ce routage s'applique également au [générateur de requêtes](./query-builder) et à l'[ORM](./orm) Barry. Si une connexion n'a pas de clé `read`, les lectures et les écritures utilisent toutes deux la même connexion, exactement comme auparavant.
+
+### Connexions paresseuses
+
+Les deux connexions PDO sont ouvertes de façon paresseuse — chacune n'est établie qu'au moment où elle est réellement nécessaire. Une application qui ne fait que des lectures n'ouvre jamais la connexion d'écriture, et inversement. La configuration est tout de même validée en amont, afin qu'une connexion mal configurée échoue immédiatement.
+
+### Lectures à l'intérieur d'une transaction
+
+Les transactions s'exécutent toujours sur la connexion d'écriture (primaire). Tant qu'une transaction est ouverte, les requêtes de lecture sont elles aussi routées vers la connexion primaire afin qu'elles observent les modifications non validées effectuées au sein de la même transaction. Une fois la transaction validée ou annulée, les lectures reviennent vers la connexion réplique.
+
 ## Utilisation de requêtes SQL brutes
 
 Les requêtes brutes sont des requêtes SQL écrites directement sans passer par le Query Builder.

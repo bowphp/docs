@@ -48,6 +48,44 @@ $users = db('sqlite')->select(...);
 
 Once the configuration is changed, it is applied directly to the models' connection. [See the ORM documentation](./orm) for more information about models.
 
+## Read & Write Connections
+
+Bow lets you use one database connection for `SELECT` statements (reads) and another for `INSERT`, `UPDATE`, `DELETE`, and other statements (writes). This is useful when running a primary/replica setup, where writes are sent to the primary server while reads are served by one or more replicas.
+
+To split a connection, add a `read` key to that connection in your `config/database.php` file:
+
+```php
+'mysql' => [
+  'driver' => 'mysql',
+  'hostname' => '192.168.1.1',
+  'username' => getenv('MYSQL_USER'),
+  'password' => getenv('MYSQL_PASSWORD'),
+  'database' => getenv('MYSQL_DATABASE'),
+  'charset' => getenv('MYSQL_CHARSET'),
+  'port' => 3306,
+  'read' => [
+    'hostname' => '192.168.1.2',
+  ],
+],
+```
+
+The `read` array only needs the keys that differ from the main (write) configuration. Every other key — `username`, `password`, `database`, `charset`, and so on — is inherited from the write configuration, so in practice you usually only override the `hostname` (or `socket`) that points to your replica.
+
+When a `read` key is present, queries are routed automatically:
+
+- Read queries (`Database::select`, `Database::selectOne`) are served by the **read (replica)** connection.
+- Write queries (`Database::insert`, `Database::update`, `Database::delete`, `Database::statement`) are served by the **write (primary)** connection.
+
+This routing also applies to the [query builder](./query-builder) and the Barry [ORM](./orm). If a connection has no `read` key, reads and writes both use the same connection, exactly as before.
+
+### Lazy Connections
+
+Both PDO connections are opened lazily — each one is established only the first time it is actually needed. An application that only reads never opens the write connection, and the other way around. The configuration is still validated up front, so a misconfigured connection fails fast.
+
+### Reads Inside a Transaction
+
+Transactions always run on the write (primary) connection. While a transaction is open, read queries are also routed to the primary connection so that they observe the uncommitted changes made within the same transaction. Once the transaction is committed or rolled back, reads return to the replica connection.
+
 ## Using Raw SQL Queries
 
 Raw queries are SQL queries written directly without going through the Query Builder.
