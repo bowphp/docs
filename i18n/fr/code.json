@@ -342,11 +342,20 @@
   "home.code.subtitle": {
     "message": "Découvrez la simplicité de BowPHP avec des exemples de code concrets"
   },
+  "home.tab.routes": {
+    "message": "Routes"
+  },
   "home.tab.controller": {
     "message": "Contrôleur"
   },
   "home.tab.database": {
     "message": "Base de données"
+  },
+  "home.tab.middleware": {
+    "message": "Middleware"
+  },
+  "home.tab.validation": {
+    "message": "Validation"
   },
   "home.code.validationTitle": {
     "message": "Validation des données"
