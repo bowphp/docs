@@ -1,4 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&display=swap');
 
 :root {
   /* ============================================
@@ -49,17 +49,18 @@
   --cffy-theme-info-a20: #b9e4ff;
 
   /* Hue + saturation of the primary, used by homepage hero gradients
-     as hsl(var(--site-primary-hue-saturation) <lightness>) */
-  --site-primary-hue-saturation: 217 65%;
+     as hsl(var(--site-primary-hue-saturation) <lightness>).
+     Tuned to React.dev's teal (#087EA4 ≈ hsl(192 90% 34%)). */
+  --site-primary-hue-saturation: 192 80%;
 
-  /* Primary (mapped from palette; darker shades derived) */
-  --ifm-color-primary: var(--cffy-theme-primary-a0);
-  --ifm-color-primary-dark: #4a7fd6;
-  --ifm-color-primary-darker: #3f78d3;
-  --ifm-color-primary-darkest: #2861bd;
-  --ifm-color-primary-light: var(--cffy-theme-primary-a10);
-  --ifm-color-primary-lighter: var(--cffy-theme-primary-a20);
-  --ifm-color-primary-lightest: var(--cffy-theme-primary-a30);
+  /* Primary — React.dev brand teal (the "React link blue", #087EA4) */
+  --ifm-color-primary: #087ea4;
+  --ifm-color-primary-dark: #06718f;
+  --ifm-color-primary-darker: #066a87;
+  --ifm-color-primary-darkest: #05576f;
+  --ifm-color-primary-light: #149eca;
+  --ifm-color-primary-lighter: #3aabd3;
+  --ifm-color-primary-lightest: #58c4dc;
 
   /* Semantic colors (mapped from palette) */
   --ifm-color-success: var(--cffy-theme-success-a0);
@@ -75,8 +76,9 @@
   --ifm-color-info-light: var(--cffy-theme-info-a10);
   --ifm-color-info-lighter: var(--cffy-theme-info-a20);
   
-  /* Typography - Laravel-style fonts */
-  --ifm-font-family-base: "Roboto", "Helvetica Neue", "Segoe UI", Arial, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Typography — React.dev font stack ("Optimistic" is proprietary;
+     Source Sans 3 is the closest free humanist stand-in) */
+  --ifm-font-family-base: "Optimistic Display", "Source Sans 3", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, system-ui, sans-serif;
   --ifm-font-family-monospace: "Consolas", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --ifm-font-size-base: 17px;
   --ifm-line-height-base: 1.75;
@@ -84,39 +86,46 @@
   --ifm-font-weight-semibold: 500;
   --ifm-font-weight-bold: 600;
   
-  /* Heading sizes */
-  --ifm-h1-font-size: 2.25rem;
-  --ifm-h2-font-size: 1.5rem;
-  --ifm-h3-font-size: 1.25rem;
-  --ifm-h4-font-size: 1.125rem;
-  --ifm-h5-font-size: 1rem;
-  --ifm-h6-font-size: 0.875rem;
+  /* Heading sizes — React.dev reference page scale */
+  --ifm-h1-font-size: 2.5rem;
+  --ifm-h2-font-size: 1.875rem;
+  --ifm-h3-font-size: 1.5rem;
+  --ifm-h4-font-size: 1.25rem;
+  --ifm-h5-font-size: 1.0625rem;
+  --ifm-h6-font-size: 0.9375rem;
+
+  /* React.dev reference reading-column width */
+  --react-content-width: 46rem;
   
-  /* Clean background colors */
+  /* Background colors — React light "wash" */
   --ifm-background-color: #ffffff;
-  --ifm-background-surface-color: #f9fafb;
-  
-  /* Text colors */
-  --ifm-font-color-base: #1b1b18;
-  --ifm-font-color-secondary: #706f6c;
-  
-  /* Border colors */
-  --ifm-color-emphasis-200: #e3e3e0;
-  --ifm-color-emphasis-300: #d1d1cd;
+  --ifm-background-surface-color: #f6f7f9;
+
+  /* Text colors — React ink */
+  --ifm-font-color-base: #23272f;
+  --ifm-font-color-secondary: #5e687e;
+
+  /* Border colors — React hairlines */
+  --ifm-color-emphasis-200: #ebecf0;
+  --ifm-color-emphasis-300: #dde1e6;
+
+  /* React accents: active-nav highlight pill + soft card surface */
+  --react-highlight: #e6f7ff;
+  --react-card-bg: #f6f7f9;
   
   /* Link styling */
   --ifm-link-color: var(--ifm-color-primary);
   --ifm-link-hover-color: var(--ifm-color-primary-dark);
   --ifm-link-hover-decoration: none;
   
-  /* Code block styling */
-  --ifm-code-background: #f4f4f2;
+  /* Code block styling — React rounded surfaces */
+  --ifm-code-background: #f6f7f9;
   --ifm-code-padding-horizontal: 0.4rem;
   --ifm-code-padding-vertical: 0.2rem;
-  --ifm-code-border-radius: 4px;
-  --ifm-pre-background: #fafafa;
+  --ifm-code-border-radius: 6px;
+  --ifm-pre-background: #f6f7f9;
   --ifm-pre-padding: 1.25rem;
-  --ifm-pre-border-radius: 8px;
+  --ifm-pre-border-radius: 12px;
   
   /* Navbar */
   --ifm-navbar-background-color: #ffffff;
@@ -163,29 +172,29 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: var(--ifm-font-weight-bold);
-  line-height: 1.4;
-  letter-spacing: -0.025em;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
   color: var(--ifm-font-color-base);
 }
 
 h1 {
   font-size: var(--ifm-h1-font-size);
+  line-height: 1.15;
   margin-bottom: 1.5rem;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 h2 {
   font-size: var(--ifm-h2-font-size);
-  margin-top: 2rem;
+  line-height: 1.25;
+  margin-top: 2.75rem;
   margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
 }
 
 h3 {
   font-size: var(--ifm-h3-font-size);
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   margin-bottom: 0.75rem;
 }
 
@@ -220,17 +229,17 @@ code {
   font-size: 0.875em;
   background: var(--ifm-code-background);
   padding: 0.2rem 0.4rem;
-  /* border-radius: 4px; */
+  border-radius: var(--ifm-code-border-radius);
   color: var(--ifm-color-primary);
   font-weight: 400;
 }
 
 pre {
   background: var(--ifm-pre-background) !important;
-  /* border-radius: var(--ifm-pre-border-radius); */
+  border-radius: var(--ifm-pre-border-radius);
   padding: var(--ifm-pre-padding);
   margin: 1.5rem 0;
-  /* border: 1px solid var(--ifm-color-emphasis-200); */
+  border: 1px solid var(--ifm-color-emphasis-200);
 }
 
 pre {
@@ -371,25 +380,25 @@ pre code {
 .menu__link {
   font-size: 0.875rem;
   font-weight: 400;
-  padding: 0.4rem 0.75rem;
-  border-radius: 4px;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
   color: var(--ifm-menu-color);
   transition: all var(--ifm-transition-fast) ease;
 }
 
 .menu__link:hover {
   color: var(--ifm-color-primary);
-  background: transparent;
+  background: var(--react-card-bg);
 }
 
 .menu__link--active {
-  /* color: var(--ifm-color-primary); */
-  font-weight: bold;
+  font-weight: 600;
   background: transparent;
 }
 
 .menu__link--active:not(.menu__link--sublist) {
-  background: rgba(51, 65, 85, 0.08);
+  color: var(--ifm-color-primary);
+  background: var(--react-highlight);
 }
 
 .menu__list-item-collapsible .menu__link {
@@ -445,8 +454,9 @@ pre code {
    Admonitions (Alerts)
    ============================================ */
 .admonition {
-  border-radius: 8px;
-  border: none;
+  border-radius: 12px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-left: 4px solid var(--ifm-alert-border-color, var(--ifm-color-primary));
   box-shadow: none;
   margin: 1.5rem 0;
 }
@@ -462,7 +472,7 @@ pre code {
    ============================================ */
 .pagination-nav__link {
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 1rem 1.25rem;
   transition: all var(--ifm-transition-fast) ease;
 }
@@ -490,19 +500,18 @@ pre code {
    ============================================ */
 @media screen and (max-width: 996px) {
   :root {
-    --ifm-font-size-base: 15px;
-    --ifm-h1-font-size: 1.875rem;
-    --ifm-h2-font-size: 1.375rem;
-    --ifm-h3-font-size: 1.125rem;
+    --ifm-h1-font-size: 2.125rem;
+    --ifm-h2-font-size: 1.625rem;
+    --ifm-h3-font-size: 1.3rem;
   }
 }
 
 @media screen and (max-width: 768px) {
   :root {
-    --ifm-font-size-base: 15px;
-    --ifm-h1-font-size: 1.625rem;
-    --ifm-h2-font-size: 1.25rem;
-    --ifm-h3-font-size: 1.125rem;
+    --ifm-font-size-base: 16px;
+    --ifm-h1-font-size: 1.875rem;
+    --ifm-h2-font-size: 1.5rem;
+    --ifm-h3-font-size: 1.25rem;
   }
 }
 
@@ -547,19 +556,33 @@ pre code {
    Dark Theme - Laravel Style
    ============================================ */
 html[data-theme='dark'] {
-  --ifm-background-color: var(--cffy-theme-surface-a0);
-  --ifm-background-surface-color: var(--cffy-theme-surface-a10);
-  
-  /* Text colors - high contrast for readability */
-  --ifm-font-color-base: #f5f5f4;
-  --ifm-font-color-base-inverse: #171717;
-  --ifm-font-color-secondary: #a8a8a6;
-  
+  /* React signature dark "wash" (#23272f), not pure black */
+  --ifm-background-color: #23272f;
+  --ifm-background-surface-color: #16181d;
+
+  /* React teal reads brighter on the dark wash */
+  --ifm-color-primary: #149eca;
+  --ifm-color-primary-dark: #1191ba;
+  --ifm-color-primary-darker: #1089af;
+  --ifm-color-primary-darkest: #0d7090;
+  --ifm-color-primary-light: #3aabd3;
+  --ifm-color-primary-lighter: #58c4dc;
+  --ifm-color-primary-lightest: #76d2e6;
+
+  /* React accents on dark: translucent teal pill + elevated card */
+  --react-highlight: rgba(88, 175, 223, 0.16);
+  --react-card-bg: #343a46;
+
+  /* Text colors — React ink on dark */
+  --ifm-font-color-base: #f6f7f9;
+  --ifm-font-color-base-inverse: #16181d;
+  --ifm-font-color-secondary: #99a1b3;
+
   /* Emphasis scale */
-  --ifm-color-emphasis-0: #171717;
-  --ifm-color-emphasis-100: #1f1f1f;
-  --ifm-color-emphasis-200: #2d2d2d;
-  --ifm-color-emphasis-300: #3d3d3d;
+  --ifm-color-emphasis-0: #16181d;
+  --ifm-color-emphasis-100: #1c1f26;
+  --ifm-color-emphasis-200: #343a46;
+  --ifm-color-emphasis-300: #3d4451;
   --ifm-color-emphasis-400: #525252;
   --ifm-color-emphasis-500: #737373;
   --ifm-color-emphasis-600: #a3a3a3;
@@ -568,28 +591,28 @@ html[data-theme='dark'] {
   --ifm-color-emphasis-900: #f5f5f4;
   --ifm-color-emphasis-1000: #ffffff;
   
-  /* Code styling */
-  --ifm-code-background: #2d2d2d;
-  --ifm-pre-background: #0d0d0d;
-  
+  /* Code styling — React dark card surfaces */
+  --ifm-code-background: #343a46;
+  --ifm-pre-background: #16181d;
+
   /* Navbar */
-  --ifm-navbar-background-color: var(--cffy-theme-surface-a0);
+  --ifm-navbar-background-color: #23272f;
   --ifm-navbar-shadow: none;
-  
+
   /* Menu colors */
-  --ifm-menu-color: #a8a8a6;
-  --ifm-menu-color-background-active: rgba(51, 65, 85, 0.1);
-  --ifm-menu-color-background-hover: rgba(255, 255, 255, 0.05);
-  
+  --ifm-menu-color: #99a1b3;
+  --ifm-menu-color-background-active: var(--react-highlight);
+  --ifm-menu-color-background-hover: var(--react-card-bg);
+
   /* TOC */
-  --ifm-toc-border-color: #2d2d2d;
-  --ifm-toc-link-color: #a8a8a6;
-  
+  --ifm-toc-border-color: #343a46;
+  --ifm-toc-link-color: #99a1b3;
+
   /* Card backgrounds */
-  --ifm-card-background-color: var(--cffy-theme-surface-a10);
+  --ifm-card-background-color: #343a46;
 
   /* Footer */
-  --ifm-footer-background-color: var(--cffy-theme-surface-a0);
+  --ifm-footer-background-color: #23272f;
   --ifm-footer-color: #a8a8a6;
   --ifm-footer-link-color: #d4d4d4;
   
@@ -741,8 +764,8 @@ html[data-theme='dark'] {
 [data-theme='dark'] .footer {
   background: linear-gradient(
     180deg,
-    #151515 0%,
-    #1a1a1a 100%
+    #1b1f27 0%,
+    #23272f 100%
   );
   border-top-color: var(--ifm-color-emphasis-200);
 }
@@ -912,8 +935,98 @@ html[data-theme='dark'] {
   }
 }
 
-.theme-doc-markdown {
-  h1 {
-    text-transform: uppercase !important;
-  }
+/* React.dev reference pages use a constrained, left-aligned reading
+   column rather than the full content width. */
+.theme-doc-markdown.markdown {
+  max-width: var(--react-content-width);
+}
+
+/* ============================================
+   React.dev-style code blocks
+   Rounded, bordered frame with a filename header bar.
+   ============================================ */
+.theme-code-block {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: var(--ifm-pre-border-radius);
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+/* Filename / title header (e.g. "routes/app.php") */
+.theme-code-block [class*='codeBlockTitle'] {
+  background: var(--react-card-bg);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--ifm-font-color-secondary);
+  padding: 0.6rem 1rem;
+}
+
+/* The frame owns the border + radius, so the inner <pre> stays flush */
+.theme-code-block pre {
+  border: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+/* ============================================
+   React.dev-style buttons — pill-shaped CTAs
+   ============================================ */
+.button {
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all var(--ifm-transition-fast) ease;
+}
+
+.button--primary {
+  --ifm-button-color: #ffffff;
+}
+
+.button--outline.button--primary {
+  border-width: 1.5px;
+}
+
+/* ============================================
+   Refined syntax palette (GitHub Primer — the look
+   React.dev's light code blocks are based on)
+   ============================================ */
+.token.keyword,
+.token.atrule,
+.token.attr-value,
+.token.operator,
+.token.entity,
+.token.url {
+  color: #cf222e;
+}
+
+.token.function,
+.token.class-name {
+  color: #8250df;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+  color: #0550ae;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #0a7d54;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #6e7781;
+  font-style: italic;
 }

@@ -66,7 +66,9 @@ function CodeSnippetSection() {
         <div className="row">
           <div className="col col--12">
             <h2 className="text--center margin-bottom--lg">
-              <Translate id="home.code.title">Simple, Elegant, Powerful</Translate>
+              <Translate id="home.code.title">
+                Simple, Elegant, Powerful
+              </Translate>
             </h2>
             <p
               className="text--center margin-bottom--xl"
@@ -84,7 +86,11 @@ function CodeSnippetSection() {
         <div className="row">
           <div className="col col--12">
             <Tabs groupId="code-examples" className={styles.codeTabs}>
-              <TabItem value="routes" label="Routes" default>
+              <TabItem
+                value="routes"
+                label={translate({ id: "home.tab.routes", message: "Routes" })}
+                default
+              >
                 <CodeBlock language="php" title="routes/app.php">
                   {`$app->get('/hello/{name}', function($name) {
   return "Hello, $name!";
@@ -100,7 +106,13 @@ $app->prefix('api', function() use ($app) {
                 </CodeBlock>
               </TabItem>
 
-              <TabItem value="controller" label={translate({ id: "home.tab.controller", message: "Controller" })}>
+              <TabItem
+                value="controller"
+                label={translate({
+                  id: "home.tab.controller",
+                  message: "Controller",
+                })}
+              >
                 <CodeBlock
                   language="php"
                   title="app/Controllers/UserController.php"
@@ -129,16 +141,19 @@ class UserController
 
     $user->persist();
 
-    return response()->json([
-      'message' => 'Utilisateur créé avec succès',
-      'user' => $user
-    ], 201);
+    return response()->json($user, 201);
   }
 }`}
                 </CodeBlock>
               </TabItem>
 
-              <TabItem value="database" label={translate({ id: "home.tab.database", message: "Database" })}>
+              <TabItem
+                value="database"
+                label={translate({
+                  id: "home.tab.database",
+                  message: "Database",
+                })}
+              >
                 <CodeBlock language="php" title="app/Models/User.php">
                   {`namespace App\\Models;
 
@@ -163,7 +178,13 @@ $user->posts()->where('published', true)->get();`}
                 </CodeBlock>
               </TabItem>
 
-              <TabItem value="middleware" label="Middleware">
+              <TabItem
+                value="middleware"
+                label={translate({
+                  id: "home.tab.middleware",
+                  message: "Middleware",
+                })}
+              >
                 <CodeBlock
                   language="php"
                   title="app/Middleware/AuthMiddleware.php"
@@ -199,8 +220,20 @@ $router->middleware('auth')->prefix('/', function() use ($router) {
                 </CodeBlock>
               </TabItem>
 
-              <TabItem value="validation" label="Validation">
-                <CodeBlock language="php" title={translate({ id: "home.code.validationTitle", message: "Data validation" })}>
+              <TabItem
+                value="validation"
+                label={translate({
+                  id: "home.tab.validation",
+                  message: "Validation",
+                })}
+              >
+                <CodeBlock
+                  language="php"
+                  title={translate({
+                    id: "home.code.validationTitle",
+                    message: "Data validation",
+                  })}
+                >
                   {`// Validation simple
 $request->validate([
   'email' => 'required|email',
@@ -226,8 +259,20 @@ if ($validation->fails()) {
                 </CodeBlock>
               </TabItem>
 
-              <TabItem value="response" label={translate({ id: "home.tab.response", message: "Responses" })}>
-                <CodeBlock language="php" title={translate({ id: "home.code.responseTitle", message: "Response types" })}>
+              <TabItem
+                value="response"
+                label={translate({
+                  id: "home.tab.response",
+                  message: "Responses",
+                })}
+              >
+                <CodeBlock
+                  language="php"
+                  title={translate({
+                    id: "home.code.responseTitle",
+                    message: "Response types",
+                  })}
+                >
                   {`// JSON
 return response()->json(['message' => 'Success'], 200);
 
