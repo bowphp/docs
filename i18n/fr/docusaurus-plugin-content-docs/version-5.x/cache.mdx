@@ -1,0 +1,285 @@
+---
+id: cache
+title: "Cache"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Le cache permet de stocker le résultat d'une opération coûteuse — une requête
+en base de données, un appel d'API, un calcul lourd — afin que les requêtes
+suivantes puissent le relire rapidement au lieu de le recalculer.
+
+Bow fournit un gestionnaire de cache simple et unifié, construit autour d'une
+unique classe `Bow\Cache\Cache` et d'un ensemble de pilotes interchangeables :
+
+- **File** — stocke les entrées sous forme de fichiers sérialisés sur le disque.
+- **Database** — stocke les entrées dans une table de base de données.
+- **Redis** — stocke les entrées dans une base de données Redis.
+
+Chaque pilote implémente la même interface
+`Bow\Cache\Adapters\CacheAdapterInterface`, de sorte que le code de votre
+application reste identique quel que soit le store que vous choisissez.
+
+## Configuration
+
+La configuration du cache se trouve dans `config/cache.php`. Elle définit un
+store par défaut ainsi que la liste des stores disponibles :
+
+```php
+<?php
+
+return [
+    // Le store utilisé lorsqu'aucun n'est spécifié explicitement
+    "default" => "file",
+
+    "stores" => [
+        // Le store filesystem
+        "file" => [
+            "driver" => "file",
+            "path" => __DIR__ . '/../var/cache',
+            "prefix" => "",
+        ],
+
+        // Le store base de données
+        "database" => [
+            "driver" => "database",
+            "connection" => app_env('DB_DEFAULT', 'mysql'),
+            "table" => "caches",
+            "prefix" => "",
+        ],
+
+        // Le store redis
+        "redis" => [
+            'driver' => 'redis',
+            'database' => app_env('REDIS_CACHE_DB', 5),
+            "prefix" => "",
+        ],
+    ],
+];
+```
+
+:::info Store par défaut
+La clé `default` doit référencer l'une des entrées de `stores`. Si elle est
+absente, Bow lève une `InvalidArgumentException` lors de la configuration.
+:::
+
+### Mise en place du pilote base de données
+
+Le pilote `database` nécessite une table `caches`. Générez la migration avec la
+console, puis exécutez vos migrations :
+
+```bash
+php bow generate:cache-table
+php bow migrate
+```
+
+## L'assistant `cache()`
+
+La manière la plus rapide d'interagir avec le cache est l'assistant global
+`cache()`.
+
+```php
+// Stocker une valeur (sans durée de vie)
+cache('key', 'value');
+
+// Stocker une valeur avec une durée de vie de 60 secondes
+cache('key', 'value', 60);
+
+// Récupérer une valeur
+$value = cache('key');
+
+// Obtenir l'instance de cache sous-jacente (sans argument)
+$store = cache();
+```
+
+Appelé avec une seule clé, l'assistant renvoie la valeur stockée (ou `null`
+lorsque l'entrée n'existe pas). Avec une clé et une valeur, il enregistre
+l'entrée, éventuellement avec une durée de vie exprimée en secondes.
+
+## Utiliser la classe `Cache`
+
+Pour l'API complète, appelez les méthodes de `Bow\Cache\Cache` de manière
+statique.
+
+```php
+use Bow\Cache\Cache;
+
+Cache::set('key', 'value', 60);
+
+$value = Cache::get('key');
+```
+
+### Stocker des éléments
+
+La méthode `set()` enregistre un élément. Le troisième argument est la durée de
+vie en secondes ; omettez-le pour stocker la valeur sans durée de vie.
+
+```php
+Cache::set('key', 'value');         // sans durée de vie
+Cache::set('key', 'value', 600);    // expire dans 10 minutes
+```
+
+:::tip Conserver des valeurs
+Pour stocker une valeur dont vous êtes certain qu'elle n'expirera jamais, quel
+que soit le pilote, utilisez `forever()` plutôt que d'omettre la durée de vie.
+:::
+
+Stockez plusieurs éléments à la fois avec `setMany()` :
+
+```php
+Cache::setMany([
+    'first'  => 'value',
+    'second' => ['a', 'b', 'c'],
+]);
+```
+
+### Stocker des éléments pour toujours
+
+Utilisez `forever()` pour conserver une valeur qui n'expire jamais :
+
+```php
+Cache::forever('settings', $settings);
+```
+
+### Récupérer des éléments
+
+`get()` renvoie la valeur, ou une valeur par défaut lorsque l'entrée est absente
+ou expirée. La valeur par défaut peut être une fonction anonyme, évaluée
+uniquement lorsque c'est nécessaire.
+
+```php
+$value = Cache::get('key');
+
+// Avec une valeur par défaut
+$value = Cache::get('key', 'default');
+
+// Avec une fonction par défaut
+$value = Cache::get('key', function () {
+    return expensive_operation();
+});
+```
+
+### Récupérer ou stocker (`remember`)
+
+`remember()` renvoie la valeur en cache si elle existe ; sinon, elle exécute le
+callback, stocke son résultat pour le nombre de secondes indiqué, puis le
+renvoie.
+
+```php
+$users = Cache::remember('users', 3600, function () {
+    return User::all();
+});
+```
+
+### Vérifier l'existence
+
+```php
+if (Cache::has('key')) {
+    // L'entrée existe
+}
+
+if (Cache::expired('key')) {
+    // L'entrée a dépassé sa date d'expiration
+}
+```
+
+### Incrémenter et décrémenter
+
+Les valeurs numériques peuvent être ajustées via `increment()` et
+`decrement()`. Ces méthodes renvoient la nouvelle valeur.
+
+```php
+Cache::increment('visits');       // +1
+Cache::increment('visits', 5);    // +5
+
+Cache::decrement('stock');        // -1
+Cache::decrement('stock', 3);     // -3
+```
+
+### Ajouter à une entrée (`push`)
+
+`push()` ajoute des données à une entrée existante — utile pour accumuler des
+éléments dans un tableau.
+
+```php
+Cache::set('events', ['login']);
+Cache::push('events', ['logout']);
+
+Cache::get('events'); // ['login', 'logout']
+```
+
+### Gérer l'expiration
+
+```php
+// Prolonger l'expiration d'une entrée de 120 secondes
+Cache::setTime('key', 120);
+
+// Obtenir le temps restant / d'expiration d'une entrée
+$time = Cache::timeOf('key');
+```
+
+### Supprimer des éléments
+
+```php
+// Supprimer une seule entrée
+Cache::forget('key');
+
+// Supprimer toutes les entrées du store
+Cache::clear();
+```
+
+Le store filesystem peut aussi être vidé depuis la console :
+
+```bash
+php bow clear cache
+```
+
+## Choisir un store à l'exécution
+
+Utilisez `store()` pour cibler un store précis au lieu de celui par défaut.
+L'instance renvoyée expose la même API que la classe `Cache`.
+
+```php
+use Bow\Cache\Cache;
+
+// Lire depuis le store redis
+$value = Cache::store('redis')->get('key');
+
+// Écrire dans le store base de données
+Cache::store('database')->set('key', 'value', 60);
+```
+
+## Pilotes personnalisés
+
+Vous pouvez enregistrer votre propre pilote en fournissant une classe qui
+implémente `Bow\Cache\Adapters\CacheAdapterInterface`, puis en la déclarant avec
+`addAdapters()` :
+
+```php
+use Bow\Cache\Cache;
+use App\Cache\MemcachedAdapter;
+
+Cache::addAdapters([
+    'memcached' => MemcachedAdapter::class,
+]);
+```
+
+Une fois enregistré, référencez le pilote depuis un store dans
+`config/cache.php` :
+
+```php
+"stores" => [
+    "memcached" => [
+        "driver" => "memcached",
+        // options spécifiques au pilote...
+    ],
+],
+```
+
+Cet enregistrement se fait généralement dans la méthode `boot()` d'un
+[fournisseur de services](./service) afin que le pilote soit disponible dans
+toute l'application.
+
+<SuggestionFeature />
