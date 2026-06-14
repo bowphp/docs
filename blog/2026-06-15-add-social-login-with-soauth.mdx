@@ -1,0 +1,165 @@
+---
+title: "Add 'Login with GitHub' to Your BowPHP App with SOAuth"
+description: "A real-world walkthrough: let users sign in with their social accounts using the bowphp/soauth package — from configuration to persisting the authenticated user."
+slug: add-social-login-with-soauth
+authors: papac
+tags: [bowphp, php, soauth, authentication, oauth]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Add 'Login with GitHub' to Your BowPHP App with SOAuth
+
+Asking users to invent yet another password is friction you don't need. In this
+post we'll add **"Login with GitHub"** to an existing BowPHP application using
+the official [`bowphp/soauth`](/docs/soauth) package — and then persist the
+authenticated user so the rest of the app can use it.
+
+The exact same flow works for Google, Facebook, GitLab, Instagram, and LinkedIn:
+only the credentials change.
+
+<!--truncate-->
+
+## The scenario
+
+We have a small SaaS dashboard. Today users register with an email and password.
+We want to let them click a single button and sign in with their GitHub account
+instead. Concretely we need to:
+
+1. Send the user to GitHub to approve our app.
+2. Receive them back, read their profile, and find-or-create a local user.
+3. Put them in the session and drop them on the dashboard.
+
+## Step 1 — Install the package
+
+```bash
+composer require bowphp/soauth
+```
+
+## Step 2 — Register your GitHub OAuth app
+
+Create an OAuth application in your GitHub developer settings, then add the
+credentials to your `.env.json`. SOAuth always expects the same three keys per
+provider — `<PROVIDER>_CLIENT_ID`, `<PROVIDER>_CLIENT_SECRET`, and
+`<PROVIDER>_REDIRECT_URI`:
+
+```json
+{
+  "GITHUB_CLIENT_ID": "your-client-id",
+  "GITHUB_CLIENT_SECRET": "your-client-secret",
+  "GITHUB_REDIRECT_URI": "https://app.example.com/oauth/github/callback"
+}
+```
+
+The redirect URI **must** match the callback route we register below.
+
+## Step 3 — Enable the package
+
+Add the SOAuth configuration to your kernel so the package boots with the app:
+
+```php title="app/Kernel.php"
+public function configurations(): array
+{
+    return [
+        \Bow\Soauth\SoauthConfiguration::class,
+        // ...other configurations
+    ];
+}
+```
+
+## Step 4 — The controller
+
+The whole OAuth dance reduces to two methods: one to **redirect** to the
+provider, one to **handle** the user coming back.
+
+```php title="app/Controllers/SoauthController.php"
+namespace App\Controllers;
+
+use App\Controllers\Controller;
+use App\Models\User;
+use Bow\Soauth\Soauth;
+
+class SoauthController extends Controller
+{
+    /**
+     * Send the user off to the provider to approve access.
+     */
+    public function redirect(string $provider)
+    {
+        // We only need the user's email and public profile.
+        return Soauth::redirect($provider, ['email']);
+    }
+
+    /**
+     * Handle the provider's callback.
+     */
+    public function handle(string $provider)
+    {
+        $profile = Soauth::resource($provider);
+
+        // Find an existing account or create one on the fly.
+        $user = User::where('email', $profile->getEmail())->first();
+
+        if ($user === null) {
+            $user = User::create([
+                'email'       => $profile->getEmail(),
+                'name'        => $profile->getName(),
+                'provider'    => $provider,
+                'provider_id' => $profile->getId(),
+            ]);
+        }
+
+        // Log them in and send them to the dashboard.
+        session()->set('user', $user);
+
+        return redirect('/dashboard');
+    }
+}
+```
+
+:::tip Scopes are optional
+The second argument to `Soauth::redirect()` is the OAuth scope. Pass an array of
+permissions (`['email', 'public_profile']`) or omit it entirely to use the
+provider's default scope.
+:::
+
+## Step 5 — The routes
+
+Wire up one route to start the flow and one for the callback. The `:provider`
+segment means the **same two routes** serve every provider you enable:
+
+```php title="routes/app.php"
+$app->get('/oauth/:provider/redirect', 'SoauthController::redirect');
+$app->get('/oauth/:provider/callback', 'SoauthController::handle');
+```
+
+## Step 6 — The button
+
+Finally, the front-end is just a link:
+
+```html
+<a href="/oauth/github/redirect" class="btn btn-dark">
+  Sign in with GitHub
+</a>
+```
+
+That's it. Clicking the button sends the user to GitHub; approving sends them
+back to `/oauth/github/callback`, where `handle()` resolves their profile,
+creates or finds the local account, and logs them in.
+
+## Going further
+
+- **Add more providers** by dropping another credentials block into `.env.json`
+  — no new routes or controller code required.
+- **Link accounts** by storing the provider name and provider id on the user, so
+  the same person signing in with Google and GitHub maps to one account.
+- **Protect your dashboard** with a middleware that checks `session()->get('user')`.
+
+Social login removes a whole class of password-management headaches for both you
+and your users — and with SOAuth it's a single afternoon of work. See the full
+[SOAuth documentation](/docs/soauth) for the complete list of supported
+providers.
+
+<SuggestionFeature />

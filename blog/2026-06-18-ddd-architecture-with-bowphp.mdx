@@ -1,0 +1,390 @@
+---
+title: "Building a Domain-Driven Design Architecture with BowPHP"
+description: "A pragmatic guide to structuring a BowPHP application with Domain-Driven Design: bounded contexts, a pure domain layer, repository interfaces, CQRS handlers, and container bindings."
+slug: ddd-architecture-with-bowphp
+authors: papac
+tags: [bowphp, php, ddd, architecture, cqrs]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Building a Domain-Driven Design Architecture with BowPHP
+
+BowPHP ships with a clean MVC layout, but nothing stops you from organising a
+larger application around **Domain-Driven Design (DDD)**. The framework already
+gives you the three pieces DDD leans on: a **container** to bind interfaces to
+implementations, **CQRS** to model use-cases, and an **event system** to publish
+domain events. In this post we'll wire them together into a layered, testable
+architecture.
+
+We'll model a single **bounded context** — *Ordering* — and keep the domain at
+the centre, framework details at the edges.
+
+<!--truncate-->
+
+## The layers
+
+DDD splits a context into layers that depend **inward**: outer layers know about
+inner ones, never the reverse.
+
+```
+┌─────────────────────────────────────────────┐
+│ Presentation   Controllers, routes           │
+│   ┌───────────────────────────────────────┐  │
+│   │ Application   Commands / Queries        │  │
+│   │   ┌───────────────────────────────┐    │  │
+│   │   │ Domain   Entities, VOs,        │    │  │
+│   │   │          Repository contracts  │    │  │
+│   │   └───────────────────────────────┘    │  │
+│   │ Infrastructure   Barry repositories     │  │
+│   └───────────────────────────────────────┘  │
+└─────────────────────────────────────────────┘
+```
+
+## Folder structure
+
+A BowPHP app autoloads `App\` from `app/` (PSR-4), so a bounded context is just a
+namespaced folder — **no composer changes required**:
+
+```
+app/
+└── Ordering/
+    ├── Domain/
+    │   ├── Order.php                    # Entity
+    │   ├── Money.php                    # Value object
+    │   ├── OrderRepository.php          # Contract (interface)
+    │   └── OrderWasPlaced.php           # Domain event
+    ├── Application/
+    │   ├── PlaceOrderCommand.php
+    │   └── PlaceOrderHandler.php
+    ├── Infrastructure/
+    │   ├── Models/OrderModel.php        # Barry persistence model
+    │   └── BarryOrderRepository.php     # Contract implementation
+    └── Presentation/
+        └── OrderController.php
+```
+
+## 1. The Domain layer (no framework imports)
+
+The domain is **pure PHP**. It doesn't know BowPHP exists — that's what keeps it
+testable and stable.
+
+A small value object:
+
+```php title="app/Ordering/Domain/Money.php"
+namespace App\Ordering\Domain;
+
+final class Money
+{
+    public function __construct(
+        public readonly int $amountInCents,
+        public readonly string $currency = 'USD',
+    ) {
+        if ($amountInCents < 0) {
+            throw new \InvalidArgumentException('Amount cannot be negative.');
+        }
+    }
+
+    public function add(Money $other): self
+    {
+        return new self($this->amountInCents + $other->amountInCents, $this->currency);
+    }
+}
+```
+
+The entity, with its invariants enforced in the constructor:
+
+```php title="app/Ordering/Domain/Order.php"
+namespace App\Ordering\Domain;
+
+final class Order
+{
+    /** @param list<array{sku: string, price: Money}> $lines */
+    public function __construct(
+        public readonly string $id,
+        public readonly int $customerId,
+        public readonly array $lines,
+    ) {
+        if ($lines === []) {
+            throw new \DomainException('An order needs at least one line.');
+        }
+    }
+
+    public function total(): Money
+    {
+        return array_reduce(
+            $this->lines,
+            fn (Money $carry, array $line) => $carry->add($line['price']),
+            new Money(0),
+        );
+    }
+}
+```
+
+And the **repository contract** — an interface owned by the domain, implemented
+later by infrastructure:
+
+```php title="app/Ordering/Domain/OrderRepository.php"
+namespace App\Ordering\Domain;
+
+interface OrderRepository
+{
+    public function nextIdentity(): string;
+
+    public function save(Order $order): void;
+
+    public function ofId(string $id): ?Order;
+}
+```
+
+## 2. The Application layer (use-cases via CQRS)
+
+Each use-case is a **command** plus a **handler**, using the
+[`bowphp/cqrs`](/docs/cqrs) package. The handler orchestrates the domain; it
+contains no business rules of its own.
+
+```bash
+composer require bowphp/cqrs
+```
+
+```php title="app/Ordering/Application/PlaceOrderCommand.php"
+namespace App\Ordering\Application;
+
+use Bow\CQRS\Command\CommandInterface;
+
+final class PlaceOrderCommand implements CommandInterface
+{
+    public function __construct(
+        public readonly int $customerId,
+        public readonly array $lines,
+    ) {}
+}
+```
+
+```php title="app/Ordering/Application/PlaceOrderHandler.php"
+namespace App\Ordering\Application;
+
+use App\Ordering\Domain\Money;
+use App\Ordering\Domain\Order;
+use App\Ordering\Domain\OrderRepository;
+use App\Ordering\Domain\OrderWasPlaced;
+use Bow\CQRS\Command\CommandHandlerInterface;
+use Bow\CQRS\Command\CommandInterface;
+
+final class PlaceOrderHandler implements CommandHandlerInterface
+{
+    // The handler depends on the CONTRACT, not on Barry.
+    public function __construct(private OrderRepository $orders) {}
+
+    public function process(CommandInterface $command): mixed
+    {
+        $lines = array_map(fn (array $l) => [
+            'sku'   => $l['sku'],
+            'price' => new Money($l['price']),
+        ], $command->lines);
+
+        $order = new Order(
+            id:         $this->orders->nextIdentity(),
+            customerId: $command->customerId,
+            lines:      $lines,
+        );
+
+        $this->orders->save($order);
+
+        // Announce the domain event so other contexts can react.
+        OrderWasPlaced::dispatch($order->id, $order->total()->amountInCents);
+
+        return $order->id;
+    }
+}
+```
+
+The domain event uses BowPHP's dispatchable contract — the **only** framework
+touch-point in the domain folder, and an intentional one:
+
+```php title="app/Ordering/Domain/OrderWasPlaced.php"
+namespace App\Ordering\Domain;
+
+use Bow\Event\Contracts\AppEvent;
+use Bow\Event\Dispatchable;
+
+final class OrderWasPlaced implements AppEvent
+{
+    use Dispatchable;
+
+    public function __construct(
+        public readonly string $orderId,
+        public readonly int $totalInCents,
+    ) {}
+
+    public function getName(): string
+    {
+        return self::class;
+    }
+}
+```
+
+## 3. The Infrastructure layer (Barry behind the contract)
+
+This is where the framework finally appears. A Barry model handles persistence,
+and a repository adapter maps between rows and domain entities:
+
+```php title="app/Ordering/Infrastructure/Models/OrderModel.php"
+namespace App\Ordering\Infrastructure\Models;
+
+use Bow\Database\Barry\Model;
+
+class OrderModel extends Model
+{
+    protected string $table = 'orders';
+}
+```
+
+```php title="app/Ordering/Infrastructure/BarryOrderRepository.php"
+namespace App\Ordering\Infrastructure;
+
+use App\Ordering\Domain\Money;
+use App\Ordering\Domain\Order;
+use App\Ordering\Domain\OrderRepository;
+use App\Ordering\Infrastructure\Models\OrderModel;
+
+final class BarryOrderRepository implements OrderRepository
+{
+    public function nextIdentity(): string
+    {
+        return bin2hex(random_bytes(16));
+    }
+
+    public function save(Order $order): void
+    {
+        OrderModel::create([
+            'id'          => $order->id,
+            'customer_id' => $order->customerId,
+            'lines'       => json_encode($order->lines),
+            'total'       => $order->total()->amountInCents,
+        ]);
+    }
+
+    public function ofId(string $id): ?Order
+    {
+        $row = OrderModel::retrieve($id);
+
+        if ($row === null) {
+            return null;
+        }
+
+        $lines = array_map(fn (array $l) => [
+            'sku'   => $l['sku'],
+            'price' => new Money($l['price']),
+        ], json_decode($row->lines, true));
+
+        return new Order($row->id, (int) $row->customer_id, $lines);
+    }
+}
+```
+
+## 4. Binding the contract to the implementation
+
+The whole point of the contract is that the application layer never names
+`BarryOrderRepository`. We connect the two in a configuration provider, using the
+container:
+
+```php title="app/Configurations/OrderingServiceProvider.php"
+namespace App\Configurations;
+
+use App\Ordering\Application\PlaceOrderHandler;
+use App\Ordering\Domain\OrderRepository;
+use App\Ordering\Infrastructure\BarryOrderRepository;
+use Bow\Configuration\Configuration;
+use Bow\Configuration\Loader;
+use Bow\CQRS\Registration as CQRSRegistration;
+
+class OrderingServiceProvider extends Configuration
+{
+    public function create(Loader $config): void
+    {
+        // Swap implementations here without touching the domain or application.
+        $this->container->bind(
+            OrderRepository::class,
+            BarryOrderRepository::class,
+        );
+    }
+
+    public function run(): void
+    {
+        CQRSRegistration::handlers([
+            PlaceOrderHandler::class,
+        ]);
+    }
+}
+```
+
+Register the provider in the kernel:
+
+```php title="app/Kernel.php"
+public function configurations(): array
+{
+    return [
+        // ...other providers
+        \App\Configurations\OrderingServiceProvider::class,
+    ];
+}
+```
+
+## 5. The Presentation layer (thin controllers)
+
+The controller does almost nothing: translate HTTP into a command, hand it to the
+bus, translate the result back into HTTP.
+
+```php title="app/Ordering/Presentation/OrderController.php"
+namespace App\Ordering\Presentation;
+
+use App\Ordering\Application\PlaceOrderCommand;
+use Bow\CQRS\Command\CommandBus;
+use Bow\Http\Request;
+
+class OrderController
+{
+    public function __construct(private CommandBus $commandBus) {}
+
+    public function store(Request $request)
+    {
+        $command = new PlaceOrderCommand(
+            customerId: (int) $request->get('customer_id'),
+            lines:      $request->get('lines', []),
+        );
+
+        $orderId = $this->commandBus->execute($command);
+
+        return response()->json(['order_id' => $orderId], 201);
+    }
+}
+```
+
+```php title="routes/app.php"
+// Use the fully-qualified class name: the router only prepends the default
+// App\Controllers namespace when the class string isn't already a real class.
+$app->post('/orders', 'App\\Ordering\\Presentation\\OrderController::store');
+```
+
+## Why bother?
+
+- **The domain is pure and testable** — `Order`, `Money`, and the use-case
+  handlers can be unit-tested without a database or HTTP.
+- **Dependencies point inward** — the application layer depends on
+  `OrderRepository`, never on Barry. Swap the implementation (in-memory for
+  tests, a different store in production) by changing **one `bind()` call**.
+- **Use-cases are explicit** — every business action is a named command with a
+  single handler, not logic scattered across fat controllers.
+- **Contexts stay isolated** — `OrderWasPlaced` lets other parts of the system
+  (or, with [microservices](/docs/microservice), other services) react without
+  the Ordering context knowing they exist.
+
+DDD isn't free — it's more files and more indirection, and a simple CRUD app
+rarely needs it. But when the business rules get complex, this structure keeps
+them in one obvious place. BowPHP's container, [CQRS](/docs/cqrs), and event
+system give you everything you need to build it — no extra framework required.
+
+<SuggestionFeature />

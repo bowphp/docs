@@ -1,0 +1,165 @@
+---
+title: "Speeding Up a BowPHP API with Caching"
+description: "A practical look at the BowPHP cache: cache an expensive dashboard query, keep it fresh on writes, and add simple rate limiting — with the file, database, or redis driver."
+slug: speed-up-your-api-with-caching
+authors: papac
+tags: [bowphp, php, cache, performance, redis]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Speeding Up a BowPHP API with Caching
+
+The fastest query is the one you never run. In this post we'll take a slow API
+endpoint and make it fast with the BowPHP [cache](/docs/cache) — then keep the
+cached data correct when the underlying records change, and finish by adding a
+lightweight rate limiter. Everything here works the same whether you're on the
+**file**, **database**, or **redis** driver.
+
+<!--truncate-->
+
+## The scenario
+
+We run a `/dashboard/stats` endpoint that aggregates orders, revenue, and active
+users. The query touches several tables and takes ~400ms — fine for one call,
+painful when every page load hits it. The numbers only need to be a few minutes
+fresh, which makes this a perfect caching candidate.
+
+## Step 1 — Cache the expensive read with `remember()`
+
+`remember()` is the workhorse of application caching: return the cached value if
+it exists, otherwise run the callback, store its result for the given number of
+seconds, and return it.
+
+```php title="app/Controllers/DashboardController.php"
+namespace App\Controllers;
+
+use Bow\Cache\Cache;
+
+class DashboardController
+{
+    public function stats()
+    {
+        // Recompute at most once every 5 minutes.
+        $stats = Cache::remember('dashboard.stats', 300, function () {
+            return [
+                'orders'       => Order::count(),
+                'revenue'      => Order::sum('total'),
+                'active_users' => User::where('active', true)->count(),
+            ];
+        });
+
+        return response()->json($stats);
+    }
+}
+```
+
+The first request pays the ~400ms cost; every request for the next five minutes
+is served from cache in microseconds.
+
+## Step 2 — Keep the cache correct on writes
+
+Time-based expiry is fine for soft numbers, but some data must update the moment
+it changes. The pattern is simple: **invalidate the key on write** so the next
+read recomputes it.
+
+```php
+use Bow\Cache\Cache;
+
+public function updateProfile(int $id)
+{
+    User::where('id', $id)->update([
+        'name' => request()->get('name'),
+    ]);
+
+    // The cached profile is now stale — drop it.
+    Cache::forget("user.$id.profile");
+
+    return response()->json(['updated' => true]);
+}
+```
+
+And the read side caches forever, because it's only ever rebuilt after an
+explicit `forget()`:
+
+```php
+$profile = Cache::remember("user.$id.profile", 86400, function () use ($id) {
+    return User::where('id', $id)->first();
+});
+```
+
+:::tip Cache keys are just strings
+Namespacing keys like `user.42.profile` keeps invalidation surgical: you can
+clear one user without touching anyone else's cache. To wipe everything at once,
+`Cache::clear()` empties the whole store.
+:::
+
+## Step 3 — A tiny rate limiter with `increment()`
+
+The cache isn't only for read results — atomic counters make a neat rate
+limiter. We count requests per client in a short-lived key and reject once the
+limit is crossed:
+
+```php title="app/Middlewares/ThrottleMiddleware.php"
+namespace App\Middlewares;
+
+use Bow\Cache\Cache;
+use Bow\Http\Request;
+
+class ThrottleMiddleware
+{
+    public function process(Request $request, callable $next, array $args = []): mixed
+    {
+        $key   = 'throttle.' . $request->ip();
+        $hits  = Cache::increment($key);
+
+        // First hit in the window: start the 60-second countdown.
+        if ($hits === 1) {
+            Cache::setTime($key, 60);
+        }
+
+        if ($hits > 100) {
+            return response()->json(['message' => 'Too many requests'], 429);
+        }
+
+        return $next($request);
+    }
+}
+```
+
+`increment()` returns the new value, so we know when we've just opened a fresh
+window (`=== 1`) and when we've blown past the limit.
+
+## Step 4 — Choose where the cache lives
+
+Your code above never mentions a driver — that's the point. The store is decided
+in `config/cache.php`, so you can develop against the **file** driver and run
+**redis** in production without changing a line:
+
+```php title="config/cache.php"
+"default" => app_env('CACHE_STORE', 'file'),
+```
+
+Need a specific store for one operation — say, Redis for the throttle counter so
+it's shared across every web node? Ask for it explicitly:
+
+```php
+Cache::store('redis')->increment($key);
+```
+
+## When (and when not) to cache
+
+- **Cache** expensive reads that tolerate slight staleness: dashboards, reports,
+  config, third-party API responses.
+- **Invalidate on write** for data that must be exact — or keep the TTL short.
+- **Don't cache** per-request trivia or anything cheaper to compute than to
+  fetch from the store.
+
+A few well-placed `remember()` calls and targeted `forget()` invalidations
+routinely turn a sluggish endpoint into an instant one. See the full
+[cache documentation](/docs/cache) for the complete API, including `forever()`,
+`push()`, `setMany()`, and custom drivers.
+
+<SuggestionFeature />

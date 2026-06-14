@@ -1,0 +1,273 @@
+---
+title: "Tutorial: Custom Commands and Scheduling in BowPHP"
+description: "A hands-on tutorial: build a robust custom console command, register it, then schedule it the right way with BowPHP's scheduler — plus production cron setup and best practices."
+slug: custom-commands-and-scheduling
+authors: papac
+tags: [bowphp, php, console, scheduler, tutorial]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Tutorial: Custom Commands and Scheduling in BowPHP
+
+Most applications grow a handful of recurring chores: prune stale data, send a
+nightly digest, rebuild a cache. The clean way to handle them is a **custom
+console command** you can run by hand, plus the **scheduler** to run it
+automatically. In this tutorial we'll build one end to end and wire it up the
+right way.
+
+By the end you'll have a `data:prune` command — with options, a dry-run mode, and
+friendly output — running every night in production, safely.
+
+<!--truncate-->
+
+## What we're building
+
+A SaaS app accumulates expired password-reset rows that nobody ever cleans up.
+We want a command that deletes rows older than N days, that we can:
+
+- run manually during an incident (`php bow data:prune --days=7`),
+- preview without deleting (`--dry-run`),
+- and schedule to run automatically at 2 AM.
+
+## Step 1 — Generate the command
+
+BowPHP scaffolds the class for you:
+
+```bash
+php bow add:command PruneExpiredDataCommand
+```
+
+That creates `app/Commands/PruneExpiredDataCommand.php`. A generated command
+extends `AbstractCommand` and does its work in `process()`.
+
+## Step 2 — Write the command logic
+
+A good command is **parameterised**, **safe to dry-run**, and **clear about what
+it did**. Inside a class command, arguments are available through `$this->arg`:
+`getParameter('--name', $default)` for options and flags, `getTarget()` for a
+positional argument.
+
+```php title="app/Commands/PruneExpiredDataCommand.php"
+<?php
+
+namespace App\Commands;
+
+use App\Models\PasswordReset;
+use Bow\Console\AbstractCommand;
+use Bow\Console\Color;
+
+class PruneExpiredDataCommand extends AbstractCommand
+{
+    public function process(): void
+    {
+        // `--days=7` (defaults to 30); `--dry-run` is a flag (true when present).
+        $days   = (int) $this->arg->getParameter('--days', 30);
+        $dryRun = (bool) $this->arg->getParameter('--dry-run', false);
+
+        $cutoff = date('Y-m-d H:i:s', strtotime("-{$days} days"));
+        $count  = PasswordReset::where('created_at', '<', $cutoff)->count();
+
+        if ($count === 0) {
+            echo Color::green("Nothing to prune.\n");
+            return;
+        }
+
+        if ($dryRun) {
+            echo Color::yellow(
+                "[dry-run] {$count} rows older than {$days} days would be deleted.\n"
+            );
+            return;
+        }
+
+        PasswordReset::where('created_at', '<', $cutoff)->delete();
+
+        echo Color::green("Pruned {$count} rows older than {$days} days.\n");
+    }
+}
+```
+
+:::tip Keep commands thin
+A command is a *delivery mechanism*, not a home for business logic. For anything
+non-trivial, inject a service and call it from `process()` — the same logic stays
+testable and reusable outside the console.
+:::
+
+## Step 3 — Register the command
+
+Generating the class doesn't make `php bow` aware of it — you register a name.
+Do it in the `run()` method of a configuration provider so it loads with the app:
+
+```php title="app/Configurations/AppServiceProvider.php"
+namespace App\Configurations;
+
+use App\Commands\PruneExpiredDataCommand;
+use Bow\Configuration\Configuration;
+use Bow\Configuration\Loader;
+use Bow\Console\Console;
+
+class AppServiceProvider extends Configuration
+{
+    public function create(Loader $config): void
+    {
+        //
+    }
+
+    public function run(): void
+    {
+        Console::register(
+            'data:prune',                  // name typed on the CLI
+            PruneExpiredDataCommand::class, // the class to run
+            'Prune expired password-reset rows',
+            "\nUsage:\n  php bow data:prune [--days=30] [--dry-run]\n"
+        );
+    }
+}
+```
+
+Make sure the provider is in your kernel:
+
+```php title="app/Kernel.php"
+public function configurations(): array
+{
+    return [
+        // ...other providers
+        \App\Configurations\AppServiceProvider::class,
+    ];
+}
+```
+
+Now try it:
+
+```bash
+php bow data:prune --dry-run        # preview
+php bow data:prune --days=7          # delete rows older than 7 days
+php bow data:prune help              # show the usage text
+```
+
+Your command also shows up under the **CUSTOM** section of `php bow help`.
+
+## Step 4 — Schedule it
+
+Scheduled tasks live in the `schedules()` method of `App\Kernel`. The scheduler
+gives you four ways to schedule work — `command()`, `task()`, `exec()`, and
+`call()` — with a fluent, readable frequency API:
+
+```php title="app/Kernel.php"
+use Bow\Scheduler\Scheduler;
+
+public function schedules(Scheduler $schedule): void
+{
+    // Our custom command, every night at 02:00.
+    $schedule->command('data:prune', ['--days' => 30])
+        ->dailyAt('02:00')
+        ->withoutOverlapping()
+        ->description('Prune expired password-reset rows');
+
+    // A built-in command, weekly.
+    $schedule->command('clear:log')
+        ->weeklyOn(7, '03:00')
+        ->description('Rotate application logs');
+
+    // A quick inline check every five minutes.
+    $schedule->call(function () {
+        logger('Heartbeat: scheduler alive');
+    })->everyFiveMinutes();
+}
+```
+
+## Step 5 — Best practices that save you at 3 AM
+
+A few options turn a fragile cron into a dependable one:
+
+**Prevent overlaps** for anything that might run long. If the previous run hasn't
+finished, the next is skipped instead of piling up:
+
+```php
+$schedule->command('data:prune')
+    ->hourly()
+    ->withoutOverlapping(30); // lock expires after 30 minutes
+```
+
+:::warning Overlap prevention needs a cache
+`withoutOverlapping()` stores its lock in the cache, so make sure a cache store
+is configured (see the [cache guide](/docs/cache)).
+:::
+
+**Guard environment-specific jobs** so a staging box never emails your customers:
+
+```php
+$schedule->task(\App\Tasks\SendWeeklyReportTask::class)
+    ->weeklyOn(5, '17:00')
+    ->when(fn () => app()->environment('production'))
+    ->description('Send the weekly reports');
+```
+
+**Push heavy shell work to the background** so one slow job doesn't delay the
+rest of the minute's tasks:
+
+```php
+$schedule->exec('mysqldump mydb > /backups/daily.sql')
+    ->dailyAt('01:00')
+    ->runInBackground();
+```
+
+**Always add a `description()`** — it's what `schedule:list` shows you.
+
+### Inspect before you trust
+
+The console gives you eyes on the schedule without waiting for the clock:
+
+```bash
+php bow schedule:list   # every registered task
+php bow schedule:next   # when each one runs next
+php bow schedule:test "App\\Tasks\\SendWeeklyReportTask"  # run one now
+```
+
+## Step 6 — Wire it up in production
+
+The scheduler only fires when something drives it. Two options:
+
+**Cron (simple).** One entry, running the dispatcher every minute — BowPHP
+decides which tasks are actually due:
+
+```bash
+* * * * * cd /var/www/bow-app && php bow schedule:run >> /var/log/bow-scheduler.log 2>&1
+```
+
+**Daemon (resilient).** Run `schedule:work` under a process supervisor so it
+restarts on crash or reboot:
+
+```ini title="/etc/supervisor/conf.d/bow-scheduler.conf"
+[program:bow-scheduler]
+directory=/var/www/bow-app
+command=php bow schedule:work
+autostart=true
+autorestart=true
+user=www-data
+stdout_logfile=/var/log/bow-scheduler.log
+```
+
+```bash
+sudo supervisorctl reread && sudo supervisorctl update && sudo supervisorctl start bow-scheduler
+```
+
+## Recap
+
+- `php bow add:command` scaffolds a command; `process()` is where it runs, and
+  `$this->arg` gives you options and arguments.
+- `Console::register()` in a provider's `run()` wires the name to the class.
+- `schedules()` in the kernel schedules commands, tasks, shell, or closures with
+  a readable frequency API.
+- `withoutOverlapping()`, `when()`, `runInBackground()`, and `description()` are
+  the options that make scheduled jobs production-safe.
+- One cron line (`schedule:run`) or a supervised `schedule:work` daemon drives it
+  all.
+
+That's the whole loop: a command you can run by hand today, running itself every
+night tomorrow. Dig into the [scheduler](/docs/scheduler) and
+[console](/docs/console) docs for the full list of frequencies and commands.
+
+<SuggestionFeature />

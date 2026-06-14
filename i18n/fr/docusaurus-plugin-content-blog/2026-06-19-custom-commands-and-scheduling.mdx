@@ -1,0 +1,283 @@
+---
+title: "Tutoriel : Commandes personnalisées et planification dans BowPHP"
+description: "Un tutoriel pratique : créer une commande de console personnalisée robuste, l'enregistrer, puis la planifier correctement avec le planificateur de BowPHP — avec en prime la configuration cron en production et les bonnes pratiques."
+slug: custom-commands-and-scheduling
+authors: papac
+tags: [bowphp, php, console, scheduler, tutorial]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Tutoriel : Commandes personnalisées et planification dans BowPHP
+
+La plupart des applications finissent par accumuler quelques tâches récurrentes :
+purger des données obsolètes, envoyer un récapitulatif nocturne, reconstruire un
+cache. La manière propre de les gérer consiste à créer une **commande de console
+personnalisée** que vous pouvez exécuter à la main, plus le **planificateur**
+pour l'exécuter automatiquement. Dans ce tutoriel, nous allons en construire une
+de bout en bout et la brancher correctement.
+
+À la fin, vous disposerez d'une commande `data:prune` — avec des options, un mode
+de simulation (dry-run) et une sortie lisible — qui s'exécutera chaque nuit en
+production, en toute sécurité.
+
+<!--truncate-->
+
+## Ce que nous allons construire
+
+Une application SaaS accumule des lignes de réinitialisation de mot de passe
+expirées que personne ne nettoie jamais. Nous voulons une commande qui supprime
+les lignes plus anciennes que N jours, que nous pouvons :
+
+- exécuter manuellement lors d'un incident (`php bow data:prune --days=7`),
+- prévisualiser sans rien supprimer (`--dry-run`),
+- et planifier pour s'exécuter automatiquement à 2 h du matin.
+
+## Étape 1 — Générer la commande
+
+BowPHP génère la classe à votre place :
+
+```bash
+php bow add:command PruneExpiredDataCommand
+```
+
+Cela crée `app/Commands/PruneExpiredDataCommand.php`. Une commande générée étend
+`AbstractCommand` et effectue son travail dans `process()`.
+
+## Étape 2 — Écrire la logique de la commande
+
+Une bonne commande est **paramétrable**, **sûre à exécuter en simulation** et
+**claire sur ce qu'elle a fait**. À l'intérieur d'une commande sous forme de
+classe, les arguments sont accessibles via `$this->arg` :
+`getParameter('--name', $default)` pour les options et les drapeaux,
+`getTarget()` pour un argument positionnel.
+
+```php title="app/Commands/PruneExpiredDataCommand.php"
+<?php
+
+namespace App\Commands;
+
+use App\Models\PasswordReset;
+use Bow\Console\AbstractCommand;
+use Bow\Console\Color;
+
+class PruneExpiredDataCommand extends AbstractCommand
+{
+    public function process(): void
+    {
+        // `--days=7` (vaut 30 par défaut) ; `--dry-run` est un drapeau (true s'il est présent).
+        $days   = (int) $this->arg->getParameter('--days', 30);
+        $dryRun = (bool) $this->arg->getParameter('--dry-run', false);
+
+        $cutoff = date('Y-m-d H:i:s', strtotime("-{$days} days"));
+        $count  = PasswordReset::where('created_at', '<', $cutoff)->count();
+
+        if ($count === 0) {
+            echo Color::green("Nothing to prune.\n");
+            return;
+        }
+
+        if ($dryRun) {
+            echo Color::yellow(
+                "[dry-run] {$count} rows older than {$days} days would be deleted.\n"
+            );
+            return;
+        }
+
+        PasswordReset::where('created_at', '<', $cutoff)->delete();
+
+        echo Color::green("Pruned {$count} rows older than {$days} days.\n");
+    }
+}
+```
+
+:::tip Gardez les commandes légères
+Une commande est un *mécanisme de livraison*, pas un foyer pour la logique
+métier. Pour tout traitement non trivial, injectez un service et appelez-le
+depuis `process()` — la même logique reste testable et réutilisable en dehors de
+la console.
+:::
+
+## Étape 3 — Enregistrer la commande
+
+Générer la classe ne suffit pas à la rendre connue de `php bow` — vous devez en
+enregistrer le nom. Faites-le dans la méthode `run()` d'un fournisseur de
+configuration afin qu'elle soit chargée avec l'application :
+
+```php title="app/Configurations/AppServiceProvider.php"
+namespace App\Configurations;
+
+use App\Commands\PruneExpiredDataCommand;
+use Bow\Configuration\Configuration;
+use Bow\Configuration\Loader;
+use Bow\Console\Console;
+
+class AppServiceProvider extends Configuration
+{
+    public function create(Loader $config): void
+    {
+        //
+    }
+
+    public function run(): void
+    {
+        Console::register(
+            'data:prune',                  // nom saisi sur la CLI
+            PruneExpiredDataCommand::class, // la classe à exécuter
+            'Prune expired password-reset rows',
+            "\nUsage:\n  php bow data:prune [--days=30] [--dry-run]\n"
+        );
+    }
+}
+```
+
+Assurez-vous que le fournisseur figure bien dans votre kernel :
+
+```php title="app/Kernel.php"
+public function configurations(): array
+{
+    return [
+        // ...autres fournisseurs
+        \App\Configurations\AppServiceProvider::class,
+    ];
+}
+```
+
+Essayez-la maintenant :
+
+```bash
+php bow data:prune --dry-run        # prévisualiser
+php bow data:prune --days=7          # supprimer les lignes plus anciennes que 7 jours
+php bow data:prune help              # afficher le texte d'usage
+```
+
+Votre commande apparaît également sous la section **CUSTOM** de `php bow help`.
+
+## Étape 4 — La planifier
+
+Les tâches planifiées vivent dans la méthode `schedules()` de `App\Kernel`. Le
+planificateur vous offre quatre façons de planifier du travail — `command()`,
+`task()`, `exec()` et `call()` — avec une API de fréquence fluide et lisible :
+
+```php title="app/Kernel.php"
+use Bow\Scheduler\Scheduler;
+
+public function schedules(Scheduler $schedule): void
+{
+    // Notre commande personnalisée, chaque nuit à 02:00.
+    $schedule->command('data:prune', ['--days' => 30])
+        ->dailyAt('02:00')
+        ->withoutOverlapping()
+        ->description('Prune expired password-reset rows');
+
+    // Une commande intégrée, chaque semaine.
+    $schedule->command('clear:log')
+        ->weeklyOn(7, '03:00')
+        ->description('Rotate application logs');
+
+    // Une vérification rapide en ligne toutes les cinq minutes.
+    $schedule->call(function () {
+        logger('Heartbeat: scheduler alive');
+    })->everyFiveMinutes();
+}
+```
+
+## Étape 5 — Les bonnes pratiques qui vous sauvent à 3 h du matin
+
+Quelques options transforment un cron fragile en un cron fiable :
+
+**Empêchez les chevauchements** pour tout ce qui pourrait s'exécuter longtemps.
+Si l'exécution précédente n'est pas terminée, la suivante est ignorée plutôt que
+de s'accumuler :
+
+```php
+$schedule->command('data:prune')
+    ->hourly()
+    ->withoutOverlapping(30); // le verrou expire au bout de 30 minutes
+```
+
+:::warning La prévention des chevauchements nécessite un cache
+`withoutOverlapping()` stocke son verrou dans le cache, alors assurez-vous qu'un
+magasin de cache est configuré (voir le [guide du cache](/docs/cache)).
+:::
+
+**Protégez les tâches spécifiques à un environnement** afin qu'un serveur de
+préproduction n'envoie jamais d'e-mails à vos clients :
+
+```php
+$schedule->task(\App\Tasks\SendWeeklyReportTask::class)
+    ->weeklyOn(5, '17:00')
+    ->when(fn () => app()->environment('production'))
+    ->description('Send the weekly reports');
+```
+
+**Reléguez le travail shell lourd en arrière-plan** afin qu'une tâche lente ne
+retarde pas le reste des tâches de la minute :
+
+```php
+$schedule->exec('mysqldump mydb > /backups/daily.sql')
+    ->dailyAt('01:00')
+    ->runInBackground();
+```
+
+**Ajoutez toujours une `description()`** — c'est ce que `schedule:list` vous
+affiche.
+
+### Inspectez avant de faire confiance
+
+La console vous permet de visualiser la planification sans attendre l'horloge :
+
+```bash
+php bow schedule:list   # toutes les tâches enregistrées
+php bow schedule:next   # quand chacune s'exécute la prochaine fois
+php bow schedule:test "App\\Tasks\\SendWeeklyReportTask"  # en exécuter une maintenant
+```
+
+## Étape 6 — La brancher en production
+
+Le planificateur ne se déclenche que si quelque chose le pilote. Deux options :
+
+**Cron (simple).** Une seule entrée, qui exécute le distributeur chaque minute —
+c'est BowPHP qui décide quelles tâches sont réellement dues :
+
+```bash
+* * * * * cd /var/www/bow-app && php bow schedule:run >> /var/log/bow-scheduler.log 2>&1
+```
+
+**Démon (résilient).** Exécutez `schedule:work` sous un superviseur de processus
+afin qu'il redémarre en cas de plantage ou de redémarrage :
+
+```ini title="/etc/supervisor/conf.d/bow-scheduler.conf"
+[program:bow-scheduler]
+directory=/var/www/bow-app
+command=php bow schedule:work
+autostart=true
+autorestart=true
+user=www-data
+stdout_logfile=/var/log/bow-scheduler.log
+```
+
+```bash
+sudo supervisorctl reread && sudo supervisorctl update && sudo supervisorctl start bow-scheduler
+```
+
+## Récapitulatif
+
+- `php bow add:command` génère une commande ; `process()` est l'endroit où elle
+  s'exécute, et `$this->arg` vous donne accès aux options et aux arguments.
+- `Console::register()` dans le `run()` d'un fournisseur relie le nom à la classe.
+- `schedules()` dans le kernel planifie des commandes, des tâches, du shell ou
+  des closures avec une API de fréquence lisible.
+- `withoutOverlapping()`, `when()`, `runInBackground()` et `description()` sont
+  les options qui rendent les tâches planifiées sûres en production.
+- Une seule ligne cron (`schedule:run`) ou un démon `schedule:work` supervisé
+  pilote l'ensemble.
+
+Voilà toute la boucle : une commande que vous pouvez exécuter à la main
+aujourd'hui, et qui s'exécutera d'elle-même chaque nuit demain. Plongez dans la
+documentation du [planificateur](/docs/scheduler) et de la
+[console](/docs/console) pour la liste complète des fréquences et des commandes.
+
+<SuggestionFeature />

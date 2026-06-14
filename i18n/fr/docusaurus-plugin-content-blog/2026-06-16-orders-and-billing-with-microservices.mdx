@@ -1,0 +1,249 @@
+---
+title: "Séparer les commandes et la facturation avec les microservices BowPHP"
+description: "Un exemple concret du package bowphp/microservice : un service Commandes qui dialogue avec un service Facturation via Redis, à l'aide d'appels RPC et d'événements fire-and-forget."
+slug: orders-and-billing-with-microservices
+authors: papac
+tags: [bowphp, php, microservice, architecture, redis]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Séparer les commandes et la facturation avec les microservices BowPHP
+
+À mesure qu'une application grandit, certaines responsabilités souhaitent vivre
+de leur côté — leur propre rythme de déploiement, leur propre montée en charge,
+leur propre équipe. La facturation en est un exemple classique. Dans ce billet,
+nous allons extraire la facturation dans un service distinct et faire dialoguer
+notre application **Commandes** avec celui-ci grâce au package
+[`bowphp/microservice`](/docs/microservice) via **Redis**.
+
+Nous utiliserons les deux modes de communication offerts par le package :
+
+- **Requête/Réponse (RPC)** avec `send()` — lorsque Commandes a besoin d'une
+  réponse en retour.
+- **Fire-and-forget (Événement)** avec `emit()` — lorsque Commandes veut
+  simplement annoncer qu'un événement s'est produit.
+
+<!--truncate-->
+
+## Le scénario
+
+Deux applications :
+
+- **Commandes** — l'application orientée client. Lorsqu'un client valide son
+  panier, elle a besoin d'un montant de facture *immédiatement* (RPC), et elle
+  veut annoncer `order.placed` pour que d'autres services puissent réagir de
+  manière asynchrone (événement).
+- **Facturation** — possède les factures. Elle expose un gestionnaire RPC
+  `invoice.create` et écoute les événements `order.placed`.
+
+Les deux partagent un courtier Redis.
+
+## Étape 1 — Installer le package (les deux applications)
+
+```bash
+composer require bowphp/microservice
+```
+
+Enregistrez le fournisseur dans le kernel de chaque application :
+
+```php title="app/Kernel.php"
+public function configurations(): array
+{
+    return [
+        \Bow\Microservice\Bow\MicroserviceConfiguration::class,
+    ];
+}
+```
+
+Publiez ensuite le fichier de configuration :
+
+```bash
+php bow microservice:publish-config
+```
+
+## Étape 2 — Pointer les deux applications vers Redis
+
+Dans `config/microservice.php`, sélectionnez le transport Redis et les
+coordonnées du courtier. C'est identique des deux côtés :
+
+```php title="config/microservice.php"
+return [
+    'transport' => 'redis',
+    'timeout'   => 3.0,
+
+    'controllers' => [
+        // La Facturation enregistre son consommateur ici (voir l'Étape 4)
+    ],
+
+    'redis' => [
+        'host'     => app_env('MICROSERVICE_HOST', 'redis.internal'),
+        'port'     => (int) app_env('MICROSERVICE_PORT', 6379),
+        'password' => app_env('MICROSERVICE_REDIS_PASSWORD', null),
+    ],
+];
+```
+
+## Étape 3 — Le côté Commandes (le client)
+
+Le fournisseur lie un `ClientProxy` partagé dans le conteneur. Injectez-le par
+son type et vous êtes prêt à dialoguer avec la Facturation.
+
+```php title="app/Controllers/CheckoutController.php"
+namespace App\Controllers;
+
+use Bow\Microservice\Client\ClientProxy;
+
+class CheckoutController
+{
+    public function __construct(private ClientProxy $client) {}
+
+    public function store(int $orderId)
+    {
+        // 1. RPC : demander à la Facturation de créer la facture et attendre le montant.
+        $invoice = $this->client->send('invoice.create', [
+            'order_id' => $orderId,
+            'lines'    => $this->orderLines($orderId),
+        ]);
+
+        // 2. Événement : annoncer la commande ; nous n'attendons personne.
+        $this->client->emit('order.placed', [
+            'order_id' => $orderId,
+            'total'    => $invoice['total'],
+        ]);
+
+        return response()->json([
+            'invoice_id' => $invoice['id'],
+            'total'      => $invoice['total'],
+        ]);
+    }
+}
+```
+
+`send()` bloque jusqu'à ce que la Facturation réponde (ou jusqu'au déclenchement
+du timeout) ; `emit()` retourne immédiatement et n'attend jamais.
+
+:::tip Les appels lents disposent de leur propre timeout
+Le timeout par défaut provient de `config('microservice.timeout')`, mais un seul
+appel lourd peut le surcharger :
+
+```php
+$report = $this->client->send('billing.report', $payload, timeout: 30.0);
+```
+
+`emit()` est de type fire-and-forget, il n'accepte donc pas de timeout.
+:::
+
+## Étape 4 — Le côté Facturation (le serveur)
+
+Générez un consommateur :
+
+```bash
+php bow add:consumer InvoiceConsumer
+```
+
+Annotez les gestionnaires avec `#[MessagePattern]` pour le RPC et
+`#[EventPattern]` pour les événements. Le nom de la méthode importe peu — c'est
+le **pattern** qui route le message :
+
+```php title="app/Consumers/InvoiceConsumer.php"
+namespace App\Consumers;
+
+use App\Models\Invoice;
+use Bow\Microservice\Consumer\MessagePattern;
+use Bow\Microservice\Consumer\EventPattern;
+
+class InvoiceConsumer
+{
+    /**
+     * RPC : créer une facture et la retourner à l'appelant.
+     */
+    #[MessagePattern('invoice.create')]
+    public function create(array $payload): array
+    {
+        $invoice = Invoice::create([
+            'order_id' => $payload['order_id'],
+            'total'    => $this->sum($payload['lines']),
+        ]);
+
+        return [
+            'id'    => $invoice->id,
+            'total' => $invoice->total,
+        ];
+    }
+
+    /**
+     * Événement : réagir à une commande passée — aucune réponse retournée.
+     */
+    #[EventPattern('order.placed')]
+    public function onOrderPlaced(array $payload): void
+    {
+        // par ex. mettre en file un e-mail de reçu, mettre à jour les analytics, etc.
+    }
+
+    private function sum(array $lines): float
+    {
+        return array_sum(array_column($lines, 'amount'));
+    }
+}
+```
+
+Enregistrez le consommateur dans le `config/microservice.php` de la Facturation :
+
+```php title="config/microservice.php"
+'controllers' => [
+    \App\Consumers\InvoiceConsumer::class,
+],
+```
+
+## Étape 5 — Lancer l'écouteur de la Facturation
+
+La Facturation exécute un processus de longue durée qui s'abonne au courtier et
+distribue les messages entrants vers vos gestionnaires :
+
+```bash
+php bow microservice:listen
+```
+
+Besoin de surcharger la configuration pour un processus ponctuel ? La commande
+accepte des options :
+
+```bash
+php bow microservice:listen \
+    --transport=redis \
+    --controllers="App\Consumers\InvoiceConsumer" \
+    --patterns="invoice.create,order.placed"
+```
+
+## Comment les pièces s'assemblent
+
+```
+Validation du panier client
+       │
+       ▼
+Commandes ──send('invoice.create')──▶ Facturation  (RPC, attend le montant)
+          ◀──────── facture ─────────
+       │
+       └─emit('order.placed')────▶ Facturation  (événement, fire-and-forget)
+                                   + tout autre abonné
+```
+
+## Pourquoi est-ce important
+
+- **Déploiements indépendants** — la Facturation peut être livrée selon son
+  propre calendrier.
+- **Le bon outil par appel** — `send()` synchrone là où vous avez besoin d'une
+  réponse, `emit()` asynchrone là où vous n'en avez pas besoin.
+- **Changer de transport, pas de code** — démarrez sur Redis ; passez plus tard
+  à RabbitMQ ou Kafka en modifiant `config/microservice.php`, sans toucher à vos
+  gestionnaires.
+
+Lorsqu'un service a besoin de monter en charge, d'échouer ou de se déployer
+indépendamment du reste, c'est ainsi que vous tracez la frontière — sans quitter
+la boîte à outils BowPHP. La
+[documentation complète des microservices](/docs/microservice) couvre les autres
+transports, les clients multiples et le réglage par processus.
+
+<SuggestionFeature />

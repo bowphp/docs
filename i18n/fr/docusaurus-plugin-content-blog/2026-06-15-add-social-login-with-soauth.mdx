@@ -1,0 +1,175 @@
+---
+title: "Ajoutez 'Connexion avec GitHub' à votre application BowPHP avec SOAuth"
+description: "Un guide concret : permettez à vos utilisateurs de se connecter avec leurs comptes sociaux grâce au package bowphp/soauth — de la configuration à la persistance de l'utilisateur authentifié."
+slug: add-social-login-with-soauth
+authors: papac
+tags: [bowphp, php, soauth, authentication, oauth]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Ajoutez 'Connexion avec GitHub' à votre application BowPHP avec SOAuth
+
+Demander à vos utilisateurs d'inventer encore un mot de passe est une friction
+dont vous n'avez pas besoin. Dans ce billet, nous allons ajouter
+**« Connexion avec GitHub »** à une application BowPHP existante en utilisant le
+package officiel [`bowphp/soauth`](/docs/soauth) — puis persister l'utilisateur
+authentifié afin que le reste de l'application puisse l'utiliser.
+
+Le même flux fonctionne exactement de la même manière pour Google, Facebook,
+GitLab, Instagram et LinkedIn : seules les informations d'identification changent.
+
+<!--truncate-->
+
+## Le scénario
+
+Nous avons un petit tableau de bord SaaS. Aujourd'hui, les utilisateurs
+s'inscrivent avec une adresse e-mail et un mot de passe. Nous voulons leur
+permettre de cliquer sur un seul bouton et de se connecter avec leur compte
+GitHub à la place. Concrètement, nous devons :
+
+1. Envoyer l'utilisateur vers GitHub pour approuver notre application.
+2. Le récupérer au retour, lire son profil et trouver-ou-créer un utilisateur local.
+3. Le placer dans la session et le déposer sur le tableau de bord.
+
+## Étape 1 — Installer le package
+
+```bash
+composer require bowphp/soauth
+```
+
+## Étape 2 — Enregistrer votre application OAuth GitHub
+
+Créez une application OAuth dans les paramètres développeur de votre compte
+GitHub, puis ajoutez les informations d'identification à votre `.env.json`.
+SOAuth attend toujours les trois mêmes clés par fournisseur —
+`<PROVIDER>_CLIENT_ID`, `<PROVIDER>_CLIENT_SECRET` et
+`<PROVIDER>_REDIRECT_URI` :
+
+```json
+{
+  "GITHUB_CLIENT_ID": "your-client-id",
+  "GITHUB_CLIENT_SECRET": "your-client-secret",
+  "GITHUB_REDIRECT_URI": "https://app.example.com/oauth/github/callback"
+}
+```
+
+L'URI de redirection **doit** correspondre à la route de callback que nous
+enregistrons ci-dessous.
+
+## Étape 3 — Activer le package
+
+Ajoutez la configuration SOAuth à votre kernel afin que le package démarre avec
+l'application :
+
+```php title="app/Kernel.php"
+public function configurations(): array
+{
+    return [
+        \Bow\Soauth\SoauthConfiguration::class,
+        // ...autres configurations
+    ];
+}
+```
+
+## Étape 4 — Le contrôleur
+
+Toute la chorégraphie OAuth se réduit à deux méthodes : une pour **rediriger**
+vers le fournisseur, une pour **gérer** le retour de l'utilisateur.
+
+```php title="app/Controllers/SoauthController.php"
+namespace App\Controllers;
+
+use App\Controllers\Controller;
+use App\Models\User;
+use Bow\Soauth\Soauth;
+
+class SoauthController extends Controller
+{
+    /**
+     * Envoyer l'utilisateur vers le fournisseur pour approuver l'accès.
+     */
+    public function redirect(string $provider)
+    {
+        // Nous avons seulement besoin de l'e-mail et du profil public de l'utilisateur.
+        return Soauth::redirect($provider, ['email']);
+    }
+
+    /**
+     * Gérer le callback du fournisseur.
+     */
+    public function handle(string $provider)
+    {
+        $profile = Soauth::resource($provider);
+
+        // Trouver un compte existant ou en créer un à la volée.
+        $user = User::where('email', $profile->getEmail())->first();
+
+        if ($user === null) {
+            $user = User::create([
+                'email'       => $profile->getEmail(),
+                'name'        => $profile->getName(),
+                'provider'    => $provider,
+                'provider_id' => $profile->getId(),
+            ]);
+        }
+
+        // Le connecter et l'envoyer vers le tableau de bord.
+        session()->set('user', $user);
+
+        return redirect('/dashboard');
+    }
+}
+```
+
+:::tip Les scopes sont optionnels
+Le deuxième argument de `Soauth::redirect()` est le scope OAuth. Passez un
+tableau de permissions (`['email', 'public_profile']`) ou omettez-le entièrement
+pour utiliser le scope par défaut du fournisseur.
+:::
+
+## Étape 5 — Les routes
+
+Branchez une route pour démarrer le flux et une pour le callback. Le segment
+`:provider` signifie que les **deux mêmes routes** desservent chaque fournisseur
+que vous activez :
+
+```php title="routes/app.php"
+$app->get('/oauth/:provider/redirect', 'SoauthController::redirect');
+$app->get('/oauth/:provider/callback', 'SoauthController::handle');
+```
+
+## Étape 6 — Le bouton
+
+Enfin, le front-end n'est qu'un simple lien :
+
+```html
+<a href="/oauth/github/redirect" class="btn btn-dark">
+  Sign in with GitHub
+</a>
+```
+
+C'est tout. Cliquer sur le bouton envoie l'utilisateur vers GitHub ;
+l'approbation le renvoie vers `/oauth/github/callback`, où `handle()` résout son
+profil, crée ou trouve le compte local, et le connecte.
+
+## Pour aller plus loin
+
+- **Ajoutez d'autres fournisseurs** en déposant simplement un autre bloc
+  d'informations d'identification dans `.env.json` — aucune nouvelle route ni
+  aucun code de contrôleur n'est requis.
+- **Liez les comptes** en stockant le nom du fournisseur et l'identifiant du
+  fournisseur sur l'utilisateur, afin que la même personne se connectant avec
+  Google et GitHub corresponde à un seul compte.
+- **Protégez votre tableau de bord** avec un middleware qui vérifie
+  `session()->get('user')`.
+
+La connexion sociale supprime toute une classe de tracas liés à la gestion des
+mots de passe, à la fois pour vous et pour vos utilisateurs — et avec SOAuth,
+c'est l'affaire d'un seul après-midi de travail. Consultez la
+[documentation SOAuth](/docs/soauth) complète pour la liste exhaustive des
+fournisseurs pris en charge.
+
+<SuggestionFeature />
