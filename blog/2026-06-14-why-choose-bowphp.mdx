@@ -1,0 +1,119 @@
+---
+title: "Why Choose BowPHP for Your Next Project"
+description: "A tour of what makes BowPHP a fast, expressive, and dependency-light PHP framework — and why it might be the right fit for your next application."
+slug: why-choose-bowphp
+authors: papac
+tags: [bowphp, php, framework, productivity]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Why Choose BowPHP for Your Next Project
+
+BowPHP is a lightweight, expressive PHP framework built around a simple idea:
+give you everything you need to ship real applications — and nothing you have to
+fight against. If you value a clean API, fast boot times, and a small surface
+area you can actually read end-to-end, BowPHP is worth a look.
+
+<!--truncate-->
+
+## A framework that stays out of your way
+
+The core philosophy of BowPHP is *enjoyable, predictable APIs*. Routing,
+controllers, and middleware feel familiar within minutes, and the global
+helpers keep everyday tasks short:
+
+```php
+$app->get('/', function () {
+    return view('welcome');
+});
+```
+
+No ceremony, no boilerplate — just the code that matters.
+
+## Batteries included, without the bloat
+
+BowPHP ships with the building blocks of a modern web application, each with a
+focused, well-documented API:
+
+- **Barry ORM & Query Builder** — expressive models and a fluent query builder
+  for everything from quick lookups to complex joins.
+- **Migrations & Seeding** — version your schema and populate it with a clean
+  console workflow.
+- **Validation** — declarative rules to keep incoming requests safe.
+- **Storage** — a unified API over the local disk and external services such as
+  FTP and S3.
+- **Mail & Messaging** — send transactional email and notifications with a
+  consistent interface.
+- **Scheduler & Tasks** — run recurring jobs straight from the console.
+- **Localization (i18n)** — translate your application out of the box.
+
+## Caching that just works
+
+Performance matters, and BowPHP makes caching trivial. A single, unified
+`Cache` API sits in front of interchangeable drivers — **file**, **database**,
+and **redis** — so your code never changes when your infrastructure does:
+
+```php
+use Bow\Cache\Cache;
+
+$users = Cache::remember('users', 3600, function () {
+    return User::all();
+});
+```
+
+Need a different store at runtime? Just ask for it:
+
+```php
+Cache::store('redis')->get('key');
+```
+
+Learn more in the [cache documentation](/docs/cache).
+
+## Observability built in
+
+Every prepared write query emits a `QueryEvent`, giving you a clean hook for
+logging, profiling slow queries, or debugging in development — including the
+exact SQL, its bindings, and how long it took to run:
+
+```php
+use Bow\Database\QueryEvent;
+
+event()->on(QueryEvent::class, function (QueryEvent $event) {
+    logger()->debug($event->sql, [
+        'time'     => $event->execution_time,
+        'bindings' => $event->bindings,
+    ]);
+});
+```
+
+## Ready for modern architectures
+
+BowPHP isn't just for classic MVC apps. It ships with first-class support for
+**CQRS** and a **microservice** toolkit, so you can grow from a single service
+into a distributed system without switching frameworks.
+
+## Tested and trustworthy
+
+The framework is covered by an extensive test suite and gives you the tools to
+test your own application with confidence — because a framework you can trust is
+a framework you can build on.
+
+## Get started today
+
+Spinning up a new BowPHP project takes a single command:
+
+```bash
+composer create-project --prefer-dist bowphp/app my-app
+```
+
+From there, the [documentation](/docs/installation) walks you through routing,
+controllers, the database layer, and everything else you need to ship.
+
+BowPHP is open source and community-driven — [contributions are welcome](/docs/contribution),
+whether it's code, documentation, or simply spreading the word. Give it a try on
+your next project, and let us know what you build.
+
+<SuggestionFeature />

@@ -7,16 +7,33 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-Package d'authentification via les réseaux sociaux pour BowPHP. Ce package utilise [`thephpleague/oauth2-client`](https://github.com/thephpleague/oauth2-client) comme wrapper.
+Package d'authentification via les réseaux sociaux pour BowPHP. Il permet à vos
+utilisateurs de se connecter avec leurs comptes sociaux existants plutôt que de
+créer un mot de passe supplémentaire. En interne, le package s'appuie sur
+[`thephpleague/oauth2-client`](https://github.com/thephpleague/oauth2-client) et
+exécute pour vous le flux OAuth 2.0 standard à _code d'autorisation_ :
+
+1. Votre application **redirige** l'utilisateur vers l'écran de consentement du
+   fournisseur.
+2. L'utilisateur approuve, et le fournisseur **rappelle** votre application avec
+   un code.
+3. Le package échange ce code contre un jeton d'accès et **retourne
+   l'utilisateur authentifié** sous la forme d'un
+   [`UserResource`](#récupérer-lutilisateur).
+
+La protection CSRF (le paramètre OAuth `state`) est générée, stockée et vérifiée
+pour vous à chaque aller-retour.
 
 Actuellement, il supporte les fournisseurs suivants :
 
-- Facebook
-- Gitlab
-- Github
-- Google
-- Instagram
-- Linkedin
+| Fournisseur | Identifiant (`$provider`) |
+| ----------- | ------------------------- |
+| Facebook    | `facebook`                |
+| Gitlab      | `gitlab`                  |
+| Github      | `github`                  |
+| Google      | `google`                  |
+| Instagram   | `instagram`               |
+| Linkedin    | `linkedin`                |
 
 ## Installation
 
@@ -98,6 +115,34 @@ La configuration suit toujours la même approche : trois clés
 `<PROVIDER>_REDIRECT_URI`.
 :::
 
+Le `redirect_uri` que vous définissez ici **doit correspondre exactement** à la
+route de callback que vous enregistrez dans votre application (voir
+[Ajouter une route](#ajouter-une-route)) ainsi qu'à celle déclarée dans la
+console développeur du fournisseur — sans quoi le fournisseur rejettera la
+requête.
+
+Ces valeurs d'environnement sont lues par le fichier `config/soauth.php` du
+package, qui associe chaque nom de fournisseur à ses identifiants. Votre propre
+`config/soauth.php`, s'il existe, est fusionné par-dessus les valeurs par
+défaut, ce qui vous permet de surcharger n'importe quelle valeur localement.
+
+### Version de l'API Graph de Facebook
+
+Le fournisseur Facebook communique avec une version précise de l'API Graph
+(`v18.0` par défaut). Pour fixer une autre version, surchargez la clé
+`graph_api_version` dans votre `config/soauth.php` :
+
+```php title="config/soauth.php"
+return [
+  'facebook' => [
+    'client_id'         => app_env('FACEBOOK_CLIENT_ID'),
+    'client_secret'     => app_env('FACEBOOK_CLIENT_SECRET'),
+    'redirect_uri'      => app_env('FACEBOOK_REDIRECT_URI'),
+    'graph_api_version' => 'v19.0',
+  ],
+];
+```
+
 ## Utilisation
 
 Activez le package en l'ajoutant à `Kernel::configurations()` :
@@ -111,6 +156,15 @@ public function configurations(): array
   ];
 }
 ```
+
+Le package expose un unique point d'entrée statique — `Bow\Soauth\Soauth` —
+avec deux méthodes :
+
+- `Soauth::redirect(string $provider, array $scope = [])` — envoie l'utilisateur
+  vers l'écran de consentement du fournisseur.
+- `Soauth::resource(string $provider)` — gère le callback et retourne
+  l'utilisateur authentifié sous forme de
+  [`UserResource`](#récupérer-lutilisateur).
 
 Nous considérons le contrôleur suivant :
 
@@ -147,19 +201,125 @@ class SoauthController extends Controller
     $user = Soauth::resource($provider);
 
     // Connectez l'utilisateur ou créez-le, puis redirigez :
-    // session()->set('user', $user);
+    session()->add('user', $user->toArray());
+
     return redirect('/dashboard');
   }
 }
 ```
 
+:::tip Remarque
+La valeur `$provider` provient de la route et doit correspondre à l'un des
+fournisseurs supportés : `facebook`, `gitlab`, `github`, `google`,
+`instagram` ou `linkedin`. Un nom inconnu ou non configuré lève une
+`Bow\Soauth\Exception\SoauthException`.
+:::
+
+### Scopes
+
+Le second argument de `Soauth::redirect()` est la liste des permissions OAuth
+(« scopes ») que vous demandez à l'utilisateur d'accorder. Les scopes sont
+propres à chaque fournisseur, alors ne demandez que ce dont vous avez besoin :
+
+```php
+// Demander à Facebook l'email et le profil public
+return Soauth::redirect('facebook', ['email', 'public_profile']);
+
+// Demander à GitHub les adresses email de l'utilisateur
+return Soauth::redirect('github', ['user:email']);
+```
+
+Omettez complètement l'argument pour revenir au scope par défaut du
+fournisseur :
+
+```php
+return Soauth::redirect('google');
+```
+
 ### Ajouter une route
 
-Définissez la route qui sera utilisée pour les actions d'appel Soauth :
+Définissez les routes qui seront utilisées pour les actions d'appel Soauth :
 
 ```php title="routes/app.php"
 $app->get('/oauth/:provider/redirect', 'SoauthController::redirect');
 $app->get('/oauth/:provider/callback', 'SoauthController::handle');
+```
+
+Le segment `:provider` devient l'argument `$provider` passé à vos méthodes de
+contrôleur. La route `/callback` doit correspondre au `redirect_uri` configuré
+pour le fournisseur.
+
+## Récupérer l'utilisateur
+
+`Soauth::resource()` retourne une instance de `Bow\Soauth\UserResource`. Elle
+normalise les données renvoyées par les différents fournisseurs derrière un
+ensemble cohérent d'accesseurs, afin que votre code n'ait pas à se ramifier
+selon le fournisseur :
+
+```php
+$user = Soauth::resource($provider);
+
+$user->getId();          // id utilisateur du fournisseur (string)
+$user->getName();        // nom complet
+$user->getNickName();    // nom d'utilisateur / pseudo
+$user->getFirstName();   // prénom
+$user->getLastName();    // nom de famille
+$user->getEmail();       // adresse email
+$user->getPictureUrl();  // URL de l'avatar (normalisée entre fournisseurs)
+$user->getGender();      // genre
+$user->getLink();        // URL du profil
+$user->getHometown();    // localisation (array)
+```
+
+Chaque accesseur retourne `null` lorsque le fournisseur n'a pas fourni le champ
+(par exemple lorsque le scope correspondant n'a pas été demandé), pensez donc
+toujours à vérifier la valeur avant de l'utiliser.
+
+Pour travailler avec la charge utile brute, utilisez `toArray()` pour obtenir la
+réponse complète du fournisseur ou `getAttribute()` pour lire une seule clé :
+
+```php
+$all = $user->toArray();             // tableau normalisé complet
+$verified = $user->getAttribute('verified_email'); // toute clé propre au fournisseur
+```
+
+:::tip Remarque
+Certains accesseurs de `UserResource` — `getBio()`, `getCoverPhotoUrl()`,
+`getLocale()` et `getTimezone()` — correspondent à des champs que les
+fournisseurs ont dépréciés ou supprimés, et retourneront généralement `null`.
+Préférez les accesseurs activement supportés ci-dessus.
+:::
+
+## Gestion des erreurs
+
+Le package lève une `Bow\Soauth\Exception\SoauthException` dans les cas
+suivants :
+
+- le nom de `$provider` demandé est **inconnu** ;
+- le fournisseur n'est **pas configuré** (bloc d'identifiants manquant) ;
+- le `state` OAuth est **manquant, expiré ou ne correspond pas** (une tentative
+  CSRF possible, ou l'utilisateur est arrivé sur le callback sans être passé par
+  `redirect()` au préalable) ;
+- le **code d'autorisation** est absent de la requête de callback.
+
+Encapsulez le traitement du callback pour échouer proprement :
+
+```php
+use Bow\Soauth\Soauth;
+use Bow\Soauth\Exception\SoauthException;
+
+public function handle(string $provider)
+{
+  try {
+    $user = Soauth::resource($provider);
+  } catch (SoauthException $e) {
+    return redirect('/login')->withFlash('error', 'Échec de l\'authentification.');
+  }
+
+  session()->add('user', $user->toArray());
+
+  return redirect('/dashboard');
+}
 ```
 
 <SuggestionFeature />

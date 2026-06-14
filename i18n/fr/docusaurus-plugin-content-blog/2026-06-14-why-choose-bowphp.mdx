@@ -1,0 +1,128 @@
+---
+title: "Pourquoi choisir BowPHP pour votre prochain projet"
+description: "Un tour d'horizon de ce qui fait de BowPHP un framework PHP rapide, expressif et léger en dépendances — et pourquoi il pourrait être le bon choix pour votre prochaine application."
+slug: why-choose-bowphp
+authors: papac
+tags: [bowphp, php, framework, productivity]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Pourquoi choisir BowPHP pour votre prochain projet
+
+BowPHP est un framework PHP léger et expressif construit autour d'une idée
+simple : vous donner tout ce dont vous avez besoin pour livrer de vraies
+applications — et rien contre quoi vous devez lutter. Si vous appréciez une API
+propre, des temps de démarrage rapides et une surface réduite que vous pouvez
+réellement lire de bout en bout, BowPHP mérite le coup d'œil.
+
+<!--truncate-->
+
+## Un framework qui ne vous gêne pas
+
+La philosophie au cœur de BowPHP, ce sont des *API agréables et prévisibles*. Le
+routage, les contrôleurs et les middlewares deviennent familiers en quelques
+minutes, et les helpers globaux gardent les tâches quotidiennes concises :
+
+```php
+$app->get('/', function () {
+    return view('welcome');
+});
+```
+
+Aucune cérémonie, aucun code répétitif — juste le code qui compte.
+
+## Tout est inclus, sans la lourdeur
+
+BowPHP est livré avec les briques de base d'une application web moderne, chacune
+dotée d'une API ciblée et bien documentée :
+
+- **Barry ORM & Query Builder** — des modèles expressifs et un constructeur de
+  requêtes fluide pour tout, des recherches rapides aux jointures complexes.
+- **Migrations & Seeding** — versionnez votre schéma et alimentez-le avec un
+  flux de travail console propre.
+- **Validation** — des règles déclaratives pour garder les requêtes entrantes
+  sûres.
+- **Storage** — une API unifiée au-dessus du disque local et de services
+  externes tels que FTP et S3.
+- **Mail & Messaging** — envoyez des e-mails transactionnels et des
+  notifications avec une interface cohérente.
+- **Scheduler & Tasks** — exécutez des tâches récurrentes directement depuis la
+  console.
+- **Localisation (i18n)** — traduisez votre application sans effort.
+
+## Une mise en cache qui fonctionne tout simplement
+
+La performance compte, et BowPHP rend la mise en cache triviale. Une unique API
+`Cache` unifiée se place devant des pilotes interchangeables — **file**,
+**database** et **redis** — afin que votre code ne change jamais quand votre
+infrastructure évolue :
+
+```php
+use Bow\Cache\Cache;
+
+$users = Cache::remember('users', 3600, function () {
+    return User::all();
+});
+```
+
+Besoin d'un autre magasin à l'exécution ? Demandez-le simplement :
+
+```php
+Cache::store('redis')->get('key');
+```
+
+En savoir plus dans la [documentation du cache](/docs/cache).
+
+## L'observabilité intégrée
+
+Chaque requête d'écriture préparée émet un `QueryEvent`, vous offrant un point
+d'accroche propre pour la journalisation, le profilage des requêtes lentes ou le
+débogage en développement — y compris le SQL exact, ses liaisons et le temps
+d'exécution :
+
+```php
+use Bow\Database\QueryEvent;
+
+event()->on(QueryEvent::class, function (QueryEvent $event) {
+    logger()->debug($event->sql, [
+        'time'     => $event->execution_time,
+        'bindings' => $event->bindings,
+    ]);
+});
+```
+
+## Prêt pour les architectures modernes
+
+BowPHP n'est pas réservé aux applications MVC classiques. Il offre une prise en
+charge de premier ordre du **CQRS** et une boîte à outils **microservice**, afin
+que vous puissiez passer d'un service unique à un système distribué sans changer
+de framework.
+
+## Testé et fiable
+
+Le framework est couvert par une suite de tests étendue et vous donne les outils
+pour tester votre propre application en toute confiance — parce qu'un framework
+auquel vous pouvez faire confiance est un framework sur lequel vous pouvez
+bâtir.
+
+## Lancez-vous dès aujourd'hui
+
+Démarrer un nouveau projet BowPHP tient en une seule commande :
+
+```bash
+composer create-project --prefer-dist bowphp/app my-app
+```
+
+À partir de là, la [documentation](/docs/installation) vous guide à travers le
+routage, les contrôleurs, la couche base de données et tout ce dont vous avez
+besoin pour livrer.
+
+BowPHP est open source et piloté par la communauté — [les contributions sont les
+bienvenues](/docs/contribution), qu'il s'agisse de code, de documentation ou
+simplement de faire passer le mot. Essayez-le sur votre prochain projet, et
+dites-nous ce que vous construisez.
+
+<SuggestionFeature />

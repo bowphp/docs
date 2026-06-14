@@ -7,16 +7,29 @@ import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
 
 ## Introduction
 
-A social network authentication package for BowPHP. This package uses [`thephpleague/oauth2-client`](https://github.com/thephpleague/oauth2-client) as a wrapper.
+A social network authentication package for BowPHP. It lets your users sign in
+with their existing social accounts instead of creating yet another password.
+Under the hood the package wraps [`thephpleague/oauth2-client`](https://github.com/thephpleague/oauth2-client)
+and drives the standard OAuth 2.0 _authorization code_ flow for you:
+
+1. Your app **redirects** the user to the provider's consent screen.
+2. The user approves, and the provider **calls back** to your app with a code.
+3. The package exchanges that code for an access token and **returns the
+   authenticated user** as a [`UserResource`](#retrieving-the-user).
+
+CSRF protection (the OAuth `state` parameter) is generated, stored and verified
+for you on every round trip.
 
 It currently supports the following providers:
 
-- Facebook
-- Gitlab
-- Github
-- Google
-- Instagram
-- Linkedin
+| Provider  | Identifier (`$provider`) |
+| --------- | ------------------------ |
+| Facebook  | `facebook`               |
+| Gitlab    | `gitlab`                 |
+| Github    | `github`                 |
+| Google    | `google`                 |
+| Instagram | `instagram`              |
+| Linkedin  | `linkedin`               |
 
 ## Installation
 
@@ -98,6 +111,33 @@ The configuration always follows the same approach: three keys
 `<PROVIDER>_REDIRECT_URI`.
 :::
 
+The `redirect_uri` you set here **must exactly match** the callback route you
+register in your application (see [Adding a route](#adding-a-route)) and the one
+declared in the provider's developer console — otherwise the provider will
+reject the request.
+
+These environment values are read by the package's `config/soauth.php`, which
+maps each provider name to its credentials. Your own `config/soauth.php`, if
+present, is merged on top of the defaults, so you can override any value
+locally.
+
+### Facebook Graph API version
+
+The Facebook provider talks to a specific Graph API version (`v18.0` by
+default). To pin a different version, override the `graph_api_version` key in
+your `config/soauth.php`:
+
+```php title="config/soauth.php"
+return [
+  'facebook' => [
+    'client_id'         => app_env('FACEBOOK_CLIENT_ID'),
+    'client_secret'     => app_env('FACEBOOK_CLIENT_SECRET'),
+    'redirect_uri'      => app_env('FACEBOOK_REDIRECT_URI'),
+    'graph_api_version' => 'v19.0',
+  ],
+];
+```
+
 ## Usage
 
 Enable the package by adding it to `Kernel::configurations()`:
@@ -111,6 +151,14 @@ public function configurations(): array
   ];
 }
 ```
+
+The package exposes a single, static entry point — `Bow\Soauth\Soauth` — with
+two methods:
+
+- `Soauth::redirect(string $provider, array $scope = [])` — send the user to the
+  provider's consent screen.
+- `Soauth::resource(string $provider)` — handle the callback and return the
+  authenticated [`UserResource`](#retrieving-the-user).
 
 Consider the following controller:
 
@@ -147,19 +195,122 @@ class SoauthController extends Controller
     $user = Soauth::resource($provider);
 
     // Log the user in or create them, then redirect:
-    // session()->set('user', $user);
+    session()->add('user', $user->toArray());
+
     return redirect('/dashboard');
   }
 }
 ```
 
+:::tip Note
+The `$provider` value comes from the route and must match one of the
+supported providers: `facebook`, `gitlab`, `github`, `google`,
+`instagram`, or `linkedin`. An unknown or unconfigured name throws a
+`Bow\Soauth\Exception\SoauthException`.
+:::
+
+### Scopes
+
+The second argument to `Soauth::redirect()` is the list of OAuth permissions
+("scopes") you are asking the user to grant. Scopes are provider-specific, so
+request only what you need:
+
+```php
+// Ask Facebook for the email and the public profile
+return Soauth::redirect('facebook', ['email', 'public_profile']);
+
+// Ask GitHub for the user's email addresses
+return Soauth::redirect('github', ['user:email']);
+```
+
+Omit the argument entirely to fall back to the provider's default scope:
+
+```php
+return Soauth::redirect('google');
+```
+
 ### Adding a route
 
-Define the route that will be used for the Soauth callback actions:
+Define the routes that will be used for the Soauth callback actions:
 
 ```php title="routes/app.php"
 $app->get('/oauth/:provider/redirect', 'SoauthController::redirect');
 $app->get('/oauth/:provider/callback', 'SoauthController::handle');
+```
+
+The `:provider` segment becomes the `$provider` argument passed to your
+controller methods. The `/callback` route must match the `redirect_uri`
+configured for the provider.
+
+## Retrieving the user
+
+`Soauth::resource()` returns a `Bow\Soauth\UserResource` instance. It normalises
+the data returned by the different providers behind a consistent set of
+getters, so your code does not have to branch per provider:
+
+```php
+$user = Soauth::resource($provider);
+
+$user->getId();          // provider user id (string)
+$user->getName();        // full name
+$user->getNickName();    // username / nickname
+$user->getFirstName();   // first name
+$user->getLastName();    // last name
+$user->getEmail();       // email address
+$user->getPictureUrl();  // avatar URL (normalised across providers)
+$user->getGender();      // gender
+$user->getLink();        // profile URL
+$user->getHometown();    // location (array)
+```
+
+Every getter returns `null` when the provider did not supply that field (for
+example, when the matching scope was not requested), so always guard the value
+before using it.
+
+To work with the raw payload, use `toArray()` to get the full provider response
+or `getAttribute()` to read a single key:
+
+```php
+$all = $user->toArray();             // full normalised array
+$verified = $user->getAttribute('verified_email'); // any provider-specific key
+```
+
+:::tip Note
+Some `UserResource` getters — `getBio()`, `getCoverPhotoUrl()`, `getLocale()`,
+and `getTimezone()` — map to fields that providers have deprecated or removed,
+and will usually return `null`. Prefer the actively supported getters above.
+:::
+
+## Error handling
+
+The package throws `Bow\Soauth\Exception\SoauthException` in the following
+cases:
+
+- the requested `$provider` name is **unknown**;
+- the provider is **not configured** (missing credentials block);
+- the OAuth `state` is **missing, expired or does not match** (a possible CSRF
+  attempt, or the user landed on the callback without going through
+  `redirect()` first);
+- the **authorization code** is absent from the callback request.
+
+Wrap the callback handling to fail gracefully:
+
+```php
+use Bow\Soauth\Soauth;
+use Bow\Soauth\Exception\SoauthException;
+
+public function handle(string $provider)
+{
+  try {
+    $user = Soauth::resource($provider);
+  } catch (SoauthException $e) {
+    return redirect('/login')->withFlash('error', 'Authentication failed.');
+  }
+
+  session()->add('user', $user->toArray());
+
+  return redirect('/dashboard');
+}
 ```
 
 <SuggestionFeature />

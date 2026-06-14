@@ -1,0 +1,173 @@
+---
+title: "Accélérer une API BowPHP avec le cache"
+description: "Un aperçu pratique du cache BowPHP : mettre en cache une requête de tableau de bord coûteuse, la garder à jour lors des écritures et ajouter une limitation de débit simple — avec le pilote fichier, base de données ou redis."
+slug: speed-up-your-api-with-caching
+authors: papac
+tags: [bowphp, php, cache, performance, redis]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Accélérer une API BowPHP avec le cache
+
+La requête la plus rapide est celle que vous n'exécutez jamais. Dans ce billet,
+nous allons prendre un point d'entrée d'API lent et le rendre rapide grâce au
+[cache](/docs/cache) de BowPHP — puis garder les données en cache correctes
+lorsque les enregistrements sous-jacents changent, et terminer en ajoutant un
+limiteur de débit léger. Tout ce qui suit fonctionne de la même manière, que
+vous soyez sur le pilote **fichier**, **base de données** ou **redis**.
+
+<!--truncate-->
+
+## Le scénario
+
+Nous exploitons un point d'entrée `/dashboard/stats` qui agrège les commandes,
+le chiffre d'affaires et les utilisateurs actifs. La requête touche plusieurs
+tables et prend environ 400 ms — acceptable pour un seul appel, pénible quand
+chaque chargement de page la déclenche. Les chiffres ne doivent être à jour
+qu'à quelques minutes près, ce qui en fait un candidat parfait pour la mise en
+cache.
+
+## Étape 1 — Mettre en cache la lecture coûteuse avec `remember()`
+
+`remember()` est le pilier de la mise en cache applicative : il renvoie la
+valeur en cache si elle existe, sinon il exécute le callback, stocke son
+résultat pour le nombre de secondes indiqué, et le renvoie.
+
+```php title="app/Controllers/DashboardController.php"
+namespace App\Controllers;
+
+use Bow\Cache\Cache;
+
+class DashboardController
+{
+    public function stats()
+    {
+        // Recalculer au plus une fois toutes les 5 minutes.
+        $stats = Cache::remember('dashboard.stats', 300, function () {
+            return [
+                'orders'       => Order::count(),
+                'revenue'      => Order::sum('total'),
+                'active_users' => User::where('active', true)->count(),
+            ];
+        });
+
+        return response()->json($stats);
+    }
+}
+```
+
+La première requête paie le coût d'environ 400 ms ; chaque requête des cinq
+minutes suivantes est servie depuis le cache en microsecondes.
+
+## Étape 2 — Garder le cache correct lors des écritures
+
+L'expiration basée sur le temps convient pour des chiffres approximatifs, mais
+certaines données doivent se mettre à jour dès qu'elles changent. Le modèle est
+simple : **invalider la clé lors de l'écriture** afin que la prochaine lecture
+la recalcule.
+
+```php
+use Bow\Cache\Cache;
+
+public function updateProfile(int $id)
+{
+    User::where('id', $id)->update([
+        'name' => request()->get('name'),
+    ]);
+
+    // Le profil en cache est désormais obsolète — supprimez-le.
+    Cache::forget("user.$id.profile");
+
+    return response()->json(['updated' => true]);
+}
+```
+
+Et côté lecture, le cache est conservé indéfiniment, car il n'est reconstruit
+qu'après un `forget()` explicite :
+
+```php
+$profile = Cache::remember("user.$id.profile", 86400, function () use ($id) {
+    return User::where('id', $id)->first();
+});
+```
+
+:::tip Les clés de cache ne sont que des chaînes
+Le fait de structurer les clés en espaces de noms comme `user.42.profile` rend
+l'invalidation chirurgicale : vous pouvez vider un seul utilisateur sans toucher
+au cache des autres. Pour tout effacer d'un coup, `Cache::clear()` vide
+l'ensemble du magasin.
+:::
+
+## Étape 3 — Un petit limiteur de débit avec `increment()`
+
+Le cache ne sert pas qu'aux résultats de lecture — les compteurs atomiques font
+un limiteur de débit élégant. Nous comptons les requêtes par client dans une clé
+à courte durée de vie et nous rejetons dès que la limite est franchie :
+
+```php title="app/Middlewares/ThrottleMiddleware.php"
+namespace App\Middlewares;
+
+use Bow\Cache\Cache;
+use Bow\Http\Request;
+
+class ThrottleMiddleware
+{
+    public function process(Request $request, callable $next, array $args = []): mixed
+    {
+        $key   = 'throttle.' . $request->ip();
+        $hits  = Cache::increment($key);
+
+        // Premier passage dans la fenêtre : démarrer le compte à rebours de 60 secondes.
+        if ($hits === 1) {
+            Cache::setTime($key, 60);
+        }
+
+        if ($hits > 100) {
+            return response()->json(['message' => 'Too many requests'], 429);
+        }
+
+        return $next($request);
+    }
+}
+```
+
+`increment()` renvoie la nouvelle valeur, donc nous savons quand nous venons
+d'ouvrir une nouvelle fenêtre (`=== 1`) et quand nous avons dépassé la limite.
+
+## Étape 4 — Choisir où réside le cache
+
+Votre code ci-dessus ne mentionne jamais de pilote — c'est tout l'intérêt. Le
+magasin est décidé dans `config/cache.php`, vous pouvez donc développer avec le
+pilote **fichier** et exécuter **redis** en production sans changer une seule
+ligne :
+
+```php title="config/cache.php"
+"default" => app_env('CACHE_STORE', 'file'),
+```
+
+Besoin d'un magasin spécifique pour une opération — par exemple, Redis pour le
+compteur de limitation afin qu'il soit partagé entre tous les nœuds web ?
+Demandez-le explicitement :
+
+```php
+Cache::store('redis')->increment($key);
+```
+
+## Quand mettre en cache (et quand s'en abstenir)
+
+- **Mettez en cache** les lectures coûteuses qui tolèrent une légère obsolescence :
+  tableaux de bord, rapports, configuration, réponses d'API tierces.
+- **Invalidez lors de l'écriture** pour les données qui doivent être exactes — ou
+  gardez le TTL court.
+- **Ne mettez pas en cache** les détails propres à chaque requête ni tout ce qui
+  est moins coûteux à calculer qu'à récupérer depuis le magasin.
+
+Quelques appels `remember()` bien placés et des invalidations `forget()` ciblées
+transforment couramment un point d'entrée poussif en un point d'entrée instantané.
+Consultez la [documentation du cache](/docs/cache) complète pour l'API intégrale,
+y compris `forever()`, `push()`, `setMany()` et les pilotes personnalisés.
+
+<SuggestionFeature />

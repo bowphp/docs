@@ -1,0 +1,244 @@
+---
+title: "Splitting Orders and Billing with BowPHP Microservices"
+description: "A real-world example of the bowphp/microservice package: an Orders service that talks to a Billing service over Redis using RPC calls and fire-and-forget events."
+slug: orders-and-billing-with-microservices
+authors: papac
+tags: [bowphp, php, microservice, architecture, redis]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Splitting Orders and Billing with BowPHP Microservices
+
+As an application grows, some responsibilities want to live on their own — their
+own deploy cadence, their own scaling, their own team. Billing is a classic
+example. In this post we'll extract billing into a separate service and have our
+**Orders** application talk to it using the
+[`bowphp/microservice`](/docs/microservice) package over **Redis**.
+
+We'll use both communication modes the package offers:
+
+- **Request/Response (RPC)** with `send()` — when Orders needs an answer back.
+- **Fire-and-forget (Event)** with `emit()` — when Orders just wants to announce
+  that something happened.
+
+<!--truncate-->
+
+## The scenario
+
+Two applications:
+
+- **Orders** — the customer-facing app. When a customer checks out, it needs an
+  invoice total *now* (RPC), and it wants to announce `order.placed` so other
+  services can react asynchronously (event).
+- **Billing** — owns invoices. It exposes an `invoice.create` RPC handler and
+  listens for `order.placed` events.
+
+Both share a Redis broker.
+
+## Step 1 — Install the package (both apps)
+
+```bash
+composer require bowphp/microservice
+```
+
+Register the provider in each application's kernel:
+
+```php title="app/Kernel.php"
+public function configurations(): array
+{
+    return [
+        \Bow\Microservice\Bow\MicroserviceConfiguration::class,
+    ];
+}
+```
+
+Then publish the config file:
+
+```bash
+php bow microservice:publish-config
+```
+
+## Step 2 — Point both apps at Redis
+
+In `config/microservice.php`, select the Redis transport and the broker
+coordinates. This is identical on both sides:
+
+```php title="config/microservice.php"
+return [
+    'transport' => 'redis',
+    'timeout'   => 3.0,
+
+    'controllers' => [
+        // Billing registers its consumer here (see Step 4)
+    ],
+
+    'redis' => [
+        'host'     => app_env('MICROSERVICE_HOST', 'redis.internal'),
+        'port'     => (int) app_env('MICROSERVICE_PORT', 6379),
+        'password' => app_env('MICROSERVICE_REDIS_PASSWORD', null),
+    ],
+];
+```
+
+## Step 3 — The Orders side (the client)
+
+The provider binds a shared `ClientProxy` in the container. Inject it by type and
+you're ready to talk to Billing.
+
+```php title="app/Controllers/CheckoutController.php"
+namespace App\Controllers;
+
+use Bow\Microservice\Client\ClientProxy;
+
+class CheckoutController
+{
+    public function __construct(private ClientProxy $client) {}
+
+    public function store(int $orderId)
+    {
+        // 1. RPC: ask Billing to create the invoice and wait for the total.
+        $invoice = $this->client->send('invoice.create', [
+            'order_id' => $orderId,
+            'lines'    => $this->orderLines($orderId),
+        ]);
+
+        // 2. Event: announce the order; we don't wait for anyone.
+        $this->client->emit('order.placed', [
+            'order_id' => $orderId,
+            'total'    => $invoice['total'],
+        ]);
+
+        return response()->json([
+            'invoice_id' => $invoice['id'],
+            'total'      => $invoice['total'],
+        ]);
+    }
+}
+```
+
+`send()` blocks until Billing replies (or the timeout fires); `emit()` returns
+immediately and never waits.
+
+:::tip Slow calls get their own timeout
+The default timeout comes from `config('microservice.timeout')`, but a single
+heavy call can override it:
+
+```php
+$report = $this->client->send('billing.report', $payload, timeout: 30.0);
+```
+
+`emit()` is fire-and-forget, so it does not accept a timeout.
+:::
+
+## Step 4 — The Billing side (the server)
+
+Generate a consumer:
+
+```bash
+php bow add:consumer InvoiceConsumer
+```
+
+Annotate handlers with `#[MessagePattern]` for RPC and `#[EventPattern]` for
+events. The method name doesn't matter — the **pattern** is what routes the
+message:
+
+```php title="app/Consumers/InvoiceConsumer.php"
+namespace App\Consumers;
+
+use App\Models\Invoice;
+use Bow\Microservice\Consumer\MessagePattern;
+use Bow\Microservice\Consumer\EventPattern;
+
+class InvoiceConsumer
+{
+    /**
+     * RPC: create an invoice and return it to the caller.
+     */
+    #[MessagePattern('invoice.create')]
+    public function create(array $payload): array
+    {
+        $invoice = Invoice::create([
+            'order_id' => $payload['order_id'],
+            'total'    => $this->sum($payload['lines']),
+        ]);
+
+        return [
+            'id'    => $invoice->id,
+            'total' => $invoice->total,
+        ];
+    }
+
+    /**
+     * Event: react to a placed order — no response returned.
+     */
+    #[EventPattern('order.placed')]
+    public function onOrderPlaced(array $payload): void
+    {
+        // e.g. queue a receipt email, update analytics, etc.
+    }
+
+    private function sum(array $lines): float
+    {
+        return array_sum(array_column($lines, 'amount'));
+    }
+}
+```
+
+Register the consumer in Billing's `config/microservice.php`:
+
+```php title="config/microservice.php"
+'controllers' => [
+    \App\Consumers\InvoiceConsumer::class,
+],
+```
+
+## Step 5 — Run the Billing listener
+
+Billing runs a long-lived process that subscribes to the broker and dispatches
+incoming messages to your handlers:
+
+```bash
+php bow microservice:listen
+```
+
+Need to override the configuration for a one-off process? The command takes
+flags:
+
+```bash
+php bow microservice:listen \
+    --transport=redis \
+    --controllers="App\Consumers\InvoiceConsumer" \
+    --patterns="invoice.create,order.placed"
+```
+
+## How the pieces fit
+
+```
+Customer checkout
+       │
+       ▼
+Orders ──send('invoice.create')──▶ Billing  (RPC, waits for the total)
+       ◀──────── invoice ─────────
+       │
+       └─emit('order.placed')────▶ Billing  (event, fire-and-forget)
+                                   + any other subscriber
+```
+
+## Why this matters
+
+- **Independent deploys** — Billing can ship on its own schedule.
+- **Right tool per call** — synchronous `send()` where you need an answer,
+  asynchronous `emit()` where you don't.
+- **Swap the transport, not the code** — start on Redis; move to RabbitMQ or
+  Kafka later by changing `config/microservice.php`, with your handlers
+  untouched.
+
+When one service needs to scale, fail, or deploy independently of the rest, this
+is how you draw the line — without leaving the BowPHP toolset. The full
+[microservice documentation](/docs/microservice) covers the other transports,
+multiple clients, and per-process tuning.
+
+<SuggestionFeature />
