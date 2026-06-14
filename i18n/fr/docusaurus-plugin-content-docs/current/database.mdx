@@ -396,11 +396,12 @@ $id = Database::lastInsertId('pets_id_seq');
 `Bow\Database\QueryEvent`. C'est le point d'accroche idéal pour journaliser le
 SQL exécuté, mesurer les requêtes lentes ou débugger en développement.
 
-L'événement expose deux propriétés en **lecture seule** :
+L'événement expose trois propriétés en **lecture seule** :
 
 | Propriété | Type | Description |
 | --------- | ---- | ----------- |
 | `$event->sql` | `string` | La requête SQL exécutée |
+| `$event->execution_time` | `float` | Le temps d'exécution de la requête, en secondes |
 | `$event->bindings` | `array` | Les valeurs liées (paramètres) |
 
 ### Écouter l'événement

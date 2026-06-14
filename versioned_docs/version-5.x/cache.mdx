@@ -1,0 +1,279 @@
+---
+id: cache
+title: "Cache"
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+## Introduction
+
+Caching lets you store the result of an expensive operation — a database query,
+an API call, a heavy computation — so that subsequent requests can read it back
+quickly instead of recomputing it.
+
+Bow ships with a simple, unified cache manager built around a single
+`Bow\Cache\Cache` class and a set of interchangeable drivers:
+
+- **File** — stores entries as serialized files on disk.
+- **Database** — stores entries in a database table.
+- **Redis** — stores entries in a Redis database.
+
+Every driver implements the same `Bow\Cache\Adapters\CacheAdapterInterface`, so
+your application code stays identical regardless of the store you choose.
+
+## Configuration
+
+The cache configuration lives in `config/cache.php`. It defines a default store
+and the list of available stores:
+
+```php
+<?php
+
+return [
+    // The store used when none is specified explicitly
+    "default" => "file",
+
+    "stores" => [
+        // The filesystem store
+        "file" => [
+            "driver" => "file",
+            "path" => __DIR__ . '/../var/cache',
+            "prefix" => "",
+        ],
+
+        // The database store
+        "database" => [
+            "driver" => "database",
+            "connection" => app_env('DB_DEFAULT', 'mysql'),
+            "table" => "caches",
+            "prefix" => "",
+        ],
+
+        // The redis store
+        "redis" => [
+            'driver' => 'redis',
+            'database' => app_env('REDIS_CACHE_DB', 5),
+            "prefix" => "",
+        ],
+    ],
+];
+```
+
+:::info Default store
+The `default` key must reference one of the entries under `stores`. If it is
+missing, Bow throws an `InvalidArgumentException` during configuration.
+:::
+
+### Database driver setup
+
+The `database` driver needs a `caches` table. Generate the migration with the
+console, then run your migrations:
+
+```bash
+php bow generate:cache-table
+php bow migrate
+```
+
+## The `cache()` Helper
+
+The quickest way to interact with the cache is the global `cache()` helper.
+
+```php
+// Store a value (without a TTL)
+cache('key', 'value');
+
+// Store a value with a time-to-live of 60 seconds
+cache('key', 'value', 60);
+
+// Retrieve a value
+$value = cache('key');
+
+// Get the underlying cache instance (no arguments)
+$store = cache();
+```
+
+When called with only a key, the helper returns the stored value (or `null`
+when the entry does not exist). With a key and a value it stores the entry,
+optionally with a TTL expressed in seconds.
+
+## Using the `Cache` Class
+
+For the full API, call the methods on `Bow\Cache\Cache` statically.
+
+```php
+use Bow\Cache\Cache;
+
+Cache::set('key', 'value', 60);
+
+$value = Cache::get('key');
+```
+
+### Storing Items
+
+The `set()` method stores an item. The third argument is the time-to-live in
+seconds; omit it to store the value without a TTL.
+
+```php
+Cache::set('key', 'value');         // without a TTL
+Cache::set('key', 'value', 600);    // expires in 10 minutes
+```
+
+:::tip Persisting values
+To store a value that is guaranteed never to expire across every driver, use
+`forever()` rather than omitting the TTL.
+:::
+
+Store many items at once with `setMany()`:
+
+```php
+Cache::setMany([
+    'first'  => 'value',
+    'second' => ['a', 'b', 'c'],
+]);
+```
+
+### Storing Items Forever
+
+Use `forever()` to persist a value that never expires:
+
+```php
+Cache::forever('settings', $settings);
+```
+
+### Retrieving Items
+
+`get()` returns the value, or a default when the entry is missing or expired.
+The default may be a closure, which is only evaluated when needed.
+
+```php
+$value = Cache::get('key');
+
+// With a default value
+$value = Cache::get('key', 'default');
+
+// With a default closure
+$value = Cache::get('key', function () {
+    return expensive_operation();
+});
+```
+
+### Retrieve or Store (`remember`)
+
+`remember()` returns the cached value if it exists; otherwise it runs the
+callback, stores its result for the given number of seconds, and returns it.
+
+```php
+$users = Cache::remember('users', 3600, function () {
+    return User::all();
+});
+```
+
+### Checking for Existence
+
+```php
+if (Cache::has('key')) {
+    // The entry exists
+}
+
+if (Cache::expired('key')) {
+    // The entry has passed its expiration time
+}
+```
+
+### Incrementing and Decrementing
+
+Numeric values can be adjusted atomically in spirit via `increment()` and
+`decrement()`. The methods return the new value.
+
+```php
+Cache::increment('visits');       // +1
+Cache::increment('visits', 5);    // +5
+
+Cache::decrement('stock');        // -1
+Cache::decrement('stock', 3);     // -3
+```
+
+### Appending to an Entry (`push`)
+
+`push()` appends data to an existing entry — useful for accumulating items in
+an array.
+
+```php
+Cache::set('events', ['login']);
+Cache::push('events', ['logout']);
+
+Cache::get('events'); // ['login', 'logout']
+```
+
+### Working with Expiration
+
+```php
+// Extend an entry's expiration by 120 seconds
+Cache::setTime('key', 120);
+
+// Get the remaining/expiration time of an entry
+$time = Cache::timeOf('key');
+```
+
+### Removing Items
+
+```php
+// Remove a single entry
+Cache::forget('key');
+
+// Remove every entry from the store
+Cache::clear();
+```
+
+The filesystem store can also be cleared from the console:
+
+```bash
+php bow clear cache
+```
+
+## Choosing a Store at Runtime
+
+Use `store()` to target a specific store instead of the default one. The
+returned instance exposes the same API as the `Cache` class.
+
+```php
+use Bow\Cache\Cache;
+
+// Read from the redis store
+$value = Cache::store('redis')->get('key');
+
+// Write to the database store
+Cache::store('database')->set('key', 'value', 60);
+```
+
+## Custom Drivers
+
+You can register your own driver by providing a class that implements
+`Bow\Cache\Adapters\CacheAdapterInterface`, then declaring it with
+`addAdapters()`:
+
+```php
+use Bow\Cache\Cache;
+use App\Cache\MemcachedAdapter;
+
+Cache::addAdapters([
+    'memcached' => MemcachedAdapter::class,
+]);
+```
+
+Once registered, reference the driver from a store in `config/cache.php`:
+
+```php
+"stores" => [
+    "memcached" => [
+        "driver" => "memcached",
+        // driver-specific options...
+    ],
+],
+```
+
+This registration is typically done in the `boot()` method of a
+[service provider](./service) so the driver is available across the whole
+application.
+
+<SuggestionFeature />

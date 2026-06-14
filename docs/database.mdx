@@ -396,11 +396,12 @@ Every time a prepared write query is executed, Bow emits a
 `Bow\Database\QueryEvent` event. This is the ideal hook for logging the
 executed SQL, measuring slow queries, or debugging in development.
 
-The event exposes two **read-only** properties:
+The event exposes three **read-only** properties:
 
 | Property | Type | Description |
 | --------- | ---- | ----------- |
 | `$event->sql` | `string` | The executed SQL query |
+| `$event->execution_time` | `float` | The query execution time, in seconds |
 | `$event->bindings` | `array` | The bound values (parameters) |
 
 ### Listening to the Event
