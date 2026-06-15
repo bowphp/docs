@@ -537,6 +537,8 @@ class User extends Model
 $profile = User::retrieve(1)->profile; // → instance de Profile
 ```
 
+Sans clés précisées, Barry recherche `profiles.user_id` — la clé étrangère est nommée d'après le modèle **déclarant** (`User` → `user_id`) et se trouve sur la table liée (`profiles`).
+
 ### `hasMany` — Un à plusieurs
 
 Un utilisateur a plusieurs posts :
@@ -554,6 +556,8 @@ class User extends Model
 
 $posts = User::retrieve(1)->posts; // → Collection de Post
 ```
+
+Là encore, la clé étrangère par défaut est `posts.user_id`, déduite du modèle déclarant `User` — et non `post_id`. Précisez la clé explicitement si votre colonne diffère (voir [Personnaliser les clés](#personnaliser-les-clés)).
 
 ### `belongsTo` — Inverse de `hasOne` / `hasMany`
 
@@ -594,20 +598,23 @@ $tags = Post::retrieve(1)->tags; // → Collection de Tag
 ### Personnaliser les clés
 
 Toutes les méthodes acceptent deux paramètres optionnels pour préciser les
-colonnes de jointure. Les noms par défaut sont déduits du nom de la table
-liée (`users` → `user_id`) et de la clé primaire du modèle (`id`).
+colonnes de jointure. Pour `hasOne` et `hasMany`, la clé étrangère est déduite
+de la table du modèle **déclarant** (`User` → `user_id`) ; pour `belongsTo`,
+elle est déduite du modèle **lié**. La clé locale correspond par défaut à la
+clé primaire du modèle (`id`).
 
-:::warning Ordre des arguments
-`hasOne` et `hasMany` n'attendent **pas** leurs deux clés dans le même ordre.
-Reportez-vous aux signatures ci-dessous plutôt qu'à votre intuition.
+:::tip Ordre des arguments
+`hasOne` et `hasMany` prennent leurs clés dans le **même** ordre —
+`(related, foreign_key, local_key)` — où la clé étrangère est la colonne sur la
+table liée et la clé locale la colonne référencée sur celle-ci.
 :::
 
 ```php
 // hasOne(related, $foreign_key [table liée], $local_key [cette table])
 $this->hasOne(Profile::class, 'user_id', 'id');
 
-// hasMany(related, $local_key [cette table], $foreign_key [table liée])
-$this->hasMany(Post::class, 'id', 'author_id');
+// hasMany(related, $foreign_key [table liée], $local_key [cette table])
+$this->hasMany(Post::class, 'author_id', 'id');
 
 // belongsTo(related, $foreign_key [cette table], $local_key [table liée])
 $this->belongsTo(User::class, 'author_id', 'id');

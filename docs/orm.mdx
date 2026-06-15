@@ -528,6 +528,8 @@ class User extends Model
 $profile = User::retrieve(1)->profile; // → Profile instance
 ```
 
+With no keys given, Barry looks for `profiles.user_id` — the foreign key is named after the **declaring** model (`User` → `user_id`), and it lives on the related (`profiles`) table.
+
 ### `hasMany` — One to many
 
 A user has many posts:
@@ -545,6 +547,8 @@ class User extends Model
 
 $posts = User::retrieve(1)->posts; // → Collection of Post
 ```
+
+Here too the default foreign key is `posts.user_id`, derived from the declaring `User` model — not `post_id`. Pass the key explicitly if your column differs (see [Customizing keys](#customizing-keys)).
 
 ### `belongsTo` — Inverse of `hasOne` / `hasMany`
 
@@ -584,18 +588,18 @@ $tags = Post::retrieve(1)->tags; // → Collection of Tag
 
 ### Customizing keys
 
-All methods accept two optional parameters to specify the join columns. The default names are inferred from the name of the related table (`users` → `user_id`) and the model's primary key (`id`).
+All methods accept two optional parameters to specify the join columns. For `hasOne` and `hasMany` the foreign key is inferred from the **declaring** model's table (`User` → `user_id`); for `belongsTo` it is inferred from the **related** model. The local key defaults to the model's primary key (`id`).
 
-:::warning Argument order
-`hasOne` and `hasMany` do **not** expect their two keys in the same order. Refer to the signatures below rather than your intuition.
+:::tip Argument order
+`hasOne` and `hasMany` take their keys in the **same** order — `(related, foreign_key, local_key)` — where the foreign key is the column on the related table and the local key the referenced column on this one.
 :::
 
 ```php
 // hasOne(related, $foreign_key [related table], $local_key [this table])
 $this->hasOne(Profile::class, 'user_id', 'id');
 
-// hasMany(related, $local_key [this table], $foreign_key [related table])
-$this->hasMany(Post::class, 'id', 'author_id');
+// hasMany(related, $foreign_key [related table], $local_key [this table])
+$this->hasMany(Post::class, 'author_id', 'id');
 
 // belongsTo(related, $foreign_key [this table], $local_key [related table])
 $this->belongsTo(User::class, 'author_id', 'id');
