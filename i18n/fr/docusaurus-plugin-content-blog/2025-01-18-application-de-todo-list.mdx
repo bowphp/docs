@@ -150,7 +150,7 @@ class TaskController
     Task::create([
       'title' => $request->get('title'),
       'completed' => false
-    ]);
+    ])->persist();
 
     return redirect('/')->withFlash('success', 'Tâche ajoutée avec succès !');
   }

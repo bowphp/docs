@@ -156,6 +156,8 @@ class ChatController extends Controller
             'body'     => $request->get('body'),
         ]);
 
+        $message->persist();
+
         return response()->json($message, 201);
     }
 }

@@ -114,6 +114,8 @@ class SoauthController extends Controller
                 'provider'    => $provider,
                 'provider_id' => $profile->getId(),
             ]);
+
+            $user->persist();
         }
 
         // Le connecter et l'envoyer vers le tableau de bord.
