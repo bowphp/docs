@@ -168,6 +168,8 @@ class InvoiceConsumer
             'total'    => $this->sum($payload['lines']),
         ]);
 
+        $invoice->persist();
+
         return [
             'id'    => $invoice->id,
             'total' => $invoice->total,

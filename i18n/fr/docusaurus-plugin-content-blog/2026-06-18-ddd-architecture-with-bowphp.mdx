@@ -268,7 +268,7 @@ final class BarryOrderRepository implements OrderRepository
             'customer_id' => $order->customerId,
             'lines'       => json_encode($order->lines),
             'total'       => $order->total()->amountInCents,
-        ]);
+        ])->persist();
     }
 
     public function ofId(string $id): ?Order

@@ -171,6 +171,8 @@ class AuthController
       'password' => Hash::make($request->get('password')),
     ]);
 
+    $user->persist();
+
     return response()->json($user, 201);
   }
 
@@ -234,6 +236,8 @@ class TaskController
       'title' => $request->get('title'),
       'completed' => false,
     ]);
+
+    $task->persist();
 
     return response()->json($task, 201);
   }
