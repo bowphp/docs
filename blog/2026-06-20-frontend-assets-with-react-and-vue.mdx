@@ -1,0 +1,237 @@
+---
+title: "Using React and Vue.js Assets in a BowPHP Project"
+description: "A hands-on guide to BowPHP's Vite-powered frontend: build an interactive React component and a Vue component, mount them, and wire them into your templates with the vite() helper — in development and production."
+slug: frontend-assets-with-react-and-vue
+authors: papac
+tags: [bowphp, php, vite, react, vuejs, frontend]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Using React and Vue.js Assets in a BowPHP Project
+
+Most applications are mostly server-rendered HTML with a few islands of rich
+interactivity — a dashboard widget, a live search box, a multi-step form. BowPHP
+ships with a modern, [Vite](https://vitejs.dev)-powered frontend out of the box,
+so you can drop a **React** or **Vue** component exactly where you need one
+without turning your whole app into a single-page application.
+
+In this post we'll wire up both: an interactive React counter and a Vue widget,
+mounted side by side into a server-rendered template.
+
+<!--truncate-->
+
+## What you get out of the box
+
+A fresh BowPHP app already comes preconfigured with:
+
+- [React](https://react.dev) 19
+- [Vue.js](https://vuejs.org) 3
+- [Tailwind CSS](https://tailwindcss.com)
+- [Sass/SCSS](https://sass-lang.com)
+
+…all bundled by Vite, with hot module replacement (HMR) in development and
+hashed, cache-busted files in production. You don't have to configure a build
+pipeline — it's there. See the [Front-End Assets](/docs/assets) docs for the
+full reference.
+
+## Step 1 — Install the frontend dependencies
+
+The PHP side comes from Composer; the JavaScript side comes from npm:
+
+```bash
+npm install
+```
+
+## Step 2 — Know your file structure
+
+Everything frontend lives under `assets/` and compiles into `public/`:
+
+```
+assets/
+├── js/
+│   ├── app.js          # Main entry point
+│   ├── Example.jsx     # React component
+│   └── Example.vue     # Vue component
+├── sass/
+│   └── app.scss        # Main styles
+└── css/
+    └── app.css         # CSS/Tailwind
+```
+
+`assets/js/app.js` is the single entry Vite compiles. Think of it as the place
+where you decide *which* components mount *where* on the page.
+
+## Step 3 — Write a React component
+
+```jsx title="assets/js/Example.jsx"
+import React, { useState } from 'react';
+
+export default function Example() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold">Counter: {count}</h1>
+      <button
+        className="btn-primary mt-4"
+        onClick={() => setCount(count + 1)}
+      >
+        Increment
+      </button>
+    </div>
+  );
+}
+```
+
+## Step 4 — Write a Vue component
+
+```vue title="assets/js/Example.vue"
+<script setup>
+import { ref } from 'vue';
+
+const count = ref(0);
+</script>
+
+<template>
+  <div class="p-4">
+    <h1 class="text-2xl font-bold">Counter: {{ count }}</h1>
+    <button class="btn-primary mt-4" @click="count++">
+      Increment
+    </button>
+  </div>
+</template>
+```
+
+## Step 5 — Mount them from the entry point
+
+The entry point is plain JavaScript. It imports your styles, then mounts each
+framework onto a DOM node **only if that node exists** on the current page —
+that's the trick that keeps a React widget out of the way of a Vue one, and
+both out of the way of pages that need neither.
+
+```js title="assets/js/app.js"
+import '../css/app.css';
+
+// --- React island ---
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import Example from './Example.jsx';
+
+const reactRoot = document.getElementById('react-app');
+if (reactRoot) {
+  createRoot(reactRoot).render(React.createElement(Example));
+}
+
+// --- Vue island ---
+import { createApp } from 'vue';
+import ExampleVue from './Example.vue';
+
+const vueRoot = document.getElementById('vue-app');
+if (vueRoot) {
+  createApp(ExampleVue).mount('#vue-app');
+}
+```
+
+:::tip One bundle, many pages
+Because each block is guarded by an `if`, the same `app.js` can serve every
+page. A page that has neither `#react-app` nor `#vue-app` simply renders nothing
+extra. When your islands grow, split them with dynamic `import()` so a page only
+downloads the component it actually mounts.
+:::
+
+## Step 6 — Drop them into a template
+
+Now reference the compiled assets from a server-rendered template and leave two
+empty mount points for the components:
+
+```html title="templates/welcome.tintin.php"
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="{{ vite('css/app.css') }}">
+</head>
+<body>
+  <h1>Welcome to BowPHP</h1>
+
+  {{-- React mounts here --}}
+  <div id="react-app"></div>
+
+  {{-- Vue mounts here --}}
+  <div id="vue-app"></div>
+
+  <script type="module" src="{{ vite('js/app.js') }}"></script>
+</body>
+</html>
+```
+
+Notice we used `vite()`, not `asset()`. That choice matters — here's why.
+
+## `asset()` vs `vite()`
+
+BowPHP gives you two helpers, and they are **not** interchangeable:
+
+- **`asset('img/logo.png')`** builds a plain URL to a file in `public/`. It does
+  not know about Vite's hashing, so reserve it for files whose names never
+  change — a favicon, a static logo, a downloadable PDF.
+- **`vite('js/app.js')`** reads Vite's build **manifest** and returns the URL of
+  the actual hashed file (e.g. `/build/js/app-CBsLkjX9.js`). Use it for anything
+  Vite compiles — your JS and CSS entries.
+
+```php
+vite(string $file, bool $absolute = false): string
+```
+
+Each file you reference with `vite()` must be declared as an **entry** (`input`)
+in `vite.config.js`, otherwise it won't appear in the manifest and the helper
+throws an exception.
+
+:::warning Served under `/build/`
+`vite()` returns URLs prefixed with `/build/`. Make sure your build output
+(`outDir` in `vite.config.js`) and the manifest location line up with that
+prefix so the browser can actually find the files.
+:::
+
+## Step 7 — Run it
+
+In development, let Vite serve the assets with hot reloading — edit a component
+and the browser updates without a full refresh:
+
+```bash
+npm run dev
+```
+
+For production, compile and minify everything into `public/` (this is what
+generates the manifest `vite()` relies on):
+
+```bash
+npm run build
+```
+
+:::tip Build before testing production mode
+The `vite()` helper only resolves once the manifest exists. During `npm run dev`
+the Vite server handles that for you; for a production-like test, run
+`npm run build` first.
+:::
+
+## Going further
+
+- **Pass server data into a component** by rendering a `data-*` attribute or a
+  JSON `<script>` tag on the mount node, then reading it in `app.js` before you
+  mount — no extra API round-trip needed for the initial state.
+- **Mix React and Vue on the same page** freely: they mount into different
+  nodes and never collide.
+- **Use Tailwind in components** — the `tailwind.config.js` `content` globs
+  already include `assets/js/**/*.{js,jsx,ts,tsx,vue}`, so utility classes in
+  your `.jsx` and `.vue` files are picked up automatically.
+
+That's the whole loop: write a component, mount it on a node, reference the
+bundle with `vite()`. You keep BowPHP's fast server-rendered pages and sprinkle
+in exactly as much React or Vue as each screen needs. See the full
+[Front-End Assets documentation](/docs/assets) for Vite configuration, Tailwind
+setup, and environment variables.
+
+<SuggestionFeature />

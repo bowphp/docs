@@ -216,6 +216,8 @@ module.exports = {
           routeBasePath: "blog",
           path: "blog",
           postsPerPage: 10,
+          blogSidebarCount: "ALL",
+          blogSidebarTitle: "All posts",
         },
         theme: {
           customCss: ["src/css/customTheme.css", "static/css/custom.css"],

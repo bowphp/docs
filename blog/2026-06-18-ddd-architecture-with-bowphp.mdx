@@ -30,17 +30,17 @@ DDD splits a context into layers that depend **inward**: outer layers know about
 inner ones, never the reverse.
 
 ```
-┌─────────────────────────────────────────────┐
+┌──────────────────────────────────────────────┐
 │ Presentation   Controllers, routes           │
 │   ┌───────────────────────────────────────┐  │
-│   │ Application   Commands / Queries        │  │
-│   │   ┌───────────────────────────────┐    │  │
-│   │   │ Domain   Entities, VOs,        │    │  │
-│   │   │          Repository contracts  │    │  │
-│   │   └───────────────────────────────┘    │  │
-│   │ Infrastructure   Barry repositories     │  │
+│   │ Application   Commands / Queries      │  │
+│   │   ┌───────────────────────────────┐   │  │
+│   │   │ Domain   Entities, VOs,       │   │  │
+│   │   │          Repository contracts │   │  │
+│   │   └───────────────────────────────┘   │  │
+│   │ Infrastructure   Barry repositories   │  │
 │   └───────────────────────────────────────┘  │
-└─────────────────────────────────────────────┘
+└──────────────────────────────────────────────┘
 ```
 
 ## Folder structure
