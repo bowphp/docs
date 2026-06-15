@@ -1,0 +1,244 @@
+---
+title: "Utiliser des assets React et Vue.js dans un projet BowPHP"
+description: "Un guide pratique du frontend propulsé par Vite dans BowPHP : créez un composant React interactif et un composant Vue, montez-les, et branchez-les dans vos templates avec le helper vite() — en développement comme en production."
+slug: frontend-assets-with-react-and-vue
+authors: papac
+tags: [bowphp, php, vite, react, vuejs, frontend]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Utiliser des assets React et Vue.js dans un projet BowPHP
+
+La plupart des applications sont essentiellement du HTML rendu côté serveur, avec
+quelques îlots d'interactivité riche — un widget de tableau de bord, un champ de
+recherche en direct, un formulaire en plusieurs étapes. BowPHP est livré avec un
+frontend moderne propulsé par [Vite](https://vitejs.dev), ce qui vous permet de
+déposer un composant **React** ou **Vue** exactement là où vous en avez besoin,
+sans transformer toute votre application en application monopage.
+
+Dans ce billet, nous allons brancher les deux : un compteur React interactif et
+un widget Vue, montés côte à côte dans un template rendu côté serveur.
+
+<!--truncate-->
+
+## Ce que vous avez d'emblée
+
+Une application BowPHP fraîche est déjà préconfigurée avec :
+
+- [React](https://react.dev) 19
+- [Vue.js](https://vuejs.org) 3
+- [Tailwind CSS](https://tailwindcss.com)
+- [Sass/SCSS](https://sass-lang.com)
+
+… le tout empaqueté par Vite, avec le rechargement à chaud (HMR) en
+développement et des fichiers hachés et « cache-busted » en production. Vous
+n'avez pas à configurer de chaîne de build — elle est là. Consultez la
+documentation [Assets Front-End](/docs/assets) pour la référence complète.
+
+## Étape 1 — Installer les dépendances frontend
+
+Le côté PHP vient de Composer ; le côté JavaScript vient de npm :
+
+```bash
+npm install
+```
+
+## Étape 2 — Connaître la structure des fichiers
+
+Tout le frontend vit sous `assets/` et se compile dans `public/` :
+
+```
+assets/
+├── js/
+│   ├── app.js          # Point d'entrée principal
+│   ├── Example.jsx     # Composant React
+│   └── Example.vue     # Composant Vue
+├── sass/
+│   └── app.scss        # Styles principaux
+└── css/
+    └── app.css         # CSS/Tailwind
+```
+
+`assets/js/app.js` est l'unique point d'entrée que Vite compile. Voyez-le comme
+l'endroit où vous décidez *quels* composants montent *où* sur la page.
+
+## Étape 3 — Écrire un composant React
+
+```jsx title="assets/js/Example.jsx"
+import React, { useState } from 'react';
+
+export default function Example() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold">Counter: {count}</h1>
+      <button
+        className="btn-primary mt-4"
+        onClick={() => setCount(count + 1)}
+      >
+        Increment
+      </button>
+    </div>
+  );
+}
+```
+
+## Étape 4 — Écrire un composant Vue
+
+```vue title="assets/js/Example.vue"
+<script setup>
+import { ref } from 'vue';
+
+const count = ref(0);
+</script>
+
+<template>
+  <div class="p-4">
+    <h1 class="text-2xl font-bold">Counter: {{ count }}</h1>
+    <button class="btn-primary mt-4" @click="count++">
+      Increment
+    </button>
+  </div>
+</template>
+```
+
+## Étape 5 — Les monter depuis le point d'entrée
+
+Le point d'entrée est du JavaScript pur. Il importe vos styles, puis monte chaque
+framework sur un nœud du DOM **uniquement si ce nœud existe** sur la page
+courante — c'est l'astuce qui empêche un widget React de gêner un widget Vue, et
+les deux de gêner les pages qui n'en ont besoin d'aucun.
+
+```js title="assets/js/app.js"
+import '../css/app.css';
+
+// --- Îlot React ---
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import Example from './Example.jsx';
+
+const reactRoot = document.getElementById('react-app');
+if (reactRoot) {
+  createRoot(reactRoot).render(React.createElement(Example));
+}
+
+// --- Îlot Vue ---
+import { createApp } from 'vue';
+import ExampleVue from './Example.vue';
+
+const vueRoot = document.getElementById('vue-app');
+if (vueRoot) {
+  createApp(ExampleVue).mount('#vue-app');
+}
+```
+
+:::tip Un seul bundle, plusieurs pages
+Comme chaque bloc est protégé par un `if`, le même `app.js` peut servir toutes
+vos pages. Une page qui n'a ni `#react-app` ni `#vue-app` ne rend simplement rien
+de plus. Quand vos îlots grossissent, séparez-les avec un `import()` dynamique
+afin qu'une page ne télécharge que le composant qu'elle monte réellement.
+:::
+
+## Étape 6 — Les insérer dans un template
+
+Référencez maintenant les assets compilés depuis un template rendu côté serveur
+et laissez deux points de montage vides pour les composants :
+
+```html title="templates/welcome.tintin.php"
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="{{ vite('css/app.css') }}">
+</head>
+<body>
+  <h1>Bienvenue sur BowPHP</h1>
+
+  {{-- React se monte ici --}}
+  <div id="react-app"></div>
+
+  {{-- Vue se monte ici --}}
+  <div id="vue-app"></div>
+
+  <script type="module" src="{{ vite('js/app.js') }}"></script>
+</body>
+</html>
+```
+
+Remarquez que nous avons utilisé `vite()`, et non `asset()`. Ce choix est
+important — voici pourquoi.
+
+## `asset()` vs `vite()`
+
+BowPHP vous donne deux helpers, et ils ne sont **pas** interchangeables :
+
+- **`asset('img/logo.png')`** construit une simple URL vers un fichier dans
+  `public/`. Il ne connaît rien au hachage de Vite, alors réservez-le aux
+  fichiers dont le nom ne change jamais — un favicon, un logo statique, un PDF
+  téléchargeable.
+- **`vite('js/app.js')`** lit le **manifest** de build de Vite et renvoie l'URL
+  du véritable fichier haché (par ex. `/build/js/app-CBsLkjX9.js`). Utilisez-le
+  pour tout ce que Vite compile — vos entrées JS et CSS.
+
+```php
+vite(string $file, bool $absolute = false): string
+```
+
+Chaque fichier que vous référencez avec `vite()` doit être déclaré comme une
+**entrée** (`input`) dans `vite.config.js`, sinon il n'apparaîtra pas dans le
+manifest et le helper lèvera une exception.
+
+:::warning Servi sous `/build/`
+`vite()` renvoie des URLs préfixées par `/build/`. Assurez-vous que votre dossier
+de sortie de build (`outDir` dans `vite.config.js`) et l'emplacement du manifest
+sont cohérents avec ce préfixe afin que le navigateur puisse réellement trouver
+les fichiers.
+:::
+
+## Étape 7 — Le lancer
+
+En développement, laissez Vite servir les assets avec le rechargement à chaud —
+modifiez un composant et le navigateur se met à jour sans rechargement complet :
+
+```bash
+npm run dev
+```
+
+Pour la production, compilez et minifiez tout dans `public/` (c'est ce qui génère
+le manifest sur lequel `vite()` s'appuie) :
+
+```bash
+npm run build
+```
+
+:::tip Buildez avant de tester en mode production
+Le helper `vite()` ne se résout que lorsque le manifest existe. Pendant
+`npm run dev`, le serveur Vite s'en charge pour vous ; pour un test proche de la
+production, exécutez d'abord `npm run build`.
+:::
+
+## Pour aller plus loin
+
+- **Passez des données serveur à un composant** en rendant un attribut `data-*`
+  ou une balise `<script>` JSON sur le nœud de montage, puis en la lisant dans
+  `app.js` avant le montage — aucun aller-retour API supplémentaire nécessaire
+  pour l'état initial.
+- **Mélangez React et Vue sur la même page** librement : ils se montent sur des
+  nœuds différents et n'entrent jamais en collision.
+- **Utilisez Tailwind dans les composants** — les globs `content` de
+  `tailwind.config.js` incluent déjà `assets/js/**/*.{js,jsx,ts,tsx,vue}`, donc
+  les classes utilitaires de vos fichiers `.jsx` et `.vue` sont prises en compte
+  automatiquement.
+
+C'est toute la boucle : écrire un composant, le monter sur un nœud, référencer le
+bundle avec `vite()`. Vous conservez les pages rapides rendues côté serveur de
+BowPHP et vous saupoudrez exactement autant de React ou de Vue que chaque écran
+en a besoin. Consultez la
+[documentation Assets Front-End](/docs/assets) complète pour la configuration de
+Vite, la mise en place de Tailwind et les variables d'environnement.
+
+<SuggestionFeature />

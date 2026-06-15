@@ -1,0 +1,374 @@
+---
+title: "Construire une API REST de To-Do avec BowPHP : CRUD et authentification JWT"
+description: "Un guide pas à pas pour construire une API To-Do en JSON avec BowPHP — protégée par JWT, avec un CRUD complet où chaque tâche appartient à l'utilisateur authentifié."
+slug: build-a-todo-rest-api
+authors: papac
+tags: [bowphp, php, api, jwt, authentication, crud]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Construire une API REST de To-Do avec BowPHP : CRUD et authentification JWT
+
+Nous avons déjà couvert la [liste de tâches rendue côté serveur](/blog/building-a-to-do-list-application-with-bowphp) — formulaires HTML, sessions, et tout le reste. Cette fois, nous allons construire son pendant en API : une **API REST JSON** sans état où les clients s'authentifient avec un **JWT** et où chaque tâche appartient à l'utilisateur qui l'a créée.
+
+À la fin, vous aurez des points d'entrée d'inscription/connexion qui délivrent un jeton, et un ensemble complet de routes CRUD qui ne touchent jamais qu'aux tâches de l'utilisateur courant.
+
+<!--truncate-->
+
+## Le plan
+
+1. Stocker les tâches avec un `user_id` pour que chacune appartienne à quelqu'un.
+2. Délivrer un JWT à l'inscription/connexion.
+3. Protéger les routes des tâches avec le guard `api` et cantonner chaque requête à l'utilisateur authentifié.
+
+## Étape 1 — Les migrations
+
+Nous avons besoin d'une table `users` (une application fraîche en fournit déjà une) et d'une table `tasks` qui pointe vers elle :
+
+```bash
+php bow add:migration create-tasks-table
+```
+
+```php title="database/migrations/Version1000000000CreateTasksTable.php"
+use Bow\Database\Migration\Migration;
+use Bow\Database\Migration\SQLGenerator as Table;
+
+class Version1000000000CreateTasksTable extends Migration
+{
+  public function up()
+  {
+    $this->create('tasks', function (Table $table) {
+      $table->addIncrement('id');
+      $table->addInteger('user_id', ['unsigned' => true]);
+      $table->addString('title');
+      $table->addBoolean('completed', ['default' => false]);
+      $table->addTimestamps();
+
+      $table->addForeign('user_id', [
+        'references' => 'id',
+        'on' => 'users',
+        'onDelete' => 'CASCADE',
+      ]);
+    });
+  }
+
+  public function rollback()
+  {
+    $this->dropIfExists('tasks');
+  }
+}
+```
+
+```bash
+php bow migrate
+```
+
+## Étape 2 — Les modèles
+
+Pour que le JWT fonctionne, le modèle `User` doit étendre `Bow\Auth\Authentication` plutôt que le simple `Model` :
+
+```php title="app/Models/User.php"
+namespace App\Models;
+
+use Bow\Auth\Authentication;
+
+class User extends Authentication
+{
+  protected ?string $table = 'users';
+}
+```
+
+Le modèle `Task` est un modèle Barry classique :
+
+```php title="app/Models/Task.php"
+namespace App\Models;
+
+use Bow\Database\Barry\Model;
+
+class Task extends Model
+{
+  protected ?string $table = 'tasks';
+}
+```
+
+## Étape 3 — Activer le guard JWT
+
+Le support JWT provient du package officiel [`bowphp/policier`](/docs/policier) :
+
+```bash
+composer require bowphp/policier
+```
+
+Donnez-lui une clé de signature dans `.env.json`…
+
+```json title=".env.json"
+{
+  "APP_JWT_SECRET": "a-long-random-secret"
+}
+```
+
+… et assurez-vous que `config/auth.php` déclare un guard `api` adossé au JWT :
+
+```php title="config/auth.php"
+'api' => [
+  'type' => 'jwt',
+  'model' => App\Models\User::class,
+  'credentials' => [
+    'username' => 'email',
+    'password' => 'password',
+  ],
+],
+```
+
+Enfin, branchez Policier dans le kernel pour que le package démarre avec l'application et que le middleware `api` puisse valider les jetons entrants :
+
+```php title="app/Kernel.php"
+public function configurations(): array
+{
+  return [
+    \Policier\Bow\PolicierConfiguration::class,
+    // ...autres configurations
+  ];
+}
+```
+
+:::info Deux guards, une seule application
+Le guard `web` par défaut continue de fonctionner pour les pages basées sur la session. Le guard `api` est purement sans état — il lit l'en-tête `Authorization: Bearer ...` à chaque requête et ne touche jamais à la session.
+:::
+
+## Étape 4 — Inscription et connexion
+
+Le contrôleur d'authentification fait trois choses : créer un compte, échanger des identifiants contre un jeton, et indiquer qui est connecté.
+
+```php title="app/Controllers/Api/AuthController.php"
+namespace App\Controllers\Api;
+
+use App\Models\User;
+use Bow\Auth\Auth;
+use Bow\Http\Request;
+use Bow\Security\Hash;
+
+class AuthController
+{
+  public function register(Request $request)
+  {
+    $validation = $request->validate([
+      'name' => 'required|string|max:255',
+      'email' => 'required|email|unique:users',
+      'password' => 'required|min:8',
+    ]);
+
+    if ($validation->fails()) {
+      return response()->json(['errors' => $validation->getMessages()], 422);
+    }
+
+    $user = User::create([
+      'name' => $request->get('name'),
+      'email' => $request->get('email'),
+      'password' => Hash::make($request->get('password')),
+    ]);
+
+    return response()->json($user, 201);
+  }
+
+  public function login(Request $request)
+  {
+    $credentials = $request->only(['email', 'password']);
+
+    if (!Auth::guard('api')->attempts($credentials)) {
+      return response()->json(['error' => 'Invalid credentials'], 401);
+    }
+
+    $token = Auth::guard('api')->getToken();
+
+    return response()->json([
+      'token' => $token->getValue(),
+      'expires_in' => $token->get('exp'),
+    ]);
+  }
+
+  public function me()
+  {
+    return response()->json(Auth::guard('api')->user());
+  }
+}
+```
+
+Remarquez que nous hachons le mot de passe avec `Hash::make()` à l'entrée ; `attempts()` le vérifie pour nous au retour.
+
+## Étape 5 — Le contrôleur de tâches
+
+Voici le cœur du sujet. **Chaque** méthode résout d'abord l'utilisateur courant, puis ne travaille qu'au sein des tâches de cet utilisateur — il n'y a aucun moyen de lire ou de toucher les données de quelqu'un d'autre, même en devinant un `id`.
+
+```php title="app/Controllers/Api/TaskController.php"
+namespace App\Controllers\Api;
+
+use App\Models\Task;
+use Bow\Auth\Auth;
+use Bow\Http\Request;
+
+class TaskController
+{
+  public function index()
+  {
+    $tasks = Task::where('user_id', Auth::guard('api')->id())->get();
+
+    return response()->json($tasks);
+  }
+
+  public function store(Request $request)
+  {
+    $validation = $request->validate([
+      'title' => 'required|min:3|max:255',
+    ]);
+
+    if ($validation->fails()) {
+      return response()->json(['errors' => $validation->getMessages()], 422);
+    }
+
+    $task = Task::create([
+      'user_id' => Auth::guard('api')->id(),
+      'title' => $request->get('title'),
+      'completed' => false,
+    ]);
+
+    return response()->json($task, 201);
+  }
+
+  public function show(int $id)
+  {
+    $task = $this->findForUser($id);
+
+    if (!$task) {
+      return response()->json(['error' => 'Task not found'], 404);
+    }
+
+    return response()->json($task);
+  }
+
+  public function update(Request $request, int $id)
+  {
+    $task = $this->findForUser($id);
+
+    if (!$task) {
+      return response()->json(['error' => 'Task not found'], 404);
+    }
+
+    $task->update([
+      'title' => $request->get('title', $task->title),
+      'completed' => $request->get('completed', $task->completed),
+    ]);
+
+    return response()->json($task);
+  }
+
+  public function destroy(int $id)
+  {
+    $task = $this->findForUser($id);
+
+    if (!$task) {
+      return response()->json(['error' => 'Task not found'], 404);
+    }
+
+    $task->delete();
+
+    return response()->json(['message' => 'Task deleted']);
+  }
+
+  /**
+   * Trouver une tâche appartenant à l'utilisateur authentifié.
+   */
+  private function findForUser(int $id): ?Task
+  {
+    return Task::where('id', $id)
+      ->where('user_id', Auth::guard('api')->id())
+      ->first();
+  }
+}
+```
+
+:::tip Cantonnez, ne faites pas confiance
+Filtrer sur `user_id` dans `findForUser()` est ce qui rend l'API sûre. Un utilisateur qui demande `/api/tasks/42` appartenant à quelqu'un d'autre reçoit simplement un `404` — la ligne ne correspond jamais à son `user_id`.
+:::
+
+## Étape 6 — Les routes
+
+Deux points d'entrée publics vous donnent un jeton ; tout le reste vit derrière le middleware `api`, qui rejette toute requête sans JWT valide :
+
+```php title="routes/app.php"
+use App\Controllers\Api\AuthController;
+use App\Controllers\Api\TaskController;
+
+// Public — aucun jeton requis
+$app->post('/api/register', [AuthController::class, 'register']);
+$app->post('/api/login', [AuthController::class, 'login']);
+
+// Protégé — JWT valide requis
+$app->prefix('/api')->middleware('api')->group(function () use ($app) {
+  $app->get('/me', [AuthController::class, 'me']);
+
+  $app->get('/tasks', [TaskController::class, 'index']);
+  $app->post('/tasks', [TaskController::class, 'store']);
+  $app->get('/tasks/:id', [TaskController::class, 'show']);
+  $app->put('/tasks/:id', [TaskController::class, 'update']);
+  $app->delete('/tasks/:id', [TaskController::class, 'destroy']);
+});
+```
+
+## Étape 7 — L'essayer
+
+Démarrez le serveur :
+
+```bash
+php bow run:server --port=8000
+```
+
+Inscrivez-vous, puis connectez-vous pour récupérer un jeton :
+
+```bash
+# 1. Créer un compte
+curl -X POST http://localhost:8000/api/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Franck","email":"franck@example.com","password":"secret123"}'
+
+# 2. Se connecter — copiez le "token" depuis la réponse
+curl -X POST http://localhost:8000/api/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"franck@example.com","password":"secret123"}'
+```
+
+Utilisez maintenant le jeton sur les routes protégées :
+
+```bash
+# Créer une tâche
+curl -X POST http://localhost:8000/api/tasks \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Write the API blog post"}'
+
+# Lister vos tâches
+curl http://localhost:8000/api/tasks \
+  -H "Authorization: Bearer YOUR_TOKEN"
+
+# En marquer une comme terminée
+curl -X PUT http://localhost:8000/api/tasks/1 \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"completed":true}'
+```
+
+Retirez l'en-tête `Authorization` et les mêmes appels reviennent en `401` — exactement ce que l'on attend d'une API protégée.
+
+## Pour aller plus loin
+
+- **Pagination** — remplacez `->get()` par `->paginate(15)` dans `index()` dès qu'un utilisateur a beaucoup de tâches. Voir la [documentation sur la pagination](/docs/pagination).
+- **Jetons de rafraîchissement** — délivrez un jeton à plus longue durée de vie pour émettre de nouveaux jetons d'accès sans forcer une reconnexion.
+- **Filtrage** — acceptez `?completed=true` et enchaînez un autre `where()` sur la requête cantonnée.
+- **Limitation de débit** — ajoutez un middleware devant `/api/login` pour ralentir les tentatives de force brute.
+
+Voilà une API REST complète et protégée par authentification : un guard JWT pour l'identité, un cantonnement par utilisateur pour la sécurité, et du JSON propre en entrée comme en sortie. Consultez les documentations [Authentification](/docs/auth) et [Policier](/docs/policier) pour la référence complète.
+
+<SuggestionFeature />

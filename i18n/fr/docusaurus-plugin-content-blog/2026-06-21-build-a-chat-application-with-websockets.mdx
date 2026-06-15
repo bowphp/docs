@@ -1,0 +1,354 @@
+---
+title: "Construire une application de chat avec BowPHP + WebSockets"
+description: "BowPHP gère le HTTP à merveille — mais le temps réel a besoin d'un socket. Ici, nous associons un backend BowPHP (validation, persistance, source de vérité) à un petit serveur Node socket.io qui ne fait que relayer, et nous construisons un chat de groupe fonctionnel."
+slug: build-a-chat-application-with-websockets
+authors: papac
+tags: [bowphp, php, websockets, socketio, realtime, chat]
+image: https://avatars.githubusercontent.com/u/9353811?v=4
+hide_table_of_contents: false
+---
+
+import SuggestionFeature from "@site/src/components/Partials/SuggestionFeature";
+
+# Construire une application de chat avec BowPHP + WebSockets
+
+BowPHP est un framework requête/réponse — il excelle dans le HTTP : routage,
+validation, l'ORM Barry, sessions. Ce qu'il ne fournit délibérément **pas**,
+c'est un serveur WebSocket à longue durée de vie, car garder un socket ouvert
+pour chaque visiteur est un travail différent de celui qui consiste à répondre à
+une requête HTTP puis à passer à autre chose.
+
+La bonne architecture n'est donc pas « faire faire du WebSocket à BowPHP ». C'est
+plutôt : laisser BowPHP faire ce dans quoi il est excellent — **valider et
+persister les messages, et être la source de vérité** — et placer à côté un tout
+petit serveur **socket.io** « bête », dont l'unique rôle est de diffuser les
+messages aux navigateurs connectés en temps réel.
+
+C'est exactement ce que nous allons construire : un petit chat de groupe où
+BowPHP possède les données et un serveur Node d'une trentaine de lignes possède
+la connexion en direct.
+
+<!--truncate-->
+
+## L'architecture
+
+```
+                 (1) POST /api/messages (persiste + valide)
+Navigateur ────────────────────────────────────────────►  App HTTP BowPHP
+   ▲  │                                                      │  (ORM Barry, BDD)
+   │  │ (2) emit "chat:message"                              │
+   │  ▼                                                      ▼
+   │  Serveur Node socket.io  ◄──────── persiste via ──────  renvoie l'enregistrement sauvegardé
+   │         │
+   └─────────┘ (3) io.emit diffuse l'enregistrement sauvegardé à tous
+```
+
+Trois règles gardent l'ensemble propre :
+
+1. **BowPHP est le seul à écrire.** Rien n'atteint la base de données sauf
+   BowPHP, donc la validation et les règles vivent à un seul endroit.
+2. **Le serveur socket ne fait jamais confiance au client.** Il transmet un
+   message à BowPHP ; seul ce que BowPHP sauvegarde et renvoie est diffusé.
+3. **Le navigateur affiche ce que le socket émet.** Il n'invente pas d'identifiants
+   ni d'horodatages de messages — ils proviennent de la base de données.
+
+## Étape 1 — La migration
+
+Créez une table pour les messages :
+
+```bash
+php bow add:migration create_messages_table --create=messages
+```
+
+```php title="migrations/..._create_messages_table.php"
+use Bow\Database\Migration\Migration;
+use Bow\Database\Migration\Table;
+
+class CreateMessagesTable extends Migration
+{
+    public function up(): void
+    {
+        $this->create("messages", function (Table $table) {
+            $table->addIncrement('id');
+            $table->addString('username');
+            $table->addString('body', ['size' => 1000]);
+            $table->addTimestamps();
+        });
+    }
+
+    public function rollback(): void
+    {
+        $this->dropIfExists("messages");
+    }
+}
+```
+
+```bash
+php bow migrate
+```
+
+## Étape 2 — Le modèle
+
+```bash
+php bow add:model Message
+```
+
+```php title="app/Models/Message.php"
+namespace App\Models;
+
+use Bow\Database\Barry\Model;
+
+class Message extends Model
+{
+    protected string $table = 'messages';
+}
+```
+
+## Étape 3 — Le contrôleur
+
+Deux points d'entrée : un pour charger l'historique récent quand un navigateur
+ouvre la page, et un pour persister un nouveau message. La persistance est
+l'endroit où se produit la **validation** — c'est notre frontière de confiance.
+
+```bash
+php bow add:controller ChatController
+```
+
+```php title="app/Controllers/ChatController.php"
+namespace App\Controllers;
+
+use App\Controllers\Controller;
+use App\Models\Message;
+use Bow\Http\Request;
+
+class ChatController extends Controller
+{
+    /**
+     * Rendre la page de chat.
+     */
+    public function index()
+    {
+        return view('chat');
+    }
+
+    /**
+     * Renvoyer les messages les plus récents en JSON (du plus récent au plus ancien).
+     */
+    public function history()
+    {
+        $messages = Message::orderBy('id', 'desc')->take(50)->get();
+
+        return response()->json($messages);
+    }
+
+    /**
+     * Valider et persister un message, puis renvoyer l'enregistrement sauvegardé.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|min:2|max:50',
+            'body'     => 'required|min:1|max:1000',
+        ]);
+
+        $message = Message::create([
+            'username' => $request->get('username'),
+            'body'     => $request->get('body'),
+        ]);
+
+        return response()->json($message, 201);
+    }
+}
+```
+
+## Étape 4 — Les routes
+
+```php title="routes/app.php"
+$app->get('/chat', 'ChatController::index');
+
+$app->get('/api/messages', 'ChatController::history');
+$app->post('/api/messages', 'ChatController::store');
+```
+
+:::tip Gardez l'appel du serveur socket en interne
+Le serveur socket devrait être la seule chose à atteindre `POST /api/messages`.
+En production, protégez-le avec un en-tête secret partagé (vérifié dans un
+middleware) ou gardez cette route sur un réseau interne, afin que les navigateurs
+ne puissent pas poster directement et contourner le socket.
+:::
+
+## Étape 5 — Le serveur socket.io
+
+Voici toute la couche temps réel. Elle accepte les connexions, et lorsqu'un
+client envoie `chat:message`, elle confie la charge utile à BowPHP pour
+validation et stockage, puis diffuse **ce que BowPHP a sauvegardé** à chaque
+client connecté.
+
+```bash
+npm install socket.io node-fetch
+```
+
+```js title="server/socket.js"
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+
+const BOWPHP_API = process.env.BOWPHP_API ?? 'http://127.0.0.1:8080';
+const PORT = process.env.SOCKET_PORT ?? 6001;
+
+const httpServer = createServer();
+const io = new Server(httpServer, {
+  cors: { origin: '*' }, // restreignez ceci à l'origine de votre app en production
+});
+
+io.on('connection', (socket) => {
+  socket.on('chat:message', async (payload) => {
+    try {
+      // BowPHP valide + persiste, et constitue la source de vérité.
+      const res = await fetch(`${BOWPHP_API}/api/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        // La validation a échoué côté PHP — on prévient uniquement l'expéditeur.
+        socket.emit('chat:error', { status: res.status });
+        return;
+      }
+
+      const saved = await res.json();
+
+      // Diffuser l'enregistrement canonique sauvegardé à tout le monde.
+      io.emit('chat:message', saved);
+    } catch (err) {
+      socket.emit('chat:error', { message: 'Server unavailable' });
+    }
+  });
+});
+
+httpServer.listen(PORT, () => {
+  console.log(`socket.io server listening on :${PORT}`);
+});
+```
+
+C'est tout le backend temps réel. Il n'a pas de base de données, pas de règles
+métier, pas d'opinions — il relaie. Toute règle sur ce qu'est un message valide
+vit toujours dans la méthode `store()` de BowPHP.
+
+## Étape 6 — La page de chat
+
+Un template Tintin rendu côté serveur avec une liste de messages, un champ de
+saisie et un petit script client. Nous chargeons le client socket.io du
+navigateur depuis un CDN pour garder l'exemple ciblé (vous pouvez tout aussi
+bien l'ajouter à votre
+[chaîne d'assets Vite](/blog/frontend-assets-with-react-and-vue)).
+
+```html title="templates/chat.tintin.php"
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>BowPHP Chat</title>
+  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body>
+  <h1>BowPHP Chat</h1>
+
+  <ul id="messages"></ul>
+
+  <form id="composer">
+    <input id="username" placeholder="Votre nom" required>
+    <input id="body" placeholder="Tapez un message…" autocomplete="off" required>
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script type="module" src="{{ asset('js/chat.js') }}"></script>
+</body>
+</html>
+```
+
+```js title="public/js/chat.js"
+const socket = io('http://127.0.0.1:6001');
+
+const list = document.getElementById('messages');
+const form = document.getElementById('composer');
+const usernameInput = document.getElementById('username');
+const bodyInput = document.getElementById('body');
+
+function render(message) {
+  const li = document.createElement('li');
+  li.textContent = `${message.username}: ${message.body}`;
+  list.appendChild(li);
+}
+
+// 1. Charger l'historique depuis BowPHP (plus récent d'abord → inverser pour l'ordre chronologique).
+const res = await fetch('/api/messages');
+const history = await res.json();
+history.reverse().forEach(render);
+
+// 2. Afficher tout ce que le serveur socket diffuse.
+socket.on('chat:message', render);
+socket.on('chat:error', () => alert('Votre message n\'a pas pu être envoyé.'));
+
+// 3. Envoyer à la soumission — le serveur socket prend le relais.
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  socket.emit('chat:message', {
+    username: usernameInput.value,
+    body: bodyInput.value,
+  });
+  bodyInput.value = '';
+});
+```
+
+## Étape 7 — Le lancer
+
+Vous avez besoin de deux processus côte à côte — l'application BowPHP et le
+serveur socket :
+
+```bash
+# Terminal 1 — l'app HTTP BowPHP (port 8080 par défaut)
+php bow run:server
+
+# Terminal 2 — le relais socket.io (port 6001)
+node server/socket.js
+```
+
+Ouvrez `/chat` dans deux fenêtres de navigateur, tapez dans l'une et regardez le
+message apparaître instantanément dans l'autre — pendant que chaque message
+atterrit dans votre table `messages`, validé par BowPHP.
+
+## Pourquoi découper ainsi ?
+
+Il serait tentant de laisser le navigateur parler au serveur socket *et*
+persister de son côté, ou de laisser le serveur socket posséder une connexion à
+la base de données. Les deux dispersent vos règles sur deux langages. Garder
+BowPHP comme unique rédacteur signifie :
+
+- **Une seule couche de validation.** Changez les règles dans `store()` et le
+  chemin socket comme tout futur client REST les respectent.
+- **Une seule source de vérité.** L'identifiant et l'horodatage que chaque client
+  voit proviennent directement de la base de données — pas de devinette côté
+  client.
+- **Un transport remplaçable.** Le serveur Node est si fin que vous pourriez le
+  remplacer par Workerman, Ratchet ou un service hébergé sans toucher à votre PHP.
+
+## Pour aller plus loin
+
+- **Salons / canaux :** utilisez les salons de socket.io (`socket.join('room:42')`
+  et `io.to('room:42').emit(...)`) et ajoutez une colonne `room_id` pour
+  cantonner les messages.
+- **Qui est en ligne :** diffusez la présence sur `connection`/`disconnect` — cela
+  n'a jamais besoin de toucher la base de données.
+- **Authentification :** passez l'utilisateur connecté depuis une session BowPHP à
+  la page et faites vérifier au serveur socket un jeton signé avant d'accepter les
+  messages.
+- **Pagination de l'historique :** ajoutez `?before=<id>` à `GET /api/messages`
+  pour un défilement infini — du pur BowPHP, sans socket impliqué.
+
+Le temps réel ne signifie pas abandonner le framework que vous aimez. Laissez
+BowPHP posséder vos données et vos règles, laissez un petit serveur socket
+posséder le fil en direct, et vous obtenez le meilleur des deux mondes.
+
+<SuggestionFeature />
