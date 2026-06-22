@@ -67,6 +67,26 @@ $name = $request->get('name', 'Invité');
 
 // Avec un callback par défaut
 $name = $request->get('name', fn() => User::first()->name);
+
+// input() est un alias de get()
+$name = $request->input('name', 'Invité');
+```
+
+### Récupérer un booléen
+
+`boolean()` convertit une entrée en véritable `bool`. Les valeurs `1`, `"1"`,
+`true`, `"true"`, `"on"` et `"yes"` sont considérées comme `true` ; toute autre
+valeur vaut `false`. Pratique pour les cases à cocher et les options
+activables :
+
+```php
+// ?subscribe=on  ->  true
+if ($request->boolean('subscribe')) {
+  // La case est cochée
+}
+
+// Une clé absente renvoie la valeur par défaut (false par défaut)
+$remember = $request->boolean('remember', true);
 ```
 
 ### Récupérer toutes les données
@@ -84,14 +104,17 @@ fusionné renvoyé par `all()`), utilisez `query()` et `post()` :
 // Tableau complet de $_GET
 $queryParams = $request->query();
 
-// Une clé spécifique de $_GET (renvoie [] si absente)
+// Une clé spécifique de $_GET (renvoie null si absente)
 $page = $request->query('page');
+
+// Avec une valeur par défaut quand la clé est absente
+$page = $request->query('page', 1);
 
 // Tableau complet de $_POST
 $body = $request->post();
 
-// Une clé spécifique de $_POST
-$name = $request->post('name');
+// Une clé spécifique de $_POST (avec une valeur par défaut optionnelle)
+$name = $request->post('name', 'Anonyme');
 ```
 
 :::tip Quand préférer `get()` ?
@@ -221,6 +244,9 @@ if ($request->isGet()) { }
 if ($request->isPost()) { }
 if ($request->isPut()) { }
 if ($request->isDelete()) { }
+
+// Vérifier une méthode arbitraire (insensible à la casse)
+if ($request->isMethod('patch')) { }
 ```
 
 ### Type de requête
@@ -290,6 +316,16 @@ if ($request->isProtocol('https')) {
 ```php
 $contentType = $request->getHeader('content-type');
 $authorization = $request->getHeader('authorization');
+```
+
+### Jeton Bearer
+
+`bearerToken()` extrait le jeton d'un en-tête `Authorization: Bearer <token>`
+et renvoie `null` lorsqu'il est absent ou mal formé :
+
+```php
+// Authorization: Bearer eyJhbGci...
+$token = $request->bearerToken(); // "eyJhbGci..."
 ```
 
 ### Récupérer tous les en-têtes
@@ -390,8 +426,10 @@ $timestamp = $request->time();
 | Méthode | Description |
 |---------|-------------|
 | `get($key, $default)` | Récupère une valeur (toutes sources fusionnées) |
-| `query($key = null)` | Paramètres de la query string (`$_GET`) |
-| `post($key = null)` | Données du corps POST (`$_POST`) |
+| `input($key, $default)` | Alias de `get()` |
+| `boolean($key, $default)` | Récupère une valeur convertie en `bool` |
+| `query($key = null, $default = null)` | Paramètres de la query string (`$_GET`) |
+| `post($key = null, $default = null)` | Données du corps POST (`$_POST`) |
 | `all()` | Toutes les données |
 | `only($keys)` | Filtre par clés |
 | `ignore($keys)` | Exclut des clés |
@@ -400,8 +438,10 @@ $timestamp = $request->time();
 | `path()` | Chemin de la requête |
 | `url()` | URL complète |
 | `method()` | Méthode HTTP |
+| `isMethod($method)` | Vérifie la méthode HTTP |
 | `ip()` | Adresse IP client |
 | `getHeader($key)` | En-tête HTTP |
+| `bearerToken()` | Jeton `Authorization: Bearer` |
 | `session()` | Instance de session |
 | `user($guard)` | Utilisateur authentifié |
 | `validate($rules)` | Valide les données |
