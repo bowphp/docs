@@ -67,6 +67,25 @@ $name = $request->get('name', 'Invité');
 
 // With a default callback
 $name = $request->get('name', fn() => User::first()->name);
+
+// input() is an alias of get()
+$name = $request->input('name', 'Invité');
+```
+
+### Retrieving a boolean
+
+`boolean()` casts an input to a real `bool`. The values `1`, `"1"`, `true`,
+`"true"`, `"on"` and `"yes"` are considered `true`; everything else is `false`.
+Handy for checkboxes and feature toggles:
+
+```php
+// ?subscribe=on  ->  true
+if ($request->boolean('subscribe')) {
+  // The box is checked
+}
+
+// Absent key returns the default (false by default)
+$remember = $request->boolean('remember', true);
 ```
 
 ### Retrieving all data
@@ -84,14 +103,17 @@ array returned by `all()`), use `query()` and `post()`:
 // Full $_GET array
 $queryParams = $request->query();
 
-// A specific $_GET key (returns [] if absent)
+// A specific $_GET key (returns null if absent)
 $page = $request->query('page');
+
+// With a default value when the key is absent
+$page = $request->query('page', 1);
 
 // Full $_POST array
 $body = $request->post();
 
-// A specific $_POST key
-$name = $request->post('name');
+// A specific $_POST key (with an optional default)
+$name = $request->post('name', 'Anonymous');
 ```
 
 :::tip When should you prefer `get()`?
@@ -221,6 +243,9 @@ if ($request->isGet()) { }
 if ($request->isPost()) { }
 if ($request->isPut()) { }
 if ($request->isDelete()) { }
+
+// Match an arbitrary method (case-insensitive)
+if ($request->isMethod('patch')) { }
 ```
 
 ### Request type
@@ -290,6 +315,16 @@ if ($request->isProtocol('https')) {
 ```php
 $contentType = $request->getHeader('content-type');
 $authorization = $request->getHeader('authorization');
+```
+
+### Bearer token
+
+`bearerToken()` extracts the token from an `Authorization: Bearer <token>`
+header and returns `null` when it is missing or malformed:
+
+```php
+// Authorization: Bearer eyJhbGci...
+$token = $request->bearerToken(); // "eyJhbGci..."
 ```
 
 ### Retrieving all headers
@@ -390,8 +425,10 @@ $timestamp = $request->time();
 | Method | Description |
 |---------|-------------|
 | `get($key, $default)` | Retrieves a value (all sources merged) |
-| `query($key = null)` | Query string parameters (`$_GET`) |
-| `post($key = null)` | POST body data (`$_POST`) |
+| `input($key, $default)` | Alias of `get()` |
+| `boolean($key, $default)` | Retrieves a value cast to `bool` |
+| `query($key = null, $default = null)` | Query string parameters (`$_GET`) |
+| `post($key = null, $default = null)` | POST body data (`$_POST`) |
 | `all()` | All data |
 | `only($keys)` | Filter by keys |
 | `ignore($keys)` | Exclude keys |
@@ -400,8 +437,10 @@ $timestamp = $request->time();
 | `path()` | Request path |
 | `url()` | Full URL |
 | `method()` | HTTP method |
+| `isMethod($method)` | Check the HTTP method |
 | `ip()` | Client IP address |
 | `getHeader($key)` | HTTP header |
+| `bearerToken()` | `Authorization: Bearer` token |
 | `session()` | Session instance |
 | `user($guard)` | Authenticated user |
 | `validate($rules)` | Validate data |
