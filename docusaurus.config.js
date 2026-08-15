@@ -123,7 +123,7 @@ module.exports = {
         description:
           "We help you bring your digital project to life.",
         image: "/img/papacandco.png",
-        infoLink: "https://papacandco.com/services",
+        infoLink: "https://papacandco.com",
       },
     ],
     fans: [
