@@ -224,6 +224,20 @@ This clause does exactly what `foreach` does.
 %endloop
 ```
 
+Anything PHP's `foreach` accepts works in the head, such as key/value pairs or list destructuring:
+
+```t
+%loop($users as $id => $user)
+  {{ $id }}: {{ $user->name }}
+%endloop
+```
+
+The whole loop can also sit on a single line:
+
+```t
+<ul>%loop($names as $name) <li>{{ $name }}</li> %endloop</ul>
+```
+
 This clause can also be combined with any other clause, such as `%if`.
 A quick example.
 
@@ -262,23 +276,57 @@ With the syntactic sugar, you can reduce the code like this:
 %endloop
 ```
 
+`%stop` compiles to `break` and `%jump` to `continue`. Both work in `%loop`, `%for` and `%while`, with or without a condition, and the condition may contain any PHP expression, including nested parentheses.
+
+### The `%empty` branch of a loop
+
+When the list you iterate over may be empty, you often end up wrapping the `%loop` in an `%if`. A bare `%empty` inside the loop lets you declare the content to render when the loop body never ran:
+
+```t
+%loop($users as $user)
+  Hello {{ $user->name }}
+%empty
+  No user yet.
+%endloop
+```
+
+The `%empty` branch is rendered only if `$users` is empty. It works with nested loops, each `%loop` keeps its own `%empty`. This branch is only available with `%loop`.
+
+:::note
+`%empty` without parentheses is the loop branch. `%empty($value)` with parentheses stays the conditional helper described above and can still be used inside a loop.
+:::
+
 ### Using `%for` and `%while`
 
-This clause does exactly what `for` does.
+`%for` does exactly what `for` does.
 
 ```t
 %for($i = 0; $i < 10; $i++)
- // ..
+  {{ $i }}
 %endfor
 ```
 
-This clause does exactly what `while` does.
+`%while` does exactly what `while` does.
 
 ```t
 %while($name != 'tintin')
- // ..
+  {{ $name = next($names) }}
 %endwhile
 ```
+
+`%jump` and `%stop` are available in both, exactly as in `%loop`:
+
+```t
+%for($i = 0; $i < 10; $i++)
+  %jump($i % 2 == 0)
+  %stop($i > 7)
+  {{ $i }}
+%endfor
+```
+
+:::note
+The `%empty` branch is only available with `%loop`. `%for` and `%while` have no equivalent.
+:::
 
 ## Conditional classes and styles
 
