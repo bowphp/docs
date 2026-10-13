@@ -136,6 +136,8 @@ La méthode `whereIn` vérifie que la valeur d'une colonne donnée est contenue 
 $users = app_db_table('users')->whereIn('age', [27, 30])->get();
 ```
 
+Un tableau vide ne correspond à aucune ligne : `whereIn('id', [])` compile en `id in (null)`, du SQL valide sur tous les pilotes, au lieu du `id in ()` invalide.
+
 La méthode `whereNotIn` vérifie que la valeur de la colonne donnée n'est pas contenue dans le tableau donné:
 
 ```php

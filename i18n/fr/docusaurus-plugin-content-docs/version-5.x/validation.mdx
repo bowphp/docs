@@ -49,15 +49,15 @@ BowPHP propose un large éventail de règles de validation pour couvrir la plupa
 |-------|-------------|
 | `required` | Le champ est obligatoire |
 | `required_if:field1,field2` | Le champ est obligatoire si les champs spécifiés existent |
-| `nullable` | Le champ peut être null ou absent (court-circuite les règles suivantes) |
+| `nullable` | Le champ peut être absent : `null`, une chaîne vide ou un tableau vide (court-circuite les règles suivantes). `false`, `0` et `0.0` sont de vraies valeurs et sont validées par les règles suivantes |
 | `confirmed` | Le champ doit être identique au champ `<nom>_confirmation` |
 | `different:field` | Le champ doit être différent d'un autre champ |
 | `same:value` | Le champ doit être identique à la valeur spécifiée |
 | `in:val1,val2,...` | La valeur doit faire partie de la liste donnée |
 | `email` | Le champ doit être une adresse email valide |
-| `min:value` | La longueur minimale du champ |
-| `max:value` | La longueur maximale du champ |
-| `size:value` | La longueur exacte du champ |
+| `min:value` | Longueur minimale d'une chaîne, ou valeur minimale d'un nombre envoyé comme nombre JSON |
+| `max:value` | Longueur maximale d'une chaîne, ou valeur maximale d'un nombre envoyé comme nombre JSON |
+| `size:value` | Longueur exacte d'une chaîne, ou valeur exacte d'un nombre envoyé comme nombre JSON |
 | `between:min,max` | Valeur (numérique) ou longueur (chaîne) entre `min` et `max` inclus |
 
 :::note `nullable` combiné avec `required`
@@ -80,6 +80,10 @@ utilisateurs.
 | `boolean` / `bool` | Accepte `true`, `false`, `0`, `1`, `'0'`, `'1'`, `'true'`, `'false'` |
 | `json` | Le champ doit être une chaîne JSON valide |
 | `uuid` | Le champ doit être un UUID canonique (versions 1 à 5) |
+
+:::note Corps de requête JSON
+Un formulaire envoie chaque champ sous forme de chaîne, mais un corps JSON conserve ses types natifs : `{"active": false, "age": 7}` arrive au validateur avec un vrai booléen et un vrai entier. Les règles les acceptent tels quels : `nullable|boolean` valide `false` comme un booléen (il n'est pas considéré comme absent), `min`, `max` et `size` comparent un nombre natif par sa valeur et une chaîne par sa longueur (les chaînes numériques comme un numéro de téléphone gardent la sémantique de longueur), et les règles réservées aux chaînes comme `alpha` ou `email` échouent simplement sur une valeur non textuelle au lieu de lever une erreur.
+:::
 
 ### Règles de format
 
