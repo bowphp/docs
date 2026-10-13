@@ -102,28 +102,28 @@ module.exports = {
         description:
           'Adjemin is a mobile application that lets you do e-commerce without intermediaries. The startup also offers <a href="https://smartlivraison.com">SmartLivraison</a>, which helps you better manage your delivery services in real time.',
         image: "/img/logoadjemin.png",
-        infoLink: "https://adjemin.com",
+        infoLink: "#",
       },
       {
         caption: "Akil Technologies",
         description:
           "In existence since 2015, AKIL is fundamentally about showcasing African — and more specifically Ivorian — technological expertise, from Abidjan where we are based. We are proud of our teams, representative of talent trained locally to international development standards.",
         image: "/img/logoakil.png",
-        infoLink: "https://akiltechnologies.com",
+        infoLink: "#",
       },
       {
         caption: "Etudesk",
         description:
           "Improving the learning experience for the new generation of professionals.",
         image: "/img/logoetudesk.png",
-        infoLink: "https://www.etudesk.com",
+        infoLink: "#",
       },
       {
         caption: "Papac&Co",
         description:
           "We help you bring your digital project to life.",
         image: "/img/papacandco.png",
-        infoLink: "https://papacandco.com/services",
+        infoLink: "https://papacandco.com",
       },
     ],
     fans: [
