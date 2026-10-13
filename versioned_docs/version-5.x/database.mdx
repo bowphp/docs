@@ -30,6 +30,32 @@ After creating a new SQLite database using a command such as `touch var/database
 }
 ```
 
+## PostgreSQL Options
+
+Besides the common keys, a `pgsql` connection accepts the following optional keys:
+
+| Key | Description |
+| --- | ----------- |
+| `sslmode`, `sslrootcert`, `sslcert`, `sslkey`, `sslcrl` | Passed as is to the PDO DSN to configure TLS |
+| `application_name` | The name reported to the server, visible in `pg_stat_activity` |
+| `emulate_prepares` | `true` to let PDO quote the values itself instead of preparing statements on the server. Defaults to `false` |
+
+```php
+'pgsql' => [
+  'driver' => 'pgsql',
+  'hostname' => getenv('PGSQL_HOSTNAME'),
+  'username' => getenv('PGSQL_USER'),
+  'password' => getenv('PGSQL_PASSWORD'),
+  'database' => getenv('PGSQL_DATABASE'),
+  'port' => 5432,
+  'emulate_prepares' => true,
+],
+```
+
+:::tip When to enable `emulate_prepares`
+Behind a connection pooler such as PgBouncer, a server-side prepared statement can outlive a schema change: after a migration adds a column, every `select *` on that table fails with SQLSTATE `0A000` "cached plan must not change result type". With emulated prepares nothing is cached on the server, so the error cannot occur. The `read` connection, when configured, uses the same option.
+:::
+
 ## Multiple Connections
 
 When using multiple connections, you can access each connection via the static `connection` method of the [Bow\Database\Database::class](https://bowphp.com/api/master/Bow/Database/Database.html) class. The name passed to the method must match one of the connections defined in your `config/database.php` configuration file:

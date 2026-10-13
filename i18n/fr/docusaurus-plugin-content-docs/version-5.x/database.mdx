@@ -30,6 +30,32 @@ Après avoir créé une nouvelle base de données SQLite à l'aide d'une command
 }
 ```
 
+## Options PostgreSQL
+
+En plus des clés communes, une connexion `pgsql` accepte les clés optionnelles suivantes :
+
+| Clé | Description |
+| --- | ----------- |
+| `sslmode`, `sslrootcert`, `sslcert`, `sslkey`, `sslcrl` | Transmises telles quelles au DSN PDO pour configurer TLS |
+| `application_name` | Le nom communiqué au serveur, visible dans `pg_stat_activity` |
+| `emulate_prepares` | `true` pour laisser PDO échapper lui-même les valeurs au lieu de préparer les requêtes côté serveur. `false` par défaut |
+
+```php
+'pgsql' => [
+  'driver' => 'pgsql',
+  'hostname' => getenv('PGSQL_HOSTNAME'),
+  'username' => getenv('PGSQL_USER'),
+  'password' => getenv('PGSQL_PASSWORD'),
+  'database' => getenv('PGSQL_DATABASE'),
+  'port' => 5432,
+  'emulate_prepares' => true,
+],
+```
+
+:::tip Quand activer `emulate_prepares`
+Derrière un pooler de connexions comme PgBouncer, une requête préparée côté serveur peut survivre à un changement de schéma : après une migration qui ajoute une colonne, chaque `select *` sur cette table échoue avec SQLSTATE `0A000` « cached plan must not change result type ». Avec les requêtes préparées émulées, rien n'est mis en cache côté serveur et l'erreur ne peut plus se produire. La connexion `read`, si elle est configurée, utilise la même option.
+:::
+
 ## Connexions multiples
 
 Lorsque vous utilisez plusieurs connexions, vous pouvez accéder à chaque connexion via la méthode statique `connection` de la classe [Bow\Database\Database::class](https://bowphp.com/api/master/Bow/Database/Database.html). Le nom passé à la méthode doit correspondre à l'une des connexions définies dans votre fichier de configuration `config/database.php`:

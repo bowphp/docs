@@ -49,15 +49,15 @@ BowPHP offers a wide range of validation rules to cover most common validation n
 |-------|-------------|
 | `required` | The field is required |
 | `required_if:field1,field2` | The field is required if the specified fields exist |
-| `nullable` | The field may be null or absent (short-circuits the following rules) |
+| `nullable` | The field may be absent: `null`, an empty string or an empty array (short-circuits the following rules). `false`, `0` and `0.0` are real values and are validated by the following rules |
 | `confirmed` | The field must match the `<name>_confirmation` field |
 | `different:field` | The field must be different from another field |
 | `same:value` | The field must be identical to the specified value |
 | `in:val1,val2,...` | The value must be part of the given list |
 | `email` | The field must be a valid email address |
-| `min:value` | The minimum length of the field |
-| `max:value` | The maximum length of the field |
-| `size:value` | The exact length of the field |
+| `min:value` | Minimum length of a string, or minimum value of a number sent as a JSON number |
+| `max:value` | Maximum length of a string, or maximum value of a number sent as a JSON number |
+| `size:value` | Exact length of a string, or exact value of a number sent as a JSON number |
 | `between:min,max` | Value (numeric) or length (string) between `min` and `max` inclusive |
 
 :::note `nullable` combined with `required`
@@ -80,6 +80,10 @@ users.
 | `boolean` / `bool` | Accepts `true`, `false`, `0`, `1`, `'0'`, `'1'`, `'true'`, `'false'` |
 | `json` | The field must be a valid JSON string |
 | `uuid` | The field must be a canonical UUID (versions 1 to 5) |
+
+:::note JSON request bodies
+A form submission delivers every field as a string, but a JSON body keeps its native types: `{"active": false, "age": 7}` reaches the validator as a real boolean and a real integer. The rules accept these as such: `nullable|boolean` validates `false` as a boolean (it is not treated as absent), `min`, `max` and `size` compare a native number by value and a string by length (numeric strings such as a phone number keep length semantics), and string-only rules like `alpha` or `email` simply fail on a non-string value instead of throwing.
+:::
 
 ### Format Rules
 

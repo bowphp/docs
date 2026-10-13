@@ -136,6 +136,8 @@ The `whereIn` method checks that the value of a given column is contained in the
 $users = app_db_table('users')->whereIn('age', [27, 30])->get();
 ```
 
+An empty array matches no row: `whereIn('id', [])` compiles to `id in (null)`, which is valid SQL on every driver, instead of the invalid `id in ()`.
+
 The `whereNotIn` method checks that the value of the given column is not contained in the given array:
 
 ```php
